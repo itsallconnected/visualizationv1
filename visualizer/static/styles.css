@@ -6,12 +6,34 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
+:root {
+    /* Node color variables */
+    --root-color: #4A90E2;
+    --component-color: #50C878;
+    --subcomponent-color: #9B59B6;
+    --capability-color: #E67E22;
+    --function-color: #E74C3C;
+    --specification-color: #F1C40F;
+    --integration-color: #16A085;
+    --technique-color: #2ECC71;
+    --application-color: #3498DB;
+    --input-color: #5499C7;
+    --output-color: #F39C12;
+    
+    /* Other theme colors */
+    --background-dark: #0f1015;
+    --panel-background: #1e1e2f;
+    --panel-border: #2d2d44;
+    --text-light: #ffffff;
+    --text-muted: #a3a3ff;
+}
+
 body, html {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    background-color: #0f1015;
-    color: #ffffff;
+    background-color: var(--background-dark);
+    color: var(--text-light);
 }
 
 /* Main layout */
@@ -150,11 +172,11 @@ body, html {
 }
 
 .legend-color.input {
-    background-color: #95A5A6;
+    background-color: #5499C7;
 }
 
 .legend-color.output {
-    background-color: #7F8C8D;
+    background-color: #F39C12;
 }
 
 /* Hover node display */
@@ -323,11 +345,11 @@ body, html {
 }
 
 .node-type-badge.input {
-    background-color: #95A5A6;
+    background-color: #5499C7;
 }
 
 .node-type-badge.output {
-    background-color: #7F8C8D;
+    background-color: #F39C12;
 }
 
 /* Clickable items */
@@ -614,19 +636,387 @@ body, html {
 
 /* Link styling */
 .link {
-    stroke-opacity: 0.4;
-    stroke-width: 1.5px;
+    stroke: rgba(180, 180, 180, 0.25);
+    stroke-opacity: 0.3;
+    stroke-width: 1px;
 }
-.link-has_capability { stroke: var(--capability-color); }
-.link-has_theory { stroke: var(--theory-color); }
-.link-has_subtheory { stroke: var(--subtheory-color); }
-.link-has_component { stroke: var(--component-color); }
-.link-has_subcomponent { stroke: var(--subcomponent-color); }
-.link-has_technique { stroke: var(--technique-color); }
-.link-has_application { stroke: var(--application-color); }
-.link-has_input { stroke: var(--input-color); }
+
+/* Override specific link styling to use the same grey color */
+.link-has_capability,
+.link-has_theory,
+.link-has_subtheory,
+.link-has_component,
+.link-has_subcomponent,
+.link-has_technique,
+.link-has_application,
+.link-has_input {
+    stroke: rgba(180, 180, 180, 0.25);
+}
+
 .link-has_output { 
-    stroke: var(--output-color);
-    stroke-width: 2px; /* Make output links more visible */
-    stroke-dasharray: 4,2; /* Add dashed pattern to output links */
+    stroke: rgba(180, 180, 180, 0.35);
+    stroke-width: 1px;
+    stroke-dasharray: 4,2; /* Keep dashed pattern for output links */
+}
+
+/* Minimap styles */
+.minimap {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 200px;
+    height: 200px;
+    background-color: rgba(20, 20, 35, 0.8);
+    border: 2px solid rgba(83, 83, 255, 0.5);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    overflow: hidden;
+}
+
+.minimap canvas {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.minimap-title {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+/* Bookmark panel */
+.bookmark-panel {
+    position: absolute;
+    top: 80px;
+    right: 20px;
+    width: 220px;
+    background-color: rgba(20, 20, 35, 0.8);
+    border: 2px solid rgba(83, 83, 255, 0.5);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    padding: 10px;
+    color: white;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.bookmark-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 5px;
+}
+
+.bookmark-list {
+    margin-bottom: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.bookmark-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.bookmark-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bookmark-name {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bookmark-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.bookmark-go, .bookmark-delete {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 3px 6px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.bookmark-delete {
+    background-color: rgba(255, 100, 100, 0.3);
+}
+
+.bookmark-add-button {
+    width: 100%;
+    background-color: rgba(100, 150, 255, 0.3);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.bookmark-add-button:hover {
+    background-color: rgba(100, 150, 255, 0.5);
+}
+
+/* Search container */
+.search-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+}
+
+#search-input {
+    width: 250px;
+    padding: 8px 12px;
+    border: 2px solid rgba(83, 83, 255, 0.5);
+    border-radius: 6px;
+    background-color: rgba(20, 20, 35, 0.8);
+    color: white;
+    font-size: 14px;
+}
+
+#search-button {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background-color: rgba(100, 150, 255, 0.3);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#search-results {
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: rgba(20, 20, 35, 0.9);
+    border: 2px solid rgba(83, 83, 255, 0.5);
+    border-radius: 6px;
+    margin-top: 10px;
+    padding: 10px;
+    display: none;
+}
+
+.result-count {
+    font-size: 12px;
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.result-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.result-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.result-name {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+}
+
+.result-type {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-left: 5px;
+}
+
+.close-results {
+    width: 100%;
+    background-color: rgba(150, 150, 150, 0.3);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.no-results, .more-results {
+    text-align: center;
+    padding: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+}
+
+/* Filter container */
+.filter-container {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background-color: rgba(20, 20, 35, 0.8);
+    border: 2px solid rgba(83, 83, 255, 0.5);
+    border-radius: 8px;
+    padding: 10px;
+    width: 200px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.filter-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 5px;
+    color: white;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.filter-item input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.filter-item label {
+    color: white;
+    flex-grow: 1;
+}
+
+.filter-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.filter-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.filter-actions button {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    width: 48%;
+}
+
+.filter-actions button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Complexity container */
+.complexity-container {
+    position: absolute;
+    bottom: 250px;
+    right: 20px;
+    z-index: 10;
+    background-color: rgba(20, 20, 35, 0.8);
+    border: 2px solid rgba(83, 83, 255, 0.5);
+    border-radius: 8px;
+    padding: 10px;
+    width: 220px;
+}
+
+.complexity-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 5px;
+    color: white;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#complexity-slider {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.slider-value {
+    color: white;
+    min-width: 40px;
+    text-align: right;
+}
+
+.focus-mode-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.focus-mode-container label {
+    color: white;
+    margin-left: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .minimap {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .bookmark-panel, .filter-container, .complexity-container {
+        width: 180px;
+    }
+    
+    #search-input {
+        width: 200px;
+    }
 } 

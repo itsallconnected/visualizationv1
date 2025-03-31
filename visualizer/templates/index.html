@@ -25,6 +25,8 @@
                 <button id="zoom-out">Zoom Out</button>
                 <button id="reset-view">Reset View</button>
                 <button id="toggle-rotation">Toggle Rotation</button>
+                <button id="expand-all">Expand All</button>
+                <button id="collapse-all">Collapse All</button>
             </div>
             
             <!-- Legend -->
@@ -113,193 +115,631 @@
         // Main visualization class
         class AIAlignmentVisualization {
             constructor() {
-                // Core properties
-                this.container = document.getElementById('scene-container');
+                // Core THREE.js components
                 this.scene = null;
                 this.camera = null;
                 this.renderer = null;
                 this.controls = null;
+                
+                // Interaction and physics
                 this.raycaster = null;
                 this.mouse = null;
                 this.clock = new THREE.Clock();
                 
-                // Node management
-                this.nodes = new Map(); // Three.js node objects by ID
-                this.links = new Map(); // Three.js link objects
-                this.graphData = null; // Data from API
-                this.expandedNodes = new Set(); // Tracks which nodes are expanded
-                this.selectedNode = null; // Currently selected node
-                this.nodePositions = new Map(); // Positions of nodes
-                this.hoverDisplay = null; // Element for hover text
+                // Graph data storage
+                this.graphData = null;
+                this.nodeDetails = new Map();
                 
-                // Animation state
+                // Visualization objects
+                this.nodes = new Map();           // THREE.js meshes by node ID
+                this.links = new Map();           // THREE.js line objects
+                this.nodePositions = new Map();   // Current 3D positions of nodes
+                this.expandedNodes = new Set();   // Tracks which nodes are expanded
+                this.nodeAnimations = new Map();  // Animation properties for nodes
+                this.nodeOrbits = new Map();      // Orbital patterns for child nodes
+                
+                // State management
+                this.selectedNode = null;
+                this.hoveredNode = null;
                 this.isRotating = false;
-                this.isDragging = false;
+                this.isActive = true;             // Controls if animation loop runs
+                this.animationRunning = false;    // Tracks if animation has started
+                this._processingExpansion = false; // Prevents concurrent expand/collapse operations
                 
-                // Initialize
+                // Performance
+                this.frustumCulled = true;
+                
+                // Initialize the visualization
                 this.init();
-                this.setupEventListeners();
+                this.setupEventListeners(); // Set up UI event listeners
                 this.loadData();
             }
             
             init() {
-                // Setup Three.js scene
+                // Get container element
+                this.container = document.getElementById('scene-container');
+                if (!this.container) {
+                    // Fallback to body if container not found
+                    console.error("Container element 'scene-container' not found, using body as fallback");
+                    this.container = document.body;
+                    // Create a container div if using body as fallback
+                    const containerDiv = document.createElement('div');
+                    containerDiv.id = 'scene-container';
+                    containerDiv.style.width = '100%';
+                    containerDiv.style.height = '100vh';
+                    document.body.appendChild(containerDiv);
+                    this.container = containerDiv;
+                }
+                
+                // Get container dimensions
+                const width = this.container.clientWidth || window.innerWidth;
+                const height = this.container.clientHeight || window.innerHeight;
+                
+                // Initialize scene
                 this.scene = new THREE.Scene();
-                this.scene.background = new THREE.Color(0x0f1015);
+                this.scene.background = new THREE.Color(0x111111);
                 
-                // Setup renderer
-                this.renderer = new THREE.WebGLRenderer({ antialias: true });
-                this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-                this.renderer.setPixelRatio(window.devicePixelRatio);
-                this.container.appendChild(this.renderer.domElement);
-                
-                // Setup camera
+                // Initialize camera
                 this.camera = new THREE.PerspectiveCamera(
                     60, 
-                    this.container.clientWidth / this.container.clientHeight, 
-                    0.1, 
+                    width / height, 
+                    1, 
                     10000
                 );
-                this.camera.position.z = 500;
+                this.camera.position.z = 1000;
                 
-                // Setup controls
+                // Initialize renderer
+                this.renderer = new THREE.WebGLRenderer({ antialias: true });
+                this.renderer.setSize(width, height);
+                this.container.appendChild(this.renderer.domElement);
+                
+                // Initialize controls
                 this.controls = new OrbitControls(this.camera, this.renderer.domElement);
                 this.controls.enableDamping = true;
-                this.controls.dampingFactor = 0.25;
+                this.controls.dampingFactor = 0.05;
                 
-                // Raycaster for interaction
+                // Initialize raycaster for mouse interaction
                 this.raycaster = new THREE.Raycaster();
                 this.mouse = new THREE.Vector2();
-                
-                // Add lighting
-                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-                this.scene.add(ambientLight);
-                
-                const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
-                directionalLight.position.set(1, 1, 1);
-                this.scene.add(directionalLight);
-                
-                const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
-                directionalLight2.position.set(-1, -1, -1);
-                this.scene.add(directionalLight2);
                 
                 // Create hover display
                 this.hoverDisplay = this.createHoverDisplay();
                 
-                // Start animation loop
-                this.animate();
+                // Add lights
+                const ambientLight = new THREE.AmbientLight(0x404040);
+                this.scene.add(ambientLight);
                 
-                // Handle window resize
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+                directionalLight.position.set(1, 1, 1);
+                this.scene.add(directionalLight);
+                
+                // Create spherical container
+                this.createSphericalContainer();
+                
+                // Set up window resize handler
                 window.addEventListener('resize', () => this.onWindowResize());
+                
+                console.log("Visualization initialized");
             }
             
-            setupEventListeners() {
-                // Control buttons
-                document.getElementById('zoom-in').addEventListener('click', () => this.zoomIn());
-                document.getElementById('zoom-out').addEventListener('click', () => this.zoomOut());
-                document.getElementById('reset-view').addEventListener('click', () => this.resetView());
-                document.getElementById('toggle-rotation').addEventListener('click', () => this.toggleRotation());
-                
-                // Mouse events
-                this.container.addEventListener('mousemove', (event) => this.onMouseMove(event));
-                this.container.addEventListener('click', (event) => this.onClick(event));
+            // Method to properly start animation loop
+            startAnimation() {
+                if (!this.animationRunning) {
+                    this.isActive = true;
+                    this.animationRunning = true;
+                    this.animate();
+                    console.log("Animation loop started");
+                }
+            }
+            
+            // Method to properly stop animation loop
+            stopAnimation() {
+                this.isActive = false;
+                this.animationRunning = false;
+                console.log("Animation loop stopped");
             }
             
             loadData() {
                 fetch('/api/graph')
                     .then(response => response.json())
                     .then(data => {
-                        console.log("Received graph data:", data);
-                        this.graphData = data;
+                        this.processData(data);
                         
-                        // Log node counts by level for debugging
-                        const nodesByLevel = {};
-                        data.nodes.forEach(node => {
-                            if (!nodesByLevel[node.level]) {
-                                nodesByLevel[node.level] = 0;
-                            }
-                            nodesByLevel[node.level]++;
-                        });
-                        
-                        console.log("Nodes by level in data:");
-                        for (const level in nodesByLevel) {
-                            console.log(`Level ${level}: ${nodesByLevel[level]} nodes`);
+                        // Find and expand the root node initially
+                        const rootNode = this.graphData.nodes.find(node => !node.parent);
+                        if (rootNode) {
+                            this.expandedNodes.add(rootNode.id);
                         }
                         
-                        // Initialize graph with root node
-                        this.initializeGraph();
+                        // Get initially visible nodes
+                        const visibleNodes = this.getVisibleNodes();
+                        
+                        // Position nodes based on hierarchy
+                        this.positionNodes(visibleNodes);
+                        
+                        // Create visualization objects
+                        this.createNodeObjects(visibleNodes);
+                        this.createLinkObjects(this.getVisibleLinks(visibleNodes));
+                        
+                        // Set up node animations
+                        this.setupNodeOrbits(visibleNodes);
+                        
+                        // Start animation loop
+                        this.startAnimation();
                     })
-                    .catch(error => {
-                        console.error('Error loading graph data:', error);
-                        document.getElementById('details-content').innerHTML = `
-                            <div class="error-message">
-                                <h3>Error Loading Data</h3>
-                                <p>${error.message || 'Could not load visualization data'}</p>
-                            </div>
-                        `;
-                    });
+                    .catch(error => console.error('Error loading data:', error));
             }
             
-            initializeGraph() {
-                if (!this.graphData || !this.graphData.nodes) {
-                    console.error("No graph data available");
-                    return;
+            processData(data) {
+                console.log("Processing graph data:", data);
+                
+                // Store the graph data
+                this.graphData = data;
+                
+                // Validate and normalize the data
+                if (!this.graphData.nodes) {
+                    console.error("Invalid graph data: missing nodes array");
+                    this.graphData.nodes = [];
                 }
-
-                // Start with just the root node
-                const rootNode = this.graphData.nodes.find(node => node.level === 0);
-                if (rootNode) {
-                    // Mark root as expanded
-                    this.expandedNodes.add(rootNode.id);
-                    
-                    // Get visible nodes and links
-                    const visibleNodes = this.getVisibleNodes();
-                    const visibleLinks = this.getVisibleLinks(visibleNodes);
-                    
-                    console.log(`Initializing graph with ${visibleNodes.length} nodes and ${visibleLinks.length} links`);
-                    
-                    // Position and create visual elements
-                    this.positionNodes(visibleNodes);
-                    this.createNodeObjects(visibleNodes);
-                    this.createLinkObjects(visibleLinks);
-                    
-                    // Auto-select the root node but use the dedicated root endpoint
-                    this.selectRootNode(rootNode);
-                } else {
-                    console.error("No root node found in graph data");
+                
+                if (!this.graphData.links) {
+                    console.error("Invalid graph data: missing links array");
+                    this.graphData.links = [];
                 }
+                
+                // Normalize links to ensure source and target are properly set
+                this.graphData.links.forEach(link => {
+                    if (typeof link.source === 'object' && link.source !== null) {
+                        link.source = link.source.id || link.source;
+                    }
+                    
+                    if (typeof link.target === 'object' && link.target !== null) {
+                        link.target = link.target.id || link.target;
+                    }
+                });
+                
+                console.log(`Processed ${this.graphData.nodes.length} nodes and ${this.graphData.links.length} links`);
+            }
+            
+            createHoverDisplay() {
+                // Create the hover display element
+                const hoverDisplay = document.createElement('div');
+                hoverDisplay.id = 'hover-node-name';
+                document.body.appendChild(hoverDisplay);
+                
+                // Set initial state
+                hoverDisplay.style.opacity = '0';
+                hoverDisplay.style.display = 'none';
+                
+                return hoverDisplay;
+            }
+            
+            createSphericalContainer() {
+                // Define the maximum radius based on the number of levels
+                const maxRadius = this.calculateMaxSphereRadius();
+                
+                // Create a wireframe sphere to show the boundary
+                const sphereGeometry = new THREE.SphereGeometry(maxRadius, 64, 32);
+                const wireframe = new THREE.WireframeGeometry(sphereGeometry);
+                const sphereMaterial = new THREE.LineBasicMaterial({ 
+                    color: 0x333344,
+                    transparent: true,
+                    opacity: 0.2,
+                    linewidth: 0.2
+                });
+                
+                const sphere = new THREE.LineSegments(wireframe, sphereMaterial);
+                sphere.name = 'boundingSphere';
+                this.scene.add(sphere);
+            }
+            
+            calculateMaxSphereRadius() {
+                // This will be updated when data is loaded
+                // Default initial radius
+                return 500;
+            }
+            
+            setupEventListeners() {
+                console.log("Setting up event listeners");
+                
+                // Control buttons
+                const zoomInButton = document.getElementById('zoom-in');
+                const zoomOutButton = document.getElementById('zoom-out');
+                const resetViewButton = document.getElementById('reset-view');
+                const toggleRotationButton = document.getElementById('toggle-rotation');
+                const expandAllButton = document.getElementById('expand-all');
+                const collapseAllButton = document.getElementById('collapse-all');
+                const detailsExpandAllButton = document.getElementById('expand-collapse-all');
+                
+                if (zoomInButton) {
+                    zoomInButton.addEventListener('click', () => {
+                        this.zoomIn();
+                        this.cameraControlsNeedUpdate = true;
+                    });
+                }
+                
+                if (zoomOutButton) {
+                    zoomOutButton.addEventListener('click', () => {
+                        this.zoomOut();
+                        this.cameraControlsNeedUpdate = true;
+                    });
+                }
+                
+                if (resetViewButton) {
+                    resetViewButton.addEventListener('click', () => {
+                        this.resetView();
+                        this.cameraControlsNeedUpdate = true;
+                    });
+                }
+                
+                if (toggleRotationButton) {
+                    toggleRotationButton.addEventListener('click', () => {
+                        this.toggleRotation();
+                    });
+                }
+                
+                // Add expand-all button event listener
+                if (expandAllButton) {
+                    expandAllButton.addEventListener('click', () => {
+                        this.expandAllNodes();
+                    });
+                }
+                
+                // Add collapse-all button event listener
+                if (collapseAllButton) {
+                    collapseAllButton.addEventListener('click', () => {
+                        this.collapseAllNodes();
+                    });
+                }
+                
+                // Add details panel expand-all button event listener
+                if (detailsExpandAllButton) {
+                    detailsExpandAllButton.addEventListener('click', () => {
+                        // Toggle between expand all and collapse all
+                        if (detailsExpandAllButton.textContent === 'Expand All') {
+                            this.expandAllNodes();
+                            detailsExpandAllButton.textContent = 'Collapse All';
+                        } else {
+                            this.collapseAllNodes();
+                            detailsExpandAllButton.textContent = 'Expand All';
+                        }
+                    });
+                }
+                
+                // OrbitControls events
+                if (this.controls) {
+                    this.controls.addEventListener('change', () => {
+                        this.cameraControlsNeedUpdate = true;
+                    });
+                }
+                
+                // Mouse move event for hover
+                this.container.addEventListener('mousemove', this.onMouseMove.bind(this));
+                
+                // Click event
+                this.container.addEventListener('click', this.onClick.bind(this));
+                
+                // Resize event
+                window.addEventListener('resize', this.onWindowResize.bind(this));
+                
+                // Initialize the flag
+                this.cameraControlsNeedUpdate = true;
             }
             
             getVisibleNodes() {
-                // Only return nodes that should be visible based on expanded state
-                return this.graphData.nodes.filter(node => {
-                    // The root node is always visible
-                    if (node.level === 0) return true;
+                // Start with the root node
+                const visibleNodes = [];
+                const processedNodes = new Set(); // To avoid duplicate processing
+                
+                // Find the root node
+                const rootNode = this.graphData.nodes.find(node => node.level === 0);
+                if (rootNode) {
+                    visibleNodes.push(rootNode);
+                    processedNodes.add(rootNode.id);
+                }
+                
+                // Breadth-first traversal to ensure parent-child relationships are respected
+                const queue = [rootNode];
+                
+                while (queue.length > 0) {
+                    const currentNode = queue.shift();
                     
-                    // Direct children of root (level 1) are visible when root is expanded
-                    if (node.level === 1) return this.expandedNodes.has('ai-alignment');
-                    
-                    // If parent is expanded, this node is visible
-                    const parentNode = this.graphData.nodes.find(n => n.id === node.parent);
-                    if (!parentNode) return false;
-                    
-                    // Check parent is expanded
-                    const isParentExpanded = this.expandedNodes.has(node.parent);
-                    
-                    // Special case for outputs attached to applications
-                    if (node.type === 'output') {
-                        // If this output belongs to an application (parent is application), check if the application is expanded
-                        const parentIsApp = parentNode.type === 'application';
-                        if (parentIsApp) {
-                            return this.expandedNodes.has(node.parent);
-                        }
+                    // Skip if node isn't expanded (except for root)
+                    if (currentNode.level > 0 && !this.expandedNodes.has(currentNode.id)) {
+                        continue;
                     }
                     
-                    return isParentExpanded;
+                    // Add children of expanded nodes
+                    const children = this.graphData.nodes.filter(node => 
+                        node.parent === currentNode.id
+                    );
+                    
+                    children.forEach(child => {
+                        if (!processedNodes.has(child.id)) {
+                            visibleNodes.push(child);
+                            processedNodes.add(child.id);
+                            queue.push(child);
+                        }
+                    });
+                }
+                
+                // Final safety check to ensure no orphaned nodes are included
+                return visibleNodes.filter(node => 
+                    node.level === 0 || 
+                    (this.expandedNodes.has(node.parent) && processedNodes.has(node.parent))
+                );
+            }
+            
+            onMouseMove(event) {
+                // Calculate mouse position in normalized device coordinates (-1 to +1)
+                this.mouse.x = (event.clientX / this.container.clientWidth) * 2 - 1;
+                this.mouse.y = -(event.clientY / this.container.clientHeight) * 2 + 1;
+                
+                // Update the picking ray with the camera and mouse position
+                this.raycaster.setFromCamera(this.mouse, this.camera);
+                
+                // Find all intersected objects
+                const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+                
+                // Check if we're hovering over a node
+                if (intersects.length > 0) {
+                    // Find the first intersected node (not a line)
+                    const intersectedNode = intersects.find(intersect => 
+                        intersect.object.userData && 
+                        intersect.object.userData.nodeId &&
+                        intersect.object.type === 'Mesh'
+                    );
+                    
+                    if (intersectedNode) {
+                        const nodeId = intersectedNode.object.userData.nodeId;
+                        const nodeData = this.graphData.nodes.find(n => n.id === nodeId);
+                        
+                        if (nodeData) {
+                            // Show hover display
+                            this.hoverDisplay.innerHTML = `
+                                <div class="node-type">${this.capitalizeFirstLetter(nodeData.type.replace('_', ' '))}</div>
+                                <div class="node-name">${nodeData.name}</div>
+                            `;
+                            this.hoverDisplay.style.display = 'block';
+                            this.hoverDisplay.style.opacity = '1';
+                            
+                            // Position hover display at mouse position
+                            const x = event.clientX;
+                            const y = event.clientY - 40; // Offset above the cursor
+                            
+                            this.hoverDisplay.style.left = `${x}px`;
+                            this.hoverDisplay.style.top = `${y}px`;
+                            this.hoverDisplay.style.transform = 'translate(-50%, -100%)';
+                            
+                            // Set cursor to pointer
+                            this.container.style.cursor = 'pointer';
+                            return;
+                        }
+                    }
+                }
+                
+                // If not hovering over a node, hide the display
+                this.hoverDisplay.style.opacity = '0';
+                this.hoverDisplay.style.display = 'none';
+                this.container.style.cursor = 'default';
+            }
+            
+            capitalizeFirstLetter(string) {
+                if (!string) return '';
+                return string.split(' ').map(word => {
+                    return word.charAt(0).toUpperCase() + word.slice(1);
+                }).join(' ');
+            }
+            
+            getNodeColor(nodeType) {
+                // Return colors based on node type
+                const colors = {
+                    'component_group': '#4A90E2',
+                    'component': '#50C878',
+                    'subcomponent': '#9B59B6',
+                    'capability': '#E67E22',
+                    'function': '#E74C3C',
+                    'specification': '#F1C40F',
+                    'integration': '#16A085',
+                    'technique': '#2ECC71',
+                    'application': '#3498DB',
+                    'input': '#5499C7',
+                    'output': '#F39C12'
+                };
+                
+                return colors[nodeType] || '#CCCCCC'; // Default gray for unknown types
+            }
+            
+            getNodeSize(nodeType, level = 0) {
+                // Calculate size based on node type and level
+                // Root node should be largest, with decreasing sizes as we move outward
+                // But each type should have a specific size relative to its importance
+                
+                // Base sizes for different node types (larger than before)
+                const baseSizes = {
+                    'component_group': 18,
+                    'component': 15,
+                    'subcomponent': 12,
+                    'capability': 10,
+                    'function': 9,
+                    'specification': 9,
+                    'integration': 8,
+                    'technique': 8,
+                    'application': 8,
+                    'input': 6,
+                    'output': 7
+                };
+                
+                // Get base size or default to 6
+                const baseSize = baseSizes[nodeType] || 6;
+                
+                // Calculate level adjustment factor - higher levels get smaller
+                const levelFactor = Math.max(0.6, 1 - (level * 0.05));
+                
+                // Apply level factor to base size
+                return baseSize * levelFactor;
+            }
+            
+            onClick(event) {
+                // Calculate mouse position in normalized device coordinates (-1 to +1)
+                this.mouse.x = (event.clientX / this.container.clientWidth) * 2 - 1;
+                this.mouse.y = -(event.clientY / this.container.clientHeight) * 2 + 1;
+                
+                // Update the picking ray with the camera and mouse position
+                this.raycaster.setFromCamera(this.mouse, this.camera);
+                
+                // Find all intersected objects
+                const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+                
+                // Check if we clicked on a node
+                if (intersects.length > 0) {
+                    // Find the first intersected node (not a line)
+                    const intersectedNode = intersects.find(intersect => 
+                        intersect.object.userData && 
+                        intersect.object.userData.nodeId &&
+                        intersect.object.type === 'Mesh'
+                    );
+                    
+                    if (intersectedNode) {
+                        const nodeId = intersectedNode.object.userData.nodeId;
+                        const nodeData = this.graphData.nodes.find(n => n.id === nodeId);
+                        
+                        if (nodeData) {
+                            console.log(`Clicked on node: ${nodeData.name} (${nodeData.id})`);
+                            
+                            // If the node has children, toggle expansion
+                            if (nodeData.has_children) {
+                                if (this.expandedNodes.has(nodeId)) {
+                                    // Node is expanded, collapse it
+                                    this.expandedNodes.delete(nodeId);
+                                    this.recursivelyCollapseChildren(nodeId);
+                                } else {
+                                    // Node is collapsed, expand it
+                                    this.expandedNodes.add(nodeId);
+                                }
+                                
+                                // Update the visualization
+                                const visibleNodes = this.getVisibleNodes();
+                                this.positionNodes(visibleNodes);
+                                this.createNodeObjects(visibleNodes);
+                                this.createLinkObjects(this.getVisibleLinks(visibleNodes));
+                                
+                                // Update animations for newly visible nodes
+                                this.setupNodeAnimations(visibleNodes);
+                            }
+                            
+                            // Select the node to show details
+                            this.selectNode(nodeData);
+                            
+                            // Mark camera controls for update
+                            this.cameraControlsNeedUpdate = true;
+                        }
+                    }
+                }
+            }
+            
+            recursivelyCollapseChildren(nodeId) {
+                console.log(`Collapsing children of node: ${nodeId}`);
+                
+                // Get all nodes that have this node as a parent
+                const children = this.graphData.nodes.filter(n => n.parent === nodeId);
+                
+                // For each child
+                children.forEach(child => {
+                    // Remove from expanded nodes set
+                    this.expandedNodes.delete(child.id);
+                    console.log(`Collapsed node: ${child.id}`);
+                    
+                    // Recursively collapse its children
+                    this.recursivelyCollapseChildren(child.id);
+                });
+                
+                // Safety check to ensure all descendants are truly collapsed
+                // This handles cases where the parent-child relationships might not be perfect
+                const allDescendants = this.findAllDescendants(nodeId);
+                allDescendants.forEach(descendantId => {
+                    if (this.expandedNodes.has(descendantId)) {
+                        console.log(`Force collapsing descendant: ${descendantId}`);
+                        this.expandedNodes.delete(descendantId);
+                    }
+                });
+            }
+            
+            // Helper method to find all descendants of a node regardless of direct parent links
+            findAllDescendants(nodeId) {
+                const descendants = new Set();
+                
+                // Helper function to recursively collect descendants
+                const collectDescendants = (id) => {
+                    // Find direct children
+                    const children = this.graphData.nodes.filter(n => n.parent === id);
+                    
+                    // Add each child and its descendants
+                    children.forEach(child => {
+                        descendants.add(child.id);
+                        collectDescendants(child.id);
+                    });
+                };
+                
+                // Start the recursive collection
+                collectDescendants(nodeId);
+                
+                return Array.from(descendants);
+            }
+            
+            cullNodesOutsideViewport() {
+                // Skip if not using optimization
+                if (!this.frustumCulled) return;
+                
+                // Get the camera frustum
+                const frustum = new THREE.Frustum();
+                const matrix = new THREE.Matrix4().multiplyMatrices(
+                    this.camera.projectionMatrix,
+                    this.camera.matrixWorldInverse
+                );
+                frustum.setFromProjectionMatrix(matrix);
+                
+                // Check each node against the frustum
+                this.nodes.forEach((nodeMesh, nodeId) => {
+                    if (nodeMesh.isInstancedNode) {
+                        // For instanced nodes, we need to update their visibility differently
+                        const instancedMesh = nodeMesh.userData.instancedMesh;
+                        const instanceIndex = nodeMesh.userData.instanceIndex;
+                        
+                        // Skip if already processed this instanced mesh
+                        if (instancedMesh.userData.frustumChecked) return;
+                        
+                        // Mark as processed
+                        instancedMesh.userData.frustumChecked = true;
+                        
+                        // Check the whole instanced mesh bounding box
+                        instancedMesh.geometry.computeBoundingBox();
+                        const boundingBox = instancedMesh.geometry.boundingBox.clone();
+                        boundingBox.applyMatrix4(instancedMesh.matrixWorld);
+                        
+                        // Set visibility based on whether it's in the frustum
+                        instancedMesh.visible = frustum.intersectsBox(boundingBox);
+                    } else {
+                        // For individual meshes, just check position
+                        const position = nodeMesh.position.clone();
+                        nodeMesh.visible = frustum.containsPoint(position);
+                    }
+                });
+                
+                // Reset the frustum checked flag for next frame
+                this.nodes.forEach(nodeMesh => {
+                    if (nodeMesh.isInstancedNode && nodeMesh.userData.instancedMesh) {
+                        nodeMesh.userData.instancedMesh.userData.frustumChecked = false;
+                    }
                 });
             }
             
             getVisibleLinks(visibleNodes) {
+                // If no graph data or visibleNodes not provided, return empty array
+                if (!this.graphData || !this.graphData.links || !visibleNodes) {
+                    return [];
+                }
+                
                 // Create a set of visible node IDs for faster lookup
                 const nodeIds = new Set(visibleNodes.map(node => node.id));
                 
@@ -313,7 +753,7 @@
             
             positionNodes(nodes) {
                 // Position the root node at the center
-                const rootNode = nodes.find(node => !node.parent);
+                const rootNode = nodes.find(node => node.level === 0);
                 if (rootNode) {
                     this.nodePositions.set(rootNode.id, { x: 0, y: 0, z: 0 });
                 }
@@ -322,6 +762,29 @@
                 const nodesByLevel = new Map();
                 const maxLevel = Math.max(...nodes.map(n => n.level));
                 
+                // Calculate the maximum radius for our bounding sphere
+                const sphereRadius = 400 + (maxLevel * 50);
+                
+                // Update sphere container if it exists
+                const boundingSphere = this.scene.getObjectByName('boundingSphere');
+                if (boundingSphere) {
+                    this.scene.remove(boundingSphere);
+                    
+                    const sphereGeometry = new THREE.SphereGeometry(sphereRadius, 64, 32);
+                    const wireframe = new THREE.WireframeGeometry(sphereGeometry);
+                    const sphereMaterial = new THREE.LineBasicMaterial({ 
+                        color: 0x333344,
+                        transparent: true,
+                        opacity: 0.2,
+                        linewidth: 0.2
+                    });
+                    
+                    const newSphere = new THREE.LineSegments(wireframe, sphereMaterial);
+                    newSphere.name = 'boundingSphere';
+                    this.scene.add(newSphere);
+                }
+                
+                // Group nodes by level
                 nodes.forEach(node => {
                     if (!nodesByLevel.has(node.level)) {
                         nodesByLevel.set(node.level, []);
@@ -329,281 +792,267 @@
                     nodesByLevel.get(node.level).push(node);
                 });
 
-                // Calculate base radius for each level based on total nodes and level
-                const calculateLevelRadius = (level) => {
-                    const nodesInLevel = nodesByLevel.get(level)?.length || 0;
-                    const baseRadius = 100; // Base radius for first level
-                    const levelSpacing = 80; // Space between levels
-                    const nodeSizeAtLevel = this.getNodeSize('component', level) * 3; // Use component size as reference
-                    
-                    // Calculate radius based on number of nodes and their size
-                    const minCircumference = nodesInLevel * nodeSizeAtLevel * 2;
-                    const radiusFromNodes = minCircumference / (2 * Math.PI);
-                    
-                    // Use the larger of the two radii to ensure proper spacing
-                    return Math.max(baseRadius + (level * levelSpacing), radiusFromNodes);
-                };
-
-                // Position nodes level by level
+                // Place nodes by level and organizational hierarchy
                 for (let level = 1; level <= maxLevel; level++) {
-                    const nodesAtLevel = nodesByLevel.get(level) || [];
-                    if (nodesAtLevel.length === 0) continue;
-
-                    const radius = calculateLevelRadius(level);
+                    const levelNodes = nodesByLevel.get(level) || [];
+                    if (levelNodes.length === 0) continue;
                     
-                    // Group nodes by their parent for better clustering
+                    // Group nodes by their parent
                     const nodesByParent = new Map();
-                    nodesAtLevel.forEach(node => {
+                    levelNodes.forEach(node => {
+                        if (!node.parent) return;
+                        
                         if (!nodesByParent.has(node.parent)) {
                             nodesByParent.set(node.parent, []);
                         }
                         nodesByParent.get(node.parent).push(node);
                     });
-
-                    // Position each parent's children in their own sector of the sphere
-                    let processedParentCount = 0;
-                    const totalParents = nodesByParent.size;
                     
+                    // Calculate level radius based on hyperbolic scaling
+                    // As level increases, radius approaches the sphere boundary but never reaches it
+                    const levelProgress = level / (maxLevel + 1); // +1 to ensure we don't reach 1.0
+                    const levelRadius = sphereRadius * (1 - Math.pow(1 - levelProgress, 2));
+                    
+                    // Position each parent's children in 3D spherical distribution
                     nodesByParent.forEach((children, parentId) => {
-                        const parentAngle = (processedParentCount / totalParents) * Math.PI * 2;
-                        const sectorSize = (1 / totalParents) * Math.PI * 2;
                         const parentPos = this.nodePositions.get(parentId) || { x: 0, y: 0, z: 0 };
+                        const childCount = children.length;
                         
-                        // Position children within their sector
-                        children.forEach((node, index) => {
-                            const angleInSector = parentAngle + (index / children.length) * sectorSize;
-                            const phi = Math.acos(-1 + (2 * (index + 0.5)) / (children.length + 1));
+                        // If only one child, place it directly out from parent
+                        if (childCount === 1) {
+                            const direction = new THREE.Vector3(
+                                Math.random() - 0.5,
+                                Math.random() - 0.5,
+                                Math.random() - 0.5
+                            ).normalize();
                             
-                            // Calculate position with offset from parent
-                            const x = parentPos.x + radius * Math.sin(phi) * Math.cos(angleInSector);
-                            const y = parentPos.y + radius * Math.sin(phi) * Math.sin(angleInSector);
-                            const z = parentPos.z + radius * Math.cos(phi);
+                            const distance = levelRadius - Math.sqrt(parentPos.x * parentPos.x + parentPos.y * parentPos.y + parentPos.z * parentPos.z);
                             
-                            this.nodePositions.set(node.id, { x, y, z });
-                        });
-                        
-                        processedParentCount++;
-                    });
-                }
-
-                // Apply force-directed spacing with stronger repulsion
-                this.applyForceDirectedSpacing(nodes, {
-                    iterations: 50,
-                    repulsionStrength: 150,
-                    minDistance: 40
-                });
-            }
-            
-            applyForceDirectedSpacing(nodes, options = {}) {
-                const {
-                    iterations = 50,
-                    repulsionStrength = 150,
-                    minDistance = 40,
-                    damping = 0.8
-                } = options;
-
-                // Use TypedArrays for better performance
-                const positions = new Float32Array(nodes.length * 3);
-                const velocities = new Float32Array(nodes.length * 3);
-                const forces = new Float32Array(nodes.length * 3);
-                
-                // Create node index mapping
-                const nodeIndices = new Map();
-                nodes.forEach((node, index) => {
-                    nodeIndices.set(node.id, index);
-                    const pos = this.nodePositions.get(node.id) || { x: 0, y: 0, z: 0 };
-                    positions[index * 3] = pos.x;
-                    positions[index * 3 + 1] = pos.y;
-                    positions[index * 3 + 2] = pos.z;
-                });
-
-                // Spatial grid for optimization
-                const gridSize = minDistance * 2;
-                
-                for (let iter = 0; iter < iterations; iter++) {
-                    forces.fill(0);
-                    
-                    // Create spatial grid
-                    const spatialGrid = new Map();
-                    nodes.forEach((node, i) => {
-                        const x = Math.floor(positions[i * 3] / gridSize);
-                        const y = Math.floor(positions[i * 3 + 1] / gridSize);
-                        const z = Math.floor(positions[i * 3 + 2] / gridSize);
-                        const key = `${x},${y},${z}`;
-                        if (!spatialGrid.has(key)) spatialGrid.set(key, []);
-                        spatialGrid.get(key).push(i);
-                    });
-
-                    // Calculate forces
-                    nodes.forEach((nodeA, i) => {
-                        const x = Math.floor(positions[i * 3] / gridSize);
-                        const y = Math.floor(positions[i * 3 + 1] / gridSize);
-                        const z = Math.floor(positions[i * 3 + 2] / gridSize);
-                        
-                        // Check neighboring cells
-                        for (let dx = -1; dx <= 1; dx++) {
-                            for (let dy = -1; dy <= 1; dy++) {
-                                for (let dz = -1; dz <= 1; dz++) {
-                                    const key = `${x + dx},${y + dy},${z + dz}`;
-                                    const cellNodes = spatialGrid.get(key);
-                                    if (!cellNodes) continue;
-                                    
-                                    cellNodes.forEach(j => {
-                                        if (i === j) return;
-                                        
-                                        const dx = positions[i * 3] - positions[j * 3];
-                                        const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
-                                        const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
-                                        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-                                        
-                                        if (distance === 0) return;
-                                        
-                                        // Calculate minimum distance based on node sizes
-                                        const minDist = Math.max(
-                                            minDistance,
-                                            (this.getNodeSize(nodeA.type) + this.getNodeSize(nodes[j].type)) * 2
-                                        );
-                                        
-                                        if (distance < minDist) {
-                                            const force = repulsionStrength * (1 - distance / minDist);
-                                            const fx = (dx / distance) * force;
-                                            const fy = (dy / distance) * force;
-                                            const fz = (dz / distance) * force;
-                                            
-                                            forces[i * 3] += fx;
-                                            forces[i * 3 + 1] += fy;
-                                            forces[i * 3 + 2] += fz;
-                                        }
-                                    });
-                                }
-                            }
+                            this.nodePositions.set(children[0].id, {
+                                x: parentPos.x + direction.x * distance,
+                                y: parentPos.y + direction.y * distance,
+                                z: parentPos.z + direction.z * distance
+                            });
+                            return;
                         }
                         
-                        // Add containment force to maintain spherical structure
-                        const distFromCenter = Math.sqrt(
-                            positions[i * 3] * positions[i * 3] +
-                            positions[i * 3 + 1] * positions[i * 3 + 1] +
-                            positions[i * 3 + 2] * positions[i * 3 + 2]
-                        );
+                        // For multiple children, distribute using Fibonacci spiral on sphere section
+                        const parentToCenter = Math.sqrt(parentPos.x * parentPos.x + parentPos.y * parentPos.y + parentPos.z * parentPos.z);
+                        const parentDirection = parentToCenter === 0 ? 
+                            new THREE.Vector3(0, 1, 0) : 
+                            new THREE.Vector3(parentPos.x / parentToCenter, parentPos.y / parentToCenter, parentPos.z / parentToCenter);
                         
-                        const levelRadius = this.calculateLevelRadius(nodeA.level);
-                        const containmentStrength = 0.1;
+                        // Create a basis for distributing points around parent direction
+                        const upVector = Math.abs(parentDirection.y) > 0.9 ? 
+                            new THREE.Vector3(1, 0, 0) : 
+                            new THREE.Vector3(0, 1, 0);
                         
-                        if (distFromCenter > levelRadius) {
-                            const force = containmentStrength * (distFromCenter - levelRadius);
-                            forces[i * 3] -= (positions[i * 3] / distFromCenter) * force;
-                            forces[i * 3 + 1] -= (positions[i * 3 + 1] / distFromCenter) * force;
-                            forces[i * 3 + 2] -= (positions[i * 3 + 2] / distFromCenter) * force;
-                        }
-                    });
-
-                    // Update positions
-                    let maxForce = 0;
-                    nodes.forEach((node, i) => {
-                        const idx = i * 3;
+                        const rightVector = new THREE.Vector3().crossVectors(parentDirection, upVector).normalize();
+                        const actualUpVector = new THREE.Vector3().crossVectors(rightVector, parentDirection).normalize();
                         
-                        // Update velocity with damping
-                        velocities[idx] = (velocities[idx] + forces[idx]) * damping;
-                        velocities[idx + 1] = (velocities[idx + 1] + forces[idx + 1]) * damping;
-                        velocities[idx + 2] = (velocities[idx + 2] + forces[idx + 2]) * damping;
+                        // Angle to spread children (narrower for deeper levels)
+                        const spreadAngle = Math.PI / 2 * Math.pow(0.8, level - 1);
                         
-                        // Apply velocity
-                        positions[idx] += velocities[idx];
-                        positions[idx + 1] += velocities[idx + 1];
-                        positions[idx + 2] += velocities[idx + 2];
-                        
-                        // Update node positions
-                        this.nodePositions.set(node.id, {
-                            x: positions[idx],
-                            y: positions[idx + 1],
-                            z: positions[idx + 2]
-                        });
-                        
-                        // Track maximum force
-                        maxForce = Math.max(maxForce, Math.sqrt(
-                            forces[idx] * forces[idx] +
-                            forces[idx + 1] * forces[idx + 1] +
-                            forces[idx + 2] * forces[idx + 2]
-                        ));
-                    });
-                    
-                    // Break if forces are small enough
-                    if (maxForce < 0.1) break;
-                }
-            }
-            
-            calculateLevelRadius(level) {
-                const baseRadius = 100;
-                const levelSpacing = 80;
-                return baseRadius + (level * levelSpacing);
-            }
-            
-            calculateMinSpacing(nodes) {
-                // Calculate minimum spacing needed between nodes based on their sizes
-                let maxSize = 0;
-                for (const node of nodes) {
-                    const size = this.getNodeSize(node.type);
-                    maxSize = Math.max(maxSize, size);
-                }
-                // Scale padding based on node size - smaller nodes get less padding
-                const scaleFactor = maxSize > 20 ? 3.0 : (maxSize > 10 ? 2.5 : 2.0);
-                return maxSize * scaleFactor;
-            }
-            
-            ensureMinSpacing(position, siblings, minSpacing, currentIndex) {
-                // Ensure minimum spacing from sibling nodes
-                let finalPos = { ...position };
-                let attempts = 0;
-                const maxAttempts = 10;
-                
-                while (attempts < maxAttempts) {
-                    let hasCollision = false;
-                    
-                    // Check distance from all siblings
-                    for (let i = 0; i < siblings.length; i++) {
-                        if (i === currentIndex) continue;
-                        
-                        const siblingPos = this.nodePositions.get(siblings[i].id);
-                        if (!siblingPos) continue;
-                        
-                        const distance = Math.sqrt(
-                            Math.pow(finalPos.x - siblingPos.x, 2) +
-                            Math.pow(finalPos.y - siblingPos.y, 2) +
-                            Math.pow(finalPos.z - siblingPos.z, 2)
-                        );
-                        
-                        if (distance < minSpacing) {
-                            hasCollision = true;
-                            // Move away from collision
-                            const direction = {
-                                x: finalPos.x - siblingPos.x,
-                                y: finalPos.y - siblingPos.y,
-                                z: finalPos.z - siblingPos.z
-                            };
-                            const length = Math.sqrt(
-                                direction.x * direction.x +
-                                direction.y * direction.y +
-                                direction.z * direction.z
+                        // Position each child using spherical coordinates relative to parent direction
+                        children.forEach((node, i) => {
+                            // Fibonacci spiral distribution for even spacing on partial sphere
+                            const phi = Math.acos(1 - 2 * (i + 0.5) / childCount);
+                            const theta = Math.PI * (1 + Math.sqrt(5)) * (i + 0.5);
+                            
+                            // Convert to cartesian but limit to spread angle
+                            const x = Math.sin(phi * spreadAngle) * Math.cos(theta);
+                            const y = Math.sin(phi * spreadAngle) * Math.sin(theta);
+                            const z = Math.cos(phi * spreadAngle);
+                            
+                            // Transform to parent-oriented basis
+                            const localPos = new THREE.Vector3(
+                                x * rightVector.x + y * actualUpVector.x + z * parentDirection.x,
+                                x * rightVector.y + y * actualUpVector.y + z * parentDirection.y,
+                                x * rightVector.z + y * actualUpVector.z + z * parentDirection.z
                             );
                             
-                            if (length > 0) {
-                                finalPos.x += (direction.x / length) * (minSpacing - distance);
-                                finalPos.y += (direction.y / length) * (minSpacing - distance);
-                                finalPos.z += (direction.z / length) * (minSpacing - distance);
+                            // Calculate distance from center to maintain level radius
+                            const distToParent = levelRadius - parentToCenter;
+                            
+                            // Set position
+                            this.nodePositions.set(node.id, {
+                                x: parentPos.x + localPos.x * distToParent,
+                                y: parentPos.y + localPos.y * distToParent,
+                                z: parentPos.z + localPos.z * distToParent
+                            });
+                        });
+                    });
+                }
+
+                // Apply spacing to reduce node overlap but preserve the overall structure
+                this.applyHyperbolicSpacing(nodes, sphereRadius);
+            }
+            
+            applyHyperbolicSpacing(nodes, sphereRadius) {
+                const minDistance = 25; // Minimum distance between nodes (increased to reduce overlap)
+                const iterations = 5;   // Increased number of relaxation iterations
+                
+                // Cache parent-child relationships for quick lookup
+                const childrenByParent = new Map();
+                const parentByChild = new Map();
+                
+                nodes.forEach(node => {
+                    if (node.parent) {
+                        parentByChild.set(node.id, node.parent);
+                        
+                        if (!childrenByParent.has(node.parent)) {
+                            childrenByParent.set(node.parent, []);
+                        }
+                        childrenByParent.get(node.parent).push(node.id);
+                    }
+                });
+                
+                for (let iter = 0; iter < iterations; iter++) {
+                    // Copy positions to avoid modifying during iteration
+                    const positionsCopy = new Map();
+                    for (const [id, pos] of this.nodePositions.entries()) {
+                        positionsCopy.set(id, { x: pos.x, y: pos.y, z: pos.z });
+                    }
+                    
+                    // Repulsion forces - prevent node overlap
+                    for (let i = 0; i < nodes.length; i++) {
+                        const nodeA = nodes[i];
+                        if (!this.nodePositions.has(nodeA.id)) continue;
+                        
+                        const posA = positionsCopy.get(nodeA.id);
+                        
+                        for (let j = i + 1; j < nodes.length; j++) {
+                            const nodeB = nodes[j];
+                            if (!this.nodePositions.has(nodeB.id)) continue;
+                            
+                            const posB = positionsCopy.get(nodeB.id);
+                            
+                            // Calculate distance
+                            const dx = posB.x - posA.x;
+                            const dy = posB.y - posA.y;
+                            const dz = posB.z - posA.z;
+                            const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                            
+                            // Skip if nodes are far enough apart
+                            if (distance >= minDistance) continue;
+                            
+                            // Skip if one node is the parent of the other - manage those with attraction
+                            const isParentChild = 
+                                parentByChild.get(nodeA.id) === nodeB.id || 
+                                parentByChild.get(nodeB.id) === nodeA.id;
+                            
+                            if (isParentChild) continue;
+                            
+                            // Calculate required movement - less movement for deeper levels
+                            const levelFactorA = 1 / Math.max(1, nodeA.level);
+                            const levelFactorB = 1 / Math.max(1, nodeB.level);
+                            
+                            const moveDistance = (minDistance - distance) / 2;
+                            
+                            // Avoid divide by zero
+                            if (distance > 0.001) {
+                                const moveX = (dx / distance) * moveDistance;
+                                const moveY = (dy / distance) * moveDistance;
+                                const moveZ = (dz / distance) * moveDistance;
+                                
+                                // Apply movement with level-based dampening
+                                const posAFinal = this.nodePositions.get(nodeA.id);
+                                const posBFinal = this.nodePositions.get(nodeB.id);
+                                
+                                posAFinal.x -= moveX * levelFactorA;
+                                posAFinal.y -= moveY * levelFactorA;
+                                posAFinal.z -= moveZ * levelFactorA;
+                                
+                                posBFinal.x += moveX * levelFactorB;
+                                posBFinal.y += moveY * levelFactorB;
+                                posBFinal.z += moveZ * levelFactorB;
                             }
                         }
                     }
                     
-                    if (!hasCollision) break;
-                    attempts++;
+                    // Attraction forces - maintain parent-child distances
+                    for (const [childId, parentId] of parentByChild.entries()) {
+                        if (!this.nodePositions.has(childId) || !this.nodePositions.has(parentId)) continue;
+                        
+                        const childPos = this.nodePositions.get(childId);
+                        const parentPos = this.nodePositions.get(parentId);
+                        
+                        // Calculate current distance
+                        const dx = childPos.x - parentPos.x;
+                        const dy = childPos.y - parentPos.y; 
+                        const dz = childPos.z - parentPos.z;
+                        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                        
+                        // Calculate ideal distance based on level
+                        const childNode = nodes.find(n => n.id === childId);
+                        const targetDistance = 50 + 20 * childNode.level; // Larger spacing for deeper levels
+                        
+                        // Only adjust if significantly off target
+                        if (Math.abs(distance - targetDistance) > 10) {
+                            // Avoid divide by zero
+                            if (distance > 0.001) {
+                                const factor = targetDistance / distance;
+                                const newDx = dx * factor;
+                                const newDy = dy * factor;
+                                const newDz = dz * factor;
+                                
+                                // Move child to new position
+                                childPos.x = parentPos.x + newDx;
+                                childPos.y = parentPos.y + newDy;
+                                childPos.z = parentPos.z + newDz;
+                            }
+                        }
+                    }
+                    
+                    // Constraint forces - keep nodes within sphere and maintain radial distance
+                    for (const node of nodes) {
+                        if (!this.nodePositions.has(node.id)) continue;
+                        
+                        const pos = this.nodePositions.get(node.id);
+                        const distFromCenter = Math.sqrt(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
+                        
+                        // Skip root node
+                        if (node.level === 0) continue;
+                        
+                        // Calculate target radius based on level
+                        const maxLevel = Math.max(...nodes.map(n => n.level));
+                        const levelProgress = node.level / (maxLevel + 1);
+                        const targetRadius = sphereRadius * (0.3 + 0.65 * levelProgress); // More progressive scaling
+                        
+                        // Only adjust if significantly off target radius
+                        if (Math.abs(distFromCenter - targetRadius) > 15) {
+                            if (distFromCenter > 0.001) {
+                                const factor = targetRadius / distFromCenter;
+                                pos.x *= factor;
+                                pos.y *= factor;
+                                pos.z *= factor;
+                            } else {
+                                // Handle zero case with random placement on sphere
+                                const phi = Math.random() * Math.PI * 2;
+                                const theta = Math.random() * Math.PI;
+                                
+                                pos.x = targetRadius * Math.sin(theta) * Math.cos(phi);
+                                pos.y = targetRadius * Math.sin(theta) * Math.sin(phi);
+                                pos.z = targetRadius * Math.cos(theta);
+                            }
+                        }
+                    }
                 }
-                
-                return finalPos;
             }
             
-            getOrbitRadius(level) {
-                // Base radius increases with level
-                return 100 + (level * 50);
+            isDescendantOf(node, ancestorId, allNodes) {
+                if (node.parent === ancestorId) return true;
+                
+                let currentNode = node;
+                while (currentNode.parent) {
+                    const parentNode = allNodes.find(n => n.id === currentNode.parent);
+                    if (!parentNode) break;
+                    
+                    if (parentNode.id === ancestorId) return true;
+                    currentNode = parentNode;
+                }
+                
+                return false;
             }
             
             createNodeObjects(nodes) {
@@ -613,10 +1062,10 @@
                 });
                 this.nodes.clear();
                 
-                // Create shared geometries for each node type/size
+                // Create a shared geometry map to reuse geometries
                 const geometries = new Map();
                 
-                // Process all nodes at once but reuse geometries for better performance
+                // Create individual mesh for each node
                 nodes.forEach(nodeData => {
                     const size = this.getNodeSize(nodeData.type, nodeData.level);
                     const geometryKey = `${nodeData.type}-${size}`;
@@ -635,19 +1084,18 @@
                     });
                     
                     const mesh = new THREE.Mesh(geometry, material);
-                    mesh.userData = { node: nodeData };
+                    mesh.userData = { 
+                        node: nodeData,
+                        nodeId: nodeData.id  // Important: Add nodeId explicitly for raycasting
+                    };
+                    mesh.frustumCulled = true; // Enable culling for performance
                     
                     if (this.nodePositions.has(nodeData.id)) {
                         const pos = this.nodePositions.get(nodeData.id);
                         mesh.position.set(pos.x, pos.y, pos.z);
-                    } else {
-                        mesh.position.set(
-                            (Math.random() - 0.5) * 200,
-                            (Math.random() - 0.5) * 200,
-                            (Math.random() - 0.5) * 200
-                        );
                     }
                     
+                    // Add to scene
                     this.scene.add(mesh);
                     this.nodes.set(nodeData.id, mesh);
                 });
@@ -657,998 +1105,133 @@
                 // Clear existing links
                 this.links.forEach(link => {
                     this.scene.remove(link);
+                    if (link.geometry) link.geometry.dispose();
+                    if (link.material) link.material.dispose();
                 });
                 this.links.clear();
                 
-                // Create new link objects
-                for (const linkData of links) {
-                    const sourceId = typeof linkData.source === 'object' ? linkData.source.id : linkData.source;
-                    const targetId = typeof linkData.target === 'object' ? linkData.target.id : linkData.target;
+                // Handle case where links parameter is not provided
+                const linksToUse = links || this.getVisibleLinks([]);
+                
+                // Create shared materials map to reduce material instances
+                const materials = new Map();
+                
+                linksToUse.forEach(link => {
+                    // Handle potentially varying link structure - source and target might be objects or strings
+                    const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+                    const targetId = typeof link.target === 'object' ? link.target.id : link.target;
                     
-                    // Get source and target nodes
                     const sourceNode = this.nodes.get(sourceId);
                     const targetNode = this.nodes.get(targetId);
                     
-                    if (!sourceNode || !targetNode) continue;
+                    if (!sourceNode || !targetNode) return;
                     
-                    // Create material for link
-                    const material = new THREE.LineBasicMaterial({
-                        color: this.getLinkColor(linkData.type),
-                        opacity: 0.7,
-                        transparent: true
-                    });
+                    // Get positions
+                    const sourcePos = sourceNode.position.clone();
+                    const targetPos = targetNode.position.clone();
                     
-                    // Create geometry with positions
-                    const geometry = new THREE.BufferGeometry().setFromPoints([
-                        sourceNode.position,
-                        targetNode.position
-                    ]);
+                    // Determine color and opacity based on node types
+                    let color, opacity, lineWidth;
                     
-                    // Create line
-                    const line = new THREE.Line(geometry, material);
-                    line.userData = { link: linkData, sourceId, targetId };
+                    // Get source and target node types
+                    const sourceType = sourceNode.userData.node.type;
+                    const targetType = targetNode.userData.node.type;
                     
-                    // Add to scene and store
+                    // Use a consistent grey color for all links
+                    color = 0xb4b4b4; // Light grey color
+                    
+                    // Set opacity based on link importance - now much more subtle
+                    if (targetType === 'component_group' || targetType === 'component') {
+                        opacity = 0.15;
+                        lineWidth = 0.5;
+                    } else if (targetType === 'subcomponent' || targetType === 'capability') {
+                        opacity = 0.12;
+                        lineWidth = 0.35;
+                    } else {
+                        opacity = 0.1;
+                        lineWidth = 0.2;
+                    }
+                    
+                    // Special case for output links
+                    if (targetType === 'output') {
+                        opacity = 0.18;
+                        lineWidth = 0.5;
+                    }
+                    
+                    // Get or create material
+                    const materialKey = `${color}-${opacity}`;
+                    if (!materials.has(materialKey)) {
+                        materials.set(materialKey, new THREE.LineBasicMaterial({
+                            color: color,
+                            transparent: true,
+                            opacity: opacity,
+                            linewidth: lineWidth
+                        }));
+                    }
+                    
+                    const material = materials.get(materialKey);
+                    
+                    // Create a curved path between nodes
+                    // For nearby nodes, use straight lines
+                    // For distant nodes, add curvature
+                    const distance = sourcePos.distanceTo(targetPos);
+                    let linkGeometry;
+                    
+                    if (distance < 50) {
+                        // For close nodes, use straight line
+                        const points = [sourcePos, targetPos];
+                        linkGeometry = new THREE.BufferGeometry().setFromPoints(points);
+                    } else {
+                        // For distant nodes, create curved link
+                        const midPoint = sourcePos.clone().add(targetPos).multiplyScalar(0.5);
+                        
+                        // Add curve perpendicular to line connecting nodes
+                        const lineDirection = targetPos.clone().sub(sourcePos).normalize();
+                        
+                        // Create perpendicular direction (in 3D space)
+                        const perpendicular = new THREE.Vector3(
+                            -lineDirection.z,
+                            lineDirection.y,
+                            lineDirection.x
+                        ).normalize();
+                        
+                        // Curve height based on distance
+                        const curveHeight = Math.min(distance * 0.2, 50);
+                        
+                        // Control point is midpoint raised in perpendicular direction
+                        const controlPoint = midPoint.clone().add(
+                            perpendicular.clone().multiplyScalar(curveHeight)
+                        );
+                        
+                        // Create quadratic curve
+                        const curve = new THREE.QuadraticBezierCurve3(
+                            sourcePos,
+                            controlPoint,
+                            targetPos
+                        );
+                        
+                        // Sample points along curve
+                        const points = curve.getPoints(20);
+                        linkGeometry = new THREE.BufferGeometry().setFromPoints(points);
+                    }
+                    
+                    // Create the line
+                    const line = new THREE.Line(linkGeometry, material);
+                    line.userData = {
+                        source: sourceId,
+                        target: targetId,
+                        type: link.type || "default"
+                    };
+                    
+                    // Generate a unique ID for the link if not present
+                    const linkId = link.id || `${sourceId}-${targetId}`;
+                    this.links.set(linkId, line);
+                    
+                    // Add to scene
                     this.scene.add(line);
-                    this.links.set(`${sourceId}-${targetId}`, line);
-                }
-            }
-            
-            updateLinkPositions() {
-                // Update positions of all links (when nodes move)
-                this.links.forEach((line, id) => {
-                    const { sourceId, targetId } = line.userData;
-                    const sourceNode = this.nodes.get(sourceId);
-                    const targetNode = this.nodes.get(targetId);
-                    
-                    if (sourceNode && targetNode) {
-                        // Create new geometry with updated positions
-                        const points = [
-                            sourceNode.position.clone(),
-                            targetNode.position.clone()
-                        ];
-                        line.geometry.setFromPoints(points);
-                        line.geometry.attributes.position.needsUpdate = true;
-                    }
                 });
-            }
-            
-            getNodeSize(nodeType, level) {
-                // Base sizes by node type with more gradual scaling
-                const sizeByType = {
-                    'component_group': 35,    // Root node
-                    'component': 30,         // Main components
-                    'subcomponent': 25,     // Subcomponents
-                    'capability': 22,       // Capabilities
-                    'function': 20,         // Functions
-                    'specification': 18,    // Specifications
-                    'integration': 16,      // Integrations
-                    'technique': 15,        // Techniques
-                    'application': 14,      // Applications
-                    'input': 12,           // Inputs
-                    'output': 12           // Outputs
-                };
-
-                // Get base size
-                let size = sizeByType[nodeType] || 20;
                 
-                // Scale size based on level, but more gradually
-                if (level > 5) {
-                    size *= (1 - ((level - 5) * 0.05));
-                }
-                
-                return size;
-            }
-            
-            getNodeColor(nodeType) {
-                // Enhanced color scheme for better visibility and hierarchy
-                const colors = {
-                    'component_group': '#4A90E2',    // Bright blue for root
-                    'component': '#50C878',          // Emerald green for main components
-                    'subcomponent': '#9B59B6',       // Purple for subcomponents
-                    'capability': '#E67E22',         // Orange for capabilities
-                    'function': '#E74C3C',           // Red for functions
-                    'specification': '#F1C40F',      // Yellow for specifications
-                    'integration': '#16A085',        // Turquoise for integrations
-                    'technique': '#2ECC71',          // Green for techniques
-                    'application': '#3498DB',        // Blue for applications
-                    'input': '#95A5A6',             // Gray for inputs
-                    'output': '#7F8C8D'             // Darker gray for outputs
-                };
-                
-                return colors[nodeType] || '#808080';
-            }
-            
-            getLinkColor(linkType) {
-                // Color map for different link types
-                const colors = {
-                    'contains': 0xaed6f1,
-                    'has_capability': 0xf9e79f,
-                    'has_function': 0xd2b4de,
-                    'has_specification': 0xabebc6,
-                    'has_integration': 0x85c1e9,
-                    'has_technique': 0xf5cba7,
-                    'has_application': 0xa2d9ce,
-                    'has_input': 0xbb8fce,
-                    'has_output': 0x7dcea0
-                };
-                
-                return colors[linkType] || 0xbdc3c7;
-            }
-            
-            capitalizeFirstLetter(string) {
-                return string.charAt(0).toUpperCase() + string.slice(1);
-            }
-            
-            createHoverDisplay() {
-                // Create element for hover text if it doesn't exist
-                if (!document.getElementById('hover-node-name')) {
-                    const display = document.createElement('div');
-                    display.id = 'hover-node-name';
-                    display.style.position = 'fixed';
-                    display.style.top = '50%';
-                    display.style.left = '50%';
-                    display.style.transform = 'translate(-50%, -50%)';
-                    display.style.zIndex = '9999';
-                    display.style.opacity = '0';
-                    display.style.pointerEvents = 'none';
-                    document.body.appendChild(display);
-                    return display;
-                }
-                return document.getElementById('hover-node-name');
-            }
-            
-            onMouseMove(event) {
-                // Calculate mouse position in normalized device coordinates
-                const rect = this.container.getBoundingClientRect();
-                this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-                this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-                
-                // Update raycaster
-                this.raycaster.setFromCamera(this.mouse, this.camera);
-                
-                // Check for intersections with nodes
-                const intersects = this.raycaster.intersectObjects(Array.from(this.nodes.values()));
-                
-                // Show/hide hover display
-                if (intersects.length > 0) {
-                    const node = intersects[0].object.userData.node;
-                    this.showHoverText(node.name, node.type);
-                } else {
-                    this.hideHoverText();
-                }
-            }
-            
-            showHoverText(name, type) {
-                // Update and show hover text
-                this.hoverDisplay.innerHTML = `
-                    <div class="node-type">${this.capitalizeFirstLetter(type.replace('_', ' '))}</div>
-                    <div class="node-name">${name}</div>
-                `;
-                this.hoverDisplay.style.opacity = '1';
-                
-                // Force the hover text to be on top
-                document.body.appendChild(this.hoverDisplay);
-            }
-            
-            hideHoverText() {
-                // Hide hover text
-                if (this.hoverDisplay) {
-                    this.hoverDisplay.style.opacity = '0';
-                }
-            }
-            
-            async onClick(event) {
-                if (!this.graphData || !this.graphData.nodes) {
-                    console.error("Graph data not loaded yet");
-                    return;
-                }
-
-                // Calculate mouse position
-                const rect = this.container.getBoundingClientRect();
-                this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-                this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-                
-                // Update raycaster
-                this.raycaster.setFromCamera(this.mouse, this.camera);
-                
-                // Check for intersections with nodes
-                const intersects = this.raycaster.intersectObjects(Array.from(this.nodes.values()));
-                
-                if (intersects.length > 0) {
-                    const clickedNode = intersects[0].object;
-                    const nodeData = clickedNode.userData.node;
-                    
-                    console.log(`Clicked on node: ${nodeData.id} (${nodeData.name}) - Type: ${nodeData.type}, Level: ${nodeData.level}`);
-                    
-                    try {
-                        // Special handling for root node
-                        if (nodeData.level === 0 || nodeData.id === "ai-alignment") {
-                            await this.selectRootNode(nodeData);
-                        } else {
-                            // Show node details
-                            await this.selectNode(nodeData);
-                        }
-                        
-                        // Handle different node types
-                        if (nodeData.type === 'application' || nodeData.type === 'input' || 
-                            nodeData.type === 'specification' || nodeData.level >= 5 || 
-                            nodeData.expandable || nodeData.has_children) {
-                            await this.toggleNodeExpansion(nodeData.id);
-                        }
-                    } catch (error) {
-                        console.error(`Error handling click for node ${nodeData.id}: ${error}`);
-                    }
-                }
-            }
-            
-            async selectNode(nodeData) {
-                // Update UI to show selected node details
-                const detailsTitle = document.getElementById('details-title');
-                const detailsContent = document.getElementById('details-content');
-                
-                // Set title
-                detailsTitle.textContent = nodeData.name;
-                
-                // Show loading indicator
-                detailsContent.innerHTML = `
-                    <div class="loading-indicator">
-                        <div class="spinner"></div>
-                        <span>Loading details...</span>
-                    </div>
-                `;
-                
-                try {
-                    // Load node details
-                    const response = await fetch(`/api/details/${nodeData.id}`);
-                    
-                    if (!response.ok) {
-                        console.error(`Error loading node details: ${response.status} ${response.statusText}`);
-                        detailsContent.innerHTML = `
-                            <div class="error-message">
-                                <h3>Error</h3>
-                                <p>Could not load details: ${response.statusText}</p>
-                                <p>Status: ${response.status}</p>
-                            </div>
-                        `;
-                        return;
-                    }
-                    
-                    const detailsData = await response.json();
-                    
-                    if (detailsData.error) {
-                        detailsContent.innerHTML = `
-                            <div class="error-message">
-                                <h3>Error</h3>
-                                <p>${detailsData.error}</p>
-                            </div>
-                        `;
-                        return;
-                    }
-                    
-                    this.displayNodeDetails(detailsData);
-                    this.updateBreadcrumbs(nodeData.id);
-                    
-                    // Track selected node
-                    this.selectedNode = nodeData;
-                } catch (error) {
-                    console.error(`Error in selectNode: ${error}`);
-                    detailsContent.innerHTML = `
-                        <div class="error-message">
-                            <h3>Error</h3>
-                            <p>An unexpected error occurred: ${error.message}</p>
-                        </div>
-                    `;
-                }
-            }
-            
-            displayNodeDetails(data) {
-                const detailsContent = document.getElementById('details-content');
-                
-                // Clear previous content
-                detailsContent.innerHTML = '';
-                
-                // Add description section
-                if (data.description) {
-                    const descSection = document.createElement('div');
-                    descSection.className = 'detail-section';
-                    descSection.innerHTML = `
-                        <div class="section-header">
-                            <h3>Description</h3>
-                            <span class="section-toggle">▼</span>
-                        </div>
-                        <div class="section-content">
-                            <p>${data.description}</p>
-                        </div>
-                    `;
-                    detailsContent.appendChild(descSection);
-                }
-                
-                // Add purpose section if available
-                if (data.purpose) {
-                    const purposeSection = document.createElement('div');
-                    purposeSection.className = 'detail-section';
-                    purposeSection.innerHTML = `
-                        <div class="section-header">
-                            <h3>Purpose</h3>
-                            <span class="section-toggle">▼</span>
-                        </div>
-                        <div class="section-content">
-                            <p>${data.purpose}</p>
-                        </div>
-                    `;
-                    detailsContent.appendChild(purposeSection);
-                }
-                
-                // Add special debugging section for specifications and deeper levels
-                if (data.type === 'specification' || data.level >= 5) {
-                    const debugSection = document.createElement('div');
-                    debugSection.className = 'detail-section debug-section';
-                    
-                    // Find children of this node
-                    let childNodes = [];
-                    if (this.graphData) {
-                        childNodes = this.graphData.nodes.filter(n => n.parent === data.id);
-                    }
-                    
-                    // Also fetch additional data directly from the API
-                    const hasIntegration = data.integration !== undefined;
-                    
-                    // For application nodes, get more details about inputs and outputs
-                    let inputOutputInfo = '';
-                    if (data.type === 'application') {
-                        const inputNodes = childNodes.filter(n => n.type === 'input');
-                        let outputCount = 0;
-                        
-                        // Find related outputs
-                        inputNodes.forEach(input => {
-                            const outputsForThisInput = this.graphData.nodes.filter(n => 
-                                n.parent === input.id && n.type === 'output'
-                            );
-                            outputCount += outputsForThisInput.length;
-                        });
-                        
-                        inputOutputInfo = `
-                            <div class="application-io-info">
-                                <p><strong>Inputs:</strong> ${inputNodes.length}</p>
-                                <p><strong>Outputs:</strong> ${outputCount} (nested under inputs)</p>
-                                <p class="small-note">When you click an application, both inputs and their outputs will be shown</p>
-                            </div>
-                        `;
-                    }
-                    
-                    debugSection.innerHTML = `
-                        <div class="section-header">
-                            <h3>Node Details</h3>
-                            <span class="section-toggle">▼</span>
-                        </div>
-                        <div class="section-content">
-                            <p><strong>ID:</strong> ${data.id}</p>
-                            <p><strong>Type:</strong> ${data.type}</p>
-                            <p><strong>Level:</strong> ${data.level}</p>
-                            <p><strong>Expandable:</strong> ${data.expandable || false}</p>
-                            <p><strong>Has Children:</strong> ${data.has_children || false}</p>
-                            <p><strong>Children Count:</strong> ${childNodes.length}</p>
-                            ${data.type !== 'application' ? `<p><strong>Has Integration Object:</strong> ${hasIntegration}</p>` : ''}
-                            
-                            ${inputOutputInfo}
-                            
-                            ${childNodes.length > 0 ? `
-                                <div class="child-nodes">
-                                    <p><strong>Children:</strong></p>
-                                    <ul>
-                                        ${childNodes.map(child => `
-                                            <li>
-                                                <span class="clickable-item" data-node-id="${child.id}">${child.type} - ${child.name}</span>
-                                            </li>
-                                        `).join('')}
-                                    </ul>
-                                </div>
-                            ` : ''}
-                            
-                            ${data.type === 'specification' ? `
-                                <div class="force-expand-section">
-                                    <button id="force-expand-btn" class="debug-button">Force Show Child Nodes</button>
-                                    <p class="small-note">Use if nodes exist in data but aren't showing in visualization</p>
-                                </div>
-                            ` : ''}
-                            
-                            ${data.type === 'application' ? `
-                                <div class="force-expand-section">
-                                    <button id="force-expand-app-btn" class="debug-button">Force Show Inputs & Outputs</button>
-                                    <p class="small-note">Force expansion of all inputs and their outputs</p>
-                                </div>
-                            ` : ''}
-                        </div>
-                    `;
-                    
-                    detailsContent.appendChild(debugSection);
-                    
-                    // Add event listeners after adding to DOM
-                    if (data.type === 'specification') {
-                        const expandBtn = debugSection.querySelector('#force-expand-btn');
-                        if (expandBtn) {
-                            expandBtn.addEventListener('click', () => {
-                                this.forceExpandChildren(data.id);
-                            });
-                        }
-                    }
-                    
-                    // Add event listener for application force expand
-                    if (data.type === 'application') {
-                        const appExpandBtn = debugSection.querySelector('#force-expand-app-btn');
-                        if (appExpandBtn) {
-                            appExpandBtn.addEventListener('click', () => {
-                                this.forceExpandApplication(data.id);
-                            });
-                        }
-                    }
-                    
-                    // Add click handlers for child nodes
-                    debugSection.querySelectorAll('.clickable-item[data-node-id]').forEach(item => {
-                        item.addEventListener('click', () => {
-                            const nodeId = item.getAttribute('data-node-id');
-                            this.navigateToNode(nodeId);
-                        });
-                    });
-                }
-                
-                // Add components section for component groups
-                if (data.components && data.components.length > 0) {
-                    const componentsSection = document.createElement('div');
-                    componentsSection.className = 'detail-section';
-                    
-                    let componentsHtml = `
-                        <div class="section-header">
-                            <h3>Components</h3>
-                            <span class="section-toggle">▼</span>
-                        </div>
-                        <div class="section-content">
-                    `;
-                    
-                    data.components.forEach(component => {
-                        componentsHtml += `
-                            <div class="clickable-item" data-id="${component.id}">
-                                <span class="node-type-badge component">Component</span>
-                                <strong>${component.name}</strong>
-                                ${component.description ? 
-                                    `<div class="item-description">${component.description}</div>` : ''}
-                            </div>
-                        `;
-                    });
-                    
-                    componentsHtml += `</div>`;
-                    componentsSection.innerHTML = componentsHtml;
-                    detailsContent.appendChild(componentsSection);
-                    
-                    // Add click handlers for components
-                    componentsSection.querySelectorAll('.clickable-item').forEach(item => {
-                        item.addEventListener('click', () => {
-                            const id = item.getAttribute('data-id');
-                            // Find the node in our data
-                            const node = this.graphData.nodes.find(n => n.id === id);
-                            if (node) {
-                                this.selectNode(node);
-                                this.toggleNodeExpansion(id);
-                            }
-                        });
-                    });
-                }
-                
-                // Add capabilities section for subcomponents
-                if (data.capabilities && data.capabilities.length > 0) {
-                    const capabilitiesSection = document.createElement('div');
-                    capabilitiesSection.className = 'detail-section';
-                    
-                    let capabilitiesHtml = `
-                        <div class="section-header">
-                            <h3>Capabilities</h3>
-                            <span class="section-toggle">▼</span>
-                        </div>
-                        <div class="section-content">
-                    `;
-                    
-                    data.capabilities.forEach(capability => {
-                        if (typeof capability === 'object' && capability.name) {
-                            capabilitiesHtml += `
-                                <div class="clickable-item" data-id="${data.id}-capability-${capability.name.toLowerCase().replace(/\s+/g, '-')}">
-                                    <span class="node-type-badge capability">Capability</span>
-                                    <strong>${capability.name}</strong>
-                                    ${capability.description ? 
-                                        `<div class="item-description">${capability.description}</div>` : ''}
-                                </div>
-                            `;
-                        }
-                    });
-                    
-                    capabilitiesHtml += `</div>`;
-                    capabilitiesSection.innerHTML = capabilitiesHtml;
-                    detailsContent.appendChild(capabilitiesSection);
-                }
-                
-                // Add additional dynamic content based on node type
-                // This would be expanded with more sections as needed
-                
-                // Setup section toggles
-                this.setupSectionToggles();
-            }
-            
-            setupSectionToggles() {
-                // Add event listeners to section toggle buttons
-                document.querySelectorAll('.section-toggle').forEach(toggle => {
-                    if (!toggle.hasAttribute('data-initialized')) {
-                        toggle.addEventListener('click', (e) => {
-                            const content = e.target.closest('.section-header').nextElementSibling;
-                            const isCollapsed = toggle.classList.contains('collapsed');
-                            
-                            if (isCollapsed) {
-                                content.style.display = 'block';
-                                toggle.classList.remove('collapsed');
-                                toggle.textContent = '▼';
-                            } else {
-                                content.style.display = 'none';
-                                toggle.classList.add('collapsed');
-                                toggle.textContent = '▶';
-                            }
-                        });
-                        
-                        toggle.setAttribute('data-initialized', 'true');
-                    }
-                });
-            }
-            
-            updateBreadcrumbs(nodeId) {
-                const breadcrumbContainer = document.getElementById('breadcrumb-navigation');
-                breadcrumbContainer.innerHTML = '';
-                
-                // Fetch hierarchy path
-                fetch(`/api/hierarchy-path/${nodeId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.path && data.path.length > 0) {
-                            data.path.forEach((item, index) => {
-                                const isLast = index === data.path.length - 1;
-                                
-                                const breadcrumbItem = document.createElement('div');
-                                breadcrumbItem.className = 'breadcrumb-item' + (isLast ? '' : ' clickable');
-                                breadcrumbItem.textContent = item.name;
-                                
-                                if (!isLast) {
-                                    // Add separator
-                                    breadcrumbItem.innerHTML += '<span class="breadcrumb-separator">›</span>';
-                                    
-                                    // Make clickable
-                                    breadcrumbItem.addEventListener('click', () => {
-                                        // Find node in graph data
-                                        const node = this.graphData.nodes.find(n => n.id === item.id);
-                                        if (node) {
-                                            this.selectNode(node);
-                                        }
-                                    });
-                                }
-                                
-                                breadcrumbContainer.appendChild(breadcrumbItem);
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error loading breadcrumbs:', error);
-                    });
-            }
-            
-            async toggleNodeExpansion(nodeId) {
-                console.log(`Toggling expansion for node: ${nodeId}`);
-                
-                // Either expand or collapse based on current state
-                if (this.expandedNodes.has(nodeId)) {
-                    console.log(`Node was expanded, collapsing: ${nodeId}`);
-                    this.collapseNode(nodeId);
-                } else {
-                    console.log(`Node was collapsed, expanding: ${nodeId}`);
-                    await this.expandNode(nodeId);
-                }
-                
-                // Log expanded nodes for debugging
-                console.log(`Current expanded nodes: ${Array.from(this.expandedNodes).join(', ')}`);
-            }
-            
-            async expandNode(nodeId) {
-                if (!this.graphData || !this.graphData.nodes) {
-                    console.error("Graph data not loaded yet");
-                    return;
-                }
-
-                const node = this.graphData.nodes.find(n => n.id === nodeId);
-                if (!node) {
-                    console.error(`Node not found: ${nodeId}`);
-                    return;
-                }
-                
-                console.log(`Expanding node: ${node.id} (${node.type})`);
-                
-                try {
-                    // Add node to expanded set
-                    this.expandedNodes.add(nodeId);
-                    
-                    // Handle different node types
-                    if (node.type === 'subcomponent') {
-                        // Check if we need to add capability nodes
-                        const backendData = await this.findNodeInBackendData(nodeId);
-                        if (backendData && backendData.capabilities) {
-                            backendData.capabilities.forEach(capability => {
-                                if (typeof capability === 'object' && capability.id) {
-                                    // Add capability node if it doesn't exist
-                                    if (!this.graphData.nodes.some(n => n.id === capability.id)) {
-                                        const capabilityNode = {
-                                            id: capability.id,
-                                            name: capability.name,
-                                            type: 'capability',
-                                            description: capability.description,
-                                            parent: nodeId,
-                                            level: node.level + 1,
-                                            expandable: true,
-                                            has_children: true
-                                        };
-                                        this.graphData.nodes.push(capabilityNode);
-                                        
-                                        // Add link
-                                        this.graphData.links.push({
-                                            source: nodeId,
-                                            target: capability.id,
-                                            type: 'has_capability'
-                                        });
-
-                                        // Add functions for this capability
-                                        if (capability.functions) {
-                                            capability.functions.forEach(func => {
-                                                if (!this.graphData.nodes.some(n => n.id === func.id)) {
-                                                    const functionNode = {
-                                                        id: func.id,
-                                                        name: func.name,
-                                                        type: 'function',
-                                                        description: func.description,
-                                                        parent: capability.id,
-                                                        level: node.level + 2,
-                                                        expandable: func.specifications && func.specifications.length > 0,
-                                                        has_children: func.specifications && func.specifications.length > 0
-                                                    };
-                                                    this.graphData.nodes.push(functionNode);
-                                                    
-                                                    // Add link
-                                                    this.graphData.links.push({
-                                                        source: capability.id,
-                                                        target: func.id,
-                                                        type: 'has_function'
-                                                    });
-                                                }
-                                            });
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    } else if (node.type === 'capability') {
-                        // Find and add function nodes
-                        const backendData = await this.findNodeInBackendData(nodeId);
-                        if (backendData && backendData.functions) {
-                            backendData.functions.forEach(func => {
-                                if (!this.graphData.nodes.some(n => n.id === func.id)) {
-                                    const functionNode = {
-                                        id: func.id,
-                                        name: func.name,
-                                        type: 'function',
-                                        description: func.description,
-                                        parent: nodeId,
-                                        level: node.level + 1,
-                                        expandable: func.specifications && func.specifications.length > 0,
-                                        has_children: func.specifications && func.specifications.length > 0
-                                    };
-                                    this.graphData.nodes.push(functionNode);
-                                    
-                                    // Add link
-                                    this.graphData.links.push({
-                                        source: nodeId,
-                                        target: func.id,
-                                        type: 'has_function'
-                                    });
-                                }
-                            });
-                        }
-                    } else if (node.type === 'function') {
-                        // Find and add specification nodes
-                        const backendData = await this.findNodeInBackendData(nodeId);
-                        if (backendData && backendData.specifications) {
-                            backendData.specifications.forEach(spec => {
-                                if (!this.graphData.nodes.some(n => n.id === spec.id)) {
-                                    const specNode = {
-                                        id: spec.id,
-                                        name: spec.name,
-                                        type: 'specification',
-                                        description: spec.description,
-                                        parent: nodeId,
-                                        level: node.level + 1,
-                                        expandable: spec.integration !== undefined,
-                                        has_children: spec.integration !== undefined
-                                    };
-                                    this.graphData.nodes.push(specNode);
-                                    
-                                    // Add link
-                                    this.graphData.links.push({
-                                        source: nodeId,
-                                        target: spec.id,
-                                        type: 'has_specification'
-                                    });
-                                }
-                            });
-                        }
-                    } else if (node.type === 'specification') {
-                        // Find and add integration node
-                        const backendData = await this.findNodeInBackendData(nodeId);
-                        if (backendData && backendData.integration) {
-                            const integration = backendData.integration;
-                            if (!this.graphData.nodes.some(n => n.id === integration.id)) {
-                                const integrationNode = {
-                                    id: integration.id,
-                                    name: integration.name,
-                                    type: 'integration',
-                                    description: integration.description,
-                                    parent: nodeId,
-                                    level: node.level + 1,
-                                    expandable: integration.techniques && integration.techniques.length > 0,
-                                    has_children: integration.techniques && integration.techniques.length > 0
-                                };
-                                this.graphData.nodes.push(integrationNode);
-                                
-                                // Add link
-                                this.graphData.links.push({
-                                    source: nodeId,
-                                    target: integration.id,
-                                    type: 'has_integration'
-                                });
-                            }
-                        }
-                    } else if (node.type === 'integration') {
-                        // Find and add technique nodes
-                        const backendData = await this.findNodeInBackendData(nodeId);
-                        if (backendData && backendData.techniques) {
-                            backendData.techniques.forEach(technique => {
-                                if (!this.graphData.nodes.some(n => n.id === technique.id)) {
-                                    const techniqueNode = {
-                                        id: technique.id,
-                                        name: technique.name,
-                                        type: 'technique',
-                                        description: technique.description,
-                                        parent: nodeId,
-                                        level: node.level + 1,
-                                        expandable: technique.applications && technique.applications.length > 0,
-                                        has_children: technique.applications && technique.applications.length > 0
-                                    };
-                                    this.graphData.nodes.push(techniqueNode);
-                                    
-                                    // Add link
-                                    this.graphData.links.push({
-                                        source: nodeId,
-                                        target: technique.id,
-                                        type: 'has_technique'
-                                    });
-                                }
-                            });
-                        }
-                    } else if (node.type === 'technique') {
-                        // Find and add application nodes
-                        const backendData = await this.findNodeInBackendData(nodeId);
-                        if (backendData && backendData.applications) {
-                            backendData.applications.forEach(app => {
-                                if (!this.graphData.nodes.some(n => n.id === app.id)) {
-                                    const applicationNode = {
-                                        id: app.id,
-                                        name: app.name,
-                                        type: 'application',
-                                        description: app.description,
-                                        parent: nodeId,
-                                        level: node.level + 1,
-                                        expandable: (app.inputs && app.inputs.length > 0) || (app.outputs && app.outputs.length > 0),
-                                        has_children: (app.inputs && app.inputs.length > 0) || (app.outputs && app.outputs.length > 0)
-                                    };
-                                    this.graphData.nodes.push(applicationNode);
-                                    
-                                    // Add link
-                                    this.graphData.links.push({
-                                        source: nodeId,
-                                        target: app.id,
-                                        type: 'has_application'
-                                    });
-                                }
-                            });
-                        }
-                    } else if (node.type === 'application') {
-                        // When expanding an application, fetch both inputs and outputs
-                        const backendData = await this.findNodeInBackendData(nodeId);
-                        if (backendData) {
-                            // Handle inputs directly attached to the application
-                            const inputs = backendData.inputs || [];
-                            inputs.forEach(input => {
-                                if (!this.graphData.nodes.some(n => n.id === input.id)) {
-                                    const inputNode = {
-                                        id: input.id,
-                                        name: input.name,
-                                        type: 'input',
-                                        description: input.description,
-                                        parent: nodeId,
-                                        level: node.level + 1,
-                                        expandable: false,
-                                        has_children: false
-                                    };
-                                    this.graphData.nodes.push(inputNode);
-                                    
-                                    // Add link from application to input
-                                    this.graphData.links.push({
-                                        source: nodeId,
-                                        target: input.id,
-                                        type: 'has_input'
-                                    });
-                                }
-                            });
-                            
-                            // Handle outputs directly attached to the application
-                            const outputs = backendData.outputs || [];
-                            let allOutputs = [...outputs];
-                            
-                            // Also extract outputs that might be nested in inputs
-                            inputs.forEach(input => {
-                                if (input.outputs && Array.isArray(input.outputs)) {
-                                    allOutputs = [...allOutputs, ...input.outputs];
-                                }
-                            });
-                            
-                            // Add output nodes
-                            allOutputs.forEach(output => {
-                                if (!this.graphData.nodes.some(n => n.id === output.id)) {
-                                    const outputNode = {
-                                        id: output.id,
-                                        name: output.name,
-                                        type: 'output',
-                                        description: output.description,
-                                        parent: nodeId, // Parent is the application
-                                        level: node.level + 1, // Same level as inputs
-                                        expandable: false,
-                                        has_children: false
-                                    };
-                                    this.graphData.nodes.push(outputNode);
-                                    
-                                    // Add link from application to output
-                                    this.graphData.links.push({
-                                        source: nodeId,
-                                        target: output.id,
-                                        type: 'has_output'
-                                    });
-                                }
-                            });
-                        }
-                    }
-                    
-                    // Update visible nodes and redraw
-                    const visibleNodes = this.getVisibleNodes();
-                    this.positionNodes(visibleNodes);
-                    this.createNodeObjects(visibleNodes);
-                    this.createLinkObjects(this.getVisibleLinks(visibleNodes));
-                } catch (error) {
-                    console.error(`Error expanding node ${nodeId}: ${error}`);
-                    this.expandedNodes.delete(nodeId); // Rollback expansion on error
-                }
-            }
-            
-            collapseNode(nodeId) {
-                if (!this.graphData || !this.graphData.nodes) {
-                    console.error("Graph data not loaded yet");
-                    return;
-                }
-
-                const node = this.graphData.nodes.find(n => n.id === nodeId);
-                if (!node) {
-                    console.error(`Node not found: ${nodeId}`);
-                    return;
-                }
-                
-                // Remove node from expanded set
-                this.expandedNodes.delete(nodeId);
-                
-                // Special handling for applications
-                if (node.type === 'application') {
-                    // When collapsing an application, also collapse its inputs and outputs
-                    const inputs = this.graphData.nodes.filter(n => 
-                        n.type === 'input' && 
-                        n.parent === nodeId
-                    );
-                    inputs.forEach(input => this.expandedNodes.delete(input.id));
-                    
-                    // Also collapse direct outputs of the application
-                    const outputs = this.graphData.nodes.filter(n =>
-                        n.type === 'output' &&
-                        n.parent === nodeId
-                    );
-                    outputs.forEach(output => this.expandedNodes.delete(output.id));
-                }
-                
-                // Recursively collapse all descendant nodes
-                this.recursivelyCollapseChildren(nodeId);
-                
-                // Update visible nodes and redraw
-                const visibleNodes = this.getVisibleNodes();
-                this.positionNodes(visibleNodes);
-                this.createNodeObjects(visibleNodes);
-                this.createLinkObjects(this.getVisibleLinks(visibleNodes));
-            }
-            
-            onWindowResize() {
-                // Update camera aspect ratio
-                this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
-                this.camera.updateProjectionMatrix();
-                
-                // Update renderer size
-                this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-            }
-            
-            animate() {
-                requestAnimationFrame(() => this.animate());
-                
-                // Update controls
-                this.controls.update();
-                
-                const deltaTime = this.clock.getDelta();
-                const time = Date.now() * 0.001;
-                
-                if (this.isRotating) {
-                    // Rotate root node around its axis
-                    const rootNode = Array.from(this.nodes.values()).find(node => !node.userData.node.parent);
-                    if (rootNode) {
-                        rootNode.rotation.y += deltaTime * 0.2;
-                    }
-                    
-                    // Animate other nodes
-                    this.nodes.forEach((nodeMesh, nodeId) => {
-                        const nodeData = nodeMesh.userData.node;
-                        if (!nodeData.parent) return;
-                        
-                        const basePos = this.nodePositions.get(nodeId);
-                        if (!basePos) return;
-                        
-                        // Calculate orbital parameters
-                        const level = nodeData.level;
-                        const orbitSpeed = 0.1 * Math.pow(0.85, level - 1); // Slower for outer levels
-                        const wobbleAmount = Math.min(0.1, level * 0.01);
-                        
-                        // Calculate orbital motion
-                        const radius = Math.sqrt(basePos.x * basePos.x + basePos.z * basePos.z);
-                        const currentAngle = Math.atan2(nodeMesh.position.z - basePos.z, nodeMesh.position.x - basePos.x);
-                        const newAngle = currentAngle + orbitSpeed * deltaTime;
-                        
-                        // Add wobble effect
-                        const wobbleX = Math.sin(time * 1.1 + level) * wobbleAmount * radius;
-                        const wobbleY = Math.sin(time * 0.7 + level) * wobbleAmount * radius;
-                        const wobbleZ = Math.sin(time * 0.9 + level) * wobbleAmount * radius;
-                        
-                        // Update position with smooth transition
-                        nodeMesh.position.x = basePos.x + radius * Math.cos(newAngle) + wobbleX;
-                        nodeMesh.position.y = basePos.y + wobbleY;
-                        nodeMesh.position.z = basePos.z + radius * Math.sin(newAngle) + wobbleZ;
-                        
-                        // Add node rotation
-                        nodeMesh.rotation.y += deltaTime * orbitSpeed * 0.5;
-                        nodeMesh.rotation.x = Math.sin(time * 0.5) * wobbleAmount * 0.2;
-                    });
-                    
-                    // Update link positions
-                    this.updateLinkPositions();
-                }
-                
-                // Render scene
-                this.renderer.render(this.scene, this.camera);
-                
-                // Update TWEEN animations
-                if (TWEEN) {
-                    TWEEN.update();
-                }
+                console.log(`Created ${this.links.size} links`);
             }
             
             // Control functions
@@ -1686,326 +1269,168 @@
                 this.isRotating = !this.isRotating;
             }
             
-            // Add new method to force expanding children for a given specification node
-            forceExpandChildren(specificationId) {
-                console.log(`Force expanding children for specification: ${specificationId}`);
+            // Expand all nodes in the graph
+            expandAllNodes() {
+                console.log("Expanding all nodes...");
                 
-                // Get the specification details directly from the backend
-                const specData = this.findNodeInBackendData(specificationId);
-                
-                if (!specData) {
-                    console.error(`Could not find specification data for: ${specificationId}`);
-                    alert('Could not load specification details');
+                // Guard against multiple calls
+                if (this._processingExpansion) {
+                    console.log("Already processing expansion/collapse, please wait");
                     return;
                 }
                 
-                console.log('Specification data:', specData);
+                this._processingExpansion = true;
                 
-                // Check if the specification has an integration
-                if (specData.integration) {
-                    const integrationData = specData.integration;
-                    console.log('Found integration:', integrationData);
-                    
-                    // Create integration node if it doesn't exist
-                    const integrationId = integrationData.id;
-                    const integrationExists = this.graphData.nodes.some(n => n.id === integrationId);
-                    
-                    if (!integrationExists) {
-                        console.log(`Adding missing integration node: ${integrationId}`);
-                        
-                        // Add the integration node
-                        const newIntegrationNode = {
-                            id: integrationId,
-                            name: integrationData.name,
-                            type: 'integration',
-                            description: integrationData.description,
-                            parent: specificationId,
-                            level: 6,
-                            expandable: integrationData.techniques && integrationData.techniques.length > 0,
-                            has_children: integrationData.techniques && integrationData.techniques.length > 0
-                        };
-                        
-                        // Add the node to the graph data
-                        this.graphData.nodes.push(newIntegrationNode);
-                        
-                        // Add link from specification to integration
-                        this.graphData.links.push({
-                            source: specificationId,
-                            target: integrationId,
-                            type: 'has_integration'
-                        });
-                        
-                        // Now check for techniques and add them
-                        if (integrationData.techniques && integrationData.techniques.length > 0) {
-                            integrationData.techniques.forEach(technique => {
-                                const techniqueId = technique.id;
-                                const techniqueExists = this.graphData.nodes.some(n => n.id === techniqueId);
-                                
-                                if (!techniqueExists) {
-                                    console.log(`Adding missing technique node: ${techniqueId}`);
-                                    
-                                    // Add the technique node
-                                    const newTechniqueNode = {
-                                        id: techniqueId,
-                                        name: technique.name,
-                                        type: 'technique',
-                                        description: technique.description,
-                                        parent: integrationId,
-                                        level: 7,
-                                        expandable: technique.applications && technique.applications.length > 0,
-                                        has_children: technique.applications && technique.applications.length > 0
-                                    };
-                                    
-                                    // Add the node to the graph data
-                                    this.graphData.nodes.push(newTechniqueNode);
-                                    
-                                    // Add link from integration to technique
-                                    this.graphData.links.push({
-                                        source: integrationId,
-                                        target: techniqueId,
-                                        type: 'has_technique'
-                                    });
-                                }
-                            });
-                        }
-                    }
-                    
-                    // Mark the specification as expanded
-                    this.expandedNodes.add(specificationId);
-                    
-                    // Ensure the integration is expanded
-                    if (integrationId) {
-                        this.expandedNodes.add(integrationId);
+                try {
+                    // Add all nodes to the expanded set
+                    for (const node of this.graphData.nodes) {
+                        this.expandedNodes.add(node.id);
                     }
                     
                     // Update the visualization
                     const visibleNodes = this.getVisibleNodes();
                     const visibleLinks = this.getVisibleLinks(visibleNodes);
                     
-                    console.log(`After force expansion: ${visibleNodes.length} nodes visible`);
-                    
-                    // Position all nodes
+                    // Position nodes and update visual elements
                     this.positionNodes(visibleNodes);
-                    
-                    // Update visual elements
                     this.createNodeObjects(visibleNodes);
                     this.createLinkObjects(visibleLinks);
+                    this.setupNodeAnimations(visibleNodes);
                     
-                    // Refresh the node details display
-                    this.selectNode(this.selectedNode);
-                } else {
-                    console.warn('No integration found in this specification');
-                    alert('No integration found in this specification');
+                    console.log(`Expanded to ${visibleNodes.length} nodes and ${visibleLinks.length} links`);
+                } catch (error) {
+                    console.error("Error expanding all nodes:", error);
+                } finally {
+                    // Clear the processing flag after a short delay
+                    setTimeout(() => {
+                        this._processingExpansion = false;
+                    }, 500);
                 }
             }
             
-            // Method to force expand an application node with all its inputs and outputs
-            forceExpandApplication(applicationId) {
-                console.log(`Force expanding application with all inputs and outputs: ${applicationId}`);
+            // Collapse all nodes except the root
+            collapseAllNodes() {
+                console.log("Collapsing all nodes...");
                 
-                // Get the application details
-                const appNodeData = this.graphData.nodes.find(node => node.id === applicationId);
-                if (!appNodeData) {
-                    console.error(`Could not find application data for: ${applicationId}`);
+                // Guard against multiple calls
+                if (this._processingExpansion) {
+                    console.log("Already processing expansion/collapse, please wait");
                     return;
                 }
                 
-                // Mark application as expanded
-                this.expandedNodes.add(applicationId);
+                this._processingExpansion = true;
                 
-                // Get backend application data to ensure we have all inputs
-                const appData = this.findNodeInBackendData(applicationId);
-                
-                // Get all inputs currently in the graph
-                const inputNodes = this.graphData.nodes.filter(node => 
-                    node.parent === applicationId && node.type === 'input'
-                );
-                
-                console.log(`Found ${inputNodes.length} input nodes for application: ${appNodeData.name}`);
-                
-                // Mark all inputs as expanded to show outputs
-                inputNodes.forEach(input => {
-                    this.expandedNodes.add(input.id);
+                try {
+                    // Find the root node
+                    const rootNode = this.graphData.nodes.find(node => node.level === 0);
+                    if (!rootNode) {
+                        console.error("Root node not found");
+                        return;
+                    }
                     
-                    // Look for outputs of this input
-                    const outputNodes = this.graphData.nodes.filter(node => 
-                        node.parent === input.id && node.type === 'output'
-                    );
+                    // Reset expanded nodes completely
+                    this.expandedNodes.clear();
                     
-                    console.log(`Found ${outputNodes.length} output nodes for input: ${input.name}`);
-                });
-                
-                // Add missing inputs and outputs from backend data if available
-                if (appData && appData.inputs) {
-                    const backendInputs = Array.isArray(appData.inputs) ? appData.inputs : [appData.inputs];
+                    // Only add root node to expanded set
+                    this.expandedNodes.add(rootNode.id);
                     
-                    // Check if we need to create missing input nodes
-                    backendInputs.forEach(inputData => {
-                        if (typeof inputData !== 'object') return;
-                        
-                        const inputName = inputData.name || (typeof inputData === 'string' ? inputData : 'Input');
-                        const inputId = inputData.id || `${applicationId}-input-${inputName.toLowerCase().replace(/\s+/g, '-')}`;
-                        
-                        // Check if input already exists in graph data
-                        const inputExists = this.graphData.nodes.some(n => n.id === inputId);
-                        
-                        if (!inputExists) {
-                            console.log(`Adding missing input node: ${inputId}`);
-                            
-                            // Create input node
-                            const newInputNode = {
-                                id: inputId,
-                                name: inputName,
-                                type: 'input',
-                                description: inputData.description || '',
-                                parent: applicationId,
-                                level: 9,
-                                expandable: inputData.outputs && inputData.outputs.length > 0,
-                                has_children: inputData.outputs && inputData.outputs.length > 0
-                            };
-                            
-                            // Add to graph data
-                            this.graphData.nodes.push(newInputNode);
-                            
-                            // Add link
-                            this.graphData.links.push({
-                                source: applicationId,
-                                target: inputId,
-                                type: 'has_input'
-                            });
-                            
-                            // Mark as expanded
-                            this.expandedNodes.add(inputId);
-                            
-                            // Add outputs if available
-                            if (inputData.outputs) {
-                                const outputs = Array.isArray(inputData.outputs) ? inputData.outputs : [inputData.outputs];
-                                
-                                outputs.forEach(outputData => {
-                                    if (typeof outputData !== 'object') return;
-                                    
-                                    const outputName = outputData.name || (typeof outputData === 'string' ? outputData : 'Output');
-                                    const outputId = outputData.id || `${inputId}-output-${outputName.toLowerCase().replace(/\s+/g, '-')}`;
-                                    
-                                    // Check if output already exists
-                                    const outputExists = this.graphData.nodes.some(n => n.id === outputId);
-                                    
-                                    if (!outputExists) {
-                                        console.log(`Adding missing output node: ${outputId}`);
-                                        
-                                        // Create output node
-                                        const newOutputNode = {
-                                            id: outputId,
-                                            name: outputName,
-                                            type: 'output',
-                                            description: outputData.description || '',
-                                            parent: inputId,
-                                            level: 10,
-                                            expandable: false,
-                                            has_children: false
-                                        };
-                                        
-                                        // Add to graph data
-                                        this.graphData.nodes.push(newOutputNode);
-                                        
-                                        // Add link
-                                        this.graphData.links.push({
-                                            source: inputId,
-                                            target: outputId,
-                                            type: 'has_output'
-                                        });
-                                    }
-                                });
-                            }
+                    // Remove all visual nodes except the root
+                    this.nodes.forEach((nodeMesh, nodeId) => {
+                        if (nodeId !== rootNode.id) {
+                            this.scene.remove(nodeMesh);
+                            if (nodeMesh.geometry) nodeMesh.geometry.dispose();
+                            if (nodeMesh.material) nodeMesh.material.dispose();
                         }
                     });
+                    
+                    // Clear the nodes collection except for root
+                    const rootMesh = this.nodes.get(rootNode.id);
+                    this.nodes.clear();
+                    if (rootMesh) this.nodes.set(rootNode.id, rootMesh);
+                    
+                    // Remove all links
+                    this.links.forEach(link => {
+                        this.scene.remove(link);
+                        if (link.geometry) link.geometry.dispose();
+                        if (link.material) link.material.dispose();
+                    });
+                    this.links.clear();
+                    
+                    // Reset node animations
+                    this.nodeAnimations.clear();
+                    
+                    // Get visible nodes - should be just the root now
+                    const visibleNodes = this.getVisibleNodes();
+                    
+                    // Re-create necessary objects
+                    this.positionNodes(visibleNodes);
+                    this.createNodeObjects(visibleNodes);
+                    this.createLinkObjects(this.getVisibleLinks(visibleNodes));
+                    this.setupNodeAnimations(visibleNodes);
+                    
+                    // Focus on root
+                    if (rootNode) {
+                        const position = this.nodePositions.get(rootNode.id);
+                        if (position) {
+                            this.navigateToPosition(position.x, position.y, position.z);
+                        }
+                    }
+                    
+                    console.log(`Collapsed to ${visibleNodes.length} nodes`);
+                } catch (error) {
+                    console.error("Error collapsing all nodes:", error);
+                } finally {
+                    // Clear the processing flag after a short delay
+                    setTimeout(() => {
+                        this._processingExpansion = false;
+                    }, 500);
                 }
+            }
+            
+            // Add new method to force expanding children for a given specification node
+            forceExpandChildren(specificationId) {
+                console.log(`Force expanding children for specification: ${specificationId}`);
+                
+                if (!this.graphData || !this.graphData.nodes) {
+                    console.error("No graph data available");
+                    return;
+                }
+                
+                // First ensure the specification node is in our graph data
+                const specNode = this.graphData.nodes.find(n => n.id === specificationId);
+                if (!specNode) {
+                    console.error(`Specification node not found: ${specificationId}`);
+                    return;
+                }
+                
+                // Make sure the specification node and all its ancestors are expanded
+                this.ensureNodeVisible(specNode);
+                
+                // Find all direct children of this specification node
+                const childNodes = this.graphData.nodes.filter(n => n.parent === specificationId);
+                
+                // Expand each child
+                childNodes.forEach(child => {
+                    this.expandedNodes.add(child.id);
+                    
+                    // Recursively expand grandchildren
+                    const grandchildren = this.graphData.nodes.filter(n => n.parent === child.id);
+                    grandchildren.forEach(grandchild => {
+                        this.expandedNodes.add(grandchild.id);
+                    });
+                });
                 
                 // Update visualization
                 const visibleNodes = this.getVisibleNodes();
-                const visibleLinks = this.getVisibleLinks(visibleNodes);
-                
-                console.log(`After force expansion: ${visibleNodes.length} nodes visible, ${visibleLinks.length} links visible`);
-                
-                // Position nodes
                 this.positionNodes(visibleNodes);
-                
-                // Update visual elements
                 this.createNodeObjects(visibleNodes);
-                this.createLinkObjects(visibleLinks);
+                this.createLinkObjects(this.getVisibleLinks(visibleNodes));
                 
-                // Refresh node details display
-                this.selectNode(this.selectedNode);
-            }
-            
-            // Helper method to expand an input node and ensure its outputs are visible
-            expandInputWithOutputs(inputId) {
-                console.log(`Expanding input with outputs: ${inputId}`);
+                // Update animations for newly visible nodes
+                this.setupNodeAnimations(visibleNodes);
                 
-                // Mark the input as expanded
-                this.expandedNodes.add(inputId);
-                
-                // Find output nodes
-                const outputNodes = this.graphData.nodes.filter(node => 
-                    node.parent === inputId && node.type === 'output'
-                );
-                
-                console.log(`Found ${outputNodes.length} output nodes for input: ${inputId}`);
-                
-                // Get all visible nodes and update the visualization
-                const visibleNodes = this.getVisibleNodes();
-                const visibleLinks = this.getVisibleLinks(visibleNodes);
-                
-                console.log(`After expanding input with outputs: ${visibleNodes.length} nodes visible`);
-                
-                // Position all nodes
-                this.positionNodes(visibleNodes);
-                
-                // Update visual elements
-                this.createNodeObjects(visibleNodes);
-                this.createLinkObjects(visibleLinks);
-            }
-            
-            // Add helper method to find node data in backend data
-            async findNodeInBackendData(nodeId) {
-                if (!nodeId) return null;
-                
-                // First check if it's a direct node in graphData
-                const node = this.graphData.nodes.find(n => n.id === nodeId);
-                if (!node) return null;
-                
-                try {
-                    // Special handling for root node
-                    if (nodeId === "ai-alignment" || node.level === 0) {
-                        console.log("Using root endpoint for node data");
-                        const response = await fetch('/api/root');
-                        
-                        if (!response.ok) {
-                            console.error(`Error fetching root data: ${response.status} ${response.statusText}`);
-                            return null;
-                        }
-                        
-                        const data = await response.json();
-                        console.log("Successfully fetched root data:", data);
-                        return data;
-                    }
-                    
-                    // For all other node types, fetch the complete data from the backend
-                    console.log(`Fetching complete data for node: ${nodeId}`);
-                    const response = await fetch(`/api/details/${nodeId}`);
-                    
-                    if (!response.ok) {
-                        console.error(`Error fetching node data: ${response.status} ${response.statusText}`);
-                        return null;
-                    }
-                    
-                    const data = await response.json();
-                    console.log(`Successfully fetched data for ${nodeId}:`, data);
-                    return data;
-                } catch (error) {
-                    console.error(`Error fetching node data: ${error}`);
-                    return null;
-                }
+                // Select the specification node to focus on it
+                this.selectNode(specNode);
             }
             
             // New method to specifically select the root node using a dedicated endpoint
@@ -2059,6 +1484,9 @@
                     
                     // Track selected node
                     this.selectedNode = rootNode;
+                    
+                    // Highlight the selected node
+                    this.highlightSelectedNode(rootNode.id);
                 } catch (error) {
                     console.error(`Error in selectRootNode: ${error}`);
                     detailsContent.innerHTML = `
@@ -2070,18 +1498,679 @@
                 }
             }
             
-            recursivelyCollapseChildren(nodeId) {
-                // Find all direct children
-                const children = this.graphData.nodes.filter(n => n.parent === nodeId);
+            // Helper method to find node data in backend data
+            async findNodeInBackendData(nodeId) {
+                if (!nodeId) return null;
                 
-                // Collapse each child and its descendants
-                children.forEach(child => {
-                    // Remove from expanded set
-                    this.expandedNodes.delete(child.id);
+                // First check if it's a direct node in graphData
+                const node = this.graphData.nodes.find(n => n.id === nodeId);
+                if (!node) return null;
+                
+                try {
+                    // Special handling for root node
+                    if (nodeId === "ai-alignment" || node.level === 0) {
+                        console.log("Using root endpoint for node data");
+                        const response = await fetch('/api/root');
+                        
+                        if (!response.ok) {
+                            console.error(`Error fetching root data: ${response.status} ${response.statusText}`);
+                            return null;
+                        }
+                        
+                        const data = await response.json();
+                        console.log("Successfully fetched root data:", data);
+                        return data;
+                    }
                     
-                    // Recursively collapse descendants
-                    this.recursivelyCollapseChildren(child.id);
+                    // For all other node types, fetch the complete data from the backend
+                    console.log(`Fetching complete data for node: ${nodeId}`);
+                    const response = await fetch(`/api/details/${nodeId}`);
+                    
+                    if (!response.ok) {
+                        console.error(`Error fetching node data: ${response.status} ${response.statusText}`);
+                        return null;
+                    }
+                    
+                    const data = await response.json();
+                    console.log(`Successfully fetched data for ${nodeId}:`, data);
+                    return data;
+                } catch (error) {
+                    console.error(`Error fetching node data: ${error}`);
+                    return null;
+                }
+            }
+            
+            // Method to select a node and display its details
+            selectNode(nodeData) {
+                if (!nodeData) return;
+                
+                console.log(`Selecting node: ${nodeData.name} (${nodeData.id})`);
+                
+                // Update selected node reference
+                this.selectedNode = nodeData;
+                
+                // Find and highlight the node visually
+                const nodeMesh = this.nodes.get(nodeData.id);
+                if (nodeMesh) {
+                    // Reset all node materials first
+                    this.nodes.forEach((mesh, id) => {
+                        if (mesh.material && mesh.material.emissive) {
+                            mesh.material.emissive.setScalar(0.2);
+                            mesh.scale.set(1, 1, 1);
+                        }
+                    });
+                    
+                    // Highlight the selected node
+                    if (nodeMesh.material && nodeMesh.material.emissive) {
+                        // Don't change the base color, only increase emissive intensity
+                        nodeMesh.material.emissiveIntensity = 0.5;
+                        nodeMesh.scale.set(1.2, 1.2, 1.2);
+                    }
+                    
+                    // Move camera to focus on this node
+                    const position = this.nodePositions.get(nodeData.id);
+                    if (position) {
+                        this.navigateToPosition(position.x, position.y, position.z);
+                    }
+                }
+                
+                // Update UI with node details
+                const detailsTitle = document.getElementById('details-title');
+                const detailsContent = document.getElementById('details-content');
+                
+                if (detailsTitle && detailsContent) {
+                    // Set title
+                    detailsTitle.textContent = nodeData.name;
+                    
+                    // Set content
+                    detailsContent.innerHTML = `
+                        <div class="details-section">
+                            <div class="detail-type">${this.capitalizeFirstLetter(nodeData.type)}</div>
+                            <div class="details-description">${nodeData.description || 'No description available'}</div>
+                        </div>
+                    `;
+                    
+                    // Add additional details based on node type
+                    if (nodeData.capabilities && nodeData.capabilities.length > 0) {
+                        detailsContent.innerHTML += `
+                            <div class="details-section">
+                                <h3>Capabilities</h3>
+                                <ul class="details-list">
+                                    ${nodeData.capabilities.map(cap => `<li>${cap.name || cap}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+                    
+                    if (nodeData.functions && nodeData.functions.length > 0) {
+                        detailsContent.innerHTML += `
+                            <div class="details-section">
+                                <h3>Functions</h3>
+                                <ul class="details-list">
+                                    ${nodeData.functions.map(func => `<li>${func.name || func}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+                }
+            }
+            
+            // Display node details in the details panel
+            displayNodeDetails(nodeData) {
+                const detailsContent = document.getElementById('details-content');
+                
+                // Basic layout for details
+                let html = '';
+                
+                // Add node type badge
+                html += `<div class="node-type-badge ${nodeData.type}">${this.capitalizeFirstLetter(nodeData.type.replace('_', ' '))}</div>`;
+                
+                // Add description if available
+                if (nodeData.description) {
+                    html += `
+                        <div class="detail-section">
+                            <div class="section-header">
+                                <h3>Description</h3>
+                            </div>
+                            <div class="section-content">
+                                <p>${nodeData.description}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Add children if available
+                if (nodeData.children && nodeData.children.length > 0) {
+                    html += `
+                        <div class="detail-section">
+                            <div class="section-header">
+                                <h3>Children</h3>
+                            </div>
+                            <div class="section-content">
+                                <div class="child-nodes">
+                    `;
+                    
+                    // List all children
+                    nodeData.children.forEach(child => {
+                        html += `
+                            <div class="clickable-item" data-node-id="${child.id}">
+                                <div class="node-type-badge ${child.type}">${this.capitalizeFirstLetter(child.type.replace('_', ' '))}</div>
+                                ${child.name}
+                                ${child.description ? `<div class="item-description">${child.description.substring(0, 100)}${child.description.length > 100 ? '...' : ''}</div>` : ''}
+                            </div>
+                        `;
+                    });
+                    
+                    html += `
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Display references if available
+                if (nodeData.references && nodeData.references.length > 0) {
+                    html += `
+                        <div class="detail-section">
+                            <div class="section-header">
+                                <h3>References</h3>
+                            </div>
+                            <div class="section-content">
+                                <div class="literature-section">
+                    `;
+                    
+                    // List all references
+                    nodeData.references.forEach(ref => {
+                        html += `
+                            <div class="reference-item">
+                                <div class="ref-header">${ref.title || 'Reference'}</div>
+                                <div class="ref-body">${ref.description || ref.authors || ''}</div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += `
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Set the content
+                detailsContent.innerHTML = html;
+                
+                // Add event listeners to clickable items
+                const clickableItems = detailsContent.querySelectorAll('.clickable-item');
+                clickableItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const nodeId = item.dataset.nodeId;
+                        if (nodeId) {
+                            const nodeData = this.graphData.nodes.find(n => n.id === nodeId);
+                            if (nodeData) {
+                                this.navigateToNode(nodeData);
+                            }
+                        }
+                    });
                 });
+            }
+            
+            // Update breadcrumbs showing the path to the selected node
+            async updateBreadcrumbs(nodeId) {
+                const breadcrumbContainer = document.querySelector('.breadcrumb-container');
+                if (!breadcrumbContainer) return;
+                
+                try {
+                    // Fetch hierarchy path from API
+                    const response = await fetch(`/api/hierarchy-path/${nodeId}`);
+                    if (!response.ok) {
+                        console.error(`Failed to fetch hierarchy path: ${response.statusText}`);
+                        return;
+                    }
+                    
+                    const pathData = await response.json();
+                    if (!pathData.path || !pathData.path.length) {
+                        console.error('Invalid path data received');
+                        return;
+                    }
+                    
+                    // Build breadcrumb HTML
+                    let breadcrumbHtml = '';
+                    
+                    pathData.path.forEach((node, index) => {
+                        // For each node in the path
+                        const isLast = index === pathData.path.length - 1;
+                        
+                        if (isLast) {
+                            // Current node (last in path)
+                            breadcrumbHtml += `<div class="breadcrumb-item">${node.name}</div>`;
+                        } else {
+                            // Ancestor node (clickable)
+                            breadcrumbHtml += `
+                                <div class="breadcrumb-item clickable" data-node-id="${node.id}">${node.name}</div>
+                                <div class="breadcrumb-separator">›</div>
+                            `;
+                        }
+                    });
+                    
+                    // Set breadcrumb content
+                    breadcrumbContainer.innerHTML = breadcrumbHtml;
+                    
+                    // Add click handlers to breadcrumb items
+                    const clickableItems = breadcrumbContainer.querySelectorAll('.breadcrumb-item.clickable');
+                    clickableItems.forEach(item => {
+                        item.addEventListener('click', () => {
+                            const nodeId = item.dataset.nodeId;
+                            if (nodeId) {
+                                const nodeData = this.graphData.nodes.find(n => n.id === nodeId);
+                                if (nodeData) {
+                                    this.navigateToNode(nodeData);
+                                }
+                            }
+                        });
+                    });
+                    
+                } catch (error) {
+                    console.error(`Error updating breadcrumbs: ${error}`);
+                }
+            }
+            
+            // Highlight the selected node in the visualization
+            highlightSelectedNode(nodeId) {
+                // Reset all nodes to normal appearance
+                this.nodes.forEach((nodeMesh, id) => {
+                    // Skip if this is an instanced node (those are handled differently)
+                    if (nodeMesh.isInstancedNode) return;
+                    
+                    // Reset to original color
+                    const nodeData = this.graphData.nodes.find(n => n.id === id);
+                    if (nodeData) {
+                        const color = this.getNodeColor(nodeData.type);
+                        nodeMesh.material.color.set(color);
+                        
+                        // Reset size
+                        nodeMesh.scale.set(1, 1, 1);
+                    }
+                });
+                
+                // Highlight the selected node
+                const selectedNode = this.nodes.get(nodeId);
+                if (selectedNode && !selectedNode.isInstancedNode) {
+                    // Make it brighter and slightly larger
+                    selectedNode.material.color.set(0xFFFFFF);
+                    selectedNode.scale.set(1.3, 1.3, 1.3);
+                }
+            }
+            
+            // Navigate to a specific node in the visualization
+            navigateToNode(nodeData) {
+                if (!nodeData) return;
+                
+                // Make sure node is visible (expanded parent chain)
+                this.ensureNodeVisible(nodeData);
+                
+                // Select the node
+                this.selectNode(nodeData);
+                
+                // Get node position
+                const position = this.nodePositions.get(nodeData.id);
+                if (position) {
+                    // Navigate camera to node
+                    this.navigateToPosition(position.x, position.y, position.z);
+                }
+            }
+            
+            // Ensure a node is visible by expanding all of its parent nodes
+            ensureNodeVisible(nodeData) {
+                if (!nodeData || !nodeData.id) return;
+                
+                console.log(`Ensuring node ${nodeData.id} is visible`);
+                
+                // Add this node to expanded nodes
+                this.expandedNodes.add(nodeData.id);
+                
+                // If this node has a parent, ensure it's visible too
+                if (nodeData.parent) {
+                    const parentNode = this.graphData.nodes.find(n => n.id === nodeData.parent);
+                    if (parentNode) {
+                        this.ensureNodeVisible(parentNode);
+                    }
+                }
+            }
+            
+            // Navigate camera to a specific position
+            navigateToPosition(x, y, z) {
+                // Animate camera movement to position
+                const target = new THREE.Vector3(x, y, z);
+                const distance = 200; // Distance from target
+                
+                // Calculate new camera position (slightly offset from target)
+                const newPosition = new THREE.Vector3(
+                    x + distance,
+                    y + distance * 0.5,
+                    z + distance
+                );
+                
+                // Calculate distance for animation duration - faster for shorter moves
+                const currentPos = this.camera.position;
+                const moveDistance = currentPos.distanceTo(newPosition);
+                const duration = Math.min(1200, Math.max(400, moveDistance * 1.5));
+                
+                // Animate to new position
+                new TWEEN.Tween(this.camera.position)
+                    .to({ x: newPosition.x, y: newPosition.y, z: newPosition.z }, duration)
+                    .easing(TWEEN.Easing.Cubic.Out)
+                    .onUpdate(() => {
+                        this.cameraControlsNeedUpdate = true;
+                    })
+                    .start();
+                
+                // Set controls target
+                new TWEEN.Tween(this.controls.target)
+                    .to({ x, y, z }, duration)
+                    .easing(TWEEN.Easing.Cubic.Out)
+                    .onUpdate(() => {
+                        this.cameraControlsNeedUpdate = true;
+                    })
+                    .start();
+            }
+            
+            // Animation loop with performance optimizations
+            animate() {
+                requestAnimationFrame(() => this.animate());
+                
+                // Skip rendering if the visualization isn't active
+                if (!this.isActive) return;
+                
+                const time = performance.now() * 0.001; // Convert to seconds
+                
+                // Update TWEEN animations
+                TWEEN.update();
+                
+                // Update camera controls - only when needed
+                if (this.controls && this.cameraControlsNeedUpdate) {
+                    this.controls.update();
+                    this.cameraControlsNeedUpdate = false;
+                }
+                
+                // Performance optimization: Check if we need to perform updates this frame
+                const now = performance.now();
+                const nodeCount = this.nodes.size;
+                
+                // Calculate update frequency based on node count - fewer updates for more nodes
+                let updateInterval = 16; // 60fps for small numbers of nodes
+                
+                if (nodeCount > 100) updateInterval = 33;      // 30fps for moderate nodes
+                if (nodeCount > 300) updateInterval = 50;      // 20fps for lots of nodes
+                if (nodeCount > 600) updateInterval = 100;     // 10fps for huge numbers of nodes
+                if (nodeCount > 1000) updateInterval = 200;    // 5fps for extreme numbers of nodes
+                
+                // Only update if enough time has passed
+                if (!this._lastAnimationUpdate || now - this._lastAnimationUpdate > updateInterval) {
+                    this._lastAnimationUpdate = now;
+                    
+                    // Detect if we have too many nodes and temporarily disable animations
+                    const animationsDisabled = nodeCount > 1000;
+                    
+                    // Update node animations if not disabled
+                    if (!animationsDisabled) {
+                        this.updateNodeAnimations(time);
+                    }
+                    
+                    // Only update links infrequently for better performance - frequency based on node count
+                    if (!this._linkUpdateCounter) this._linkUpdateCounter = 0;
+                    this._linkUpdateCounter++;
+                    
+                    const linkUpdateThreshold = nodeCount > 300 ? 10 : (nodeCount > 100 ? 5 : 3);
+                    
+                    if (this._linkUpdateCounter >= linkUpdateThreshold) {
+                        this._linkUpdateCounter = 0;
+                        
+                        // Optimize link updates - don't update every single link when we have many nodes
+                        if (nodeCount > 500) {
+                            this.updateCriticalLinkPositions(); // Only update important links
+                        } else {
+                            this.updateLinkPositions();
+                        }
+                    }
+                }
+                
+                // Render the scene
+                this.renderer.render(this.scene, this.camera);
+            }
+            
+            // For large node counts, only update the most important links
+            updateCriticalLinkPositions() {
+                // Get the visible nodes close to the camera
+                const cameraPos = this.camera.position;
+                const visibleLinks = Array.from(this.links.values())
+                    .filter(link => {
+                        const sourceNode = this.nodes.get(link.userData.source);
+                        const targetNode = this.nodes.get(link.userData.target);
+                        
+                        if (!sourceNode || !targetNode) return false;
+                        
+                        // Calculate distance to camera
+                        const avgPos = new THREE.Vector3()
+                            .addVectors(sourceNode.position, targetNode.position)
+                            .multiplyScalar(0.5);
+                            
+                        const distToCamera = avgPos.distanceTo(cameraPos);
+                        
+                        // Only update links that are close to the camera or have moved significantly
+                        return distToCamera < 500;
+                    });
+                
+                // Only update a subset of links each frame for better performance
+                const linksToUpdate = visibleLinks.slice(0, 100); // Limit to 100 links per update
+                
+                // Update only these critical links
+                for (const link of linksToUpdate) {
+                    const { sourceId, targetId } = link.userData;
+                    
+                    const sourceNode = this.nodes.get(sourceId);
+                    const targetNode = this.nodes.get(targetId);
+                    
+                    if (!sourceNode || !targetNode) continue;
+                    
+                    const sourcePos = sourceNode.position.clone();
+                    const targetPos = targetNode.position.clone();
+                    
+                    // Simple and fast - just update endpoints for most links
+                    const points = [sourcePos, targetPos];
+                    link.geometry.setFromPoints(points);
+                    link.geometry.attributes.position.needsUpdate = true;
+                }
+            }
+            
+            // Window resize handler
+            onWindowResize() {
+                // Update camera aspect ratio
+                this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
+                this.camera.updateProjectionMatrix();
+                
+                // Update renderer size
+                this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+            }
+            
+            setupNodeOrbits(nodes) {
+                // Create orbital patterns for nodes
+                this.nodeOrbits = new Map();
+                
+                // Setup animations for nodes (which replaces the orbits concept)
+                this.setupNodeAnimations(nodes);
+            }
+            
+            setupNodeAnimations(nodes) {
+                // Create animation data for nodes
+                this.nodeAnimations = new Map();
+                
+                nodes.forEach(node => {
+                    // Skip animations for certain node types
+                    if (node.level === 0) return; // Don't animate root
+                    
+                    // Create animation parameters based on node type and level
+                    const amplitude = Math.max(0.5, 5 - node.level * 0.5); // Higher levels have smaller movement
+                    const speed = 0.2 + Math.random() * 0.3; // Random speed for natural movement
+                    const phase = Math.random() * Math.PI * 2; // Random starting phase
+                    const direction = new THREE.Vector3(
+                        Math.random() - 0.5,
+                        Math.random() - 0.5,
+                        Math.random() - 0.5
+                    ).normalize();
+                    
+                    this.nodeAnimations.set(node.id, {
+                        originalPosition: this.nodePositions.get(node.id) 
+                            ? { ...this.nodePositions.get(node.id) } 
+                            : { x: 0, y: 0, z: 0 },
+                        amplitude,
+                        speed,
+                        phase,
+                        direction
+                    });
+                });
+            }
+            
+            updateNodeAnimations(time) {
+                // If no nodes should be animated, return
+                if (!this.nodeAnimations || this.nodeAnimations.size === 0) return;
+                
+                // Update positions for animated nodes
+                this.nodeAnimations.forEach((animation, nodeId) => {
+                    const nodeMesh = this.nodes.get(nodeId);
+                    if (!nodeMesh) return;
+                    
+                    const { originalPosition, amplitude, speed, phase, direction } = animation;
+                    
+                    // Calculate oscillation factor
+                    const oscillation = amplitude * Math.sin(time * speed + phase);
+                    
+                    // Apply movement in the node's assigned direction while preserving original position
+                    nodeMesh.position.x = originalPosition.x + direction.x * oscillation;
+                    nodeMesh.position.y = originalPosition.y + direction.y * oscillation;
+                    nodeMesh.position.z = originalPosition.z + direction.z * oscillation;
+                    
+                    // Update any connected links if needed
+                    // We don't need to update link positions because they use the node mesh positions directly
+                });
+                
+                // Update link positions that involve animated nodes
+                // This should ensure links properly follow the animated nodes
+                this.links.forEach(link => {
+                    const sourceId = link.userData.source;
+                    const targetId = link.userData.target;
+                    
+                    // Skip if this isn't a curved link (those need geometry updates)
+                    if (link.geometry.type !== 'BufferGeometry') return;
+                    
+                    // Only update if source or target is being animated
+                    if (!this.nodeAnimations.has(sourceId) && !this.nodeAnimations.has(targetId)) return;
+                    
+                    const sourceNode = this.nodes.get(sourceId);
+                    const targetNode = this.nodes.get(targetId);
+                    
+                    if (!sourceNode || !targetNode) return;
+                    
+                    // For straight lines, just update the points
+                    if (link.geometry.attributes.position.count <= 2) {
+                        const points = [sourceNode.position, targetNode.position];
+                        link.geometry.setFromPoints(points);
+                    } else {
+                        // For curved lines, regenerate the curve with the current positions
+                        const sourcePos = sourceNode.position.clone();
+                        const targetPos = targetNode.position.clone();
+                        const distance = sourcePos.distanceTo(targetPos);
+                        
+                        // Only recreate the curve if it's a longer distance
+                        if (distance >= 50) {
+                            const midPoint = sourcePos.clone().add(targetPos).multiplyScalar(0.5);
+                            const lineDirection = targetPos.clone().sub(sourcePos).normalize();
+                            
+                            // Create perpendicular direction
+                            const perpendicular = new THREE.Vector3(
+                                -lineDirection.z,
+                                lineDirection.y,
+                                lineDirection.x
+                            ).normalize();
+                            
+                            // Curve height based on distance
+                            const curveHeight = Math.min(distance * 0.2, 50);
+                            
+                            // Control point
+                            const controlPoint = midPoint.clone().add(
+                                perpendicular.clone().multiplyScalar(curveHeight)
+                            );
+                            
+                            // Create new curve
+                            const curve = new THREE.QuadraticBezierCurve3(
+                                sourcePos,
+                                controlPoint,
+                                targetPos
+                            );
+                            
+                            // Sample points along curve
+                            const points = curve.getPoints(20);
+                            link.geometry.setFromPoints(points);
+                        }
+                    }
+                    
+                    // Mark geometry as needing update
+                    link.geometry.attributes.position.needsUpdate = true;
+                });
+            }
+            
+            updateLinkPositions() {
+                for (const [id, link] of this.links.entries()) {
+                    const { sourceId, targetId } = link.userData;
+                    
+                    const sourceNode = this.nodes.get(sourceId);
+                    const targetNode = this.nodes.get(targetId);
+                    
+                    if (!sourceNode || !targetNode) continue;
+                    
+                    const sourcePos = sourceNode.position.clone();
+                    const targetPos = targetNode.position.clone();
+                    const distance = sourcePos.distanceTo(targetPos);
+                    
+                    // Use curved links for longer distances
+                    if (distance >= 50 && link.geometry.type === 'BufferGeometry') {
+                        // Create a curved link using a bezier curve
+                        const midPoint = new THREE.Vector3().addVectors(sourcePos, targetPos).multiplyScalar(0.5);
+                        const lineDirection = new THREE.Vector3().subVectors(targetPos, sourcePos).normalize();
+                        
+                        // Create a perpendicular direction for the control point
+                        const perpendicular = new THREE.Vector3(
+                            -lineDirection.z,
+                            lineDirection.y,
+                            lineDirection.x
+                        ).normalize();
+                        
+                        // Set curve height based on distance
+                        const curveHeight = Math.min(distance * 0.2, 50);
+                        
+                        // Create control point
+                        const controlPoint = midPoint.clone().add(
+                            perpendicular.clone().multiplyScalar(curveHeight)
+                        );
+                        
+                        // Create quadratic bezier curve
+                        const curve = new THREE.QuadraticBezierCurve3(
+                            sourcePos,
+                            controlPoint,
+                            targetPos
+                        );
+                        
+                        // Set geometry from curve points
+                        const points = curve.getPoints(20);
+                        link.geometry.setFromPoints(points);
+                    } else {
+                        // Create straight line for shorter distances
+                        const points = [sourcePos, targetPos];
+                        link.geometry.setFromPoints(points);
+                    }
+                    
+                    // Mark geometry as needing update
+                    link.geometry.attributes.position.needsUpdate = true;
+                }
             }
         }
         
@@ -2091,4 +2180,4 @@
         });
     </script>
 </body>
-</html> 
+</html>
