@@ -114,47 +114,47 @@ body, html {
 
 /* Node type colors */
 .legend-color.component-group {
-    background-color: #3498db;
+    background-color: #4A90E2;
 }
 
 .legend-color.component {
-    background-color: #2ecc71;
+    background-color: #50C878;
 }
 
 .legend-color.subcomponent {
-    background-color: #e74c3c;
+    background-color: #9B59B6;
 }
 
 .legend-color.capability {
-    background-color: #f39c12;
+    background-color: #E67E22;
 }
 
 .legend-color.function {
-    background-color: #9b59b6;
+    background-color: #E74C3C;
 }
 
 .legend-color.specification {
-    background-color: #1abc9c;
+    background-color: #F1C40F;
 }
 
 .legend-color.integration {
-    background-color: #34495e;
+    background-color: #16A085;
 }
 
 .legend-color.technique {
-    background-color: #d35400;
+    background-color: #2ECC71;
 }
 
 .legend-color.application {
-    background-color: #27ae60;
+    background-color: #3498DB;
 }
 
 .legend-color.input {
-    background-color: #8e44ad;
+    background-color: #95A5A6;
 }
 
 .legend-color.output {
-    background-color: #16a085;
+    background-color: #7F8C8D;
 }
 
 /* Hover node display */
@@ -287,43 +287,47 @@ body, html {
 }
 
 .node-type-badge.component-group {
-    background-color: #3498db;
+    background-color: #4A90E2;
 }
 
 .node-type-badge.component {
-    background-color: #2ecc71;
+    background-color: #50C878;
 }
 
 .node-type-badge.subcomponent {
-    background-color: #e74c3c;
+    background-color: #9B59B6;
 }
 
 .node-type-badge.capability {
-    background-color: #f39c12;
+    background-color: #E67E22;
 }
 
 .node-type-badge.function {
-    background-color: #9b59b6;
+    background-color: #E74C3C;
 }
 
 .node-type-badge.specification {
-    background-color: #1abc9c;
+    background-color: #F1C40F;
 }
 
 .node-type-badge.integration {
-    background-color: #34495e;
+    background-color: #16A085;
 }
 
 .node-type-badge.technique {
-    background-color: #d35400;
+    background-color: #2ECC71;
 }
 
 .node-type-badge.application {
-    background-color: #27ae60;
+    background-color: #3498DB;
 }
 
-.node-type-badge.input, .node-type-badge.output {
-    background-color: #8e44ad;
+.node-type-badge.input {
+    background-color: #95A5A6;
+}
+
+.node-type-badge.output {
+    background-color: #7F8C8D;
 }
 
 /* Clickable items */
@@ -583,4 +587,46 @@ body, html {
 
 .action-button.collapse-all:hover {
     background-color: #ff6b6b;
+}
+
+/* Node styling */
+.node-root { fill: var(--root-color); }
+.node-approach { fill: var(--approach-color); }
+.node-capability { fill: var(--capability-color); }
+.node-theory { fill: var(--theory-color); }
+.node-subtheory { fill: var(--subtheory-color); }
+.node-component { fill: var(--component-color); }
+.node-subcomponent { fill: var(--subcomponent-color); }
+.node-technique { fill: var(--technique-color); }
+.node-application { fill: var(--application-color); }
+.node-input { 
+    fill: var(--input-color); 
+    stroke: #555;
+    stroke-width: 0.5px;
+}
+.node-output { 
+    fill: var(--output-color); 
+    stroke: #555;
+    stroke-width: 0.5px;
+    /* Make outputs slightly larger to distinguish them */
+    r: 7;
+}
+
+/* Link styling */
+.link {
+    stroke-opacity: 0.4;
+    stroke-width: 1.5px;
+}
+.link-has_capability { stroke: var(--capability-color); }
+.link-has_theory { stroke: var(--theory-color); }
+.link-has_subtheory { stroke: var(--subtheory-color); }
+.link-has_component { stroke: var(--component-color); }
+.link-has_subcomponent { stroke: var(--subcomponent-color); }
+.link-has_technique { stroke: var(--technique-color); }
+.link-has_application { stroke: var(--application-color); }
+.link-has_input { stroke: var(--input-color); }
+.link-has_output { 
+    stroke: var(--output-color);
+    stroke-width: 2px; /* Make output links more visible */
+    stroke-dasharray: 4,2; /* Add dashed pattern to output links */
 } 

@@ -209,6 +209,7 @@
                 fetch('/api/graph')
                     .then(response => response.json())
                     .then(data => {
+                        console.log("Received graph data:", data);
                         this.graphData = data;
                         
                         // Log node counts by level for debugging
@@ -225,23 +226,7 @@
                             console.log(`Level ${level}: ${nodesByLevel[level]} nodes`);
                         }
                         
-                        // Log node types for deeper levels
-                        const deeperNodes = data.nodes.filter(node => node.level >= 5);
-                        if (deeperNodes.length > 0) {
-                            console.log(`Found ${deeperNodes.length} nodes at level 5+`);
-                            const nodeTypes = {};
-                            deeperNodes.forEach(node => {
-                                if (!nodeTypes[node.type]) {
-                                    nodeTypes[node.type] = 0;
-                                }
-                                nodeTypes[node.type]++;
-                            });
-                            
-                            console.log("Deeper node types:", nodeTypes);
-                        } else {
-                            console.log("No nodes found beyond level 4");
-                        }
-                        
+                        // Initialize graph with root node
                         this.initializeGraph();
                     })
                     .catch(error => {
@@ -256,6 +241,11 @@
             }
             
             initializeGraph() {
+                if (!this.graphData || !this.graphData.nodes) {
+                    console.error("No graph data available");
+                    return;
+                }
+
                 // Start with just the root node
                 const rootNode = this.graphData.nodes.find(node => node.level === 0);
                 if (rootNode) {
@@ -266,61 +256,47 @@
                     const visibleNodes = this.getVisibleNodes();
                     const visibleLinks = this.getVisibleLinks(visibleNodes);
                     
+                    console.log(`Initializing graph with ${visibleNodes.length} nodes and ${visibleLinks.length} links`);
+                    
                     // Position and create visual elements
                     this.positionNodes(visibleNodes);
                     this.createNodeObjects(visibleNodes);
                     this.createLinkObjects(visibleLinks);
                     
-                    // Auto-select the root node
-                    this.selectNode(rootNode);
-                    
-                    console.log(`Initialized graph with ${visibleNodes.length} nodes`);
+                    // Auto-select the root node but use the dedicated root endpoint
+                    this.selectRootNode(rootNode);
                 } else {
                     console.error("No root node found in graph data");
                 }
             }
             
             getVisibleNodes() {
-                // Get nodes that should be visible based on expanded parents
-                if (!this.graphData || !this.graphData.nodes) {
-                    console.error("Graph data not loaded yet");
-                    return [];
-                }
-                
-                // Start with root nodes (level 0)
-                let visibleNodes = this.graphData.nodes.filter(node => node.level === 0);
-                const expandedNodeIds = new Set(Array.from(this.expandedNodes));
-                
-                console.log(`Expanded nodes at start: ${Array.from(expandedNodeIds).join(', ')}`);
-                
-                // We'll process level by level to ensure complete hierarchy visibility
-                for (let level = 1; level <= 10; level++) {
-                    console.log(`Processing level ${level} nodes`);
+                // Only return nodes that should be visible based on expanded state
+                return this.graphData.nodes.filter(node => {
+                    // The root node is always visible
+                    if (node.level === 0) return true;
                     
-                    // Get all nodes at this level
-                    const nodesAtLevel = this.graphData.nodes.filter(node => node.level === level);
-                    if (nodesAtLevel.length === 0) break; // No more nodes at this level
+                    // Direct children of root (level 1) are visible when root is expanded
+                    if (node.level === 1) return this.expandedNodes.has('ai-alignment');
                     
-                    // Find nodes whose parents are expanded
-                    const visibleNodesAtLevel = nodesAtLevel.filter(node => 
-                        node.parent && expandedNodeIds.has(node.parent)
-                    );
+                    // If parent is expanded, this node is visible
+                    const parentNode = this.graphData.nodes.find(n => n.id === node.parent);
+                    if (!parentNode) return false;
                     
-                    console.log(`Found ${visibleNodesAtLevel.length} visible nodes at level ${level}`);
+                    // Check parent is expanded
+                    const isParentExpanded = this.expandedNodes.has(node.parent);
                     
-                    // Add these nodes to visible set
-                    visibleNodes = visibleNodes.concat(visibleNodesAtLevel);
-                    
-                    // Add any expanded nodes at this level to our tracking set for next level
-                    visibleNodesAtLevel.forEach(node => {
-                        if (this.expandedNodes.has(node.id)) {
-                            expandedNodeIds.add(node.id);
+                    // Special case for outputs attached to applications
+                    if (node.type === 'output') {
+                        // If this output belongs to an application (parent is application), check if the application is expanded
+                        const parentIsApp = parentNode.type === 'application';
+                        if (parentIsApp) {
+                            return this.expandedNodes.has(node.parent);
                         }
-                    });
-                }
-                
-                console.log(`Total visible nodes: ${visibleNodes.length}`);
-                return visibleNodes;
+                    }
+                    
+                    return isParentExpanded;
+                });
             }
             
             getVisibleLinks(visibleNodes) {
@@ -341,123 +317,225 @@
                 if (rootNode) {
                     this.nodePositions.set(rootNode.id, { x: 0, y: 0, z: 0 });
                 }
+
+                // Group nodes by level for better organization
+                const nodesByLevel = new Map();
+                const maxLevel = Math.max(...nodes.map(n => n.level));
                 
-                // Group nodes by level and parent for better clustering
-                const nodesByLevel = {};
-                const nodesByParent = {};
-                for (const node of nodes) {
-                    // Group by level
-                    if (!nodesByLevel[node.level]) {
-                        nodesByLevel[node.level] = [];
+                nodes.forEach(node => {
+                    if (!nodesByLevel.has(node.level)) {
+                        nodesByLevel.set(node.level, []);
                     }
-                    nodesByLevel[node.level].push(node);
+                    nodesByLevel.get(node.level).push(node);
+                });
+
+                // Calculate base radius for each level based on total nodes and level
+                const calculateLevelRadius = (level) => {
+                    const nodesInLevel = nodesByLevel.get(level)?.length || 0;
+                    const baseRadius = 100; // Base radius for first level
+                    const levelSpacing = 80; // Space between levels
+                    const nodeSizeAtLevel = this.getNodeSize('component', level) * 3; // Use component size as reference
                     
-                    // Group by parent
-                    if (node.parent) {
-                        if (!nodesByParent[node.parent]) {
-                            nodesByParent[node.parent] = [];
-                        }
-                        nodesByParent[node.parent].push(node);
-                    }
-                }
-                
+                    // Calculate radius based on number of nodes and their size
+                    const minCircumference = nodesInLevel * nodeSizeAtLevel * 2;
+                    const radiusFromNodes = minCircumference / (2 * Math.PI);
+                    
+                    // Use the larger of the two radii to ensure proper spacing
+                    return Math.max(baseRadius + (level * levelSpacing), radiusFromNodes);
+                };
+
                 // Position nodes level by level
-                for (let level = 1; level <= 10; level++) {
-                    if (!nodesByLevel[level]) continue;
+                for (let level = 1; level <= maxLevel; level++) {
+                    const nodesAtLevel = nodesByLevel.get(level) || [];
+                    if (nodesAtLevel.length === 0) continue;
+
+                    const radius = calculateLevelRadius(level);
                     
-                    // For each parent at this level, position its children in a cluster
-                    const processedNodes = new Set();
+                    // Group nodes by their parent for better clustering
+                    const nodesByParent = new Map();
+                    nodesAtLevel.forEach(node => {
+                        if (!nodesByParent.has(node.parent)) {
+                            nodesByParent.set(node.parent, []);
+                        }
+                        nodesByParent.get(node.parent).push(node);
+                    });
+
+                    // Position each parent's children in their own sector of the sphere
+                    let processedParentCount = 0;
+                    const totalParents = nodesByParent.size;
                     
-                    nodesByLevel[level].forEach(node => {
-                        if (processedNodes.has(node.id)) return;
+                    nodesByParent.forEach((children, parentId) => {
+                        const parentAngle = (processedParentCount / totalParents) * Math.PI * 2;
+                        const sectorSize = (1 / totalParents) * Math.PI * 2;
+                        const parentPos = this.nodePositions.get(parentId) || { x: 0, y: 0, z: 0 };
                         
-                        const siblings = nodesByParent[node.parent] || [];
-                        if (siblings.length === 0) return;
-                        
-                        // Get parent position
-                        const parentPos = this.nodePositions.get(node.parent) || { x: 0, y: 0, z: 0 };
-                        const baseRadius = this.getOrbitRadius(level);
-                        
-                        // Position siblings in a clustered arrangement
-                        siblings.forEach((sibling, index) => {
-                            processedNodes.add(sibling.id);
+                        // Position children within their sector
+                        children.forEach((node, index) => {
+                            const angleInSector = parentAngle + (index / children.length) * sectorSize;
+                            const phi = Math.acos(-1 + (2 * (index + 0.5)) / (children.length + 1));
                             
-                            // Calculate position in the cluster
-                            const angleStep = (2 * Math.PI) / siblings.length;
-                            const angle = index * angleStep;
+                            // Calculate position with offset from parent
+                            const x = parentPos.x + radius * Math.sin(phi) * Math.cos(angleInSector);
+                            const y = parentPos.y + radius * Math.sin(phi) * Math.sin(angleInSector);
+                            const z = parentPos.z + radius * Math.cos(phi);
                             
-                            // Add some randomness to prevent perfect alignment
-                            const randomness = 0.2; // 20% random variation
-                            const radiusVariation = baseRadius * (1 + (Math.random() - 0.5) * randomness);
-                            const angleVariation = angle + (Math.random() - 0.5) * 0.2;
-                            
-                            // Calculate base position
-                            let x = parentPos.x + radiusVariation * Math.cos(angleVariation);
-                            let y = parentPos.y + (level * 20) + (Math.random() - 0.5) * 20;
-                            let z = parentPos.z + radiusVariation * Math.sin(angleVariation);
-                            
-                            // Store position
-                            this.nodePositions.set(sibling.id, { x, y, z });
+                            this.nodePositions.set(node.id, { x, y, z });
                         });
+                        
+                        processedParentCount++;
                     });
                 }
-                
-                // Apply force-directed spacing to prevent overlaps
-                this.applyForceDirectedSpacing(nodes);
+
+                // Apply force-directed spacing with stronger repulsion
+                this.applyForceDirectedSpacing(nodes, {
+                    iterations: 50,
+                    repulsionStrength: 150,
+                    minDistance: 40
+                });
             }
             
-            applyForceDirectedSpacing(nodes) {
-                const iterations = 50;
-                const k = 50; // Force strength
+            applyForceDirectedSpacing(nodes, options = {}) {
+                const {
+                    iterations = 50,
+                    repulsionStrength = 150,
+                    minDistance = 40,
+                    damping = 0.8
+                } = options;
+
+                // Use TypedArrays for better performance
+                const positions = new Float32Array(nodes.length * 3);
+                const velocities = new Float32Array(nodes.length * 3);
+                const forces = new Float32Array(nodes.length * 3);
+                
+                // Create node index mapping
+                const nodeIndices = new Map();
+                nodes.forEach((node, index) => {
+                    nodeIndices.set(node.id, index);
+                    const pos = this.nodePositions.get(node.id) || { x: 0, y: 0, z: 0 };
+                    positions[index * 3] = pos.x;
+                    positions[index * 3 + 1] = pos.y;
+                    positions[index * 3 + 2] = pos.z;
+                });
+
+                // Spatial grid for optimization
+                const gridSize = minDistance * 2;
                 
                 for (let iter = 0; iter < iterations; iter++) {
-                    let maxForce = 0;
+                    forces.fill(0);
                     
-                    // Calculate repulsive forces between all nodes
-                    for (let i = 0; i < nodes.length; i++) {
-                        const nodeA = nodes[i];
-                        const posA = this.nodePositions.get(nodeA.id);
-                        if (!posA) continue;
+                    // Create spatial grid
+                    const spatialGrid = new Map();
+                    nodes.forEach((node, i) => {
+                        const x = Math.floor(positions[i * 3] / gridSize);
+                        const y = Math.floor(positions[i * 3 + 1] / gridSize);
+                        const z = Math.floor(positions[i * 3 + 2] / gridSize);
+                        const key = `${x},${y},${z}`;
+                        if (!spatialGrid.has(key)) spatialGrid.set(key, []);
+                        spatialGrid.get(key).push(i);
+                    });
+
+                    // Calculate forces
+                    nodes.forEach((nodeA, i) => {
+                        const x = Math.floor(positions[i * 3] / gridSize);
+                        const y = Math.floor(positions[i * 3 + 1] / gridSize);
+                        const z = Math.floor(positions[i * 3 + 2] / gridSize);
                         
-                        let fx = 0, fy = 0, fz = 0;
-                        
-                        // Calculate forces with other nodes
-                        for (let j = 0; j < nodes.length; j++) {
-                            if (i === j) continue;
-                            
-                            const nodeB = nodes[j];
-                            const posB = this.nodePositions.get(nodeB.id);
-                            if (!posB) continue;
-                            
-                            // Calculate distance
-                            const dx = posA.x - posB.x;
-                            const dy = posA.y - posB.y;
-                            const dz = posA.z - posB.z;
-                            const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-                            
-                            if (distance === 0) continue;
-                            
-                            // Calculate repulsive force
-                            const minDist = (this.getNodeSize(nodeA.type) + this.getNodeSize(nodeB.type)) * 3;
-                            if (distance < minDist) {
-                                const force = k * (1 / distance - 1 / minDist);
-                                fx += (dx / distance) * force;
-                                fy += (dy / distance) * force;
-                                fz += (dz / distance) * force;
+                        // Check neighboring cells
+                        for (let dx = -1; dx <= 1; dx++) {
+                            for (let dy = -1; dy <= 1; dy++) {
+                                for (let dz = -1; dz <= 1; dz++) {
+                                    const key = `${x + dx},${y + dy},${z + dz}`;
+                                    const cellNodes = spatialGrid.get(key);
+                                    if (!cellNodes) continue;
+                                    
+                                    cellNodes.forEach(j => {
+                                        if (i === j) return;
+                                        
+                                        const dx = positions[i * 3] - positions[j * 3];
+                                        const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
+                                        const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
+                                        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                                        
+                                        if (distance === 0) return;
+                                        
+                                        // Calculate minimum distance based on node sizes
+                                        const minDist = Math.max(
+                                            minDistance,
+                                            (this.getNodeSize(nodeA.type) + this.getNodeSize(nodes[j].type)) * 2
+                                        );
+                                        
+                                        if (distance < minDist) {
+                                            const force = repulsionStrength * (1 - distance / minDist);
+                                            const fx = (dx / distance) * force;
+                                            const fy = (dy / distance) * force;
+                                            const fz = (dz / distance) * force;
+                                            
+                                            forces[i * 3] += fx;
+                                            forces[i * 3 + 1] += fy;
+                                            forces[i * 3 + 2] += fz;
+                                        }
+                                    });
+                                }
                             }
                         }
                         
-                        // Apply forces
-                        posA.x += fx * 0.1;
-                        posA.y += fy * 0.1;
-                        posA.z += fz * 0.1;
+                        // Add containment force to maintain spherical structure
+                        const distFromCenter = Math.sqrt(
+                            positions[i * 3] * positions[i * 3] +
+                            positions[i * 3 + 1] * positions[i * 3 + 1] +
+                            positions[i * 3 + 2] * positions[i * 3 + 2]
+                        );
                         
-                        maxForce = Math.max(maxForce, Math.sqrt(fx * fx + fy * fy + fz * fz));
-                    }
+                        const levelRadius = this.calculateLevelRadius(nodeA.level);
+                        const containmentStrength = 0.1;
+                        
+                        if (distFromCenter > levelRadius) {
+                            const force = containmentStrength * (distFromCenter - levelRadius);
+                            forces[i * 3] -= (positions[i * 3] / distFromCenter) * force;
+                            forces[i * 3 + 1] -= (positions[i * 3 + 1] / distFromCenter) * force;
+                            forces[i * 3 + 2] -= (positions[i * 3 + 2] / distFromCenter) * force;
+                        }
+                    });
+
+                    // Update positions
+                    let maxForce = 0;
+                    nodes.forEach((node, i) => {
+                        const idx = i * 3;
+                        
+                        // Update velocity with damping
+                        velocities[idx] = (velocities[idx] + forces[idx]) * damping;
+                        velocities[idx + 1] = (velocities[idx + 1] + forces[idx + 1]) * damping;
+                        velocities[idx + 2] = (velocities[idx + 2] + forces[idx + 2]) * damping;
+                        
+                        // Apply velocity
+                        positions[idx] += velocities[idx];
+                        positions[idx + 1] += velocities[idx + 1];
+                        positions[idx + 2] += velocities[idx + 2];
+                        
+                        // Update node positions
+                        this.nodePositions.set(node.id, {
+                            x: positions[idx],
+                            y: positions[idx + 1],
+                            z: positions[idx + 2]
+                        });
+                        
+                        // Track maximum force
+                        maxForce = Math.max(maxForce, Math.sqrt(
+                            forces[idx] * forces[idx] +
+                            forces[idx + 1] * forces[idx + 1] +
+                            forces[idx + 2] * forces[idx + 2]
+                        ));
+                    });
                     
                     // Break if forces are small enough
                     if (maxForce < 0.1) break;
                 }
+            }
+            
+            calculateLevelRadius(level) {
+                const baseRadius = 100;
+                const levelSpacing = 80;
+                return baseRadius + (level * levelSpacing);
             }
             
             calculateMinSpacing(nodes) {
@@ -524,22 +602,8 @@
             }
             
             getOrbitRadius(level) {
-                // Adjusted radii for more spherical arrangement
-                const baseRadius = 150;
-                const radiusByLevel = {
-                    1: baseRadius * 1.0,     // First layer
-                    2: baseRadius * 1.4,     // Second layer
-                    3: baseRadius * 1.8,     // Third layer
-                    4: baseRadius * 2.2,     // Fourth layer
-                    5: baseRadius * 2.6,     // Fifth layer
-                    6: baseRadius * 3.0,     // Sixth layer
-                    7: baseRadius * 3.4,     // Seventh layer
-                    8: baseRadius * 3.8,     // Eighth layer
-                    9: baseRadius * 4.2,     // Ninth layer (inputs)
-                    10: baseRadius * 4.2     // Tenth layer (outputs, same as inputs)
-                };
-                
-                return radiusByLevel[level] || baseRadius;
+                // Base radius increases with level
+                return 100 + (level * 50);
             }
             
             createNodeObjects(nodes) {
@@ -549,13 +613,20 @@
                 });
                 this.nodes.clear();
                 
-                // Create new node objects
-                for (const nodeData of nodes) {
-                    // Create geometry based on node type and level
+                // Create shared geometries for each node type/size
+                const geometries = new Map();
+                
+                // Process all nodes at once but reuse geometries for better performance
+                nodes.forEach(nodeData => {
                     const size = this.getNodeSize(nodeData.type, nodeData.level);
-                    const geometry = new THREE.SphereGeometry(size, 32, 32);
+                    const geometryKey = `${nodeData.type}-${size}`;
                     
-                    // Create material with appropriate color
+                    // Reuse geometry if already created
+                    if (!geometries.has(geometryKey)) {
+                        geometries.set(geometryKey, new THREE.SphereGeometry(size, 32, 32));
+                    }
+                    
+                    const geometry = geometries.get(geometryKey);
                     const color = this.getNodeColor(nodeData.type);
                     const material = new THREE.MeshPhongMaterial({
                         color: color,
@@ -563,16 +634,13 @@
                         emissive: new THREE.Color(color).multiplyScalar(0.2)
                     });
                     
-                    // Create mesh
                     const mesh = new THREE.Mesh(geometry, material);
                     mesh.userData = { node: nodeData };
                     
-                    // Position based on calculated positions
                     if (this.nodePositions.has(nodeData.id)) {
                         const pos = this.nodePositions.get(nodeData.id);
                         mesh.position.set(pos.x, pos.y, pos.z);
                     } else {
-                        // Fallback position if not calculated
                         mesh.position.set(
                             (Math.random() - 0.5) * 200,
                             (Math.random() - 0.5) * 200,
@@ -580,10 +648,9 @@
                         );
                     }
                     
-                    // Add to scene and store
                     this.scene.add(mesh);
                     this.nodes.set(nodeData.id, mesh);
-                }
+                });
             }
             
             createLinkObjects(links) {
@@ -647,49 +714,49 @@
             }
             
             getNodeSize(nodeType, level) {
-                // Base sizes by node type
+                // Base sizes by node type with more gradual scaling
                 const sizeByType = {
-                    'component_group': 40,
-                    'component': 30,
-                    'subcomponent': 25,
-                    'capability': 20,
-                    'function': 16,
-                    'specification': 14,
-                    'integration': 12,
-                    'technique': 10,
-                    'application': 9,
-                    'input': 8,
-                    'output': 8
+                    'component_group': 35,    // Root node
+                    'component': 30,         // Main components
+                    'subcomponent': 25,     // Subcomponents
+                    'capability': 22,       // Capabilities
+                    'function': 20,         // Functions
+                    'specification': 18,    // Specifications
+                    'integration': 16,      // Integrations
+                    'technique': 15,        // Techniques
+                    'application': 14,      // Applications
+                    'input': 12,           // Inputs
+                    'output': 12           // Outputs
                 };
+
+                // Get base size
+                let size = sizeByType[nodeType] || 20;
                 
-                // Get base size for type or default
-                let size = sizeByType[nodeType] || 15;
-                
-                // Adjust for level (deeper levels get slightly smaller)
+                // Scale size based on level, but more gradually
                 if (level > 5) {
-                    size *= (1 - ((level - 5) * 0.08));
+                    size *= (1 - ((level - 5) * 0.05));
                 }
                 
                 return size;
             }
             
             getNodeColor(nodeType) {
-                // Color map for different node types
+                // Enhanced color scheme for better visibility and hierarchy
                 const colors = {
-                    'component_group': 0x3498db,
-                    'component': 0x2ecc71,
-                    'subcomponent': 0xe74c3c,
-                    'capability': 0xf39c12,
-                    'function': 0x9b59b6,
-                    'specification': 0x1abc9c,
-                    'integration': 0x34495e,
-                    'technique': 0xd35400,
-                    'application': 0x27ae60,
-                    'input': 0x8e44ad,
-                    'output': 0x16a085
+                    'component_group': '#4A90E2',    // Bright blue for root
+                    'component': '#50C878',          // Emerald green for main components
+                    'subcomponent': '#9B59B6',       // Purple for subcomponents
+                    'capability': '#E67E22',         // Orange for capabilities
+                    'function': '#E74C3C',           // Red for functions
+                    'specification': '#F1C40F',      // Yellow for specifications
+                    'integration': '#16A085',        // Turquoise for integrations
+                    'technique': '#2ECC71',          // Green for techniques
+                    'application': '#3498DB',        // Blue for applications
+                    'input': '#95A5A6',             // Gray for inputs
+                    'output': '#7F8C8D'             // Darker gray for outputs
                 };
                 
-                return colors[nodeType] || 0x95a5a6;
+                return colors[nodeType] || '#808080';
             }
             
             getLinkColor(linkType) {
@@ -771,7 +838,12 @@
                 }
             }
             
-            onClick(event) {
+            async onClick(event) {
+                if (!this.graphData || !this.graphData.nodes) {
+                    console.error("Graph data not loaded yet");
+                    return;
+                }
+
                 // Calculate mouse position
                 const rect = this.container.getBoundingClientRect();
                 this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
@@ -789,78 +861,28 @@
                     
                     console.log(`Clicked on node: ${nodeData.id} (${nodeData.name}) - Type: ${nodeData.type}, Level: ${nodeData.level}`);
                     
-                    // Show node details
-                    this.selectNode(nodeData);
-                    
-                    // Handle different node types
-                    if (nodeData.type === 'application') {
-                        console.log(`Clicked on application node: ${nodeData.name}`);
+                    try {
+                        // Special handling for root node
+                        if (nodeData.level === 0 || nodeData.id === "ai-alignment") {
+                            await this.selectRootNode(nodeData);
+                        } else {
+                            // Show node details
+                            await this.selectNode(nodeData);
+                        }
                         
-                        if (!this.expandedNodes.has(nodeData.id)) {
-                            // First expand the application node
-                            this.expandNode(nodeData.id);
-                            
-                            // Find all input and output nodes
-                            const inputNodes = this.graphData.nodes.filter(node => 
-                                node.parent === nodeData.id && node.type === 'input'
-                            );
-                            const outputNodes = this.graphData.nodes.filter(node => 
-                                node.parent === nodeData.id && node.type === 'output'
-                            );
-                            
-                            console.log(`Found ${inputNodes.length} input nodes and ${outputNodes.length} output nodes`);
-                            
-                            // Expand all input and output nodes
-                            [...inputNodes, ...outputNodes].forEach(node => {
-                                this.expandedNodes.add(node.id);
-                            });
-                            
-                            // Update visualization after expanding
-                            const visibleNodes = this.getVisibleNodes();
-                            const visibleLinks = this.getVisibleLinks(visibleNodes);
-                            this.positionNodes(visibleNodes);
-                            this.createNodeObjects(visibleNodes);
-                            this.createLinkObjects(visibleLinks);
-                        } else {
-                            this.collapseNode(nodeData.id);
+                        // Handle different node types
+                        if (nodeData.type === 'application' || nodeData.type === 'input' || 
+                            nodeData.type === 'specification' || nodeData.level >= 5 || 
+                            nodeData.expandable || nodeData.has_children) {
+                            await this.toggleNodeExpansion(nodeData.id);
                         }
-                    }
-                    else if (nodeData.type === 'input') {
-                        // Handle input node clicks
-                        if (!this.expandedNodes.has(nodeData.id)) {
-                            this.expandNode(nodeData.id);
-                            // Ensure outputs are visible
-                            const outputNodes = this.graphData.nodes.filter(node => 
-                                node.parent === nodeData.id && node.type === 'output'
-                            );
-                            console.log(`Found ${outputNodes.length} outputs for input: ${nodeData.id}`);
-                        } else {
-                            this.collapseNode(nodeData.id);
-                        }
-                    }
-                    else if (nodeData.type === 'specification' || nodeData.level >= 5) {
-                        console.log(`Clicked on deep node: ${nodeData.name}`);
-                        
-                        if (!this.expandedNodes.has(nodeData.id)) {
-                            this.expandNode(nodeData.id);
-                            
-                            const childNodes = this.graphData.nodes.filter(node => node.parent === nodeData.id);
-                            childNodes.forEach(child => {
-                                if (!this.expandedNodes.has(child.id)) {
-                                    this.expandNode(child.id);
-                                }
-                            });
-                        } else {
-                            this.collapseNode(nodeData.id);
-                        }
-                    } 
-                    else if (nodeData.expandable || nodeData.has_children) {
-                        this.toggleNodeExpansion(nodeData.id);
+                    } catch (error) {
+                        console.error(`Error handling click for node ${nodeData.id}: ${error}`);
                     }
                 }
             }
             
-            selectNode(nodeData) {
+            async selectNode(nodeData) {
                 // Update UI to show selected node details
                 const detailsTitle = document.getElementById('details-title');
                 const detailsContent = document.getElementById('details-content');
@@ -876,24 +898,48 @@
                     </div>
                 `;
                 
-                // Load node details
-                fetch(`/api/details/${nodeData.id}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        this.displayNodeDetails(data);
-                        this.updateBreadcrumbs(nodeData.id);
-                    })
-                    .catch(error => {
+                try {
+                    // Load node details
+                    const response = await fetch(`/api/details/${nodeData.id}`);
+                    
+                    if (!response.ok) {
+                        console.error(`Error loading node details: ${response.status} ${response.statusText}`);
                         detailsContent.innerHTML = `
                             <div class="error-message">
                                 <h3>Error</h3>
-                                <p>Could not load details: ${error.message}</p>
+                                <p>Could not load details: ${response.statusText}</p>
+                                <p>Status: ${response.status}</p>
                             </div>
                         `;
-                    });
-                
-                // Track selected node
-                this.selectedNode = nodeData;
+                        return;
+                    }
+                    
+                    const detailsData = await response.json();
+                    
+                    if (detailsData.error) {
+                        detailsContent.innerHTML = `
+                            <div class="error-message">
+                                <h3>Error</h3>
+                                <p>${detailsData.error}</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    this.displayNodeDetails(detailsData);
+                    this.updateBreadcrumbs(nodeData.id);
+                    
+                    // Track selected node
+                    this.selectedNode = nodeData;
+                } catch (error) {
+                    console.error(`Error in selectNode: ${error}`);
+                    detailsContent.innerHTML = `
+                        <div class="error-message">
+                            <h3>Error</h3>
+                            <p>An unexpected error occurred: ${error.message}</p>
+                        </div>
+                    `;
+                }
             }
             
             displayNodeDetails(data) {
@@ -1190,7 +1236,7 @@
                     });
             }
             
-            toggleNodeExpansion(nodeId) {
+            async toggleNodeExpansion(nodeId) {
                 console.log(`Toggling expansion for node: ${nodeId}`);
                 
                 // Either expand or collapse based on current state
@@ -1199,158 +1245,339 @@
                     this.collapseNode(nodeId);
                 } else {
                     console.log(`Node was collapsed, expanding: ${nodeId}`);
-                    
-                    // Always mark the node as expanded
-                    this.expandedNodes.add(nodeId);
-                    
-                    // Even if there are no direct children, this will ensure the node is marked as expanded
-                    // which allows its children at all levels to become visible
-                    this.expandNode(nodeId);
+                    await this.expandNode(nodeId);
                 }
                 
                 // Log expanded nodes for debugging
                 console.log(`Current expanded nodes: ${Array.from(this.expandedNodes).join(', ')}`);
             }
             
-            expandNode(nodeId) {
-                console.log(`Expanding node: ${nodeId}`);
-                
-                // Add to expanded set
-                this.expandedNodes.add(nodeId);
-                
-                // Get node data to check its level
-                const nodeData = this.graphData.nodes.find(node => node.id === nodeId);
-                if (!nodeData) {
-                    console.error(`Node data not found for ID: ${nodeId}`);
+            async expandNode(nodeId) {
+                if (!this.graphData || !this.graphData.nodes) {
+                    console.error("Graph data not loaded yet");
+                    return;
+                }
+
+                const node = this.graphData.nodes.find(n => n.id === nodeId);
+                if (!node) {
+                    console.error(`Node not found: ${nodeId}`);
                     return;
                 }
                 
-                console.log(`Expanding node at level ${nodeData.level}: ${nodeData.name}`);
+                console.log(`Expanding node: ${node.id} (${node.type})`);
                 
-                // Special handling for specific node types
-                if (nodeData.type === 'application') {
-                    // For applications, we want to automatically expand their inputs to show outputs
-                    console.log(`Expanding application node: ${nodeData.id}`);
+                try {
+                    // Add node to expanded set
+                    this.expandedNodes.add(nodeId);
                     
-                    // Find all input children
-                    const inputNodes = this.graphData.nodes.filter(node => 
-                        node.parent === nodeData.id && node.type === 'input'
-                    );
-                    
-                    // Also mark inputs as expanded to ensure outputs are visible
-                    inputNodes.forEach(input => {
-                        console.log(`Auto-marking input as expanded: ${input.id}`);
-                        this.expandedNodes.add(input.id);
-                    });
-                }
-                else if (nodeData.type === 'specification' && nodeData.level === 5) {
-                    console.log(`Checking for integration children of specification: ${nodeData.id}`);
-                    
-                    // For specifications, look for integrations that might exist in the backend data
-                    const specNode = this.findNodeInBackendData(nodeData.id);
-                    if (specNode && specNode.integration) {
-                        console.log(`Found integration for specification: ${specNode.integration.id}`);
-                        
-                        // Ensure the integration node exists in our graph data
-                        const integrationExists = this.graphData.nodes.some(n => n.id === specNode.integration.id);
-                        
-                        if (!integrationExists) {
-                            console.log(`Integration node ${specNode.integration.id} not in graph data. May need backend update.`);
+                    // Handle different node types
+                    if (node.type === 'subcomponent') {
+                        // Check if we need to add capability nodes
+                        const backendData = await this.findNodeInBackendData(nodeId);
+                        if (backendData && backendData.capabilities) {
+                            backendData.capabilities.forEach(capability => {
+                                if (typeof capability === 'object' && capability.id) {
+                                    // Add capability node if it doesn't exist
+                                    if (!this.graphData.nodes.some(n => n.id === capability.id)) {
+                                        const capabilityNode = {
+                                            id: capability.id,
+                                            name: capability.name,
+                                            type: 'capability',
+                                            description: capability.description,
+                                            parent: nodeId,
+                                            level: node.level + 1,
+                                            expandable: true,
+                                            has_children: true
+                                        };
+                                        this.graphData.nodes.push(capabilityNode);
+                                        
+                                        // Add link
+                                        this.graphData.links.push({
+                                            source: nodeId,
+                                            target: capability.id,
+                                            type: 'has_capability'
+                                        });
+
+                                        // Add functions for this capability
+                                        if (capability.functions) {
+                                            capability.functions.forEach(func => {
+                                                if (!this.graphData.nodes.some(n => n.id === func.id)) {
+                                                    const functionNode = {
+                                                        id: func.id,
+                                                        name: func.name,
+                                                        type: 'function',
+                                                        description: func.description,
+                                                        parent: capability.id,
+                                                        level: node.level + 2,
+                                                        expandable: func.specifications && func.specifications.length > 0,
+                                                        has_children: func.specifications && func.specifications.length > 0
+                                                    };
+                                                    this.graphData.nodes.push(functionNode);
+                                                    
+                                                    // Add link
+                                                    this.graphData.links.push({
+                                                        source: capability.id,
+                                                        target: func.id,
+                                                        type: 'has_function'
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    } else if (node.type === 'capability') {
+                        // Find and add function nodes
+                        const backendData = await this.findNodeInBackendData(nodeId);
+                        if (backendData && backendData.functions) {
+                            backendData.functions.forEach(func => {
+                                if (!this.graphData.nodes.some(n => n.id === func.id)) {
+                                    const functionNode = {
+                                        id: func.id,
+                                        name: func.name,
+                                        type: 'function',
+                                        description: func.description,
+                                        parent: nodeId,
+                                        level: node.level + 1,
+                                        expandable: func.specifications && func.specifications.length > 0,
+                                        has_children: func.specifications && func.specifications.length > 0
+                                    };
+                                    this.graphData.nodes.push(functionNode);
+                                    
+                                    // Add link
+                                    this.graphData.links.push({
+                                        source: nodeId,
+                                        target: func.id,
+                                        type: 'has_function'
+                                    });
+                                }
+                            });
+                        }
+                    } else if (node.type === 'function') {
+                        // Find and add specification nodes
+                        const backendData = await this.findNodeInBackendData(nodeId);
+                        if (backendData && backendData.specifications) {
+                            backendData.specifications.forEach(spec => {
+                                if (!this.graphData.nodes.some(n => n.id === spec.id)) {
+                                    const specNode = {
+                                        id: spec.id,
+                                        name: spec.name,
+                                        type: 'specification',
+                                        description: spec.description,
+                                        parent: nodeId,
+                                        level: node.level + 1,
+                                        expandable: spec.integration !== undefined,
+                                        has_children: spec.integration !== undefined
+                                    };
+                                    this.graphData.nodes.push(specNode);
+                                    
+                                    // Add link
+                                    this.graphData.links.push({
+                                        source: nodeId,
+                                        target: spec.id,
+                                        type: 'has_specification'
+                                    });
+                                }
+                            });
+                        }
+                    } else if (node.type === 'specification') {
+                        // Find and add integration node
+                        const backendData = await this.findNodeInBackendData(nodeId);
+                        if (backendData && backendData.integration) {
+                            const integration = backendData.integration;
+                            if (!this.graphData.nodes.some(n => n.id === integration.id)) {
+                                const integrationNode = {
+                                    id: integration.id,
+                                    name: integration.name,
+                                    type: 'integration',
+                                    description: integration.description,
+                                    parent: nodeId,
+                                    level: node.level + 1,
+                                    expandable: integration.techniques && integration.techniques.length > 0,
+                                    has_children: integration.techniques && integration.techniques.length > 0
+                                };
+                                this.graphData.nodes.push(integrationNode);
+                                
+                                // Add link
+                                this.graphData.links.push({
+                                    source: nodeId,
+                                    target: integration.id,
+                                    type: 'has_integration'
+                                });
+                            }
+                        }
+                    } else if (node.type === 'integration') {
+                        // Find and add technique nodes
+                        const backendData = await this.findNodeInBackendData(nodeId);
+                        if (backendData && backendData.techniques) {
+                            backendData.techniques.forEach(technique => {
+                                if (!this.graphData.nodes.some(n => n.id === technique.id)) {
+                                    const techniqueNode = {
+                                        id: technique.id,
+                                        name: technique.name,
+                                        type: 'technique',
+                                        description: technique.description,
+                                        parent: nodeId,
+                                        level: node.level + 1,
+                                        expandable: technique.applications && technique.applications.length > 0,
+                                        has_children: technique.applications && technique.applications.length > 0
+                                    };
+                                    this.graphData.nodes.push(techniqueNode);
+                                    
+                                    // Add link
+                                    this.graphData.links.push({
+                                        source: nodeId,
+                                        target: technique.id,
+                                        type: 'has_technique'
+                                    });
+                                }
+                            });
+                        }
+                    } else if (node.type === 'technique') {
+                        // Find and add application nodes
+                        const backendData = await this.findNodeInBackendData(nodeId);
+                        if (backendData && backendData.applications) {
+                            backendData.applications.forEach(app => {
+                                if (!this.graphData.nodes.some(n => n.id === app.id)) {
+                                    const applicationNode = {
+                                        id: app.id,
+                                        name: app.name,
+                                        type: 'application',
+                                        description: app.description,
+                                        parent: nodeId,
+                                        level: node.level + 1,
+                                        expandable: (app.inputs && app.inputs.length > 0) || (app.outputs && app.outputs.length > 0),
+                                        has_children: (app.inputs && app.inputs.length > 0) || (app.outputs && app.outputs.length > 0)
+                                    };
+                                    this.graphData.nodes.push(applicationNode);
+                                    
+                                    // Add link
+                                    this.graphData.links.push({
+                                        source: nodeId,
+                                        target: app.id,
+                                        type: 'has_application'
+                                    });
+                                }
+                            });
+                        }
+                    } else if (node.type === 'application') {
+                        // When expanding an application, fetch both inputs and outputs
+                        const backendData = await this.findNodeInBackendData(nodeId);
+                        if (backendData) {
+                            // Handle inputs directly attached to the application
+                            const inputs = backendData.inputs || [];
+                            inputs.forEach(input => {
+                                if (!this.graphData.nodes.some(n => n.id === input.id)) {
+                                    const inputNode = {
+                                        id: input.id,
+                                        name: input.name,
+                                        type: 'input',
+                                        description: input.description,
+                                        parent: nodeId,
+                                        level: node.level + 1,
+                                        expandable: false,
+                                        has_children: false
+                                    };
+                                    this.graphData.nodes.push(inputNode);
+                                    
+                                    // Add link from application to input
+                                    this.graphData.links.push({
+                                        source: nodeId,
+                                        target: input.id,
+                                        type: 'has_input'
+                                    });
+                                }
+                            });
+                            
+                            // Handle outputs directly attached to the application
+                            const outputs = backendData.outputs || [];
+                            let allOutputs = [...outputs];
+                            
+                            // Also extract outputs that might be nested in inputs
+                            inputs.forEach(input => {
+                                if (input.outputs && Array.isArray(input.outputs)) {
+                                    allOutputs = [...allOutputs, ...input.outputs];
+                                }
+                            });
+                            
+                            // Add output nodes
+                            allOutputs.forEach(output => {
+                                if (!this.graphData.nodes.some(n => n.id === output.id)) {
+                                    const outputNode = {
+                                        id: output.id,
+                                        name: output.name,
+                                        type: 'output',
+                                        description: output.description,
+                                        parent: nodeId, // Parent is the application
+                                        level: node.level + 1, // Same level as inputs
+                                        expandable: false,
+                                        has_children: false
+                                    };
+                                    this.graphData.nodes.push(outputNode);
+                                    
+                                    // Add link from application to output
+                                    this.graphData.links.push({
+                                        source: nodeId,
+                                        target: output.id,
+                                        type: 'has_output'
+                                    });
+                                }
+                            });
                         }
                     }
+                    
+                    // Update visible nodes and redraw
+                    const visibleNodes = this.getVisibleNodes();
+                    this.positionNodes(visibleNodes);
+                    this.createNodeObjects(visibleNodes);
+                    this.createLinkObjects(this.getVisibleLinks(visibleNodes));
+                } catch (error) {
+                    console.error(`Error expanding node ${nodeId}: ${error}`);
+                    this.expandedNodes.delete(nodeId); // Rollback expansion on error
                 }
-                
-                // Get child links for this node
-                const childLinks = this.graphData.links.filter(link => {
-                    const source = typeof link.source === 'object' ? link.source.id : link.source;
-                    return source === nodeId;
-                });
-                
-                console.log(`Found ${childLinks.length} direct child links for node ${nodeId}`);
-                
-                // Even with no direct children, we need to mark this node as expanded
-                // to ensure visibility of deeper levels
-                
-                // Get all visible nodes based on current expanded state
-                const visibleNodes = this.getVisibleNodes();
-                const visibleLinks = this.getVisibleLinks(visibleNodes);
-                
-                console.log(`After expansion: ${visibleNodes.length} nodes visible, ${visibleLinks.length} links visible`);
-                
-                // Position all nodes
-                this.positionNodes(visibleNodes);
-                
-                // Update visual elements
-                this.createNodeObjects(visibleNodes);
-                this.createLinkObjects(visibleLinks);
-            }
-            
-            // Helper to find a node in the backend data by ID
-            findNodeInBackendData(nodeId) {
-                // First check if this node's details are already loaded
-                const fetchUrl = `/api/details/${nodeId}`;
-                
-                console.log(`Fetching details for node: ${nodeId}`);
-                
-                // Make a synchronous request to get the node details
-                const xhr = new XMLHttpRequest();
-                xhr.open('GET', fetchUrl, false); // false makes it synchronous
-                xhr.send(null);
-                
-                if (xhr.status === 200) {
-                    try {
-                        const nodeData = JSON.parse(xhr.responseText);
-                        console.log(`Found node data for ${nodeId}`);
-                        return nodeData;
-                    } catch (error) {
-                        console.error(`Error parsing node data for ${nodeId}: ${error}`);
-                    }
-                } else {
-                    console.error(`Failed to get node data for ${nodeId}: ${xhr.status}`);
-                }
-                
-                return null;
             }
             
             collapseNode(nodeId) {
-                console.log(`Collapsing node: ${nodeId}`);
+                if (!this.graphData || !this.graphData.nodes) {
+                    console.error("Graph data not loaded yet");
+                    return;
+                }
+
+                const node = this.graphData.nodes.find(n => n.id === nodeId);
+                if (!node) {
+                    console.error(`Node not found: ${nodeId}`);
+                    return;
+                }
                 
-                // Remove from expanded set
+                // Remove node from expanded set
                 this.expandedNodes.delete(nodeId);
                 
-                // Also collapse any child nodes that were expanded
-                const childrenToCollapse = this.findAllChildren(nodeId);
-                
-                for (const childId of childrenToCollapse) {
-                    this.expandedNodes.delete(childId);
+                // Special handling for applications
+                if (node.type === 'application') {
+                    // When collapsing an application, also collapse its inputs and outputs
+                    const inputs = this.graphData.nodes.filter(n => 
+                        n.type === 'input' && 
+                        n.parent === nodeId
+                    );
+                    inputs.forEach(input => this.expandedNodes.delete(input.id));
+                    
+                    // Also collapse direct outputs of the application
+                    const outputs = this.graphData.nodes.filter(n =>
+                        n.type === 'output' &&
+                        n.parent === nodeId
+                    );
+                    outputs.forEach(output => this.expandedNodes.delete(output.id));
                 }
                 
-                // Update the visualization
+                // Recursively collapse all descendant nodes
+                this.recursivelyCollapseChildren(nodeId);
+                
+                // Update visible nodes and redraw
                 const visibleNodes = this.getVisibleNodes();
-                const visibleLinks = this.getVisibleLinks(visibleNodes);
-                
-                // Position nodes
                 this.positionNodes(visibleNodes);
-                
-                // Update visual elements
                 this.createNodeObjects(visibleNodes);
-                this.createLinkObjects(visibleLinks);
-            }
-            
-            findAllChildren(nodeId) {
-                // Find all children recursively
-                const children = [];
-                
-                // Get direct children
-                const directChildren = this.graphData.nodes.filter(node => node.parent === nodeId);
-                
-                // Add them and their children recursively
-                for (const child of directChildren) {
-                    children.push(child.id);
-                    children.push(...this.findAllChildren(child.id));
-                }
-                
-                return children;
+                this.createLinkObjects(this.getVisibleLinks(visibleNodes));
             }
             
             onWindowResize() {
@@ -1737,6 +1964,124 @@
                 // Update visual elements
                 this.createNodeObjects(visibleNodes);
                 this.createLinkObjects(visibleLinks);
+            }
+            
+            // Add helper method to find node data in backend data
+            async findNodeInBackendData(nodeId) {
+                if (!nodeId) return null;
+                
+                // First check if it's a direct node in graphData
+                const node = this.graphData.nodes.find(n => n.id === nodeId);
+                if (!node) return null;
+                
+                try {
+                    // Special handling for root node
+                    if (nodeId === "ai-alignment" || node.level === 0) {
+                        console.log("Using root endpoint for node data");
+                        const response = await fetch('/api/root');
+                        
+                        if (!response.ok) {
+                            console.error(`Error fetching root data: ${response.status} ${response.statusText}`);
+                            return null;
+                        }
+                        
+                        const data = await response.json();
+                        console.log("Successfully fetched root data:", data);
+                        return data;
+                    }
+                    
+                    // For all other node types, fetch the complete data from the backend
+                    console.log(`Fetching complete data for node: ${nodeId}`);
+                    const response = await fetch(`/api/details/${nodeId}`);
+                    
+                    if (!response.ok) {
+                        console.error(`Error fetching node data: ${response.status} ${response.statusText}`);
+                        return null;
+                    }
+                    
+                    const data = await response.json();
+                    console.log(`Successfully fetched data for ${nodeId}:`, data);
+                    return data;
+                } catch (error) {
+                    console.error(`Error fetching node data: ${error}`);
+                    return null;
+                }
+            }
+            
+            // New method to specifically select the root node using a dedicated endpoint
+            async selectRootNode(rootNode) {
+                // Update UI to show selected node details
+                const detailsTitle = document.getElementById('details-title');
+                const detailsContent = document.getElementById('details-content');
+                
+                // Set title
+                detailsTitle.textContent = rootNode.name;
+                
+                // Show loading indicator
+                detailsContent.innerHTML = `
+                    <div class="loading-indicator">
+                        <div class="spinner"></div>
+                        <span>Loading details...</span>
+                    </div>
+                `;
+                
+                try {
+                    // Use the dedicated root endpoint
+                    console.log("Fetching root node details from dedicated endpoint");
+                    const response = await fetch('/api/root');
+                    
+                    if (!response.ok) {
+                        console.error(`Error loading root details: ${response.status} ${response.statusText}`);
+                        detailsContent.innerHTML = `
+                            <div class="error-message">
+                                <h3>Error</h3>
+                                <p>Could not load root details: ${response.statusText}</p>
+                                <p>Status: ${response.status}</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    const detailsData = await response.json();
+                    
+                    if (detailsData.error) {
+                        detailsContent.innerHTML = `
+                            <div class="error-message">
+                                <h3>Error</h3>
+                                <p>${detailsData.error}</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    this.displayNodeDetails(detailsData);
+                    this.updateBreadcrumbs(rootNode.id);
+                    
+                    // Track selected node
+                    this.selectedNode = rootNode;
+                } catch (error) {
+                    console.error(`Error in selectRootNode: ${error}`);
+                    detailsContent.innerHTML = `
+                        <div class="error-message">
+                            <h3>Error</h3>
+                            <p>An unexpected error occurred: ${error.message}</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            recursivelyCollapseChildren(nodeId) {
+                // Find all direct children
+                const children = this.graphData.nodes.filter(n => n.parent === nodeId);
+                
+                // Collapse each child and its descendants
+                children.forEach(child => {
+                    // Remove from expanded set
+                    this.expandedNodes.delete(child.id);
+                    
+                    // Recursively collapse descendants
+                    this.recursivelyCollapseChildren(child.id);
+                });
             }
         }
         
