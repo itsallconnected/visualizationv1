@@ -309,47 +309,47 @@ body, html {
 }
 
 .node-type-badge.component-group {
-    background-color: #4A90E2;
+    background-color: var(--root-color);
 }
 
 .node-type-badge.component {
-    background-color: #50C878;
+    background-color: var(--component-color);
 }
 
 .node-type-badge.subcomponent {
-    background-color: #9B59B6;
+    background-color: var(--subcomponent-color);
 }
 
 .node-type-badge.capability {
-    background-color: #E67E22;
+    background-color: var(--capability-color);
 }
 
 .node-type-badge.function {
-    background-color: #E74C3C;
+    background-color: var(--function-color);
 }
 
 .node-type-badge.specification {
-    background-color: #F1C40F;
+    background-color: var(--specification-color);
 }
 
 .node-type-badge.integration {
-    background-color: #16A085;
+    background-color: var(--integration-color);
 }
 
 .node-type-badge.technique {
-    background-color: #2ECC71;
+    background-color: var(--technique-color);
 }
 
 .node-type-badge.application {
-    background-color: #3498DB;
+    background-color: var(--application-color);
 }
 
 .node-type-badge.input {
-    background-color: #5499C7;
+    background-color: var(--input-color);
 }
 
 .node-type-badge.output {
-    background-color: #F39C12;
+    background-color: var(--output-color);
 }
 
 /* Clickable items */
@@ -1019,4 +1019,232 @@ body, html {
     #search-input {
         width: 200px;
     }
+}
+
+/* New node details styles */
+.principles-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.principle-item {
+    background-color: rgba(50, 50, 100, 0.3);
+    padding: 10px 15px;
+    border-radius: 6px;
+    border-left: 3px solid var(--root-color);
+}
+
+.component-box {
+    background-color: rgba(50, 50, 100, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 3px solid var(--component-color);
+}
+
+.component-box h4 {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.component-purpose {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.capability-box {
+    background-color: rgba(50, 50, 100, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 3px solid var(--capability-color);
+}
+
+.capability-box h4 {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.function-box {
+    background-color: rgba(50, 50, 100, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 3px solid var(--function-color);
+}
+
+.function-box h4 {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.specification-box {
+    background-color: rgba(50, 50, 100, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 3px solid var(--specification-color);
+}
+
+.specification-box h4 {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.approach-box {
+    background-color: rgba(50, 50, 100, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 3px solid var(--specification-color);
+}
+
+.approach-box h4 {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.consideration-box {
+    background-color: rgba(50, 50, 100, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 3px solid var(--input-color);
+}
+
+.consideration-box h4 {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.consideration-box ul {
+    padding-left: 20px;
+}
+
+.consideration-box li {
+    margin-bottom: 5px;
+}
+
+.key-consideration {
+    background-color: rgba(50, 50, 100, 0.3);
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.key-consideration h4 {
+    margin-bottom: 5px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.implementation-links {
+    margin-top: 10px;
+    font-size: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+}
+
+.subcomponent-link, .function-link, .technique-link {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 12px;
+    cursor: pointer;
+    color: white;
+    transition: all 0.2s;
+}
+
+.subcomponent-link:hover, .function-link:hover, .technique-link:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.1);
+}
+
+.tech-specs-section {
+    margin-bottom: 20px;
+}
+
+.tech-specs-section h4 {
+    margin-bottom: 12px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+}
+
+.specs-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.specs-box {
+    background-color: rgba(40, 40, 70, 0.5);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.specs-box h5 {
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+.specs-details {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.specs-details div {
+    margin-bottom: 5px;
+}
+
+.requirements-list {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.requirements-list li {
+    margin-bottom: 10px;
+}
+
+.performance-chars {
+    background-color: rgba(40, 40, 70, 0.5);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.performance-chars div {
+    margin-bottom: 10px;
+}
+
+.io-box {
+    background-color: rgba(50, 50, 100, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.io-box h4 {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.technique-box {
+    background-color: rgba(50, 50, 100, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 3px solid var(--technique-color);
+}
+
+.technique-box h4 {
+    margin-bottom: 10px;
+    color: #ffffff;
 } 

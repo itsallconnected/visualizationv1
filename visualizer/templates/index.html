@@ -12,6 +12,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.6.4/dist/tween.umd.js"></script>
     <!-- Our CSS -->
     <link rel="stylesheet" href="/static/styles.css">
+    <!-- Node details renderer -->
+    <script src="/static/node_details_renderer.js"></script>
 </head>
 <body>
     <div class="container">
@@ -1541,7 +1543,7 @@
             }
             
             // Method to select a node and display its details
-            selectNode(nodeData) {
+            async selectNode(nodeData) {
                 if (!nodeData) return;
                 
                 console.log(`Selecting node: ${nodeData.name} (${nodeData.id})`);
@@ -1582,135 +1584,160 @@
                     // Set title
                     detailsTitle.textContent = nodeData.name;
                     
-                    // Set content
+                    // Show loading indicator
                     detailsContent.innerHTML = `
-                        <div class="details-section">
-                            <div class="detail-type">${this.capitalizeFirstLetter(nodeData.type)}</div>
-                            <div class="details-description">${nodeData.description || 'No description available'}</div>
+                        <div class="loading-indicator">
+                            <div class="spinner"></div>
+                            <span>Loading details...</span>
                         </div>
                     `;
                     
-                    // Add additional details based on node type
-                    if (nodeData.capabilities && nodeData.capabilities.length > 0) {
-                        detailsContent.innerHTML += `
-                            <div class="details-section">
-                                <h3>Capabilities</h3>
-                                <ul class="details-list">
-                                    ${nodeData.capabilities.map(cap => `<li>${cap.name || cap}</li>`).join('')}
-                                </ul>
-                            </div>
-                        `;
-                    }
-                    
-                    if (nodeData.functions && nodeData.functions.length > 0) {
-                        detailsContent.innerHTML += `
-                            <div class="details-section">
-                                <h3>Functions</h3>
-                                <ul class="details-list">
-                                    ${nodeData.functions.map(func => `<li>${func.name || func}</li>`).join('')}
-                                </ul>
-                            </div>
-                        `;
+                    try {
+                        // Try to get complete node data
+                        const fullNodeData = await this.findNodeInBackendData(nodeData.id);
+                        
+                        if (fullNodeData) {
+                            // Display the complete node details
+                            this.displayNodeDetails(fullNodeData);
+                            
+                            // Update breadcrumbs
+                            this.updateBreadcrumbs(nodeData.id);
+                        } else {
+                            // If API fetch fails, use the basic node data we have
+                            this.displayNodeDetails(nodeData);
+                        }
+                    } catch (error) {
+                        console.error(`Error fetching node details: ${error}`);
+                        // Fall back to basic data
+                        this.displayNodeDetails(nodeData);
                     }
                 }
+                
+                // Highlight the node in the visualization
+                this.highlightSelectedNode(nodeData.id);
             }
             
             // Display node details in the details panel
             displayNodeDetails(nodeData) {
                 const detailsContent = document.getElementById('details-content');
                 
-                // Basic layout for details
-                let html = '';
+                if (!detailsContent) {
+                    console.error("Details content element not found");
+                    return;
+                }
                 
-                // Add node type badge
-                html += `<div class="node-type-badge ${nodeData.type}">${this.capitalizeFirstLetter(nodeData.type.replace('_', ' '))}</div>`;
-                
-                // Add description if available
-                if (nodeData.description) {
-                    html += `
-                        <div class="detail-section">
-                            <div class="section-header">
-                                <h3>Description</h3>
-                            </div>
-                            <div class="section-content">
-                                <p>${nodeData.description}</p>
-                            </div>
+                try {
+                    // Use the node details renderer to generate the HTML
+                    const html = nodeDetailsRenderer.renderNodeDetails(nodeData);
+                    
+                    // Set the content
+                    detailsContent.innerHTML = html;
+                    
+                    // Update literature references if available
+                    this.updateLiteratureReferences(nodeData);
+                    
+                    // Add event listeners to clickable items
+                    this.setupClickableItems(detailsContent);
+                } catch (error) {
+                    console.error("Error rendering node details:", error);
+                    detailsContent.innerHTML = `
+                        <div class="error-message">
+                            <h3>Error</h3>
+                            <p>An error occurred while rendering node details: ${error.message}</p>
                         </div>
                     `;
                 }
+            }
+            
+            // Setup click events for clickable items in the details panel
+            setupClickableItems(container) {
+                // Find all clickable items
+                const clickableItems = container.querySelectorAll('.clickable-item, .subcomponent-link, .function-link, .technique-link');
                 
-                // Add children if available
-                if (nodeData.children && nodeData.children.length > 0) {
-                    html += `
-                        <div class="detail-section">
-                            <div class="section-header">
-                                <h3>Children</h3>
-                            </div>
-                            <div class="section-content">
-                                <div class="child-nodes">
-                    `;
-                    
-                    // List all children
-                    nodeData.children.forEach(child => {
-                        html += `
-                            <div class="clickable-item" data-node-id="${child.id}">
-                                <div class="node-type-badge ${child.type}">${this.capitalizeFirstLetter(child.type.replace('_', ' '))}</div>
-                                ${child.name}
-                                ${child.description ? `<div class="item-description">${child.description.substring(0, 100)}${child.description.length > 100 ? '...' : ''}</div>` : ''}
-                            </div>
-                        `;
-                    });
-                    
-                    html += `
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                // Display references if available
-                if (nodeData.references && nodeData.references.length > 0) {
-                    html += `
-                        <div class="detail-section">
-                            <div class="section-header">
-                                <h3>References</h3>
-                            </div>
-                            <div class="section-content">
-                                <div class="literature-section">
-                    `;
-                    
-                    // List all references
-                    nodeData.references.forEach(ref => {
-                        html += `
-                            <div class="reference-item">
-                                <div class="ref-header">${ref.title || 'Reference'}</div>
-                                <div class="ref-body">${ref.description || ref.authors || ''}</div>
-                            </div>
-                        `;
-                    });
-                    
-                    html += `
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                // Set the content
-                detailsContent.innerHTML = html;
-                
-                // Add event listeners to clickable items
-                const clickableItems = detailsContent.querySelectorAll('.clickable-item');
+                // Add click handler to each
                 clickableItems.forEach(item => {
                     item.addEventListener('click', () => {
                         const nodeId = item.dataset.nodeId;
-                        if (nodeId) {
-                            const nodeData = this.graphData.nodes.find(n => n.id === nodeId);
-                            if (nodeData) {
-                                this.navigateToNode(nodeData);
-                            }
+                        if (!nodeId) return;
+                        
+                        // Find node in the graph data
+                        const nodeData = this.graphData.nodes.find(n => n.id === nodeId);
+                        if (nodeData) {
+                            // Navigate to this node
+                            this.navigateToNode(nodeData);
+                        } else {
+                            console.warn(`Node with ID ${nodeId} not found in graph data`);
                         }
                     });
+                });
+            }
+            
+            // Update literature references in the side panel
+            updateLiteratureReferences(nodeData) {
+                const referencesContainer = document.getElementById('references-content');
+                if (!referencesContainer) return;
+                
+                // Clear existing content
+                referencesContainer.innerHTML = '';
+                
+                // Check for literature references based on node type
+                let references = [];
+                
+                // For component group, look in literature.references
+                if (nodeData.type === 'component_group' && nodeData.literature && Array.isArray(nodeData.literature.references)) {
+                    references = nodeData.literature.references;
+                }
+                // For component, look in literature
+                else if (nodeData.type === 'component' && nodeData.literature) {
+                    references = nodeData.literature.references || [];
+                }
+                // For subcomponent, look in literature.references
+                else if (nodeData.type === 'subcomponent' && nodeData.literature && Array.isArray(nodeData.literature.references)) {
+                    references = nodeData.literature.references;
+                }
+                // For capability, look in supported_by_literature
+                else if (nodeData.type === 'capability' && Array.isArray(nodeData.supported_by_literature)) {
+                    references = nodeData.supported_by_literature;
+                }
+                
+                // Handle empty references
+                if (!references || references.length === 0) {
+                    referencesContainer.innerHTML = '<div class="empty-section">No literature references available</div>';
+                    return;
+                }
+                
+                // Display references
+                references.forEach(ref => {
+                    let refHtml = '';
+                    
+                    // Handle both reference objects and reference strings
+                    if (typeof ref === 'string') {
+                        refHtml = `
+                            <div class="reference-item">
+                                <div class="ref-header">${ref}</div>
+                                <div class="ref-body">Reference identifier</div>
+                            </div>
+                        `;
+                    } else {
+                        // Format authors if it's an array
+                        const authors = Array.isArray(ref.authors) ? ref.authors.join(', ') : (ref.authors || '');
+                        const year = ref.year ? `(${ref.year})` : '';
+                        const venue = ref.venue ? `<div>${ref.venue}</div>` : '';
+                        const url = ref.url ? `<a href="${ref.url}" target="_blank">View publication</a>` : '';
+                        
+                        refHtml = `
+                            <div class="reference-item">
+                                <div class="ref-header">${ref.title || 'Untitled reference'}</div>
+                                <div class="ref-body">
+                                    ${authors} ${year}
+                                    ${venue}
+                                    ${url}
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    referencesContainer.innerHTML += refHtml;
                 });
             }
             
