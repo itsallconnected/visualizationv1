@@ -38,6 +38,9 @@ def load_json_file(file_path):
         # First check if the file exists
         if not os.path.isfile(normalized_path):
             logger.error(f"File not found: {normalized_path}")
+            if normalized_path.endswith('ai-alignment.json'):
+                logger.warning("Using default root data since root file not found")
+                return DEFAULT_ROOT_DATA
             return None
         
         # Try different encodings and handle BOM
@@ -77,17 +80,20 @@ def load_json_file(file_path):
                 last_error = f"Error reading file with {encoding} encoding: {str(e)}"
                 logger.error(last_error)
                 continue
-            
-        if content is None:
-            logger.error(f"Could not read file with any encoding: {normalized_path}")
-            return None
         
-        if last_error:
-            logger.error(f"Final error loading {normalized_path}: {last_error}")
+        # If we get here, we couldn't parse the file with any encoding
+        if normalized_path.endswith('ai-alignment.json'):
+            logger.warning("Using default root data since root file could not be parsed")
+            return DEFAULT_ROOT_DATA
+            
+        logger.error(f"Could not parse file with any encoding: {normalized_path}")
         return None
         
     except Exception as e:
         logger.error(f"Unexpected error loading {normalized_path}: {str(e)}")
+        if normalized_path.endswith('ai-alignment.json'):
+            logger.warning("Using default root data due to error")
+            return DEFAULT_ROOT_DATA
         return None
 
 def get_root_data():
@@ -107,11 +113,21 @@ def get_components():
     # Check if components directory exists
     if not os.path.isdir(paths['COMPONENTS_DIR']):
         logger.warning(f"Components directory not found: {paths['COMPONENTS_DIR']}")
+        # Use components from the default data
+        for component in DEFAULT_ROOT_DATA["components"]:
+            components[component["id"]] = component
         return components
     
     # Load components
     component_files = glob.glob(os.path.join(paths['COMPONENTS_DIR'], "*.json"))
     logger.info(f"Found {len(component_files)} component files")
+    
+    # If no component files found, use default components
+    if not component_files:
+        logger.warning("No component files found, using default components")
+        for component in DEFAULT_ROOT_DATA["components"]:
+            components[component["id"]] = component
+        return components
     
     for file_path in component_files:
         logger.debug(f"Loading component file: {file_path}")
@@ -122,6 +138,12 @@ def get_components():
             logger.debug(f"Successfully loaded component: {component_id}")
         else:
             logger.error(f"Failed to load component file: {file_path}")
+    
+    # If no components were successfully loaded, use default components
+    if not components:
+        logger.warning("No components were successfully loaded, using default components")
+        for component in DEFAULT_ROOT_DATA["components"]:
+            components[component["id"]] = component
     
     return components
 
@@ -229,67 +251,97 @@ def find_nested_node(node_id, subcomponents):
 
 def get_node_details(node_id):
     """Get details for a specific node."""
-    # Get data sources
-    root_data = get_root_data()
-    if not root_data:
-        error_msg = "Could not load root data"
-        logger.error(error_msg)
-        return {
-            "error": error_msg,
-            "id": node_id,
-            "name": "Error Loading Node",
-            "description": "Could not load root data",
-            "type": "error"
-        }, 500
-        
-    components = get_components()
-    subcomponents = get_subcomponents()
-    
-    logger.debug(f"Loaded data: root={bool(root_data)}, components={len(components)}, subcomponents={len(subcomponents)}")
-    
-    # Check if it's the root node
-    if node_id == "ai-alignment" or node_id == root_data["id"]:
-        logger.debug("Returning root node data")
-        return root_data, 200
-    
-    # Check if it's a component
-    if node_id in components:
-        logger.debug(f"Found component: {node_id}")
-        return components[node_id], 200
-    
-    # Check if it's a subcomponent
-    if node_id in subcomponents:
-        logger.debug(f"Found subcomponent: {node_id}")
-        try:
-            subcomp_data = subcomponents[node_id]
-            if not isinstance(subcomp_data, dict):
-                raise ValueError(f"Invalid subcomponent data type: {type(subcomp_data)}")
-            return subcomp_data, 200
-        except Exception as e:
-            error_msg = f"Error processing subcomponent data: {str(e)}"
+    try:
+        # Get data sources
+        root_data = get_root_data()
+        if not isinstance(root_data, dict):
+            error_msg = "Root data is not a valid dictionary"
             logger.error(error_msg)
             return {
                 "error": error_msg,
                 "id": node_id,
-                "name": "Error Processing Node",
-                "description": "Could not process subcomponent data",
+                "name": "Error Loading Node",
+                "description": "Could not load root data",
                 "type": "error"
             }, 500
-    
-    # Look for nested nodes
-    nested_node = find_nested_node(node_id, subcomponents)
-    if nested_node:
-        return nested_node, 200
+            
+        components = get_components()
+        subcomponents = get_subcomponents()
         
-    error_msg = f"Node not found: {node_id}"
-    logger.warning(error_msg)
-    return {
-        "error": error_msg,
-        "id": node_id,
-        "name": "Unknown Node",
-        "description": "Node details not found",
-        "type": "unknown"
-    }, 404
+        logger.debug(f"Loaded data: root={bool(root_data)}, components={len(components)}, subcomponents={len(subcomponents)}")
+        
+        # Check if it's the root node
+        if node_id == "ai-alignment" or node_id == root_data.get("id"):
+            logger.debug("Returning root node data")
+            return root_data, 200
+        
+        # Check if it's a component
+        if node_id in components:
+            logger.debug(f"Found component: {node_id}")
+            component_data = components[node_id]
+            if not isinstance(component_data, dict):
+                logger.error(f"Component data for {node_id} is not a dictionary: {type(component_data)}")
+                return {
+                    "error": f"Invalid component data type: {type(component_data)}",
+                    "id": node_id,
+                    "name": node_id,
+                    "description": "Invalid component data format",
+                    "type": "component"
+                }, 500
+            return component_data, 200
+        
+        # Check if it's a subcomponent
+        if node_id in subcomponents:
+            logger.debug(f"Found subcomponent: {node_id}")
+            try:
+                subcomp_data = subcomponents[node_id]
+                if not isinstance(subcomp_data, dict):
+                    raise ValueError(f"Invalid subcomponent data type: {type(subcomp_data)}")
+                return subcomp_data, 200
+            except Exception as e:
+                error_msg = f"Error processing subcomponent data: {str(e)}"
+                logger.error(error_msg)
+                return {
+                    "error": error_msg,
+                    "id": node_id,
+                    "name": "Error Processing Node",
+                    "description": "Could not process subcomponent data",
+                    "type": "error"
+                }, 500
+        
+        # Look for nested nodes
+        nested_node = find_nested_node(node_id, subcomponents)
+        if nested_node:
+            if not isinstance(nested_node, dict):
+                logger.error(f"Found nested node {node_id} but it's not a dictionary: {type(nested_node)}")
+                return {
+                    "error": f"Invalid nested node data type: {type(nested_node)}",
+                    "id": node_id,
+                    "name": node_id,
+                    "description": "Invalid nested node data format",
+                    "type": "unknown"
+                }, 500
+            return nested_node, 200
+            
+        error_msg = f"Node not found: {node_id}"
+        logger.warning(error_msg)
+        return {
+            "error": error_msg,
+            "id": node_id,
+            "name": "Unknown Node",
+            "description": "Node details not found",
+            "type": "unknown"
+        }, 404
+    except Exception as e:
+        error_msg = f"Unexpected error in get_node_details for {node_id}: {str(e)}"
+        logger.error(error_msg, exc_info=True)
+        return {
+            "error": error_msg,
+            "id": node_id,
+            "name": "Error Processing Node",
+            "description": f"Unexpected error: {str(e)}",
+            "type": "error"
+        }, 500
 
 # Default data to use if files aren't found
 DEFAULT_ROOT_DATA = {

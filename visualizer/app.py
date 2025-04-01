@@ -33,7 +33,7 @@ class AIAlignmentVisualizer:
         
     def setup_routes(self):
         self.app.route('/')(self.index)
-        self.app.route('/api/graph')(self.graph)
+        self.app.route('/api/graph', methods=['GET'])(self.graph)
         self.app.route('/api/hierarchy-path/<node_id>')(self.hierarchy_path)
         self.app.route('/api/health')(self.health_check)
         self.app.route('/api/root')(self.root_details)
@@ -46,13 +46,18 @@ class AIAlignmentVisualizer:
         return render_template('index.html')
         
     def graph(self):
+        """Return the graph data for visualization."""
         try:
             graph_data = self.build_graph_data()
-            self.app.logger.info(f"Returning graph with {len(graph_data['nodes'])} nodes and {len(graph_data['links'])} links")
+            self.app.logger.info(f"Returning graph data with {len(graph_data['nodes'])} nodes and {len(graph_data['links'])} links")
             return jsonify(graph_data)
         except Exception as e:
-            self.app.logger.error(f"Error generating graph data: {str(e)}")
-            return jsonify({"error": str(e), "nodes": [], "links": []}), 500
+            error_msg = f"Error building graph data: {str(e)}"
+            self.app.logger.error(error_msg)
+            return jsonify({
+                "error": "Server error building graph data",
+                "details": str(e)
+            }), 500
             
     def node_details(self, node_id):
         try:
@@ -201,493 +206,94 @@ class AIAlignmentVisualizer:
                 "error": str(e)
             }), 500
 
-    def build_graph_data(self):
-        """Build visualization graph data with nodes and links."""
-        # Get data sources
-        root_data = self.get_root_data()
-        components = self.get_components()
-        subcomponents = self.get_subcomponents()
-        
-        # Create nodes and links with optimized data structures
-        nodes = []
-        links = []
-        node_map = {}  # For faster lookups
-        
-        # Add root node
-        root_node = {
-            "id": root_data["id"],
-            "name": root_data["name"],
-            "type": "component_group",
-            "description": root_data["description"],
-            "level": 0,
-            "expandable": True,
-            "has_children": bool(components)  # Faster than len() check
-        }
-        nodes.append(root_node)
-        node_map[root_data["id"]] = root_node
-        
-        # Add component nodes with batch processing
-        for component_id, component in components.items():
-            # Check if this component has any subcomponents - use set for faster lookup
-            component_subcomponents = {s_id: s for s_id, s in subcomponents.items() 
-                                    if "parent" in s and s["parent"] == component_id}
-            has_children = bool(component_subcomponents)
-            
-            component_node = {
-                "id": component_id,
-                "name": component["name"],
-                "type": "component",
-                "description": component.get("description", ""),
-                "parent": root_data["id"],
-                "level": 1,
-                "expandable": has_children,
-                "has_children": has_children
-            }
-            nodes.append(component_node)
-            node_map[component_id] = component_node
-            
-            # Add link from root to component
-            links.append({
-                "source": root_data["id"],
-                "target": component_id,
-                "type": "contains"
-            })
-            
-            # Process subcomponents in batches
-            for subcomp_id, subcomp in component_subcomponents.items():
-                capabilities = []
-                if "capabilities" in subcomp:
-                    if isinstance(subcomp["capabilities"], list):
-                        capabilities = subcomp["capabilities"]
-                    elif isinstance(subcomp["capabilities"], dict) and "items" in subcomp["capabilities"]:
-                        capabilities = subcomp["capabilities"]["items"]
-                
-                has_children = bool(capabilities)
-                
-                subcomp_node = {
-                    "id": subcomp_id,
-                    "name": subcomp.get("name", subcomp_id),
-                    "type": "subcomponent",
-                    "description": subcomp.get("description", ""),
-                    "parent": component_id,
-                    "level": 2,
-                    "expandable": has_children,
-                    "has_children": has_children
-                }
-                nodes.append(subcomp_node)
-                node_map[subcomp_id] = subcomp_node
-                
-                links.append({
-                    "source": component_id,
-                    "target": subcomp_id,
-                    "type": "contains"
-                })
-                
-                # Now add capabilities and their deeper descendants
-                for capability in capabilities:
-                    if not isinstance(capability, dict):
-                        continue
-                        
-                    capability_id = capability.get("id", f"{subcomp_id}-capability-{len(nodes)}")
-                    functions = capability.get("functions", [])
-                    has_capability_children = bool(functions)
-                    
-                    capability_node = {
-                        "id": capability_id,
-                        "name": capability.get("name", "Capability"),
-                        "type": "capability",
-                        "description": capability.get("description", ""),
-                        "parent": subcomp_id,
-                        "level": 3,
-                        "expandable": has_capability_children,
-                        "has_children": has_capability_children
-                    }
-                    
-                    nodes.append(capability_node)
-                    node_map[capability_id] = capability_node
-                    
-                    links.append({
-                        "source": subcomp_id,
-                        "target": capability_id,
-                        "type": "has_capability"
-                    })
-                    
-                    # Add functions
-                    for function in functions:
-                        if not isinstance(function, dict):
-                            continue
-                            
-                        function_id = function.get("id", f"{capability_id}-function-{len(nodes)}")
-                        specifications = function.get("specifications", [])
-                        has_function_children = bool(specifications)
-                        
-                        function_node = {
-                            "id": function_id,
-                            "name": function.get("name", "Function"),
-                            "type": "function",
-                            "description": function.get("description", ""),
-                            "parent": capability_id,
-                            "level": 4,
-                            "expandable": has_function_children,
-                            "has_children": has_function_children
-                        }
-                        
-                        nodes.append(function_node)
-                        node_map[function_id] = function_node
-                        
-                        links.append({
-                            "source": capability_id,
-                            "target": function_id,
-                            "type": "has_function"
-                        })
-                        
-                        # Add specifications
-                        for spec in specifications:
-                            if not isinstance(spec, dict):
-                                continue
-                                
-                            spec_id = spec.get("id", f"{function_id}-spec-{len(nodes)}")
-                            integration = spec.get("integration")
-                            has_spec_children = bool(integration)
-                            
-                            spec_node = {
-                                "id": spec_id,
-                                "name": spec.get("name", "Specification"),
-                                "type": "specification",
-                                "description": spec.get("description", ""),
-                                "parent": function_id,
-                                "level": 5,
-                                "expandable": has_spec_children,
-                                "has_children": has_spec_children
-                            }
-                            
-                            nodes.append(spec_node)
-                            node_map[spec_id] = spec_node
-                            
-                            links.append({
-                                "source": function_id,
-                                "target": spec_id,
-                                "type": "has_specification"
-                            })
-                            
-                            # Add integration if present
-                            if integration and isinstance(integration, dict):
-                                integration_id = integration.get("id", f"{spec_id}-integration-{len(nodes)}")
-                                techniques = integration.get("techniques", [])
-                                has_integration_children = bool(techniques)
-                                
-                                integration_node = {
-                                    "id": integration_id,
-                                    "name": integration.get("name", "Integration"),
-                                    "type": "integration",
-                                    "description": integration.get("description", ""),
-                                    "parent": spec_id,
-                                    "level": 6,
-                                    "expandable": has_integration_children,
-                                    "has_children": has_integration_children
-                                }
-                                
-                                nodes.append(integration_node)
-                                node_map[integration_id] = integration_node
-                                
-                                links.append({
-                                    "source": spec_id,
-                                    "target": integration_id,
-                                    "type": "has_integration"
-                                })
-                                
-                                # Add techniques 
-                                for technique in techniques:
-                                    if not isinstance(technique, dict):
-                                        continue
-                                        
-                                    technique_id = technique.get("id", f"{integration_id}-technique-{len(nodes)}")
-                                    applications = technique.get("applications", [])
-                                    has_technique_children = bool(applications)
-                                    
-                                    technique_node = {
-                                        "id": technique_id,
-                                        "name": technique.get("name", "Technique"),
-                                        "type": "technique",
-                                        "description": technique.get("description", ""),
-                                        "parent": integration_id,
-                                        "level": 7,
-                                        "expandable": has_technique_children,
-                                        "has_children": has_technique_children
-                                    }
-                                    
-                                    nodes.append(technique_node)
-                                    node_map[technique_id] = technique_node
-                                    
-                                    links.append({
-                                        "source": integration_id,
-                                        "target": technique_id,
-                                        "type": "has_technique"
-                                    })
-                                    
-                                    # Add applications (deeper level)
-                                    for app in applications:
-                                        if not isinstance(app, dict):
-                                            continue
-                                            
-                                        app_id = app.get("id", f"{technique_id}-app-{len(nodes)}")
-                                        
-                                        # Get inputs and directly extract outputs
-                                        inputs = app.get("inputs", [])
-                                        standalone_outputs = app.get("outputs", [])  # Some apps have direct outputs
-                                        nested_outputs = []  # Outputs from inputs
-                                        
-                                        # Extract all outputs from inputs
-                                        for input_item in inputs:
-                                            if isinstance(input_item, dict) and "outputs" in input_item:
-                                                input_outputs = input_item.get("outputs", [])
-                                                if isinstance(input_outputs, list):
-                                                    nested_outputs.extend(input_outputs)
-                                                elif isinstance(input_outputs, dict):
-                                                    nested_outputs.append(input_outputs)
-                                        
-                                        # Combine all outputs
-                                        outputs = standalone_outputs + nested_outputs
-                                        
-                                        # Ensure uniqueness by ID
-                                        unique_outputs = []
-                                        output_ids = set()
-                                        for output in outputs:
-                                            if not isinstance(output, dict):
-                                                continue
-                                            output_id = output.get("id")
-                                            if output_id and output_id not in output_ids:
-                                                output_ids.add(output_id)
-                                                unique_outputs.append(output)
-                                            elif not output_id:  # If no ID, include anyway
-                                                unique_outputs.append(output)
-                                        
-                                        outputs = unique_outputs
-                                        has_app_children = bool(inputs) or bool(outputs)
-                                        
-                                        app_node = {
-                                            "id": app_id,
-                                            "name": app.get("name", "Application"),
-                                            "type": "application",
-                                            "description": app.get("description", ""),
-                                            "parent": technique_id,
-                                            "level": 8,
-                                            "expandable": has_app_children,
-                                            "has_children": has_app_children
-                                        }
-                                        
-                                        nodes.append(app_node)
-                                        node_map[app_id] = app_node
-                                        
-                                        links.append({
-                                            "source": technique_id,
-                                            "target": app_id,
-                                            "type": "has_application"
-                                        })
-                                        
-                                        # Add inputs as direct children of application
-                                        for input_item in inputs:
-                                            if not isinstance(input_item, dict):
-                                                continue
-                                                
-                                            input_id = input_item.get("id", f"{app_id}-input-{len(nodes)}")
-                                            
-                                            input_node = {
-                                                "id": input_id,
-                                                "name": input_item.get("name", "Input"),
-                                                "type": "input",
-                                                "description": input_item.get("description", ""),
-                                                "parent": app_id,
-                                                "level": 9,
-                                                "expandable": False,
-                                                "has_children": False
-                                            }
-                                            
-                                            nodes.append(input_node)
-                                            node_map[input_id] = input_node
-                                            
-                                            links.append({
-                                                "source": app_id,
-                                                "target": input_id,
-                                                "type": "has_input"
-                                            })
-                                        
-                                        # Add outputs as direct children of application (siblings to inputs)
-                                        for output_idx, output_item in enumerate(outputs):
-                                            if not isinstance(output_item, dict):
-                                                continue
-                                                
-                                            # Ensure output has a good ID to avoid clashes
-                                            if "id" in output_item and output_item["id"]:
-                                                output_id = output_item["id"]
-                                            else:
-                                                output_id = f"{app_id}-output-{output_idx}"
-                                                
-                                            output_node = {
-                                                "id": output_id,
-                                                "name": output_item.get("name", f"Output {output_idx+1}"),
-                                                "type": "output",
-                                                "description": output_item.get("description", ""),
-                                                "parent": app_id,  # Direct child of application
-                                                "level": 9,        # Same level as inputs
-                                                "expandable": False,
-                                                "has_children": False
-                                            }
-                                            
-                                            # Only add if not already in nodes
-                                            if output_id not in node_map:
-                                                nodes.append(output_node)
-                                                node_map[output_id] = output_node
-                                                
-                                                links.append({
-                                                    "source": app_id,
-                                                    "target": output_id,
-                                                    "type": "has_output"
-                                                })
-        
-        self.app.logger.info(f"Built comprehensive graph with {len(nodes)} nodes and {len(links)} links")
-        return {"nodes": nodes, "links": links}
-
     def get_root_data(self):
         """Get the root AI Alignment data."""
-        root_data = self.load_json_file(self.ROOT_JSON_FILE)
+        root_data = node_details_helper.load_json_file(self.ROOT_JSON_FILE)
         if not root_data:
             self.app.logger.warning(f"Using default root data since {self.ROOT_JSON_FILE} was not found")
-            return DEFAULT_ROOT_DATA
+            return node_details_helper.DEFAULT_ROOT_DATA
         return root_data
 
     def get_components(self):
-        """Get all component data with optimized loading."""
-        try:
-            components = {}
-            
-            # Check if components directory exists
-            if not os.path.isdir(self.COMPONENTS_DIR):
-                self.app.logger.warning(f"Components directory not found: {self.COMPONENTS_DIR}")
-                # Use components from the default data
-                for component in DEFAULT_ROOT_DATA["components"]:
-                    components[component["id"]] = component
-                return components
-            
-            # Load components in batches
-            component_files = glob.glob(os.path.join(self.COMPONENTS_DIR, "*.json"))
-            self.app.logger.info(f"Found {len(component_files)} component files")
-            
-            # Process files in batches of 10
-            batch_size = 10
-            for i in range(0, len(component_files), batch_size):
-                batch = component_files[i:i + batch_size]
-                for file_path in batch:
-                    self.app.logger.debug(f"Loading component file: {file_path}")
-                    component_data = self.load_json_file(file_path)
-                    if component_data:
-                        component_id = os.path.basename(file_path).replace(".json", "")
-                        components[component_id] = component_data
-                        self.app.logger.debug(f"Successfully loaded component: {component_id}")
-                    else:
-                        self.app.logger.error(f"Failed to load component file: {file_path}")
-            
+        """Get all component data."""
+        components = {}
+        
+        # Check if components directory exists
+        if not os.path.isdir(self.COMPONENTS_DIR):
+            self.app.logger.warning(f"Components directory not found: {self.COMPONENTS_DIR}")
+            # Use components from the default data
+            for component in node_details_helper.DEFAULT_ROOT_DATA["components"]:
+                components[component["id"]] = component
             return components
-        except Exception as e:
-            self.app.logger.error(f"Error in get_components: {str(e)}")
-            return {}
+        
+        # Load components
+        component_files = glob.glob(os.path.join(self.COMPONENTS_DIR, "*.json"))
+        self.app.logger.info(f"Found {len(component_files)} component files")
+        
+        # If no component files found, use default components
+        if not component_files:
+            self.app.logger.warning("No component files found, using default components")
+            for component in node_details_helper.DEFAULT_ROOT_DATA["components"]:
+                components[component["id"]] = component
+            return components
+        
+        for file_path in component_files:
+            self.app.logger.debug(f"Loading component file: {file_path}")
+            component_data = node_details_helper.load_json_file(file_path)
+            if component_data:
+                component_id = os.path.basename(file_path).replace(".json", "")
+                components[component_id] = component_data
+                self.app.logger.debug(f"Successfully loaded component: {component_id}")
+            else:
+                self.app.logger.error(f"Failed to load component file: {file_path}")
+        
+        # If no components were successfully loaded, use default components
+        if not components:
+            self.app.logger.warning("No components were successfully loaded, using default components")
+            for component in node_details_helper.DEFAULT_ROOT_DATA["components"]:
+                components[component["id"]] = component
+        
+        return components
 
     def get_subcomponents(self):
-        """Get all subcomponent data with optimized loading."""
-        try:
-            subcomponents = {}
-            
-            if not os.path.isdir(self.SUBCOMPONENTS_DIR):
-                self.app.logger.warning(f"Subcomponents directory not found: {self.SUBCOMPONENTS_DIR}")
-                return subcomponents
-            
-            # Load subcomponents in batches
-            subcomponent_files = glob.glob(os.path.join(self.SUBCOMPONENTS_DIR, "*.json"))
-            self.app.logger.info(f"Found {len(subcomponent_files)} subcomponent files")
-            
-            # Process files in batches of 10
-            batch_size = 10
-            for i in range(0, len(subcomponent_files), batch_size):
-                batch = subcomponent_files[i:i + batch_size]
-                for file_path in batch:
-                    self.app.logger.debug(f"Loading subcomponent file: {file_path}")
-                    data = self.load_json_file(file_path)
-                    if data:
-                        subcomponent_id = os.path.basename(file_path).replace(".json", "")
-                        if "id" not in data:
-                            data["id"] = subcomponent_id
-                        subcomponents[subcomponent_id] = data
-                        self.app.logger.debug(f"Successfully loaded subcomponent: {subcomponent_id}")
-                    else:
-                        self.app.logger.error(f"Failed to load subcomponent file: {file_path}")
-            
+        """Get all subcomponent data."""
+        subcomponents = {}
+        
+        if not os.path.isdir(self.SUBCOMPONENTS_DIR):
+            self.app.logger.warning(f"Subcomponents directory not found: {self.SUBCOMPONENTS_DIR}")
             return subcomponents
-        except Exception as e:
-            self.app.logger.error(f"Error in get_subcomponents: {str(e)}")
-            return {}
+        
+        # Load subcomponents
+        subcomponent_files = glob.glob(os.path.join(self.SUBCOMPONENTS_DIR, "*.json"))
+        self.app.logger.info(f"Found {len(subcomponent_files)} subcomponent files")
+        
+        for file_path in subcomponent_files:
+            self.app.logger.debug(f"Loading subcomponent file: {file_path}")
+            data = node_details_helper.load_json_file(file_path)
+            if data:
+                subcomponent_id = os.path.basename(file_path).replace(".json", "")
+                if "id" not in data:
+                    data["id"] = subcomponent_id
+                subcomponents[subcomponent_id] = data
+                self.app.logger.debug(f"Successfully loaded subcomponent: {subcomponent_id}")
+            else:
+                self.app.logger.error(f"Failed to load subcomponent file: {file_path}")
+        
+        return subcomponents
 
     def load_json_file(self, file_path):
         """Load and parse a JSON file with robust error handling."""
         try:
             self.app.logger.info(f"Attempting to load file: {file_path}")
-            
-            # Normalize path for Windows
-            normalized_path = os.path.normpath(file_path)
-            self.app.logger.info(f"Normalized path: {normalized_path}")
-            
-            # First check if the file exists
-            if not os.path.isfile(normalized_path):
-                self.app.logger.error(f"File not found: {normalized_path}")
+            data = node_details_helper.load_json_file(file_path)
+            if data:
+                self.app.logger.info(f"Successfully loaded {file_path}")
+                return data
+            else:
+                self.app.logger.error(f"Failed to load {file_path}")
                 return None
-            
-            # Try different encodings and handle BOM
-            encodings = ['utf-8-sig', 'utf-8', 'latin1', 'cp1252']
-            content = None
-            last_error = None
-            
-            for encoding in encodings:
-                try:
-                    with open(normalized_path, 'r', encoding=encoding) as f:
-                        content = f.read().strip()
-                        if not content:
-                            continue
-                        
-                        # Remove BOM if present
-                        if content.startswith('\ufeff'):
-                            content = content[1:]
-                        
-                        # Remove any non-JSON leading/trailing characters
-                        content = content.strip()
-                        if not content.startswith('{') and not content.startswith('['):
-                            continue
-                            
-                        # Try to parse JSON
-                        try:
-                            data = json.loads(content)
-                            self.app.logger.info(f"Successfully loaded {normalized_path} with {encoding} encoding")
-                            return data
-                        except json.JSONDecodeError as je:
-                            last_error = f"JSON parsing error with {encoding} encoding: {str(je)}"
-                            self.app.logger.error(last_error)
-                            self.app.logger.error(f"Content preview: {content[:200]}...")
-                            continue
-                except UnicodeDecodeError:
-                    continue
-                except Exception as e:
-                    last_error = f"Error reading file with {encoding} encoding: {str(e)}"
-                    self.app.logger.error(last_error)
-                    continue
-                
-            if content is None:
-                self.app.logger.error(f"Could not read file with any encoding: {normalized_path}")
-                return None
-            
-            if last_error:
-                self.app.logger.error(f"Final error loading {normalized_path}: {last_error}")
-            return None
-            
         except Exception as e:
-            self.app.logger.error(f"Unexpected error loading {normalized_path}: {str(e)}")
+            self.app.logger.error(f"Error loading {file_path}: {str(e)}")
             return None
 
     def root_details(self):
@@ -702,6 +308,489 @@ class AIAlignmentVisualizer:
                 "error": "Server error processing root node",
                 "details": str(e)
             }), 500
+
+    def build_graph_data(self):
+        """Build visualization graph data with nodes and links."""
+        try:
+            # Get data sources
+            root_data = self.get_root_data()
+            if not isinstance(root_data, dict):
+                self.app.logger.error(f"Root data is not a dictionary: {type(root_data)}")
+                return {"nodes": [], "links": [], "error": "Root data is not valid"}
+                
+            components = self.get_components()
+            subcomponents = self.get_subcomponents()
+            
+            # Create nodes and links with optimized data structures
+            nodes = []
+            links = []
+            node_map = {}  # For faster lookups
+            
+            # Add root node
+            root_node = {
+                "id": root_data.get("id", "ai-alignment"),
+                "name": root_data.get("name", "AI Alignment"),
+                "type": "component_group",
+                "description": root_data.get("description", "AI Alignment"),
+                "level": 0,
+                "expandable": True,
+                "has_children": bool(components)  # Faster than len() check
+            }
+            nodes.append(root_node)
+            node_map[root_node["id"]] = root_node
+            
+            # Add component nodes with batch processing
+            for component_id, component in components.items():
+                if not isinstance(component, dict):
+                    self.app.logger.warning(f"Component {component_id} is not a dictionary, skipping")
+                    continue
+                    
+                # Check if this component has any subcomponents - use set for faster lookup
+                component_subcomponents = {s_id: s for s_id, s in subcomponents.items() 
+                                        if isinstance(s, dict) and "parent" in s and s["parent"] == component_id}
+                has_children = bool(component_subcomponents)
+                
+                component_node = {
+                    "id": component_id,
+                    "name": component.get("name", component_id),
+                    "type": "component",
+                    "description": component.get("description", ""),
+                    "parent": root_node["id"],
+                    "level": 1,
+                    "expandable": has_children,
+                    "has_children": has_children
+                }
+                nodes.append(component_node)
+                node_map[component_id] = component_node
+                
+                # Add link from root to component
+                links.append({
+                    "source": root_node["id"],
+                    "target": component_id,
+                    "type": "contains"
+                })
+                
+                # Process subcomponents in batches
+                for subcomp_id, subcomp in component_subcomponents.items():
+                    capabilities = []
+                    if "capabilities" in subcomp:
+                        cap_obj = subcomp["capabilities"]
+                        if isinstance(cap_obj, list):
+                            capabilities = cap_obj
+                        elif isinstance(cap_obj, dict) and "items" in cap_obj:
+                            capabilities = cap_obj["items"]
+                        else:
+                            self.app.logger.warning(f"Unexpected capabilities format in {subcomp_id}: {type(cap_obj)}")
+                    
+                    has_children = bool(capabilities)
+                    
+                    subcomp_node = {
+                        "id": subcomp_id,
+                        "name": subcomp.get("name", subcomp_id),
+                        "type": "subcomponent",
+                        "description": subcomp.get("description", ""),
+                        "parent": component_id,
+                        "level": 2,
+                        "expandable": has_children,
+                        "has_children": has_children
+                    }
+                    nodes.append(subcomp_node)
+                    node_map[subcomp_id] = subcomp_node
+                    
+                    links.append({
+                        "source": component_id,
+                        "target": subcomp_id,
+                        "type": "contains"
+                    })
+                    
+                    # Now add capabilities and their deeper descendants
+                    for capability in capabilities:
+                        if not isinstance(capability, dict):
+                            self.app.logger.warning(f"Capability in {subcomp_id} is not a dictionary, skipping")
+                            continue
+                            
+                        capability_id = capability.get("id", f"{subcomp_id}-capability-{len(nodes)}")
+                        functions = capability.get("functions", [])
+                        has_capability_children = bool(functions)
+                        
+                        capability_node = {
+                            "id": capability_id,
+                            "name": capability.get("name", "Capability"),
+                            "type": "capability",
+                            "description": capability.get("description", ""),
+                            "parent": subcomp_id,
+                            "level": 3,
+                            "expandable": has_capability_children,
+                            "has_children": has_capability_children
+                        }
+                        
+                        nodes.append(capability_node)
+                        node_map[capability_id] = capability_node
+                        
+                        links.append({
+                            "source": subcomp_id,
+                            "target": capability_id,
+                            "type": "has_capability"
+                        })
+                        
+                        # Add functions
+                        for function in functions:
+                            if not isinstance(function, dict):
+                                self.app.logger.warning(f"Function in {capability_id} is not a dictionary, skipping")
+                                continue
+                                
+                            function_id = function.get("id", f"{capability_id}-function-{len(nodes)}")
+                            specifications = function.get("specifications", [])
+                            has_function_children = bool(specifications)
+                            
+                            function_node = {
+                                "id": function_id,
+                                "name": function.get("name", "Function"),
+                                "type": "function",
+                                "description": function.get("description", ""),
+                                "parent": capability_id,
+                                "level": 4,
+                                "expandable": has_function_children,
+                                "has_children": has_function_children
+                            }
+                            
+                            nodes.append(function_node)
+                            node_map[function_id] = function_node
+                            
+                            links.append({
+                                "source": capability_id,
+                                "target": function_id,
+                                "type": "has_function"
+                            })
+                            
+                            # Add specifications
+                            for spec in specifications:
+                                if not isinstance(spec, dict):
+                                    self.app.logger.warning(f"Specification in {function_id} is not a dictionary, skipping")
+                                    continue
+                                    
+                                spec_id = spec.get("id", f"{function_id}-spec-{len(nodes)}")
+                                integration = spec.get("integration")
+                                has_spec_children = bool(integration)
+                                
+                                spec_node = {
+                                    "id": spec_id,
+                                    "name": spec.get("name", "Specification"),
+                                    "type": "specification",
+                                    "description": spec.get("description", ""),
+                                    "parent": function_id,
+                                    "level": 5,
+                                    "expandable": has_spec_children,
+                                    "has_children": has_spec_children
+                                }
+                                
+                                nodes.append(spec_node)
+                                node_map[spec_id] = spec_node
+                                
+                                links.append({
+                                    "source": function_id,
+                                    "target": spec_id,
+                                    "type": "has_specification"
+                                })
+                                
+                                # Add integration if present
+                                if integration and isinstance(integration, dict):
+                                    integration_id = integration.get("id", f"{spec_id}-integration-{len(nodes)}")
+                                    techniques = integration.get("techniques", [])
+                                    has_integration_children = bool(techniques)
+                                    
+                                    integration_node = {
+                                        "id": integration_id,
+                                        "name": integration.get("name", "Integration"),
+                                        "type": "integration",
+                                        "description": integration.get("description", ""),
+                                        "parent": spec_id,
+                                        "level": 6,
+                                        "expandable": has_integration_children,
+                                        "has_children": has_integration_children
+                                    }
+                                    
+                                    nodes.append(integration_node)
+                                    node_map[integration_id] = integration_node
+                                    
+                                    links.append({
+                                        "source": spec_id,
+                                        "target": integration_id,
+                                        "type": "has_integration"
+                                    })
+                                    
+                                    # Add techniques 
+                                    for technique in techniques:
+                                        if not isinstance(technique, dict):
+                                            self.app.logger.warning(f"Technique in {integration_id} is not a dictionary, skipping")
+                                            continue
+                                            
+                                        technique_id = technique.get("id", f"{integration_id}-technique-{len(nodes)}")
+                                        applications = technique.get("applications", [])
+                                        has_technique_children = bool(applications)
+                                        
+                                        technique_node = {
+                                            "id": technique_id,
+                                            "name": technique.get("name", "Technique"),
+                                            "type": "technique",
+                                            "description": technique.get("description", ""),
+                                            "parent": integration_id,
+                                            "level": 7,
+                                            "expandable": has_technique_children,
+                                            "has_children": has_technique_children
+                                        }
+                                        
+                                        nodes.append(technique_node)
+                                        node_map[technique_id] = technique_node
+                                        
+                                        links.append({
+                                            "source": integration_id,
+                                            "target": technique_id,
+                                            "type": "has_technique"
+                                        })
+                                        
+                                        # Add applications (deeper level)
+                                        for app in applications:
+                                            if not isinstance(app, dict):
+                                                self.app.logger.warning(f"Application in {technique_id} is not a dictionary, skipping")
+                                                continue
+                                                
+                                            app_id = app.get("id", f"{technique_id}-app-{len(nodes)}")
+                                            
+                                            # Get inputs and directly extract outputs
+                                            inputs = app.get("inputs", [])
+                                            standalone_outputs = app.get("outputs", [])  # Some apps have direct outputs
+                                            nested_outputs = []  # Outputs from inputs
+                                            
+                                            # Extract all outputs from inputs
+                                            for input_item in inputs:
+                                                if isinstance(input_item, dict) and "outputs" in input_item:
+                                                    input_outputs = input_item.get("outputs", [])
+                                                    if isinstance(input_outputs, list):
+                                                        nested_outputs.extend(input_outputs)
+                                                    elif isinstance(input_outputs, dict):
+                                                        nested_outputs.append(input_outputs)
+                                            
+                                            # Combine all outputs
+                                            outputs = standalone_outputs + nested_outputs
+                                            
+                                            # Ensure uniqueness by ID
+                                            unique_outputs = []
+                                            output_ids = set()
+                                            for output in outputs:
+                                                if not isinstance(output, dict):
+                                                    continue
+                                                output_id = output.get("id")
+                                                if output_id and output_id not in output_ids:
+                                                    output_ids.add(output_id)
+                                                    unique_outputs.append(output)
+                                                elif not output_id:  # If no ID, include anyway
+                                                    unique_outputs.append(output)
+                                            
+                                            outputs = unique_outputs
+                                            has_app_children = bool(inputs) or bool(outputs)
+                                            
+                                            app_node = {
+                                                "id": app_id,
+                                                "name": app.get("name", "Application"),
+                                                "type": "application",
+                                                "description": app.get("description", ""),
+                                                "parent": technique_id,
+                                                "level": 8,
+                                                "expandable": has_app_children,
+                                                "has_children": has_app_children
+                                            }
+                                            
+                                            nodes.append(app_node)
+                                            node_map[app_id] = app_node
+                                            
+                                            links.append({
+                                                "source": technique_id,
+                                                "target": app_id,
+                                                "type": "has_application"
+                                            })
+                                            
+                                            # Add inputs as direct children of application
+                                            for input_item in inputs:
+                                                if not isinstance(input_item, dict):
+                                                    continue
+                                                    
+                                                input_id = input_item.get("id", f"{app_id}-input-{len(nodes)}")
+                                                
+                                                input_node = {
+                                                    "id": input_id,
+                                                    "name": input_item.get("name", "Input"),
+                                                    "type": "input",
+                                                    "description": input_item.get("description", ""),
+                                                    "parent": app_id,
+                                                    "level": 9,
+                                                    "expandable": False,
+                                                    "has_children": False
+                                                }
+                                                
+                                                nodes.append(input_node)
+                                                node_map[input_id] = input_node
+                                                
+                                                links.append({
+                                                    "source": app_id,
+                                                    "target": input_id,
+                                                    "type": "has_input"
+                                                })
+                                            
+                                            # Add outputs as direct children of application (siblings to inputs)
+                                            for output_idx, output_item in enumerate(outputs):
+                                                if not isinstance(output_item, dict):
+                                                    continue
+                                                    
+                                                # Ensure output has a good ID to avoid clashes
+                                                if "id" in output_item and output_item["id"]:
+                                                    output_id = output_item["id"]
+                                                else:
+                                                    output_id = f"{app_id}-output-{output_idx}"
+                                                    
+                                                output_node = {
+                                                    "id": output_id,
+                                                    "name": output_item.get("name", f"Output {output_idx+1}"),
+                                                    "type": "output",
+                                                    "description": output_item.get("description", ""),
+                                                    "parent": app_id,  # Direct child of application
+                                                    "level": 9,        # Same level as inputs
+                                                    "expandable": False,
+                                                    "has_children": False
+                                                }
+                                                
+                                                # Only add if not already in nodes
+                                                if output_id not in node_map:
+                                                    nodes.append(output_node)
+                                                    node_map[output_id] = output_node
+                                                    
+                                                    links.append({
+                                                        "source": app_id,
+                                                        "target": output_id,
+                                                        "type": "has_output"
+                                                    })
+            
+            # Process cross-connections and additional relationships
+            for component_id, component in components.items():
+                if not isinstance(component, dict):
+                    continue
+                    
+                # Handle component relationships
+                if "relationships" in component:
+                    relationships = component["relationships"]
+                    if isinstance(relationships, list):
+                        for rel in relationships:
+                            if not isinstance(rel, dict):
+                                continue
+                                
+                            rel_id = rel.get("id")
+                            rel_type = rel.get("relationship_type")
+                            if rel_id and rel_type:
+                                links.append({
+                                    "source": component_id,
+                                    "target": rel_id,
+                                    "type": rel_type,
+                                    "description": rel.get("description", "")
+                                })
+                                
+                                # Add integration points if they exist
+                                if "integration_points" in rel:
+                                    for point in rel["integration_points"]:
+                                        if isinstance(point, dict) and "this_component_function" in point and "other_component_function" in point:
+                                            links.append({
+                                                "source": point["this_component_function"],
+                                                "target": point["other_component_function"],
+                                                "type": "integration_point",
+                                                "description": point.get("description", "")
+                                            })
+                    else:
+                        self.app.logger.warning(f"Relationships in {component_id} is not a list: {type(relationships)}")
+
+            # Process subcomponent cross-connections
+            for subcomp_id, subcomp in subcomponents.items():
+                if not isinstance(subcomp, dict):
+                    continue
+                    
+                if "cross_connections" in subcomp:
+                    connections = subcomp["cross_connections"]
+                    if isinstance(connections, list):
+                        for conn in connections:
+                            if not isinstance(conn, dict):
+                                continue
+                                
+                            source_id = conn.get("source_id")
+                            target_id = conn.get("target_id")
+                            conn_type = conn.get("type")
+                            if source_id and target_id and conn_type:
+                                links.append({
+                                    "source": source_id,
+                                    "target": target_id,
+                                    "type": conn_type,
+                                    "description": conn.get("description", "")
+                                })
+                    else:
+                        self.app.logger.warning(f"Cross connections in {subcomp_id} is not a list: {type(connections)}")
+
+            # Process capability implementations
+            for subcomp_id, subcomp in subcomponents.items():
+                if not isinstance(subcomp, dict):
+                    continue
+                    
+                if "capabilities" in subcomp:
+                    capabilities = subcomp["capabilities"]
+                    if isinstance(capabilities, list):
+                        for cap in capabilities:
+                            if not isinstance(cap, dict):
+                                continue
+                                
+                            if "implements_component_capabilities" in cap:
+                                impls = cap["implements_component_capabilities"]
+                                if isinstance(impls, list):
+                                    for impl_cap in impls:
+                                        links.append({
+                                            "source": cap.get("id", ""),
+                                            "target": impl_cap,
+                                            "type": "implements",
+                                            "description": "Implements component capability"
+                                        })
+                                else:
+                                    self.app.logger.warning(f"Implements component capabilities in {cap.get('id', '')} is not a list: {type(impls)}")
+                    else:
+                        self.app.logger.warning(f"Capabilities in {subcomp_id} is not a list: {type(capabilities)}")
+
+            # Process function implementations
+            for subcomp_id, subcomp in subcomponents.items():
+                if not isinstance(subcomp, dict):
+                    continue
+                    
+                if "functions" in subcomp:
+                    functions = subcomp["functions"]
+                    if isinstance(functions, list):
+                        for func in functions:
+                            if not isinstance(func, dict):
+                                continue
+                                
+                            if "implements_component_functions" in func:
+                                impls = func["implements_component_functions"]
+                                if isinstance(impls, list):
+                                    for impl_func in impls:
+                                        links.append({
+                                            "source": func.get("id", ""),
+                                            "target": impl_func,
+                                            "type": "implements",
+                                            "description": "Implements component function"
+                                        })
+                                else:
+                                    self.app.logger.warning(f"Implements component functions in {func.get('id', '')} is not a list: {type(impls)}")
+                    else:
+                        self.app.logger.warning(f"Functions in {subcomp_id} is not a list: {type(functions)}")
+
+            self.app.logger.info(f"Built comprehensive graph with {len(nodes)} nodes and {len(links)} links")
+            return {"nodes": nodes, "links": links}
+        except Exception as e:
+            self.app.logger.error(f"Error in build_graph_data: {str(e)}", exc_info=True)
+            # Return an empty graph rather than failing completely
+            return {"nodes": [], "links": [], "error": str(e)}
 
 # Create and run the application
 def create_app():

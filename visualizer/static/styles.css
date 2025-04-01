@@ -47,6 +47,7 @@ body, html {
     flex: 7;
     position: relative;
     height: 100%;
+    overflow: hidden;
 }
 
 #details-panel {
@@ -54,10 +55,15 @@ body, html {
     background-color: #1e1e2f;
     border-left: 1px solid #2d2d44;
     padding: 20px;
-    overflow-y: auto;
+    overflow: hidden;
     width: 30%;
     min-width: 300px;
     max-width: 600px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
 }
 
 /* Scene container */
@@ -218,6 +224,7 @@ body, html {
 /* Details panel styling */
 .details-header {
     margin-bottom: 20px;
+    flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 #details-title {
@@ -226,6 +233,7 @@ body, html {
     margin-bottom: 10px;
     padding-bottom: 10px;
     border-bottom: 1px solid #373755;
+    flex-grow: 1;
 }
 
 .breadcrumb-container {
@@ -260,6 +268,14 @@ body, html {
     overflow-y: auto;
     margin-bottom: 20px;
     max-height: calc(100% - 200px);
+}
+
+/* New unified scrollable container */
+.single-scrollable-container {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding-right: 10px;
+    height: calc(100% - 60px);
 }
 
 /* Detail sections */
@@ -297,59 +313,59 @@ body, html {
     transform: rotate(-90deg);
 }
 
-/* Node type badges */
+/* Node type badges with proper colors */
 .node-type-badge {
     display: inline-block;
-    padding: 3px 8px;
+    padding: 5px 10px;
     border-radius: 4px;
-    font-size: 11px;
-    text-transform: uppercase;
-    margin-right: 8px;
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 15px;
     color: white;
 }
 
-.node-type-badge.component-group {
-    background-color: var(--root-color);
+.node-type-badge.component_group {
+    background-color: var(--root-color, #4A90E2);
 }
 
 .node-type-badge.component {
-    background-color: var(--component-color);
+    background-color: var(--component-color, #50C878);
 }
 
 .node-type-badge.subcomponent {
-    background-color: var(--subcomponent-color);
+    background-color: var(--subcomponent-color, #9B59B6);
 }
 
 .node-type-badge.capability {
-    background-color: var(--capability-color);
+    background-color: var(--capability-color, #E67E22);
 }
 
 .node-type-badge.function {
-    background-color: var(--function-color);
+    background-color: var(--function-color, #E74C3C);
 }
 
 .node-type-badge.specification {
-    background-color: var(--specification-color);
+    background-color: var(--specification-color, #F1C40F);
 }
 
 .node-type-badge.integration {
-    background-color: var(--integration-color);
+    background-color: var(--integration-color, #16A085);
 }
 
 .node-type-badge.technique {
-    background-color: var(--technique-color);
+    background-color: var(--technique-color, #2ECC71);
 }
 
 .node-type-badge.application {
-    background-color: var(--application-color);
+    background-color: var(--application-color, #3498DB);
 }
 
 .node-type-badge.input {
-    background-color: var(--input-color);
+    background-color: var(--input-color, #5499C7);
 }
 
 .node-type-badge.output {
-    background-color: var(--output-color);
+    background-color: var(--output-color, #F39C12);
 }
 
 /* Clickable items */
@@ -376,39 +392,57 @@ body, html {
 }
 
 /* Literature section */
-.literature-section {
-    border-top: 1px solid #373755;
+#literature-references {
     padding-top: 15px;
-    margin-top: auto;
+    margin-top: 30px;
+    border-top: 1px solid #373755;
 }
 
-.literature-section h3 {
+#literature-references h3 {
     font-size: 18px;
     margin-bottom: 15px;
     color: #a3a3ff;
 }
 
 .reference-item {
-    background-color: rgba(40, 40, 60, 0.6);
+    background-color: rgba(40, 40, 70, 0.5);
     border-radius: 6px;
-    padding: 12px;
-    margin-bottom: 10px;
-    border-left: 3px solid #5c5c8a;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: transform 0.2s, background-color 0.2s;
 }
 
-.reference-item:hover {
-    border-left-color: #7986cb;
+.reference-item.clickable {
+    cursor: pointer;
+    position: relative;
+}
+
+.reference-item.clickable:hover {
+    background-color: rgba(60, 60, 100, 0.7);
+    transform: translateY(-2px);
+}
+
+.reference-item.clickable:after {
+    content: '↗';
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 18px;
+    color: var(--text-muted);
+    opacity: 0.7;
 }
 
 .ref-header {
-    margin-bottom: 5px;
-    color: #ccccdd;
-    font-weight: 500;
+    background-color: rgba(60, 60, 100, 0.4);
+    padding: 12px 15px;
+    font-weight: 600;
+    font-size: 15px;
 }
 
 .ref-body {
-    color: #aaaacc;
+    padding: 12px 15px;
     font-size: 14px;
+    color: var(--text-muted);
 }
 
 /* Loading indicator */
@@ -477,12 +511,25 @@ body, html {
     border-radius: 6px;
     padding: 15px;
     margin-bottom: 15px;
+    overflow: auto;
 }
 
 .error-message h3 {
     color: #ff5252;
     margin-top: 0;
     margin-bottom: 8px;
+}
+
+.error-message pre {
+    margin-top: 10px;
+    font-size: 12px;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 8px;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: auto;
+    max-height: 200px;
 }
 
 /* Additional utility classes */
@@ -639,6 +686,54 @@ body, html {
     stroke: rgba(180, 180, 180, 0.25);
     stroke-opacity: 0.3;
     stroke-width: 1px;
+}
+
+/* Hierarchical relationship styles */
+.link-contains {
+    stroke: rgba(180, 180, 180, 0.25);
+    stroke-width: 1px;
+}
+
+/* Implementation relationship styles */
+.link-implements {
+    stroke: rgba(100, 200, 100, 0.4);
+    stroke-width: 1.5px;
+    stroke-dasharray: 4,4;
+}
+
+/* Integration relationship styles */
+.link-integration_point {
+    stroke: rgba(100, 150, 255, 0.4);
+    stroke-width: 1.5px;
+    stroke-dasharray: 2,2;
+}
+
+/* Cross-connection relationship styles */
+.link-provides_input_to {
+    stroke: rgba(255, 150, 50, 0.4);
+    stroke-width: 1.5px;
+}
+
+.link-complements {
+    stroke: rgba(150, 100, 255, 0.4);
+    stroke-width: 1.5px;
+}
+
+.link-informs {
+    stroke: rgba(100, 255, 150, 0.4);
+    stroke-width: 1.5px;
+}
+
+.link-extends {
+    stroke: rgba(255, 100, 100, 0.4);
+    stroke-width: 1.5px;
+}
+
+/* Bidirectional relationship style */
+.link-bidirectional {
+    stroke: rgba(255, 200, 50, 0.4);
+    stroke-width: 1.5px;
+    stroke-dasharray: 6,3;
 }
 
 /* Override specific link styling to use the same grey color */
@@ -1189,20 +1284,45 @@ body, html {
     background-color: rgba(40, 40, 70, 0.5);
     padding: 15px;
     border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 3px solid var(--input-color);
 }
 
 .specs-box h5 {
     margin-bottom: 8px;
     color: #ffffff;
+    font-size: 16px;
 }
 
-.specs-details {
-    margin-top: 10px;
+.specs-detail {
+    margin-top: 8px;
+    margin-bottom: 8px;
     font-size: 14px;
+    color: var(--text-muted);
 }
 
-.specs-details div {
-    margin-bottom: 5px;
+.specs-detail strong {
+    color: var(--text-light);
+    display: inline-block;
+    min-width: 130px;
+}
+
+.specs-details .technique-link,
+.specs-details .application-link,
+.specs-details .function-link {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: rgba(60, 60, 100, 0.4);
+    padding: 4px 8px;
+    margin: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.specs-details .technique-link:hover,
+.specs-details .application-link:hover,
+.specs-details .function-link:hover {
+    background-color: rgba(80, 80, 120, 0.6);
 }
 
 .requirements-list {
@@ -1247,4 +1367,335 @@ body, html {
 .technique-box h4 {
     margin-bottom: 10px;
     color: #ffffff;
+}
+
+/* Back navigation button */
+.header-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.back-button {
+    background-color: rgba(83, 83, 255, 0.3);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.back-button:hover {
+    background-color: rgba(83, 83, 255, 0.5);
+    transform: translateX(-3px);
+}
+
+.back-arrow {
+    margin-right: 5px;
+    font-size: 16px;
+}
+
+.back-button.hidden {
+    display: none;
+}
+
+/* Requirement styles */
+.requirement-item {
+    margin-bottom: 18px;
+}
+
+.requirement-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+
+.requirement-value {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.technique-links, .application-links, .function-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.technique-link, .application-link, .function-link {
+    padding: 6px 10px;
+    background-color: rgba(40, 40, 70, 0.5);
+    border-radius: 4px;
+}
+
+.technique-link strong, .application-link strong, .function-link strong {
+    color: var(--text-light);
+}
+
+.aspect-group {
+    margin-bottom: 25px;
+}
+
+.aspect-group h4 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: var(--text-light);
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.aspect-content {
+    margin-left: 15px;
+}
+
+.consideration-detail {
+    margin-bottom: 15px;
+}
+
+.consideration-detail h5 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--text-light);
+}
+
+.consideration-detail ul {
+    margin-left: 20px;
+}
+
+.consideration-detail li {
+    margin-bottom: 6px;
+    line-height: 1.5;
+}
+
+.subcomponent-box {
+    background-color: rgba(155, 89, 182, 0.15);
+    border-left: 3px solid var(--subcomponent-color);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: all 0.2s;
+}
+
+.subcomponent-box:hover {
+    background-color: rgba(155, 89, 182, 0.25);
+}
+
+.detail-section.subsection {
+    margin-bottom: 25px;
+    background-color: rgba(30, 30, 50, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.detail-section.subsection .section-header {
+    background-color: rgba(40, 40, 70, 0.5);
+}
+
+.detail-section.subsection .section-header h4 {
+    font-size: 16px;
+    margin: 0;
+}
+
+.technique-links-container,
+.application-links-container,
+.function-links-container,
+.consideration-links-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 8px 0 15px 0;
+}
+
+.technique-tag,
+.application-tag,
+.function-tag,
+.consideration-tag {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    transition: all 0.2s;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.technique-tag {
+    background-color: rgba(230, 126, 34, 0.2);
+    border: 1px solid rgba(230, 126, 34, 0.3);
+}
+
+.technique-tag:hover {
+    background-color: rgba(230, 126, 34, 0.3);
+    transform: translateY(-2px);
+}
+
+.application-tag {
+    background-color: rgba(52, 152, 219, 0.2);
+    border: 1px solid rgba(52, 152, 219, 0.3);
+}
+
+.application-tag:hover {
+    background-color: rgba(52, 152, 219, 0.3);
+    transform: translateY(-2px);
+}
+
+.function-tag {
+    background-color: rgba(231, 76, 60, 0.2);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.function-tag:hover {
+    background-color: rgba(231, 76, 60, 0.3);
+    transform: translateY(-2px);
+}
+
+.consideration-tag {
+    background-color: rgba(155, 89, 182, 0.2);
+    border: 1px solid rgba(155, 89, 182, 0.3);
+}
+
+.consideration-tag:hover {
+    background-color: rgba(155, 89, 182, 0.3);
+    transform: translateY(-2px);
+}
+
+.performance-char-item {
+    margin-bottom: 12px;
+    padding: 10px;
+    background-color: rgba(40, 40, 70, 0.3);
+    border-radius: 6px;
+    line-height: 1.5;
+}
+
+.performance-char-name {
+    font-weight: 600;
+    color: var(--text-light);
+    display: inline;
+    margin-right: 8px;
+}
+
+.performance-char-value {
+    color: var(--text-muted);
+    display: inline;
+}
+
+/* New styling for the Performance Characteristics section */
+.performance-char-related {
+    margin-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.related-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-light);
+    font-size: 15px;
+}
+
+.consideration-links-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.consideration-tag {
+    background-color: rgba(155, 89, 182, 0.2);
+    border: 1px solid rgba(155, 89, 182, 0.3);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.consideration-tag:hover {
+    background-color: rgba(155, 89, 182, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Enhanced styling for all tags */
+.technique-tag, 
+.application-tag, 
+.function-tag,
+.capability-tag {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+/* Style for technique tag */
+.technique-tag {
+    background-color: rgba(46, 204, 113, 0.2);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.technique-tag:hover {
+    background-color: rgba(46, 204, 113, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Style for application tag */
+.application-tag {
+    background-color: rgba(52, 152, 219, 0.2);
+    border: 1px solid rgba(52, 152, 219, 0.3);
+}
+
+.application-tag:hover {
+    background-color: rgba(52, 152, 219, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Style for function tag */
+.function-tag {
+    background-color: rgba(231, 76, 60, 0.2);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.function-tag:hover {
+    background-color: rgba(231, 76, 60, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Style for capability tag */
+.capability-tag {
+    background-color: rgba(230, 126, 34, 0.2);
+    border: 1px solid rgba(230, 126, 34, 0.3);
+}
+
+.capability-tag:hover {
+    background-color: rgba(230, 126, 34, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Fix for three.js canvas */
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Fix node colors */
+.node-component-group, 
+.node-component-group-background {
+    fill: var(--root-color);
+}
+
+.node-component, 
+.node-component-background {
+    fill: var(--component-color);
+}
+
+.node-subcomponent, 
+.node-subcomponent-background {
+    fill: var(--subcomponent-color);
 } 

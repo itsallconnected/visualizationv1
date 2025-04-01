@@ -84,16 +84,21 @@
         <!-- Details panel -->
         <div id="details-panel">
             <div class="details-header">
-                <h2 id="details-title">Select a node to view details</h2>
+                <div class="header-row">
+                    <button id="back-button" class="back-button hidden">
+                        <span class="back-arrow">←</span> Back
+                    </button>
+                    <h2 id="details-title">Select a node to view details</h2>
+                </div>
                 <div id="breadcrumb-navigation" class="breadcrumb-container"></div>
                 <div class="global-controls">
                     <button id="expand-collapse-all" class="action-button">Expand All</button>
                 </div>
             </div>
-            <div id="details-content" class="scrollable-content"></div>
-            <div id="literature-references" class="literature-section">
-                <h3>Literature References</h3>
-                <div id="references-content" class="empty-section">No literature references available</div>
+            <!-- Make this a single scrollable container that includes both content and literature -->
+            <div class="single-scrollable-container">
+                <div id="details-content"></div>
+                <!-- Remove the permanent literature section as it's created dynamically by the node renderer -->
             </div>
         </div>
     </div>
@@ -117,6 +122,9 @@
         // Main visualization class
         class AIAlignmentVisualization {
             constructor() {
+                // Make the visualization accessible globally for click handlers
+                window.visualization = this;
+                
                 // Core THREE.js components
                 this.scene = null;
                 this.camera = null;
@@ -139,6 +147,11 @@
                 this.expandedNodes = new Set();   // Tracks which nodes are expanded
                 this.nodeAnimations = new Map();  // Animation properties for nodes
                 this.nodeOrbits = new Map();      // Orbital patterns for child nodes
+                
+                // Navigation history
+                this.navigationHistory = [];      // Stack of previously visited nodes
+                this.currentNodeIndex = -1;       // Index in history of current node
+                this.scrollPositions = new Map(); // Map of node IDs to scroll positions
                 
                 // State management
                 this.selectedNode = null;
@@ -247,9 +260,10 @@
                     .then(data => {
                         this.processData(data);
                         
-                        // Find and expand the root node initially
+                        // Find the root node initially
                         const rootNode = this.graphData.nodes.find(node => !node.parent);
                         if (rootNode) {
+                            // Only expand the root node initially, not its children
                             this.expandedNodes.add(rootNode.id);
                         }
                         
@@ -352,6 +366,7 @@
                 const expandAllButton = document.getElementById('expand-all');
                 const collapseAllButton = document.getElementById('collapse-all');
                 const detailsExpandAllButton = document.getElementById('expand-collapse-all');
+                const backButton = document.getElementById('back-button');
                 
                 if (zoomInButton) {
                     zoomInButton.addEventListener('click', () => {
@@ -408,6 +423,13 @@
                     });
                 }
                 
+                // Add back button event listener
+                if (backButton) {
+                    backButton.addEventListener('click', () => {
+                        this.navigateBack();
+                    });
+                }
+                
                 // OrbitControls events
                 if (this.controls) {
                     this.controls.addEventListener('change', () => {
@@ -428,48 +450,85 @@
                 this.cameraControlsNeedUpdate = true;
             }
             
+            // Get nodes that should be visible based on expanded state
             getVisibleNodes() {
-                // Start with the root node
-                const visibleNodes = [];
-                const processedNodes = new Set(); // To avoid duplicate processing
-                
-                // Find the root node
-                const rootNode = this.graphData.nodes.find(node => node.level === 0);
-                if (rootNode) {
-                    visibleNodes.push(rootNode);
-                    processedNodes.add(rootNode.id);
-                }
-                
-                // Breadth-first traversal to ensure parent-child relationships are respected
-                const queue = [rootNode];
-                
-                while (queue.length > 0) {
-                    const currentNode = queue.shift();
-                    
-                    // Skip if node isn't expanded (except for root)
-                    if (currentNode.level > 0 && !this.expandedNodes.has(currentNode.id)) {
-                        continue;
+                try {
+                    if (!this.graphData || !this.graphData.nodes || !Array.isArray(this.graphData.nodes)) {
+                        console.error("Invalid graph data in getVisibleNodes");
+                        return [];
                     }
                     
-                    // Add children of expanded nodes
-                    const children = this.graphData.nodes.filter(node => 
-                        node.parent === currentNode.id
+                    const visibleNodes = [];
+                    
+                    // Find root node(s) - these have no parent or level 0
+                    const rootNodes = this.graphData.nodes.filter(node => 
+                        !node.parent || (node.level !== undefined && node.level === 0)
                     );
                     
-                    children.forEach(child => {
-                        if (!processedNodes.has(child.id)) {
-                            visibleNodes.push(child);
-                            processedNodes.add(child.id);
-                            queue.push(child);
+                    if (rootNodes.length === 0) {
+                        console.warn("No root nodes found - using first node as fallback");
+                        if (this.graphData.nodes.length > 0) {
+                            const firstNode = this.graphData.nodes[0];
+                            firstNode.level = firstNode.level || 0; // Ensure level is set
+                            visibleNodes.push(firstNode);
+                        }
+                        return visibleNodes;
+                    }
+                    
+                    // Start with root nodes
+                    rootNodes.forEach(rootNode => {
+                        rootNode.level = rootNode.level || 0; // Ensure level is set
+                        visibleNodes.push(rootNode);
+                        
+                        // If root is expanded, add its children
+                        if (this.expandedNodes.has(rootNode.id)) {
+                            this.addVisibleChildren(rootNode.id, visibleNodes);
                         }
                     });
+                    
+                    return visibleNodes;
+                } catch (error) {
+                    console.error("Error in getVisibleNodes:", error);
+                    return [];
                 }
-                
-                // Final safety check to ensure no orphaned nodes are included
-                return visibleNodes.filter(node => 
-                    node.level === 0 || 
-                    (this.expandedNodes.has(node.parent) && processedNodes.has(node.parent))
-                );
+            }
+            
+            // Add visible children recursively
+            addVisibleChildren(parentId, visibleNodes) {
+                try {
+                    if (!this.graphData || !this.graphData.nodes) {
+                        return;
+                    }
+                    
+                    // Find all direct children of this parent
+                    const children = this.graphData.nodes.filter(node => 
+                        node.parent === parentId
+                    );
+                    
+                    // Add each child and potentially its children
+                    children.forEach(child => {
+                        // Skip if already added (prevents duplicates)
+                        if (visibleNodes.some(node => node.id === child.id)) {
+                            return;
+                        }
+                        
+                        // Ensure level is properly set
+                        if (child.level === undefined) {
+                            const parentNode = this.graphData.nodes.find(n => n.id === parentId);
+                            child.level = (parentNode?.level !== undefined) ? parentNode.level + 1 : 1;
+                        }
+                        
+                        // Add this child
+                        visibleNodes.push(child);
+                        
+                        // If this child is expanded, add its children too
+                        if (this.expandedNodes.has(child.id)) {
+                            this.addVisibleChildren(child.id, visibleNodes);
+                        }
+                    });
+                } catch (error) {
+                    console.error("Error in addVisibleChildren:", error);
+                }
             }
             
             onMouseMove(event) {
@@ -1132,48 +1191,86 @@
                     const sourcePos = sourceNode.position.clone();
                     const targetPos = targetNode.position.clone();
                     
-                    // Determine color and opacity based on node types
-                    let color, opacity, lineWidth;
+                    // Determine color, opacity, and line style based on relationship type
+                    let color, opacity, lineWidth, dashSize, gapSize;
+                    const linkType = link.type || 'default';
                     
-                    // Get source and target node types
-                    const sourceType = sourceNode.userData.node.type;
-                    const targetType = targetNode.userData.node.type;
-                    
-                    // Use a consistent grey color for all links
-                    color = 0xb4b4b4; // Light grey color
-                    
-                    // Set opacity based on link importance - now much more subtle
-                    if (targetType === 'component_group' || targetType === 'component') {
-                        opacity = 0.15;
-                        lineWidth = 0.5;
-                    } else if (targetType === 'subcomponent' || targetType === 'capability') {
-                        opacity = 0.12;
-                        lineWidth = 0.35;
-                    } else {
-                        opacity = 0.1;
-                        lineWidth = 0.2;
-                    }
-                    
-                    // Special case for output links
-                    if (targetType === 'output') {
-                        opacity = 0.18;
-                        lineWidth = 0.5;
+                    switch(linkType) {
+                        case 'contains':
+                            color = 0xb4b4b4; // Light grey
+                            opacity = 0.25;
+                            lineWidth = 1;
+                            break;
+                        case 'implements':
+                            color = 0x64c864; // Green
+                            opacity = 0.4;
+                            lineWidth = 1.5;
+                            dashSize = 4;
+                            gapSize = 4;
+                            break;
+                        case 'integration_point':
+                            color = 0x6496ff; // Blue
+                            opacity = 0.4;
+                            lineWidth = 1.5;
+                            dashSize = 2;
+                            gapSize = 2;
+                            break;
+                        case 'provides_input_to':
+                            color = 0xff9632; // Orange
+                            opacity = 0.4;
+                            lineWidth = 1.5;
+                            break;
+                        case 'complements':
+                            color = 0x9664ff; // Purple
+                            opacity = 0.4;
+                            lineWidth = 1.5;
+                            break;
+                        case 'informs':
+                            color = 0x64ff96; // Light green
+                            opacity = 0.4;
+                            lineWidth = 1.5;
+                            break;
+                        case 'extends':
+                            color = 0xff6464; // Red
+                            opacity = 0.4;
+                            lineWidth = 1.5;
+                            break;
+                        case 'bidirectional':
+                            color = 0xffc832; // Gold
+                            opacity = 0.4;
+                            lineWidth = 1.5;
+                            dashSize = 6;
+                            gapSize = 3;
+                            break;
+                        default:
+                            color = 0xb4b4b4; // Light grey
+                            opacity = 0.25;
+                            lineWidth = 1;
                     }
                     
                     // Get or create material
-                    const materialKey = `${color}-${opacity}`;
+                    const materialKey = `${color}-${opacity}-${dashSize || 0}-${gapSize || 0}`;
                     if (!materials.has(materialKey)) {
-                        materials.set(materialKey, new THREE.LineBasicMaterial({
+                        const material = new THREE.LineBasicMaterial({
                             color: color,
                             transparent: true,
                             opacity: opacity,
                             linewidth: lineWidth
-                        }));
+                        });
+                        
+                        // If dash pattern specified, convert to dashed line material
+                        if (dashSize && gapSize) {
+                            material.dashed = true;
+                            material.dashSize = dashSize;
+                            material.gapSize = gapSize;
+                        }
+                        
+                        materials.set(materialKey, material);
                     }
                     
                     const material = materials.get(materialKey);
                     
-                    // Create a curved path between nodes
+                    // Create curved path between nodes
                     // For nearby nodes, use straight lines
                     // For distant nodes, add curvature
                     const distance = sourcePos.distanceTo(targetPos);
@@ -1197,8 +1294,15 @@
                             lineDirection.x
                         ).normalize();
                         
-                        // Curve height based on distance
-                        const curveHeight = Math.min(distance * 0.2, 50);
+                        // Curve height based on distance and relationship type
+                        let curveHeight = Math.min(distance * 0.2, 50);
+                        
+                        // Adjust curve height for different relationship types
+                        if (linkType === 'implements' || linkType === 'integration_point') {
+                            curveHeight *= 1.2; // Higher curve for implementation/integration relationships
+                        } else if (linkType === 'bidirectional') {
+                            curveHeight *= 0.8; // Lower curve for bidirectional relationships
+                        }
                         
                         // Control point is midpoint raised in perpendicular direction
                         const controlPoint = midPoint.clone().add(
@@ -1222,7 +1326,8 @@
                     line.userData = {
                         source: sourceId,
                         target: targetId,
-                        type: link.type || "default"
+                        type: linkType,
+                        description: link.description || ""
                     };
                     
                     // Generate a unique ID for the link if not present
@@ -1548,6 +1653,34 @@
                 
                 console.log(`Selecting node: ${nodeData.name} (${nodeData.id})`);
                 
+                // Store current scroll position before navigating away
+                if (this.selectedNode) {
+                    const scrollContainer = document.querySelector('.single-scrollable-container');
+                    if (scrollContainer) {
+                        this.scrollPositions.set(this.selectedNode.id, scrollContainer.scrollTop);
+                    }
+                }
+                
+                // Only add to history if it's a new navigation, not going back/forward
+                const isNewNavigation = !this._isHistoryNavigation;
+                if (isNewNavigation) {
+                    // If we're in the middle of the history and navigating to a new node,
+                    // truncate the forward history
+                    if (this.currentNodeIndex >= 0 && this.currentNodeIndex < this.navigationHistory.length - 1) {
+                        this.navigationHistory = this.navigationHistory.slice(0, this.currentNodeIndex + 1);
+                    }
+                    
+                    // Add this node to history
+                    this.navigationHistory.push(nodeData.id);
+                    this.currentNodeIndex = this.navigationHistory.length - 1;
+                    
+                    // Update back button visibility
+                    this.updateBackButtonVisibility();
+                }
+                
+                // Reset the history navigation flag
+                this._isHistoryNavigation = false;
+                
                 // Update selected node reference
                 this.selectedNode = nodeData;
                 
@@ -1602,6 +1735,22 @@
                             
                             // Update breadcrumbs
                             this.updateBreadcrumbs(nodeData.id);
+                            
+                            // Restore scroll position if navigating back
+                            if (this.scrollPositions.has(nodeData.id)) {
+                                const scrollContainer = document.querySelector('.single-scrollable-container');
+                                if (scrollContainer) {
+                                    setTimeout(() => {
+                                        scrollContainer.scrollTop = this.scrollPositions.get(nodeData.id);
+                                    }, 100); // Short delay to ensure content is rendered
+                                }
+                            } else {
+                                // Scroll to top for new nodes
+                                const scrollContainer = document.querySelector('.single-scrollable-container');
+                                if (scrollContainer) {
+                                    scrollContainer.scrollTop = 0;
+                                }
+                            }
                         } else {
                             // If API fetch fails, use the basic node data we have
                             this.displayNodeDetails(nodeData);
@@ -1620,6 +1769,7 @@
             // Display node details in the details panel
             displayNodeDetails(nodeData) {
                 const detailsContent = document.getElementById('details-content');
+                const detailsTitle = document.getElementById('details-title');
                 
                 if (!detailsContent) {
                     console.error("Details content element not found");
@@ -1627,26 +1777,79 @@
                 }
                 
                 try {
+                    if (!nodeData) {
+                        console.error("No node data provided to displayNodeDetails");
+                        detailsContent.innerHTML = `
+                            <div class="error-message">
+                                <h3>Error</h3>
+                                <p>No node data provided</p>
+                            </div>
+                        `;
+                        if (detailsTitle) detailsTitle.textContent = "Error";
+                        return;
+                    }
+                    
+                    // Update the title
+                    if (detailsTitle) {
+                        detailsTitle.textContent = nodeData.name || nodeData.id || "Unknown Node";
+                    }
+                    
+                    // Check for errors in the node data
+                    if (nodeData.error) {
+                        detailsContent.innerHTML = `
+                            <div class="error-message">
+                                <h3>Error</h3>
+                                <p>${nodeData.error}</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
                     // Use the node details renderer to generate the HTML
                     const html = nodeDetailsRenderer.renderNodeDetails(nodeData);
                     
                     // Set the content
                     detailsContent.innerHTML = html;
                     
-                    // Update literature references if available
-                    this.updateLiteratureReferences(nodeData);
+                    // Update breadcrumbs
+                    if (nodeData.id) {
+                        this.updateBreadcrumbs(nodeData.id).catch(err => {
+                            console.error("Error updating breadcrumbs:", err);
+                        });
+                    }
                     
-                    // Add event listeners to clickable items
-                    this.setupClickableItems(detailsContent);
+                    // Add event listeners to clickable items - use enhanced setup from renderer
+                    nodeDetailsRenderer.setupClickableItems(detailsContent);
                 } catch (error) {
                     console.error("Error rendering node details:", error);
                     detailsContent.innerHTML = `
                         <div class="error-message">
                             <h3>Error</h3>
                             <p>An error occurred while rendering node details: ${error.message}</p>
+                            <pre>${error.stack}</pre>
                         </div>
                     `;
+                    if (detailsTitle) detailsTitle.textContent = "Error";
                 }
+            }
+            
+            // Update literature references in the side panel
+            updateLiteratureReferences(nodeData) {
+                // We'll now handle literature references directly in the node details renderer
+                // This function is kept for backwards compatibility
+                console.log("Literature references are now handled by the node details renderer");
+            }
+            
+            // Display literature references or hide section if none
+            displayLiteratureReferences(references, container) {
+                // This function is no longer needed as literature is handled by the renderer
+                console.log("Literature references are now handled by the node details renderer");
+            }
+            
+            // Hide literature section when no references are available
+            hideLiteratureSection(container) {
+                // This function is no longer needed as literature is handled by the renderer
+                console.log("Literature references are now handled by the node details renderer");
             }
             
             // Setup click events for clickable items in the details panel
@@ -1660,84 +1863,36 @@
                         const nodeId = item.dataset.nodeId;
                         if (!nodeId) return;
                         
+                        // Always force expand the node when clicked in details panel
+                        const shouldExpand = true;
+                        
                         // Find node in the graph data
                         const nodeData = this.graphData.nodes.find(n => n.id === nodeId);
                         if (nodeData) {
+                            console.log(`Clicking on node ${nodeData.name} (${nodeData.id}) with expand=${shouldExpand}`);
+                            
+                            // If we should expand and node is not already expanded, expand it
+                            if (shouldExpand && !this.expandedNodes.has(nodeId)) {
+                                console.log(`Expanding node ${nodeData.id}`);
+                                this.expandedNodes.add(nodeId);
+                                
+                                // If node has a parent, ensure parent is expanded too
+                                this.ensureNodeVisible(nodeData);
+                                
+                                // Update the visualization with new expanded nodes
+                                const visibleNodes = this.getVisibleNodes();
+                                this.positionNodes(visibleNodes);
+                                this.createNodeObjects(visibleNodes);
+                                this.createLinkObjects(this.getVisibleLinks(visibleNodes));
+                                this.setupNodeAnimations(visibleNodes);
+                            }
+                            
                             // Navigate to this node
-                            this.navigateToNode(nodeData);
+                            this.selectNode(nodeData);
                         } else {
                             console.warn(`Node with ID ${nodeId} not found in graph data`);
                         }
                     });
-                });
-            }
-            
-            // Update literature references in the side panel
-            updateLiteratureReferences(nodeData) {
-                const referencesContainer = document.getElementById('references-content');
-                if (!referencesContainer) return;
-                
-                // Clear existing content
-                referencesContainer.innerHTML = '';
-                
-                // Check for literature references based on node type
-                let references = [];
-                
-                // For component group, look in literature.references
-                if (nodeData.type === 'component_group' && nodeData.literature && Array.isArray(nodeData.literature.references)) {
-                    references = nodeData.literature.references;
-                }
-                // For component, look in literature
-                else if (nodeData.type === 'component' && nodeData.literature) {
-                    references = nodeData.literature.references || [];
-                }
-                // For subcomponent, look in literature.references
-                else if (nodeData.type === 'subcomponent' && nodeData.literature && Array.isArray(nodeData.literature.references)) {
-                    references = nodeData.literature.references;
-                }
-                // For capability, look in supported_by_literature
-                else if (nodeData.type === 'capability' && Array.isArray(nodeData.supported_by_literature)) {
-                    references = nodeData.supported_by_literature;
-                }
-                
-                // Handle empty references
-                if (!references || references.length === 0) {
-                    referencesContainer.innerHTML = '<div class="empty-section">No literature references available</div>';
-                    return;
-                }
-                
-                // Display references
-                references.forEach(ref => {
-                    let refHtml = '';
-                    
-                    // Handle both reference objects and reference strings
-                    if (typeof ref === 'string') {
-                        refHtml = `
-                            <div class="reference-item">
-                                <div class="ref-header">${ref}</div>
-                                <div class="ref-body">Reference identifier</div>
-                            </div>
-                        `;
-                    } else {
-                        // Format authors if it's an array
-                        const authors = Array.isArray(ref.authors) ? ref.authors.join(', ') : (ref.authors || '');
-                        const year = ref.year ? `(${ref.year})` : '';
-                        const venue = ref.venue ? `<div>${ref.venue}</div>` : '';
-                        const url = ref.url ? `<a href="${ref.url}" target="_blank">View publication</a>` : '';
-                        
-                        refHtml = `
-                            <div class="reference-item">
-                                <div class="ref-header">${ref.title || 'Untitled reference'}</div>
-                                <div class="ref-body">
-                                    ${authors} ${year}
-                                    ${venue}
-                                    ${url}
-                                </div>
-                            </div>
-                        `;
-                    }
-                    
-                    referencesContainer.innerHTML += refHtml;
                 });
             }
             
@@ -1760,10 +1915,21 @@
                         return;
                     }
                     
+                    // Only show breadcrumbs if there's more than one level in the path
+                    if (pathData.path.length <= 1) {
+                        breadcrumbContainer.innerHTML = '';
+                        return;
+                    }
+                    
                     // Build breadcrumb HTML
                     let breadcrumbHtml = '';
                     
                     pathData.path.forEach((node, index) => {
+                        // Skip showing duplicate node names in succession
+                        if (index > 0 && node.name === pathData.path[index-1].name) {
+                            return;
+                        }
+                        
                         // For each node in the path
                         const isLast = index === pathData.path.length - 1;
                         
@@ -1828,39 +1994,62 @@
                 }
             }
             
+            // Ensure a node and its parents are visible (expanded)
+            ensureNodeVisible(nodeData) {
+                if (!nodeData || !nodeData.parent) return;
+                
+                console.log(`Ensuring node ${nodeData.id} with parent ${nodeData.parent} is visible`);
+                
+                // Check if parent exists and add to expanded nodes
+                const parentId = nodeData.parent;
+                if (parentId && !this.expandedNodes.has(parentId)) {
+                    console.log(`Adding parent ${parentId} to expanded nodes`);
+                    
+                    // Add parent to expanded nodes
+                    this.expandedNodes.add(parentId);
+                    
+                    // Get parent node data
+                    const parentNode = this.graphData.nodes.find(n => n.id === parentId);
+                    if (parentNode) {
+                        // Recursively expand parent's parents if needed
+                        this.ensureNodeVisible(parentNode);
+                    }
+                }
+            }
+            
             // Navigate to a specific node in the visualization
             navigateToNode(nodeData) {
                 if (!nodeData) return;
                 
-                // Make sure node is visible (expanded parent chain)
-                this.ensureNodeVisible(nodeData);
+                console.log(`Navigating to node: ${nodeData.name} (${nodeData.id})`);
                 
-                // Select the node
+                // Make sure node and its parents are visible (expanded)
+                if (nodeData.parent) {
+                    this.ensureNodeVisible(nodeData);
+                }
+                
+                // If this node has children but isn't expanded, expand it
+                if (!this.expandedNodes.has(nodeData.id)) {
+                    console.log(`Expanding node ${nodeData.id}`);
+                    this.expandedNodes.add(nodeData.id);
+                    
+                    // Update the visualization with newly expanded node
+                    const visibleNodes = this.getVisibleNodes();
+                    this.positionNodes(visibleNodes);
+                    this.createNodeObjects(visibleNodes);
+                    this.createLinkObjects(this.getVisibleLinks(visibleNodes));
+                    this.setupNodeAnimations(visibleNodes);
+                }
+                
+                // Select the node to show details
                 this.selectNode(nodeData);
                 
-                // Get node position
+                // Get position from nodePositions
                 const position = this.nodePositions.get(nodeData.id);
                 if (position) {
-                    // Navigate camera to node
                     this.navigateToPosition(position.x, position.y, position.z);
-                }
-            }
-            
-            // Ensure a node is visible by expanding all of its parent nodes
-            ensureNodeVisible(nodeData) {
-                if (!nodeData || !nodeData.id) return;
-                
-                console.log(`Ensuring node ${nodeData.id} is visible`);
-                
-                // Add this node to expanded nodes
-                this.expandedNodes.add(nodeData.id);
-                
-                // If this node has a parent, ensure it's visible too
-                if (nodeData.parent) {
-                    const parentNode = this.graphData.nodes.find(n => n.id === nodeData.parent);
-                    if (parentNode) {
-                        this.ensureNodeVisible(parentNode);
-                    }
+                } else {
+                    console.warn(`Position not found for node ${nodeData.id}`);
                 }
             }
             
@@ -2197,6 +2386,104 @@
                     
                     // Mark geometry as needing update
                     link.geometry.attributes.position.needsUpdate = true;
+                }
+            }
+            
+            // Animate the camera to focus on a specific position
+            animateCameraToPosition(position) {
+                if (!position) return;
+                
+                // Get current camera position
+                const currentPosition = this.camera.position.clone();
+                
+                // Calculate target position - back away from the node a bit
+                const targetPosition = position.clone();
+                targetPosition.z += 300; // Move back to see the node
+                
+                // Setup the animation with TWEEN
+                new TWEEN.Tween(currentPosition)
+                    .to(targetPosition, 800)
+                    .easing(TWEEN.Easing.Cubic.InOut)
+                    .onUpdate(() => {
+                        // Update camera position during animation
+                        this.camera.position.copy(currentPosition);
+                        // Make camera look at the node
+                        this.camera.lookAt(position);
+                    })
+                    .start();
+                
+                // Also animate the lookAt point
+                const currentLookAt = new THREE.Vector3(0, 0, 0);
+                new TWEEN.Tween(currentLookAt)
+                    .to(position, 800)
+                    .easing(TWEEN.Easing.Cubic.InOut)
+                    .onUpdate(() => {
+                        this.camera.lookAt(currentLookAt);
+                    })
+                    .start();
+            }
+            
+            // Navigate back in history
+            navigateBack() {
+                console.log("Navigating back in history");
+                
+                // Check if we can navigate back
+                if (this.currentNodeIndex <= 0) {
+                    console.log("No previous node in history");
+                    return;
+                }
+                
+                // Get the previous node ID
+                this.currentNodeIndex--;
+                const previousNodeId = this.navigationHistory[this.currentNodeIndex];
+                
+                // Set flag to indicate we're navigating through history
+                this._isHistoryNavigation = true;
+                
+                // Find the node data for the previous node
+                const nodeData = this.graphData.nodes.find(n => n.id === previousNodeId);
+                if (nodeData) {
+                    // Navigate to the previous node
+                    console.log(`Going back to: ${nodeData.name} (${nodeData.id})`);
+                    this.selectNode(nodeData);
+                } else {
+                    console.error(`Node with ID ${previousNodeId} not found in graph data`);
+                }
+                
+                // Update back button visibility based on new history position
+                this.updateBackButtonVisibility();
+            }
+            
+            // Update back button visibility based on history state
+            updateBackButtonVisibility() {
+                const backButton = document.getElementById('back-button');
+                if (!backButton) return;
+                
+                // Only show back button if we have history to go back to
+                if (this.currentNodeIndex > 0) {
+                    backButton.classList.remove('hidden');
+                } else {
+                    backButton.classList.add('hidden');
+                }
+            }
+            
+            // Helper method to fetch node details directly from API
+            async fetchNodeDetails(nodeId) {
+                try {
+                    console.log(`Fetching details for node: ${nodeId}`);
+                    const response = await fetch(`/api/details/${nodeId}`);
+                    
+                    if (!response.ok) {
+                        console.error(`Error fetching node details: ${response.status} ${response.statusText}`);
+                        return null;
+                    }
+                    
+                    const data = await response.json();
+                    console.log(`Successfully fetched details for node: ${nodeId}`);
+                    return data;
+                } catch (error) {
+                    console.error(`Error fetching node details: ${error}`);
+                    return null;
                 }
             }
         }
