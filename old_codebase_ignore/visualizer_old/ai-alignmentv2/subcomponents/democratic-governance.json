@@ -1,0 +1,1571 @@
+{
+  "_documentation": "This subcomponent implements systems and structures enabling democratic control, oversight, and decision-making over AI systems throughout their lifecycle, ensuring that AI development and deployment remains accountable to collective human governance rather than narrow interests.",
+  "id": "democratic-governance",
+  "name": "Democratic Governance Structures",
+  "description": "Frameworks that implement democratic oversight and control over AI systems",
+  "type": "subcomponent",
+  "parent": "democratic-alignment",
+  
+  "capabilities": [
+    {
+      "id": "democratic-governance.democratic-structures",
+      "name": "Democratic Decision Structures",
+      "description": "Democratic decision-making structures for AI governance",
+      "implements_component_capabilities": ["democratic-alignment.institutional-implementation"],
+      "type": "capability",
+      "parent": "democratic-governance",
+      "functions": [
+        {
+          "id": "democratic-governance.democratic-structures.democratic-oversight",
+          "name": "Democratic Oversight",
+          "description": "Enable democratic oversight of AI development and deployment",
+          "implements_component_functions": ["democratic-alignment.democratic-oversight"],
+          "type": "function",
+          "parent": "democratic-governance.democratic-structures",
+          "specifications": [
+            {
+              "id": "democratic-governance.democratic-structures.democratic-oversight.oversight-specifications",
+              "name": "Democratic Oversight Specifications",
+              "description": "Technical specifications for implementing democratic oversight of AI systems",
+              "type": "specifications",
+              "parent": "democratic-governance.democratic-structures.democratic-oversight",
+              "requirements": [
+                "Accessibility of technical information to diverse stakeholders",
+                "Structured protocols for democratic review of AI development",
+                "Mechanisms for public input on critical AI decisions",
+                "Transparency in oversight processes and decision-making"
+              ],
+              "integration": {
+                "id": "democratic-governance.democratic-structures.democratic-oversight.oversight-specifications.implementation",
+                "name": "Oversight Implementation Integration",
+                "description": "Integration approach for implementing democratic oversight mechanisms",
+                "type": "integration",
+                "parent": "democratic-governance.democratic-structures.democratic-oversight.oversight-specifications",
+                "techniques": [
+                  {
+                    "id": "democratic-governance.democratic-structures.democratic-oversight.oversight-specifications.implementation.stakeholder-council",
+                    "name": "Stakeholder Council Technique",
+                    "description": "Implements representative stakeholder councils with oversight authority",
+                    "type": "technique",
+                    "parent": "democratic-governance.democratic-structures.democratic-oversight.oversight-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "democratic-governance.democratic-structures.democratic-oversight.oversight-specifications.implementation.stakeholder-council.oversight-board",
+                        "name": "Democratic Oversight Board",
+                        "description": "Formal oversight board with democratic representation and decision authority",
+                        "type": "application",
+                        "parent": "democratic-governance.democratic-structures.democratic-oversight.oversight-specifications.implementation.stakeholder-council",
+                        "inputs": [
+                          {
+                            "name": "AI System Documentation",
+                            "description": "Comprehensive documentation of AI system design, capabilities, and risks",
+                            "data_type": "documentation_package",
+                            "constraints": "Must be accessible to diverse stakeholders with varying technical knowledge"
+                          },
+                          {
+                            "name": "Stakeholder Concerns",
+                            "description": "Structured collection of stakeholder concerns and questions",
+                            "data_type": "concern_registry",
+                            "constraints": "Must include perspectives from affected communities"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Oversight Decisions",
+                            "description": "Formal decisions regarding AI system development, deployment, or modification",
+                            "data_type": "decision_record",
+                            "interpretation": "Represents democratic consensus on AI governance actions"
+                          },
+                          {
+                            "name": "Public Accountability Report",
+                            "description": "Transparent report explaining oversight process and decisions",
+                            "data_type": "public_report",
+                            "interpretation": "Enables public understanding and accountability of oversight actions"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "democratic-governance.democratic-structures.accountable-decision",
+          "name": "Accountable Decision Making",
+          "description": "Implement accountable decision-making procedures for AI governance",
+          "implements_component_functions": ["democratic-alignment.accountability-implementation"],
+          "type": "function",
+          "parent": "democratic-governance.democratic-structures",
+          "specifications": [
+            {
+              "id": "democratic-governance.democratic-structures.accountable-decision.accountability-specifications",
+              "name": "Accountability Specifications",
+              "description": "Technical specifications for implementing accountable decision-making in AI governance",
+              "type": "specifications",
+              "parent": "democratic-governance.democratic-structures.accountable-decision",
+              "requirements": [
+                "Clear decision-making procedures with documented responsibilities",
+                "Transparency in decision rationale and stakeholder input",
+                "Traceability of decisions through governance processes",
+                "Mechanisms for appeal and reconsideration of decisions"
+              ],
+              "integration": {
+                "id": "democratic-governance.democratic-structures.accountable-decision.accountability-specifications.implementation",
+                "name": "Accountability Implementation Integration",
+                "description": "Integration approach for implementing accountable decision-making procedures",
+                "type": "integration",
+                "parent": "democratic-governance.democratic-structures.accountable-decision.accountability-specifications",
+                "techniques": [
+                  {
+                    "id": "democratic-governance.democratic-structures.accountable-decision.accountability-specifications.implementation.decision-protocol",
+                    "name": "Accountable Decision Protocol Technique",
+                    "description": "Implements structured protocols for accountable decision-making",
+                    "type": "technique",
+                    "parent": "democratic-governance.democratic-structures.accountable-decision.accountability-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "democratic-governance.democratic-structures.accountable-decision.accountability-specifications.implementation.decision-protocol.governance-framework",
+                        "name": "AI Governance Framework",
+                        "description": "Comprehensive framework for accountable decision-making in AI governance",
+                        "type": "application",
+                        "parent": "democratic-governance.democratic-structures.accountable-decision.accountability-specifications.implementation.decision-protocol",
+                        "inputs": [
+                          {
+                            "name": "Governance Issue",
+                            "description": "AI governance issue requiring a decision",
+                            "data_type": "issue_specification",
+                            "constraints": "Must include clear problem statement and decision requirements"
+                          },
+                          {
+                            "name": "Stakeholder Input",
+                            "description": "Input from relevant stakeholders regarding the issue",
+                            "data_type": "structured_input",
+                            "constraints": "Must represent diverse perspectives from affected communities"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Decision Record",
+                            "description": "Formal record of the decision with rationale and implementation details",
+                            "data_type": "decision_document",
+                            "interpretation": "Provides accountability through documented decision process and reasoning"
+                          },
+                          {
+                            "name": "Responsibility Assignment",
+                            "description": "Clear assignment of responsibilities for decision implementation",
+                            "data_type": "responsibility_matrix",
+                            "interpretation": "Ensures accountability through clear ownership of action items"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "democratic-governance.multi-stakeholder-oversight",
+      "name": "Multi-stakeholder Oversight",
+      "description": "Oversight mechanisms that involve diverse stakeholders in AI governance",
+      "implements_component_capabilities": ["democratic-alignment.accountability"],
+      "type": "capability",
+      "parent": "democratic-governance",
+      "functions": [
+        {
+          "id": "democratic-governance.multi-stakeholder-oversight.democratic-oversight",
+          "name": "Democratic Oversight",
+          "description": "Establish oversight mechanisms with broad stakeholder representation",
+          "implements_component_functions": ["democratic-alignment.democratic-oversight"],
+          "type": "function",
+          "parent": "democratic-governance.multi-stakeholder-oversight",
+          "specifications": [
+            {
+              "id": "democratic-governance.multi-stakeholder-oversight.democratic-oversight.oversight-specifications",
+              "name": "Multi-stakeholder Oversight Specifications",
+              "description": "Technical specifications for implementing oversight with diverse stakeholder representation",
+              "type": "specifications",
+              "parent": "democratic-governance.multi-stakeholder-oversight.democratic-oversight",
+              "requirements": [
+                "Inclusive stakeholder identification and selection processes",
+                "Equitable distribution of oversight authority among stakeholders",
+                "Diverse representation across demographic and interest groups",
+                "Mechanisms to prevent capture by powerful interests"
+              ],
+              "integration": {
+                "id": "democratic-governance.multi-stakeholder-oversight.democratic-oversight.oversight-specifications.implementation",
+                "name": "Multi-stakeholder Implementation Integration",
+                "description": "Integration approach for implementing multi-stakeholder oversight mechanisms",
+                "type": "integration",
+                "parent": "democratic-governance.multi-stakeholder-oversight.democratic-oversight.oversight-specifications",
+                "techniques": [
+                  {
+                    "id": "democratic-governance.multi-stakeholder-oversight.democratic-oversight.oversight-specifications.implementation.representative-body",
+                    "name": "Representative Oversight Body Technique",
+                    "description": "Implements diverse stakeholder representation in oversight bodies",
+                    "type": "technique",
+                    "parent": "democratic-governance.multi-stakeholder-oversight.democratic-oversight.oversight-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "democratic-governance.multi-stakeholder-oversight.democratic-oversight.oversight-specifications.implementation.representative-body.oversight-assembly",
+                        "name": "Multi-stakeholder Oversight Assembly",
+                        "description": "Assembly model for inclusive stakeholder oversight of AI systems",
+                        "type": "application",
+                        "parent": "democratic-governance.multi-stakeholder-oversight.democratic-oversight.oversight-specifications.implementation.representative-body",
+                        "inputs": [
+                          {
+                            "name": "Stakeholder Analysis",
+                            "description": "Analysis of stakeholder groups affected by the AI system",
+                            "data_type": "stakeholder_map",
+                            "constraints": "Must include marginalized and underrepresented groups"
+                          },
+                          {
+                            "name": "Oversight Agenda",
+                            "description": "Structured agenda of oversight priorities and concerns",
+                            "data_type": "oversight_agenda",
+                            "constraints": "Must address concerns from all identified stakeholder groups"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Oversight Recommendations",
+                            "description": "Formal recommendations from diverse stakeholder perspectives",
+                            "data_type": "recommendation_set",
+                            "interpretation": "Represents consensus across diverse stakeholder views"
+                          },
+                          {
+                            "name": "Stakeholder Perspectives Report",
+                            "description": "Documentation of stakeholder perspectives and concerns",
+                            "data_type": "perspective_report",
+                            "interpretation": "Ensures visibility of diverse viewpoints in oversight process"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "democratic-governance.multi-stakeholder-oversight.power-sharing",
+          "name": "Power Sharing",
+          "description": "Implement power-sharing arrangements for AI control",
+          "implements_component_functions": ["democratic-alignment.power-distribution"],
+          "type": "function",
+          "parent": "democratic-governance.multi-stakeholder-oversight",
+          "specifications": [
+            {
+              "id": "democratic-governance.multi-stakeholder-oversight.power-sharing.power-specifications",
+              "name": "Power Sharing Specifications",
+              "description": "Technical specifications for implementing power-sharing in AI governance",
+              "type": "specifications",
+              "parent": "democratic-governance.multi-stakeholder-oversight.power-sharing",
+              "requirements": [
+                "Distributed decision-making authority across stakeholder groups",
+                "Checks and balances in governance structures",
+                "Veto powers for affected communities on critical decisions",
+                "Rotation of leadership positions among stakeholders"
+              ],
+              "integration": {
+                "id": "democratic-governance.multi-stakeholder-oversight.power-sharing.power-specifications.implementation",
+                "name": "Power Sharing Implementation Integration",
+                "description": "Integration approach for implementing power-sharing arrangements",
+                "type": "integration",
+                "parent": "democratic-governance.multi-stakeholder-oversight.power-sharing.power-specifications",
+                "techniques": [
+                  {
+                    "id": "democratic-governance.multi-stakeholder-oversight.power-sharing.power-specifications.implementation.distributed-authority",
+                    "name": "Distributed Authority Technique",
+                    "description": "Implements distributed decision authority across stakeholder groups",
+                    "type": "technique",
+                    "parent": "democratic-governance.multi-stakeholder-oversight.power-sharing.power-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "democratic-governance.multi-stakeholder-oversight.power-sharing.power-specifications.implementation.distributed-authority.governance-structure",
+                        "name": "Distributed Governance Structure",
+                        "description": "Governance structure with distributed authority across stakeholder groups",
+                        "type": "application",
+                        "parent": "democratic-governance.multi-stakeholder-oversight.power-sharing.power-specifications.implementation.distributed-authority",
+                        "inputs": [
+                          {
+                            "name": "Stakeholder Power Analysis",
+                            "description": "Analysis of power dynamics among stakeholder groups",
+                            "data_type": "power_analysis",
+                            "constraints": "Must identify existing power imbalances among stakeholders"
+                          },
+                          {
+                            "name": "Decision Domain Map",
+                            "description": "Map of decision domains requiring power-sharing arrangements",
+                            "data_type": "domain_map",
+                            "constraints": "Must include all critical AI governance decisions"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Power Distribution Framework",
+                            "description": "Framework defining how authority is distributed among stakeholders",
+                            "data_type": "governance_framework",
+                            "interpretation": "Ensures equitable distribution of decision power"
+                          },
+                          {
+                            "name": "Authority Assignment Matrix",
+                            "description": "Matrix showing authority assignments across decision domains",
+                            "data_type": "authority_matrix",
+                            "interpretation": "Provides transparent view of power distribution"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "supported_by_literature": ["Allen2021", "Warren2007", "Mansbridge2012"]
+    },
+    {
+      "id": "democratic-governance.governance-transparency",
+      "name": "Governance Transparency",
+      "description": "Transparent AI governance processes",
+      "implements_component_capabilities": ["democratic-alignment.transparency"],
+      "type": "capability",
+      "parent": "democratic-governance",
+      "functions": [
+        {
+          "id": "democratic-governance.governance-transparency.democratic-contestation",
+          "name": "Democratic Contestation",
+          "description": "Enable democratic contestation of AI system decisions and outcomes",
+          "implements_component_functions": ["democratic-alignment.democratic-governance"],
+          "type": "function",
+          "parent": "democratic-governance.governance-transparency",
+          "specifications": [
+            {
+              "id": "democratic-governance.governance-transparency.democratic-contestation.contestation-specifications",
+              "name": "Democratic Contestation Specifications",
+              "description": "Technical specifications for enabling democratic contestation of AI systems",
+              "type": "specifications",
+              "parent": "democratic-governance.governance-transparency.democratic-contestation",
+              "requirements": [
+                "Accessible mechanisms for challenging AI decisions and outcomes",
+                "Transparent explanation of AI system behavior and decision rationale",
+                "Formal processes for addressing contestations and grievances",
+                "Public forums for democratic deliberation on contested issues"
+              ],
+              "integration": {
+                "id": "democratic-governance.governance-transparency.democratic-contestation.contestation-specifications.implementation",
+                "name": "Contestation Implementation Integration",
+                "description": "Integration approach for implementing democratic contestation mechanisms",
+                "type": "integration",
+                "parent": "democratic-governance.governance-transparency.democratic-contestation.contestation-specifications",
+                "techniques": [
+                  {
+                    "id": "democratic-governance.governance-transparency.democratic-contestation.contestation-specifications.implementation.contestation-forum",
+                    "name": "Contestation Forum Technique",
+                    "description": "Implements forums for democratic contestation of AI systems",
+                    "type": "technique",
+                    "parent": "democratic-governance.governance-transparency.democratic-contestation.contestation-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "democratic-governance.governance-transparency.democratic-contestation.contestation-specifications.implementation.contestation-forum.public-challenge",
+                        "name": "Public Challenge System",
+                        "description": "System enabling public challenges to AI system decisions and behavior",
+                        "type": "application",
+                        "parent": "democratic-governance.governance-transparency.democratic-contestation.contestation-specifications.implementation.contestation-forum",
+                        "inputs": [
+                          {
+                            "name": "Contestation Submission",
+                            "description": "Formal submission challenging an AI system decision or behavior",
+                            "data_type": "contestation_form",
+                            "constraints": "Must be accessible to affected individuals with varying technical knowledge"
+                          },
+                          {
+                            "name": "System Explanation",
+                            "description": "Explanation of the contested AI system behavior or decision",
+                            "data_type": "system_explanation",
+                            "constraints": "Must provide sufficient technical detail while remaining accessible"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Contestation Response",
+                            "description": "Formal response to the contestation with decision and rationale",
+                            "data_type": "response_document",
+                            "interpretation": "Demonstrates responsiveness to democratic contestation"
+                          },
+                          {
+                            "name": "System Improvement Action",
+                            "description": "Action taken to address valid contestations",
+                            "data_type": "improvement_plan",
+                            "interpretation": "Shows how contestation leads to concrete system improvements"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "democratic-governance.governance-transparency.transparency-maintenance",
+          "name": "Transparency Maintenance",
+          "description": "Maintain transparency in AI governance processes",
+          "implements_component_functions": ["democratic-alignment.transparency-implementation"],
+          "type": "function",
+          "parent": "democratic-governance.governance-transparency",
+          "specifications": [
+            {
+              "id": "democratic-governance.governance-transparency.transparency-maintenance.transparency-specifications",
+              "name": "Transparency Maintenance Specifications",
+              "description": "Technical specifications for maintaining transparency in AI governance processes",
+              "type": "specifications",
+              "parent": "democratic-governance.governance-transparency.transparency-maintenance",
+              "requirements": [
+                "Accessible documentation of governance decisions and processes",
+                "Regular public reporting on AI system operations and impacts",
+                "Clear communication channels for stakeholder inquiries",
+                "Proactive disclosure of relevant governance information"
+              ],
+              "integration": {
+                "id": "democratic-governance.governance-transparency.transparency-maintenance.transparency-specifications.implementation",
+                "name": "Transparency Implementation Integration",
+                "description": "Integration approach for implementing transparency maintenance mechanisms",
+                "type": "integration",
+                "parent": "democratic-governance.governance-transparency.transparency-maintenance.transparency-specifications",
+                "techniques": [
+                  {
+                    "id": "democratic-governance.governance-transparency.transparency-maintenance.transparency-specifications.implementation.disclosure-protocol",
+                    "name": "Transparency Disclosure Protocol Technique",
+                    "description": "Implements structured protocols for transparent information disclosure",
+                    "type": "technique",
+                    "parent": "democratic-governance.governance-transparency.transparency-maintenance.transparency-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "democratic-governance.governance-transparency.transparency-maintenance.transparency-specifications.implementation.disclosure-protocol.transparency-system",
+                        "name": "AI Governance Transparency System",
+                        "description": "Comprehensive system for maintaining transparency in AI governance",
+                        "type": "application",
+                        "parent": "democratic-governance.governance-transparency.transparency-maintenance.transparency-specifications.implementation.disclosure-protocol",
+                        "inputs": [
+                          {
+                            "name": "Governance Activities",
+                            "description": "Data on AI governance activities and decisions",
+                            "data_type": "governance_data",
+                            "constraints": "Must include all relevant decision points and processes"
+                          },
+                          {
+                            "name": "Stakeholder Requests",
+                            "description": "Information requests from various stakeholders",
+                            "data_type": "information_request",
+                            "constraints": "Must track and address all reasonable information requests"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Transparency Reports",
+                            "description": "Regular public reports on governance activities",
+                            "data_type": "transparency_report",
+                            "interpretation": "Demonstrates commitment to public accountability"
+                          },
+                          {
+                            "name": "Information Access Portal",
+                            "description": "Public access point for governance information",
+                            "data_type": "information_portal",
+                            "interpretation": "Enables stakeholders to access relevant governance information"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "supported_by_literature": ["Diakopoulos2021", "Mulgan2021", "Askell2019"]
+    },
+    {
+      "id": "democratic-governance.inclusive-participation",
+      "name": "Inclusive Participation",
+      "description": "Inclusive participation in AI governance decisions",
+      "implements_component_capabilities": ["democratic-alignment.participatory-processes"],
+      "type": "capability",
+      "parent": "democratic-governance",
+      "functions": [
+        {
+          "id": "democratic-governance.inclusive-participation.community-representation",
+          "name": "Community Representation",
+          "description": "Ensure representation of affected communities in AI governance",
+          "implements_component_functions": ["democratic-alignment.diverse-representation"],
+          "type": "function",
+          "parent": "democratic-governance.inclusive-participation",
+          "specifications": [
+            {
+              "id": "democratic-governance.inclusive-participation.community-representation.representation-specifications",
+              "name": "Community Representation Specifications",
+              "description": "Technical specifications for ensuring representation of affected communities in AI governance",
+              "type": "specifications",
+              "parent": "democratic-governance.inclusive-participation.community-representation",
+              "requirements": [
+                "Systematic identification of affected communities and stakeholders",
+                "Equitable selection processes for community representatives",
+                "Accessible participation mechanisms for diverse communities",
+                "Meaningful influence of community representatives in governance decisions"
+              ],
+              "integration": {
+                "id": "democratic-governance.inclusive-participation.community-representation.representation-specifications.implementation",
+                "name": "Community Representation Implementation",
+                "description": "Integration approach for implementing community representation in AI governance",
+                "type": "integration",
+                "parent": "democratic-governance.inclusive-participation.community-representation.representation-specifications",
+                "techniques": [
+                  {
+                    "id": "democratic-governance.inclusive-participation.community-representation.representation-specifications.implementation.representation-system",
+                    "name": "Community Representation System Technique",
+                    "description": "Implements structured systems for community representation in AI governance",
+                    "type": "technique",
+                    "parent": "democratic-governance.inclusive-participation.community-representation.representation-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "democratic-governance.inclusive-participation.community-representation.representation-specifications.implementation.representation-system.community-board",
+                        "name": "Community Representation Board",
+                        "description": "Formal board structure ensuring diverse community representation in AI governance",
+                        "type": "application",
+                        "parent": "democratic-governance.inclusive-participation.community-representation.representation-specifications.implementation.representation-system",
+                        "inputs": [
+                          {
+                            "name": "Stakeholder Analysis",
+                            "description": "Analysis of affected communities and stakeholder groups",
+                            "data_type": "stakeholder_map",
+                            "constraints": "Must include marginalized and underrepresented communities"
+                          },
+                          {
+                            "name": "Community Input",
+                            "description": "Input from community members on concerns and priorities",
+                            "data_type": "structured_input",
+                            "constraints": "Must be collected through accessible channels for diverse communities"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Representative Governance Decisions",
+                            "description": "Governance decisions reflecting community perspectives",
+                            "data_type": "decision_record",
+                            "interpretation": "Demonstrates inclusion of diverse community perspectives in governance"
+                          },
+                          {
+                            "name": "Community Feedback Channels",
+                            "description": "Established channels for ongoing feedback from communities",
+                            "data_type": "feedback_system",
+                            "interpretation": "Enables continuous community influence in governance processes"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "democratic-governance.inclusive-participation.democratic-contestation",
+          "name": "Democratic Contestation",
+          "description": "Enable democratic contestation of AI system decisions and outcomes",
+          "implements_component_functions": ["democratic-alignment.democratic-governance"],
+          "type": "function",
+          "parent": "democratic-governance.inclusive-participation",
+          "specifications": [
+            {
+              "id": "democratic-governance.inclusive-participation.democratic-contestation.contestation-specifications",
+              "name": "Democratic Contestation Specifications",
+              "description": "Technical specifications for enabling democratic contestation of AI system decisions",
+              "type": "specifications",
+              "parent": "democratic-governance.inclusive-participation.democratic-contestation",
+              "requirements": [
+                "Accessible mechanisms for challenging AI decisions and outcomes",
+                "Clear procedures for submitting and processing contestations",
+                "Transparent adjudication processes for contested decisions",
+                "Capabilities for remediation when contestations are upheld"
+              ],
+              "integration": {
+                "id": "democratic-governance.inclusive-participation.democratic-contestation.contestation-specifications.implementation",
+                "name": "Contestation Implementation Integration",
+                "description": "Integration approach for implementing democratic contestation mechanisms",
+                "type": "integration",
+                "parent": "democratic-governance.inclusive-participation.democratic-contestation.contestation-specifications",
+                "techniques": [
+                  {
+                    "id": "democratic-governance.inclusive-participation.democratic-contestation.contestation-specifications.implementation.contestation-system",
+                    "name": "Contestation System Technique",
+                    "description": "Implements structured systems for democratic contestation of AI decisions",
+                    "type": "technique",
+                    "parent": "democratic-governance.inclusive-participation.democratic-contestation.contestation-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "democratic-governance.inclusive-participation.democratic-contestation.contestation-specifications.implementation.contestation-system.decision-appeal",
+                        "name": "AI Decision Appeal System",
+                        "description": "System enabling democratic contestation and appeal of AI decisions",
+                        "type": "application",
+                        "parent": "democratic-governance.inclusive-participation.democratic-contestation.contestation-specifications.implementation.contestation-system",
+                        "inputs": [
+                          {
+                            "name": "Contestation Submission",
+                            "description": "Formal submission contesting an AI system decision",
+                            "data_type": "contestation_record",
+                            "constraints": "Must be accessible to all affected stakeholders"
+                          },
+                          {
+                            "name": "Decision Context",
+                            "description": "Contextual information about the contested decision",
+                            "data_type": "decision_context",
+                            "constraints": "Must include explanation of the AI decision-making process"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Contestation Response",
+                            "description": "Formal response to the contestation with decision and rationale",
+                            "data_type": "response_document",
+                            "interpretation": "Demonstrates responsiveness to democratic contestation"
+                          },
+                          {
+                            "name": "System Adjustment",
+                            "description": "Adjustments to AI system based on valid contestations",
+                            "data_type": "adjustment_plan",
+                            "interpretation": "Shows how contestation leads to concrete system improvements"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "supported_by_literature": ["Fung2003", "Young2002", "Costanza-Chock2020"]
+    },
+    {
+      "id": "democratic-governance.balanced-power",
+      "name": "Balanced Power Distribution",
+      "description": "Balanced power distribution in AI governance",
+      "implements_component_capabilities": ["democratic-alignment.inclusive-representation"],
+      "type": "capability",
+      "parent": "democratic-governance",
+      "functions": [
+        {
+          "id": "democratic-governance.balanced-power.power-sharing",
+          "name": "Power Sharing",
+          "description": "Implement power-sharing arrangements for AI control",
+          "implements_component_functions": ["democratic-alignment.power-distribution"],
+          "type": "function",
+          "parent": "democratic-governance.balanced-power",
+          "specifications": [
+            {
+              "id": "democratic-governance.balanced-power.power-sharing.power-specifications",
+              "name": "Power Sharing Specifications",
+              "description": "Technical specifications for implementing power-sharing arrangements in AI governance",
+              "type": "specifications",
+              "parent": "democratic-governance.balanced-power.power-sharing",
+              "requirements": [
+                "Distributed authority over key AI system decision points",
+                "Balanced representation across stakeholder groups in decision-making",
+                "Checks and balances to prevent concentration of power",
+                "Transparent mechanisms for resolving power conflicts"
+              ],
+              "integration": {
+                "id": "democratic-governance.balanced-power.power-sharing.power-specifications.implementation",
+                "name": "Power Sharing Implementation Integration",
+                "description": "Integration approach for implementing power-sharing arrangements in AI governance",
+                "type": "integration",
+                "parent": "democratic-governance.balanced-power.power-sharing.power-specifications",
+                "techniques": [
+                  {
+                    "id": "democratic-governance.balanced-power.power-sharing.power-specifications.implementation.distributed-authority",
+                    "name": "Distributed Authority Technique",
+                    "description": "Implements distributed authority mechanisms across stakeholder groups",
+                    "type": "technique",
+                    "parent": "democratic-governance.balanced-power.power-sharing.power-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "democratic-governance.balanced-power.power-sharing.power-specifications.implementation.distributed-authority.governance-consensus",
+                        "name": "Distributed Governance Consensus System",
+                        "description": "System for distributing governance authority across stakeholder groups",
+                        "type": "application",
+                        "parent": "democratic-governance.balanced-power.power-sharing.power-specifications.implementation.distributed-authority",
+                        "inputs": [
+                          {
+                            "name": "Governance Decision Points",
+                            "description": "Key decision points in AI system governance",
+                            "data_type": "decision_points",
+                            "constraints": "Must identify all critical control points in the AI system"
+                          },
+                          {
+                            "name": "Stakeholder Authority Map",
+                            "description": "Mapping of stakeholder groups to governance authorities",
+                            "data_type": "authority_map",
+                            "constraints": "Must ensure balanced distribution of power"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Consensus Decisions",
+                            "description": "Governance decisions requiring multi-stakeholder consensus",
+                            "data_type": "consensus_record",
+                            "interpretation": "Demonstrates distributed governance authority"
+                          },
+                          {
+                            "name": "Power Balance Metrics",
+                            "description": "Metrics tracking the balance of power in governance",
+                            "data_type": "balance_metrics",
+                            "interpretation": "Ensures ongoing monitoring of power distribution"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "democratic-governance.balanced-power.community-representation",
+          "name": "Community Representation",
+          "description": "Ensure representation of affected communities in AI governance",
+          "implements_component_functions": ["democratic-alignment.diverse-representation"],
+          "type": "function",
+          "parent": "democratic-governance.balanced-power",
+          "specifications": [
+            {
+              "id": "democratic-governance.balanced-power.community-representation.representation-specifications",
+              "name": "Community Representation Specifications",
+              "description": "Technical specifications for ensuring representation of affected communities in AI governance",
+              "type": "specifications",
+              "parent": "democratic-governance.balanced-power.community-representation",
+              "requirements": [
+                "Inclusive identification of affected communities and stakeholders",
+                "Equitable selection processes for community representatives",
+                "Meaningful decision influence for represented communities",
+                "Structural changes to distribute power to underrepresented groups"
+              ],
+              "integration": {
+                "id": "democratic-governance.balanced-power.community-representation.representation-specifications.implementation",
+                "name": "Community Representation Implementation",
+                "description": "Integration approach for ensuring community representation in power-balanced governance",
+                "type": "integration",
+                "parent": "democratic-governance.balanced-power.community-representation.representation-specifications",
+                "techniques": [
+                  {
+                    "id": "democratic-governance.balanced-power.community-representation.representation-specifications.implementation.representative-authority",
+                    "name": "Representative Authority Technique",
+                    "description": "Implements mechanisms giving representative authority to affected communities",
+                    "type": "technique",
+                    "parent": "democratic-governance.balanced-power.community-representation.representation-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "democratic-governance.balanced-power.community-representation.representation-specifications.implementation.representative-authority.governance-panel",
+                        "name": "Community Governance Panel",
+                        "description": "Panel structure giving governance authority to community representatives",
+                        "type": "application",
+                        "parent": "democratic-governance.balanced-power.community-representation.representation-specifications.implementation.representative-authority",
+                        "inputs": [
+                          {
+                            "name": "Community Impact Assessment",
+                            "description": "Assessment of how AI systems affect various communities",
+                            "data_type": "impact_assessment",
+                            "constraints": "Must identify impacts on marginalized and vulnerable groups"
+                          },
+                          {
+                            "name": "Representative Selection Process",
+                            "description": "Process for selecting legitimate community representatives",
+                            "data_type": "selection_protocol",
+                            "constraints": "Must be transparent and resistant to capture by powerful interests"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Community-Informed Decisions",
+                            "description": "Governance decisions informed by community representatives",
+                            "data_type": "decision_record",
+                            "interpretation": "Demonstrates community influence in governance"
+                          },
+                          {
+                            "name": "Representation Metrics",
+                            "description": "Metrics tracking the quality of community representation",
+                            "data_type": "representation_metrics",
+                            "interpretation": "Measures effectiveness of community representation"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "supported_by_literature": ["Fraser2009", "Crawford2021", "Benjamin2019"]
+    },
+    {
+      "id": "democratic-governance.democratic-control",
+      "name": "Democratic Control Mechanisms",
+      "description": "Democratic control over critical AI parameters and capabilities",
+      "implements_component_capabilities": ["democratic-alignment.control-mechanisms"],
+      "type": "capability",
+      "parent": "democratic-governance",
+      "functions": [
+        {
+          "id": "democratic-governance.democratic-control.democratic-oversight",
+          "name": "Democratic Oversight",
+          "description": "Enable democratic oversight of AI development and deployment",
+          "implements_component_functions": ["democratic-alignment.democratic-oversight"],
+          "type": "function",
+          "parent": "democratic-governance.democratic-control",
+          "specifications": [
+            {
+              "id": "democratic-governance.democratic-control.democratic-oversight.oversight-specifications",
+              "name": "Democratic Oversight Specifications",
+              "description": "Technical specifications for enabling democratic oversight of AI systems",
+              "type": "specifications",
+              "parent": "democratic-governance.democratic-control.democratic-oversight",
+              "requirements": [
+                "Effective mechanisms for democratic control over AI decisions",
+                "Transparency in AI operations for meaningful oversight",
+                "Authority to intervene in AI operations when necessary",
+                "Accountability structures for oversight bodies"
+              ],
+              "integration": {
+                "id": "democratic-governance.democratic-control.democratic-oversight.oversight-specifications.implementation",
+                "name": "Democratic Oversight Implementation",
+                "description": "Integration approach for implementing democratic oversight mechanisms",
+                "type": "integration",
+                "parent": "democratic-governance.democratic-control.democratic-oversight.oversight-specifications",
+                "techniques": [
+                  {
+                    "id": "democratic-governance.democratic-control.democratic-oversight.oversight-specifications.implementation.oversight-authority",
+                    "name": "Oversight Authority Technique",
+                    "description": "Implements authority mechanisms for democratic oversight of AI systems",
+                    "type": "technique",
+                    "parent": "democratic-governance.democratic-control.democratic-oversight.oversight-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "democratic-governance.democratic-control.democratic-oversight.oversight-specifications.implementation.oversight-authority.control-framework",
+                        "name": "Democratic Control Framework",
+                        "description": "Framework providing democratic oversight bodies with control over AI systems",
+                        "type": "application",
+                        "parent": "democratic-governance.democratic-control.democratic-oversight.oversight-specifications.implementation.oversight-authority",
+                        "inputs": [
+                          {
+                            "name": "AI System Information",
+                            "description": "Comprehensive information about AI system operations",
+                            "data_type": "system_information",
+                            "constraints": "Must include all critical aspects of AI functioning and decision-making"
+                          },
+                          {
+                            "name": "Oversight Directives",
+                            "description": "Directives from democratic oversight bodies",
+                            "data_type": "oversight_directive",
+                            "constraints": "Must be implementable and verifiable"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Oversight Reports",
+                            "description": "Regular reports on oversight activities and findings",
+                            "data_type": "oversight_report",
+                            "interpretation": "Documents oversight actions and their effectiveness"
+                          },
+                          {
+                            "name": "Control Interventions",
+                            "description": "Interventions in AI system operations when necessary",
+                            "data_type": "intervention_record",
+                            "interpretation": "Demonstrates ability to exert meaningful democratic control"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "democratic-governance.democratic-control.accountable-decision",
+          "name": "Accountable Decision-making",
+          "description": "Establish accountable decision-making processes for AI governance",
+          "implements_component_functions": ["democratic-alignment.accountability-implementation"],
+          "type": "function",
+          "parent": "democratic-governance.democratic-control",
+          "specifications": [
+            {
+              "id": "democratic-governance.democratic-control.accountable-decision.accountability-specifications",
+              "name": "Accountable Decision-making Specifications",
+              "description": "Technical specifications for establishing accountable decision-making in AI governance",
+              "type": "specifications",
+              "parent": "democratic-governance.democratic-control.accountable-decision",
+              "requirements": [
+                "Clear attribution of responsibility for AI governance decisions",
+                "Transparent decision-making processes with documented rationales",
+                "Mechanisms for holding decision-makers accountable for outcomes",
+                "Accessible processes for stakeholders to question decisions"
+              ],
+              "integration": {
+                "id": "democratic-governance.democratic-control.accountable-decision.accountability-specifications.implementation",
+                "name": "Accountability Implementation Integration",
+                "description": "Integration approach for implementing accountable decision-making processes",
+                "type": "integration",
+                "parent": "democratic-governance.democratic-control.accountable-decision.accountability-specifications",
+                "techniques": [
+                  {
+                    "id": "democratic-governance.democratic-control.accountable-decision.accountability-specifications.implementation.accountability-framework",
+                    "name": "Accountability Framework Technique",
+                    "description": "Implements structured frameworks for accountable decision-making",
+                    "type": "technique",
+                    "parent": "democratic-governance.democratic-control.accountable-decision.accountability-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "democratic-governance.democratic-control.accountable-decision.accountability-specifications.implementation.accountability-framework.decision-system",
+                        "name": "Accountable Decision System",
+                        "description": "System ensuring accountability in AI governance decision-making",
+                        "type": "application",
+                        "parent": "democratic-governance.democratic-control.accountable-decision.accountability-specifications.implementation.accountability-framework",
+                        "inputs": [
+                          {
+                            "name": "Decision Context",
+                            "description": "Information about the decision context and alternatives",
+                            "data_type": "decision_context",
+                            "constraints": "Must include comprehensive information for informed decision-making"
+                          },
+                          {
+                            "name": "Stakeholder Input",
+                            "description": "Input from affected stakeholders regarding the decision",
+                            "data_type": "stakeholder_input",
+                            "constraints": "Must represent diverse perspectives from affected communities"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Decision Record",
+                            "description": "Detailed record of the decision with rationale and responsible parties",
+                            "data_type": "accountability_record",
+                            "interpretation": "Establishes clear accountability for decisions made"
+                          },
+                          {
+                            "name": "Outcome Tracking",
+                            "description": "Tracking of decision outcomes for accountability assessment",
+                            "data_type": "outcome_tracker",
+                            "interpretation": "Enables evaluation of decision quality and accountability"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "supported_by_literature": ["Vaina2020", "Askell2019", "Selbst2019"]
+    },
+    {
+      "id": "democratic-governance.representation-facilitation",
+      "name": "Representation Facilitation",
+      "description": "Facilitate diverse stakeholder representation in AI governance",
+      "implements_component_functions": ["democratic-alignment.participation-facilitation"],
+      "type": "function",
+      "parent": "democratic-governance",
+      "specifications": [
+        {
+          "id": "democratic-governance.representation-facilitation.facilitation-specifications",
+          "name": "Representation Facilitation Specifications",
+          "description": "Technical specifications for facilitating diverse stakeholder representation",
+          "type": "specifications",
+          "parent": "democratic-governance.representation-facilitation",
+          "requirements": [
+            "Processes for identifying and recruiting diverse stakeholders",
+            "Support mechanisms for meaningful participation by all stakeholders",
+            "Methods for balancing power and influence among stakeholder groups",
+            "Ongoing engagement frameworks for sustained representation"
+          ],
+          "integration": {
+            "id": "democratic-governance.representation-facilitation.facilitation-specifications.implementation",
+            "name": "Facilitation Implementation Integration",
+            "description": "Integration approach for implementing representation facilitation",
+            "type": "integration",
+            "parent": "democratic-governance.representation-facilitation.facilitation-specifications",
+            "techniques": [
+              {
+                "id": "democratic-governance.representation-facilitation.facilitation-specifications.implementation.stakeholder-recruitment",
+                "name": "Stakeholder Recruitment Technique",
+                "description": "Techniques for identifying and recruiting diverse stakeholders",
+                "type": "technique",
+                "parent": "democratic-governance.representation-facilitation.facilitation-specifications.implementation",
+                "applications": [
+                  {
+                    "id": "democratic-governance.representation-facilitation.facilitation-specifications.implementation.stakeholder-recruitment.diverse-outreach",
+                    "name": "Diverse Stakeholder Outreach",
+                    "description": "Systematic outreach methods to engage diverse stakeholders in AI governance",
+                    "type": "application",
+                    "parent": "democratic-governance.representation-facilitation.facilitation-specifications.implementation.stakeholder-recruitment",
+                    "inputs": [
+                      {
+                        "name": "Stakeholder Analysis",
+                        "description": "Analysis of stakeholder groups affected by AI systems",
+                        "data_type": "stakeholder_map",
+                        "constraints": "Must identify underrepresented and marginalized stakeholders"
+                      },
+                      {
+                        "name": "Participation Barriers",
+                        "description": "Assessment of barriers to participation for different stakeholder groups",
+                        "data_type": "barrier_analysis",
+                        "constraints": "Must consider social, economic, and logistical barriers"
+                      }
+                    ],
+                    "outputs": [
+                      {
+                        "name": "Recruitment Strategy",
+                        "description": "Comprehensive strategy for recruiting diverse stakeholders",
+                        "data_type": "recruitment_plan",
+                        "interpretation": "Provides roadmap for inclusive stakeholder engagement"
+                      },
+                      {
+                        "name": "Representation Metrics",
+                        "description": "Metrics for tracking representation across stakeholder groups",
+                        "data_type": "representation_metrics",
+                        "interpretation": "Enables assessment of representation quality and gaps"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "democratic-governance.oversight-implementation",
+      "name": "Oversight Implementation",
+      "description": "Implement oversight mechanisms for democratic control of AI systems",
+      "implements_component_functions": ["democratic-alignment.oversight-implementation"],
+      "type": "function",
+      "parent": "democratic-governance",
+      "specifications": [
+        {
+          "id": "democratic-governance.oversight-implementation.oversight-specifications",
+          "name": "Oversight Implementation Specifications",
+          "description": "Technical specifications for implementing oversight mechanisms",
+          "type": "specifications",
+          "parent": "democratic-governance.oversight-implementation",
+          "requirements": [
+            "Structured processes for reviewing AI system development and deployment",
+            "Mechanisms for detecting non-compliance with governance decisions",
+            "Intervention capabilities for addressing problematic AI behaviors",
+            "Documentation frameworks for oversight activities and outcomes"
+          ],
+          "integration": {
+            "id": "democratic-governance.oversight-implementation.oversight-specifications.implementation",
+            "name": "Oversight Implementation Integration",
+            "description": "Integration approach for implementing oversight mechanisms",
+            "type": "integration",
+            "parent": "democratic-governance.oversight-implementation.oversight-specifications",
+            "techniques": [
+              {
+                "id": "democratic-governance.oversight-implementation.oversight-specifications.implementation.oversight-processes",
+                "name": "Oversight Process Technique",
+                "description": "Techniques for implementing structured oversight processes",
+                "type": "technique",
+                "parent": "democratic-governance.oversight-implementation.oversight-specifications.implementation",
+                "applications": [
+                  {
+                    "id": "democratic-governance.oversight-implementation.oversight-specifications.implementation.oversight-processes.compliance-monitoring",
+                    "name": "Compliance Monitoring System",
+                    "description": "System for monitoring compliance with governance decisions",
+                    "type": "application",
+                    "parent": "democratic-governance.oversight-implementation.oversight-specifications.implementation.oversight-processes",
+                    "inputs": [
+                      {
+                        "name": "Governance Decisions",
+                        "description": "Formal decisions from governance processes",
+                        "data_type": "decision_record",
+                        "constraints": "Must include clear compliance requirements"
+                      },
+                      {
+                        "name": "System Operation Data",
+                        "description": "Data on AI system operations and behaviors",
+                        "data_type": "operation_data",
+                        "constraints": "Must provide sufficient detail for compliance assessment"
+                      }
+                    ],
+                    "outputs": [
+                      {
+                        "name": "Compliance Assessment",
+                        "description": "Assessment of AI system compliance with governance decisions",
+                        "data_type": "compliance_report",
+                        "interpretation": "Documents adherence to democratic governance requirements"
+                      },
+                      {
+                        "name": "Oversight Actions",
+                        "description": "Actions taken based on oversight findings",
+                        "data_type": "action_record",
+                        "interpretation": "Demonstrates responsiveness of oversight mechanisms"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  
+  "cross_connections": [
+    {
+      "source_id": "democratic-governance.democratic-structures",
+      "target_id": "democratic-governance.multi-stakeholder-oversight",
+      "type": "complements",
+      "description": "Democratic structures provide the foundation that multi-stakeholder oversight mechanisms operate within"
+    },
+    {
+      "source_id": "democratic-governance.governance-transparency",
+      "target_id": "democratic-governance.balanced-power",
+      "type": "reinforces",
+      "description": "Transparency reinforces balanced power by ensuring visibility into power dynamics and decision processes"
+    },
+    {
+      "source_id": "democratic-governance.inclusive-participation",
+      "target_id": "democratic-governance.democratic-control",
+      "type": "enables",
+      "description": "Inclusive participation enables effective democratic control by ensuring diverse stakeholder input"
+    },
+    {
+      "source_id": "democratic-governance.democratic-structures.democratic-oversight",
+      "target_id": "democratic-governance.democratic-control.democratic-oversight",
+      "type": "provides_basis_for",
+      "description": "Institutional democratic oversight provides the basis for specific control mechanisms"
+    },
+    {
+      "source_id": "democratic-governance.governance-transparency.democratic-contestation",
+      "target_id": "democratic-governance.inclusive-participation.democratic-contestation",
+      "type": "enables",
+      "description": "Transparent contestation processes enable inclusive contestation from diverse stakeholders"
+    }
+  ],
+  
+  "implementation_considerations": [
+    {
+      "id": "democratic-governance.power-imbalances",
+      "name": "Power Imbalances",
+      "aspect": "Power Dynamics",
+      "considerations": [
+        "Addressing existing power imbalances in AI governance structures",
+        "Preventing capture of governance processes by powerful interests",
+        "Creating mechanisms for empowering marginalized stakeholders",
+        "Balancing expertise-based authority with democratic representation"
+      ],
+      "derives_from_integration_considerations": ["democratic-alignment.power-balance", "democratic-alignment.inclusive-governance"],
+      "addressed_by_techniques": ["democratic-governance.multi-stakeholder-oversight.power-sharing.power-specifications.implementation.distributed-authority", "democratic-governance.balanced-power.community-representation.representation-specifications.implementation.representative-authority"],
+      "supported_by_literature": ["Fraser2009", "Crawford2021", "Young2002"]
+    },
+    {
+      "id": "democratic-governance.participation-barriers",
+      "name": "Participation Barriers",
+      "aspect": "Inclusive Access",
+      "considerations": [
+        "Removing technical, educational, and resource barriers to participation",
+        "Ensuring accessibility of governance processes for diverse stakeholders",
+        "Addressing time and capacity constraints for community participation",
+        "Creating multiple channels and methods for meaningful engagement"
+      ],
+      "derives_from_integration_considerations": ["democratic-alignment.accessibility", "democratic-alignment.diverse-participation"],
+      "addressed_by_techniques": ["democratic-governance.inclusive-participation.community-representation.representation-specifications.implementation.representation-system", "democratic-governance.governance-transparency.transparency-maintenance.transparency-specifications.implementation.disclosure-protocol"],
+      "supported_by_literature": ["Fung2003", "Costanza-Chock2020", "Young2002"]
+    },
+    {
+      "id": "democratic-governance.expertise-integration",
+      "name": "Expertise Integration",
+      "aspect": "Knowledge Balance",
+      "considerations": [
+        "Balancing technical expertise with diverse stakeholder perspectives",
+        "Making complex AI systems understandable for democratic governance",
+        "Ensuring technical experts remain accountable to democratic processes",
+        "Creating collaborative spaces for experts and non-experts"
+      ],
+      "derives_from_integration_considerations": ["democratic-alignment.knowledge-translation", "democratic-alignment.democratic-expertise"],
+      "addressed_by_techniques": ["democratic-governance.democratic-structures.democratic-oversight.oversight-specifications.implementation.stakeholder-council", "democratic-governance.governance-transparency.democratic-contestation.contestation-specifications.implementation.contestation-forum"],
+      "supported_by_literature": ["Allen2021", "Mulgan2021", "Vaina2020"]
+    },
+    {
+      "id": "democratic-governance.procedural-justice",
+      "name": "Procedural Justice",
+      "aspect": "Process Fairness",
+      "considerations": [
+        "Ensuring fairness in governance processes and decision-making",
+        "Creating transparent criteria for resolving competing interests",
+        "Providing meaningful voice to all affected stakeholders",
+        "Establishing fair contestation and appeal procedures"
+      ],
+      "derives_from_integration_considerations": ["democratic-alignment.fairness", "democratic-alignment.accountability"],
+      "addressed_by_techniques": ["democratic-governance.democratic-structures.accountable-decision.accountability-specifications.implementation.decision-protocol", "democratic-governance.inclusive-participation.democratic-contestation.contestation-specifications.implementation.contestation-system"],
+      "supported_by_literature": ["Mansbridge2012", "Young2002", "Warren2007"]
+    },
+    {
+      "id": "democratic-governance.institutional-integration",
+      "name": "Institutional Integration",
+      "aspect": "Governance Infrastructure",
+      "considerations": [
+        "Integrating AI governance with existing democratic institutions",
+        "Creating sustainable governance structures for long-term oversight",
+        "Addressing jurisdictional and cross-border governance challenges",
+        "Balancing formal and informal governance mechanisms"
+      ],
+      "derives_from_integration_considerations": ["democratic-alignment.institutionalization", "democratic-alignment.sustainability"],
+      "addressed_by_techniques": ["democratic-governance.democratic-structures.accountable-decision.accountability-specifications.implementation.decision-protocol", "democratic-governance.democratic-control.democratic-oversight.oversight-specifications.implementation.oversight-authority"],
+      "supported_by_literature": ["Allen2021", "Diakopoulos2021", "Vaina2020"]
+    }
+  ],
+  
+  "technical_specifications": {
+    "_documentation": "This section provides technical details about the democratic-governance subcomponent.",
+    "input_requirements": [
+      {
+        "id": "democratic-governance.stakeholder-information",
+        "name": "Stakeholder Information",
+        "description": "Information about stakeholders affected by AI systems",
+        "format": "Stakeholder maps, impact assessments, and demographic analyses",
+        "constraints": "Must represent diverse stakeholders including marginalized communities",
+        "related_techniques": ["democratic-governance.multi-stakeholder-oversight.democratic-oversight.oversight-specifications.implementation.representative-body", "democratic-governance.inclusive-participation.community-representation.representation-specifications.implementation.representation-system"],
+        "used_by_applications": ["democratic-governance.multi-stakeholder-oversight.democratic-oversight.oversight-specifications.implementation.representative-body.oversight-assembly", "democratic-governance.inclusive-participation.community-representation.representation-specifications.implementation.representation-system.community-board"],
+        "supports_functions": ["democratic-governance.multi-stakeholder-oversight.democratic-oversight", "democratic-governance.inclusive-participation.community-representation"]
+      },
+      {
+        "id": "democratic-governance.ai-system-documentation",
+        "name": "AI System Documentation",
+        "description": "Documentation of AI systems subject to governance",
+        "format": "System specifications, capabilities, intended uses, and risks",
+        "constraints": "Must be comprehensive and accessible to non-technical stakeholders",
+        "related_techniques": ["democratic-governance.democratic-structures.democratic-oversight.oversight-specifications.implementation.stakeholder-council", "democratic-governance.democratic-control.democratic-oversight.oversight-specifications.implementation.oversight-authority"],
+        "used_by_applications": ["democratic-governance.democratic-structures.democratic-oversight.oversight-specifications.implementation.stakeholder-council.oversight-board", "democratic-governance.democratic-control.democratic-oversight.oversight-specifications.implementation.oversight-authority.control-framework"],
+        "supports_functions": ["democratic-governance.democratic-structures.democratic-oversight", "democratic-governance.democratic-control.democratic-oversight"]
+      },
+      {
+        "id": "democratic-governance.governance-issues",
+        "name": "Governance Issues",
+        "description": "Issues requiring governance decisions about AI systems",
+        "format": "Structured issue specifications with context and decision requirements",
+        "constraints": "Must clearly articulate decision points and stakeholder impacts",
+        "related_techniques": ["democratic-governance.democratic-structures.accountable-decision.accountability-specifications.implementation.decision-protocol", "democratic-governance.balanced-power.power-sharing.power-specifications.implementation.distributed-authority"],
+        "used_by_applications": ["democratic-governance.democratic-structures.accountable-decision.accountability-specifications.implementation.decision-protocol.governance-framework", "democratic-governance.balanced-power.power-sharing.power-specifications.implementation.distributed-authority.governance-consensus"],
+        "supports_functions": ["democratic-governance.democratic-structures.accountable-decision", "democratic-governance.balanced-power.power-sharing"]
+      },
+      {
+        "id": "democratic-governance.contestation-submissions",
+        "name": "Contestation Submissions",
+        "description": "Formal challenges to AI system decisions or behaviors",
+        "format": "Structured submissions with evidence and rationale",
+        "constraints": "Must be accessible to stakeholders with varying technical knowledge",
+        "related_techniques": ["democratic-governance.governance-transparency.democratic-contestation.contestation-specifications.implementation.contestation-forum", "democratic-governance.inclusive-participation.democratic-contestation.contestation-specifications.implementation.contestation-system"],
+        "used_by_applications": ["democratic-governance.governance-transparency.democratic-contestation.contestation-specifications.implementation.contestation-forum.public-challenge", "democratic-governance.inclusive-participation.democratic-contestation.contestation-specifications.implementation.contestation-system.decision-appeal"],
+        "supports_functions": ["democratic-governance.governance-transparency.democratic-contestation", "democratic-governance.inclusive-participation.democratic-contestation"]
+      }
+    ],
+    
+    "output_specifications": [
+      {
+        "id": "democratic-governance.oversight-decisions",
+        "name": "Oversight Decisions",
+        "description": "Formal decisions from democratic oversight processes",
+        "format": "Structured decision records with rationale and implementation details",
+        "usage": "Guiding AI development, deployment, and operation",
+        "produced_by_techniques": ["democratic-governance.democratic-structures.democratic-oversight.oversight-specifications.implementation.stakeholder-council", "democratic-governance.democratic-control.democratic-oversight.oversight-specifications.implementation.oversight-authority"],
+        "produced_by_applications": ["democratic-governance.democratic-structures.democratic-oversight.oversight-specifications.implementation.stakeholder-council.oversight-board", "democratic-governance.democratic-control.democratic-oversight.oversight-specifications.implementation.oversight-authority.control-framework"],
+        "fulfills_functions": ["democratic-governance.democratic-structures.democratic-oversight", "democratic-governance.democratic-control.democratic-oversight"]
+      },
+      {
+        "id": "democratic-governance.accountability-records",
+        "name": "Accountability Records",
+        "description": "Documentation of decision processes and responsibilities",
+        "format": "Formal records with decision rationale and responsibility assignments",
+        "usage": "Enabling accountability for AI governance decisions",
+        "produced_by_techniques": ["democratic-governance.democratic-structures.accountable-decision.accountability-specifications.implementation.decision-protocol", "democratic-governance.democratic-control.accountable-decision.accountability-specifications.implementation.accountability-framework"],
+        "produced_by_applications": ["democratic-governance.democratic-structures.accountable-decision.accountability-specifications.implementation.decision-protocol.governance-framework", "democratic-governance.democratic-control.accountable-decision.accountability-specifications.implementation.accountability-framework.decision-system"],
+        "fulfills_functions": ["democratic-governance.democratic-structures.accountable-decision", "democratic-governance.democratic-control.accountable-decision"]
+      },
+      {
+        "id": "democratic-governance.transparency-reports",
+        "name": "Transparency Reports",
+        "description": "Public reports on AI governance activities and decisions",
+        "format": "Accessible reports with appropriate detail for diverse audiences",
+        "usage": "Enabling public understanding and scrutiny of governance",
+        "produced_by_techniques": ["democratic-governance.governance-transparency.transparency-maintenance.transparency-specifications.implementation.disclosure-protocol"],
+        "produced_by_applications": ["democratic-governance.governance-transparency.transparency-maintenance.transparency-specifications.implementation.disclosure-protocol.transparency-system"],
+        "fulfills_functions": ["democratic-governance.governance-transparency.transparency-maintenance"]
+      },
+      {
+        "id": "democratic-governance.contestation-responses",
+        "name": "Contestation Responses",
+        "description": "Formal responses to challenges of AI system decisions",
+        "format": "Structured responses with rationale and remedial actions",
+        "usage": "Addressing stakeholder concerns and improving systems",
+        "produced_by_techniques": ["democratic-governance.governance-transparency.democratic-contestation.contestation-specifications.implementation.contestation-forum", "democratic-governance.inclusive-participation.democratic-contestation.contestation-specifications.implementation.contestation-system"],
+        "produced_by_applications": ["democratic-governance.governance-transparency.democratic-contestation.contestation-specifications.implementation.contestation-forum.public-challenge", "democratic-governance.inclusive-participation.democratic-contestation.contestation-specifications.implementation.contestation-system.decision-appeal"],
+        "fulfills_functions": ["democratic-governance.governance-transparency.democratic-contestation", "democratic-governance.inclusive-participation.democratic-contestation"]
+      }
+    ],
+    
+    "performance_characteristics": {
+      "throughput": "Governance processes must scale to handle decision volumes appropriate to AI deployment contexts",
+      "latency": "Critical governance decisions should complete within timeframes that prevent harmful deployments",
+      "scalability": "Governance structures should scale from local to global contexts while maintaining legitimacy",
+      "resource_utilization": "Governance processes must be efficient enough to enable meaningful participation",
+      "related_considerations": ["democratic-governance.power-imbalances", "democratic-governance.participation-barriers", "democratic-governance.institutional-integration"]
+    }
+  },
+  
+  "relationships": {
+    "_documentation": "This section details how this subcomponent relates to other components and subcomponents in the architecture.",
+    "items": [
+      {
+        "target_id": "deliberative-capacity-building",
+        "relationship_type": "bidirectional_dependency",
+        "description": "Democratic governance depends on deliberative capacity building to enable effective participation, while providing the structures in which deliberative capacity is exercised",
+        "related_functions": ["democratic-governance.inclusive-participation.community-representation", "democratic-governance.multi-stakeholder-oversight.democratic-oversight"],
+        "related_techniques": ["democratic-governance.inclusive-participation.community-representation.representation-specifications.implementation.representation-system", "democratic-governance.multi-stakeholder-oversight.democratic-oversight.oversight-specifications.implementation.representative-body"],
+        "related_inputs": ["democratic-governance.stakeholder-information"],
+        "related_outputs": ["democratic-governance.oversight-decisions", "democratic-governance.transparency-reports"]
+      },
+      {
+        "target_id": "participatory-value-definition",
+        "relationship_type": "enables_and_implements",
+        "description": "Democratic governance provides structures to implement values defined through participatory processes, while enabling continued value refinement",
+        "related_functions": ["democratic-governance.democratic-structures.accountable-decision", "democratic-governance.governance-transparency.democratic-contestation"],
+        "related_techniques": ["democratic-governance.democratic-structures.accountable-decision.accountability-specifications.implementation.decision-protocol", "democratic-governance.governance-transparency.democratic-contestation.contestation-specifications.implementation.contestation-forum"],
+        "related_inputs": ["democratic-governance.governance-issues"],
+        "related_outputs": ["democratic-governance.accountability-records", "democratic-governance.contestation-responses"]
+      },
+      {
+        "target_id": "participatory-alignment-verification",
+        "relationship_type": "provides_framework_for",
+        "description": "Democratic governance provides the institutional framework within which participatory alignment verification occurs",
+        "related_functions": ["democratic-governance.democratic-control.democratic-oversight", "democratic-governance.inclusive-participation.democratic-contestation"],
+        "related_techniques": ["democratic-governance.democratic-control.democratic-oversight.oversight-specifications.implementation.oversight-authority", "democratic-governance.inclusive-participation.democratic-contestation.contestation-specifications.implementation.contestation-system"],
+        "related_inputs": ["democratic-governance.ai-system-documentation", "democratic-governance.contestation-submissions"],
+        "related_outputs": ["democratic-governance.oversight-decisions", "democratic-governance.contestation-responses"]
+      },
+      {
+        "target_id": "monitoring-systems",
+        "relationship_type": "provides_governance_for",
+        "description": "Democratic governance establishes structures for overseeing and directing monitoring systems",
+        "related_functions": ["democratic-governance.democratic-control.democratic-oversight", "democratic-governance.governance-transparency.transparency-maintenance"],
+        "related_techniques": ["democratic-governance.democratic-control.democratic-oversight.oversight-specifications.implementation.oversight-authority", "democratic-governance.governance-transparency.transparency-maintenance.transparency-specifications.implementation.disclosure-protocol"],
+        "related_inputs": ["democratic-governance.ai-system-documentation"],
+        "related_outputs": ["democratic-governance.oversight-decisions", "democratic-governance.transparency-reports"]
+      },
+      {
+        "target_id": "governance-structures",
+        "relationship_type": "implements",
+        "description": "Democratic governance implements specific democratic structures within broader governance frameworks",
+        "related_functions": ["democratic-governance.democratic-structures.democratic-oversight", "democratic-governance.balanced-power.power-sharing"],
+        "related_techniques": ["democratic-governance.democratic-structures.democratic-oversight.oversight-specifications.implementation.stakeholder-council", "democratic-governance.balanced-power.power-sharing.power-specifications.implementation.distributed-authority"],
+        "related_inputs": ["democratic-governance.governance-issues", "democratic-governance.stakeholder-information"],
+        "related_outputs": ["democratic-governance.accountability-records", "democratic-governance.oversight-decisions"]
+      }
+    ]
+  },
+  
+  "literature": {
+    "references": [
+      {
+        "id": "Allen2021",
+        "authors": ["Allen, J.", "Bryson, J."],
+        "year": 2021,
+        "title": "The AI Disruption: How to Align AI Innovation with the Public Interest",
+        "venue": "Harvard Kennedy School Technology and Public Purpose Project",
+        "url": "https://doi.org/10.2139/ssrn.3862398"
+      },
+      {
+        "id": "Warren2007",
+        "authors": ["Warren, M.E.", "Pearse, H."],
+        "year": 2007,
+        "title": "Designing Deliberative Democracy: The British Columbia Citizens' Assembly",
+        "venue": "Cambridge University Press",
+        "url": "https://doi.org/10.1017/CBO9780511491177"
+      },
+      {
+        "id": "Mansbridge2012",
+        "authors": ["Mansbridge, J.", "Bohman, J.", "Chambers, S.", "Christiano, T.", "Fung, A.", "Parkinson, J.", "Thompson, D.F.", "Warren, M.E."],
+        "year": 2012,
+        "title": "A systemic approach to deliberative democracy",
+        "venue": "Deliberative Systems: Deliberative Democracy at the Large Scale",
+        "url": "https://doi.org/10.1017/CBO9781139178914.002"
+      },
+      {
+        "id": "Diakopoulos2021",
+        "authors": ["Diakopoulos, N."],
+        "year": 2021,
+        "title": "Transparency",
+        "venue": "The Oxford Handbook of Ethics of AI",
+        "url": "https://doi.org/10.1093/oxfordhb/9780190067397.013.11"
+      },
+      {
+        "id": "Mulgan2021",
+        "authors": ["Mulgan, G."],
+        "year": 2021,
+        "title": "The Case for Collective Intelligence in Democratic Governance",
+        "venue": "Collective Intelligence",
+        "url": "https://doi.org/10.1177/26339137211040300"
+      },
+      {
+        "id": "Askell2019",
+        "authors": ["Askell, A.", "Brundage, M.", "Hadfield, G."],
+        "year": 2019,
+        "title": "The Role of Cooperation in Responsible AI Development",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/1907.04534"
+      },
+      {
+        "id": "Fung2003",
+        "authors": ["Fung, A."],
+        "year": 2003,
+        "title": "Survey Article: Recipes for Public Spheres: Eight Institutional Design Choices and Their Consequences",
+        "venue": "Journal of Political Philosophy",
+        "url": "https://doi.org/10.1111/1467-9760.00181"
+      },
+      {
+        "id": "Young2002",
+        "authors": ["Young, I.M."],
+        "year": 2002,
+        "title": "Inclusion and Democracy",
+        "venue": "Oxford University Press",
+        "url": "https://doi.org/10.1093/0198297556.001.0001"
+      },
+      {
+        "id": "Costanza-Chock2020",
+        "authors": ["Costanza-Chock, S."],
+        "year": 2020,
+        "title": "Design Justice: Community-Led Practices to Build the Worlds We Need",
+        "venue": "MIT Press",
+        "url": "https://mitpress.mit.edu/books/design-justice"
+      },
+      {
+        "id": "Fraser2009",
+        "authors": ["Fraser, N."],
+        "year": 2009,
+        "title": "Scales of Justice: Reimagining Political Space in a Globalizing World",
+        "venue": "Columbia University Press",
+        "url": "https://cup.columbia.edu/book/scales-of-justice/9780231146814"
+      },
+      {
+        "id": "Crawford2021",
+        "authors": ["Crawford, K."],
+        "year": 2021,
+        "title": "Atlas of AI: Power, Politics, and the Planetary Costs of Artificial Intelligence",
+        "venue": "Yale University Press",
+        "url": "https://yalebooks.yale.edu/book/9780300209570/atlas-ai"
+      },
+      {
+        "id": "Benjamin2019",
+        "authors": ["Benjamin, R."],
+        "year": 2019,
+        "title": "Race After Technology: Abolitionist Tools for the New Jim Code",
+        "venue": "Polity Press",
+        "url": "https://politybooks.com/bookdetail/?isbn=9781509526390"
+      },
+      {
+        "id": "Vaina2020",
+        "authors": ["Vaina, L.", "Skolnick, C."],
+        "year": 2020,
+        "title": "Toward a Democratic AI Infrastructure: Building on Democratic Strengths to Meet the Challenges of AI",
+        "venue": "MIT Center for International Studies",
+        "url": "https://cis.mit.edu/publications/working-papers/toward-democratic-ai-infrastructure"
+      }
+    ],
+    
+    "literature_connections": [
+      {
+        "reference_id": "Allen2021",
+        "technique": "democratic-governance.democratic-structures.democratic-oversight.oversight-specifications.implementation.stakeholder-council",
+        "relevant_aspects": "Provides framework for multi-stakeholder oversight bodies that balance technical expertise with democratic representation"
+      },
+      {
+        "reference_id": "Warren2007",
+        "technique": "democratic-governance.multi-stakeholder-oversight.democratic-oversight.oversight-specifications.implementation.representative-body",
+        "relevant_aspects": "Offers practical design principles for representative deliberative bodies based on empirical research on citizens' assemblies"
+      },
+      {
+        "reference_id": "Mansbridge2012",
+        "technique": "democratic-governance.democratic-structures.accountable-decision.accountability-specifications.implementation.decision-protocol",
+        "relevant_aspects": "Provides system-level perspective on deliberative democracy that informs accountable decision-making protocols"
+      },
+      {
+        "reference_id": "Diakopoulos2021",
+        "technique": "democratic-governance.governance-transparency.transparency-maintenance.transparency-specifications.implementation.disclosure-protocol",
+        "relevant_aspects": "Examines transparency requirements specific to algorithmic systems that inform disclosure protocols"
+      },
+      {
+        "reference_id": "Mulgan2021",
+        "technique": "democratic-governance.governance-transparency.democratic-contestation.contestation-specifications.implementation.contestation-forum",
+        "relevant_aspects": "Explores collective intelligence approaches that can enhance democratic contestation forums"
+      },
+      {
+        "reference_id": "Askell2019",
+        "technique": "democratic-governance.democratic-control.accountable-decision.accountability-specifications.implementation.accountability-framework",
+        "relevant_aspects": "Discusses cooperative governance approaches for responsible AI that inform accountability frameworks"
+      },
+      {
+        "reference_id": "Fung2003",
+        "technique": "democratic-governance.inclusive-participation.community-representation.representation-specifications.implementation.representation-system",
+        "relevant_aspects": "Provides design alternatives for public participation that inform representative systems in AI governance"
+      },
+      {
+        "reference_id": "Young2002",
+        "technique": "democratic-governance.inclusive-participation.democratic-contestation.contestation-specifications.implementation.contestation-system",
+        "relevant_aspects": "Offers theoretical foundation for inclusive deliberation that informs contestation system design"
+      },
+      {
+        "reference_id": "Costanza-Chock2020",
+        "technique": "democratic-governance.inclusive-participation.community-representation.representation-specifications.implementation.representation-system",
+        "relevant_aspects": "Provides design justice principles for centering marginalized communities in sociotechnical systems"
+      },
+      {
+        "reference_id": "Fraser2009",
+        "technique": "democratic-governance.balanced-power.power-sharing.power-specifications.implementation.distributed-authority",
+        "relevant_aspects": "Examines power dynamics and justice frameworks that inform balanced power distribution in governance"
+      },
+      {
+        "reference_id": "Crawford2021",
+        "technique": "democratic-governance.balanced-power.community-representation.representation-specifications.implementation.representative-authority",
+        "relevant_aspects": "Analyzes power asymmetries in AI development that representative authority techniques must address"
+      },
+      {
+        "reference_id": "Benjamin2019",
+        "technique": "democratic-governance.balanced-power.community-representation.representation-specifications.implementation.representative-authority",
+        "relevant_aspects": "Examines racial dimensions of technology governance that must be addressed in representative systems"
+      },
+      {
+        "reference_id": "Vaina2020",
+        "technique": "democratic-governance.democratic-control.democratic-oversight.oversight-specifications.implementation.oversight-authority",
+        "relevant_aspects": "Proposes democratic infrastructure for AI governance that can implement oversight authority mechanisms"
+      }
+    ]
+  }
+} 

@@ -1,0 +1,1064 @@
+{
+    "_documentation": "This component implements AI systems that enable AI to learn and internalize human values through observation, feedback, and democratic processes, providing mechanisms for aligning AI behavior with nuanced ethical frameworks.",
+    "id": "value-learning",
+    "name": "Value Learning",
+    "description": "Systems that enable AI to learn and internalize human values through observation and feedback. These approaches go beyond simplistic reward functions to capture the nuanced ethical frameworks that guide human decision-making, using democratic processes to define which values should be prioritized in different contexts.",
+    "type": "component",
+    "parent": "ai-alignment",
+    
+    "overview": {
+      "_documentation": "This section provides a concise summary of the component's purpose, key capabilities, and primary functions. It should be specific about what this particular component does and how it contributes to the component group's goals. Focus on the WHAT and WHY, with a high-level HOW.",
+      "purpose": "To enable AI systems to learn, represent, and operationalize human values and preferences through inference, encoding, participatory processes, and adaptation, ensuring alignment with ethical frameworks and democratic principles",
+      "key_capabilities": [
+        {
+          "id": "value-learning.preference-inference-capability",
+          "name": "Preference Inference",
+          "description": "AI capability to infer human values and preferences from choices, behaviors, and feedback",
+          "implemented_by_subcomponents": ["preference-inference", "adaptive-value-learning"]
+        },
+        {
+          "id": "value-learning.value-encoding-capability",
+          "name": "Value Encoding",
+          "description": "AI capability to explicitly encode and represent human values in AI systems",
+          "implemented_by_subcomponents": ["explicit-value-encoding", "participatory-value-development"]
+        },
+        {
+          "id": "value-learning.participatory-development-capability",
+          "name": "Participatory Value Development",
+          "description": "AI capability to involve diverse stakeholders in defining and refining AI value systems",
+          "implemented_by_subcomponents": ["participatory-value-development", "explicit-value-encoding"]
+        },
+        {
+          "id": "value-learning.adaptive-learning-capability",
+          "name": "Adaptive Value Learning",
+          "description": "AI capability to refine and adapt value representations over time and across contexts",
+          "implemented_by_subcomponents": ["adaptive-value-learning", "preference-inference"]
+        }
+      ],
+      "primary_functions": [
+        {
+          "id": "value-learning.preference-extraction",
+          "name": "Preference Extraction",
+          "description": "AI function that extracts implicit human preferences from choices, behaviors, and feedback",
+          "implemented_by_subcomponents": ["preference-inference", "adaptive-value-learning"]
+        },
+        {
+          "id": "value-learning.value-representation",
+          "name": "Value Representation",
+          "description": "AI function that represents human values and ethical principles in computationally tractable forms",
+          "implemented_by_subcomponents": ["explicit-value-encoding", "participatory-value-development"]
+        },
+        {
+          "id": "value-learning.stakeholder-engagement",
+          "name": "Stakeholder Engagement",
+          "description": "AI function that engages diverse stakeholders in defining and refining AI value systems",
+          "implemented_by_subcomponents": ["participatory-value-development", "explicit-value-encoding"]
+        },
+        {
+          "id": "value-learning.value-refinement",
+          "name": "Value Refinement",
+          "description": "AI function that refines and adapts value representations over time and across contexts",
+          "implemented_by_subcomponents": ["adaptive-value-learning", "preference-inference"]
+        }
+      ]
+    },
+    
+    "capabilities": {
+      "_documentation": "This section defines the component-level capabilities that enable the component to fulfill its purpose and implement its functions.",
+      "items": [
+        {
+          "id": "value-learning.preference-inference-capability",
+          "name": "Preference Inference",
+          "description": "Capability to infer human values and preferences from choices, behaviors, and feedback",
+          "implemented_by_subcomponents": [
+            "preference-inference",
+            "adaptive-value-learning"
+          ],
+          "implements_subcomponent_functions": [
+            "preference-inference.preference-learning.behavioral-extraction",
+            "preference-inference.preference-learning.preference-modeling",
+            "adaptive-value-learning.dynamic-value-refinement.continuous-preference-monitoring"
+          ],
+          "implements_subcomponent_capabilities": [
+            "preference-inference.preference-learning",
+            "preference-inference.feedback-processing",
+            "preference-inference.complex-modeling",
+            "preference-inference.uncertainty-quantification",
+            "preference-inference.continuous-updating"
+          ],
+          "supported_by_literature": ["Hadfield-Menell_2016", "Christiano_2017"],
+          "related_capabilities": [
+            "value-learning.value-encoding-capability",
+            "value-learning.adaptive-learning-capability"
+          ]
+        },
+        {
+          "id": "value-learning.value-encoding-capability",
+          "name": "Value Encoding",
+          "description": "Capability to explicitly encode and represent human values in AI systems",
+          "implemented_by_subcomponents": [
+            "explicit-value-encoding",
+            "participatory-value-development"
+          ],
+          "implements_subcomponent_functions": [
+            "explicit-value-encoding.value-formalization.value-specification",
+            "explicit-value-encoding.constraint-formulation.constraint-encoding",
+            "participatory-value-development.stakeholder-inclusion.value-elicitation"
+          ],
+          "implements_subcomponent_capabilities": [
+            "explicit-value-encoding.value-formalization",
+            "explicit-value-encoding.constraint-formulation",
+            "participatory-value-development.stakeholder-inclusion"
+          ],
+          "supported_by_literature": ["Abel_2016", "Fishkin_2018"],
+          "related_capabilities": [
+            "value-learning.preference-inference-capability",
+            "value-learning.participatory-development-capability"
+          ]
+        },
+        {
+          "id": "value-learning.participatory-development-capability",
+          "name": "Participatory Value Development",
+          "description": "Capability to involve diverse stakeholders in defining and refining AI value systems",
+          "implemented_by_subcomponents": [
+            "participatory-value-development",
+            "explicit-value-encoding"
+          ],
+          "implements_subcomponent_functions": [
+            "participatory-value-development.stakeholder-inclusion.stakeholder-identification",
+            "participatory-value-development.deliberative-facilitation.consensus-formation",
+            "participatory-value-development.value-conflict-management.conflict-resolution"
+          ],
+          "implements_subcomponent_capabilities": [
+            "participatory-value-development.stakeholder-inclusion",
+            "participatory-value-development.deliberative-facilitation",
+            "participatory-value-development.value-conflict-management",
+            "participatory-value-development.democratic-legitimization",
+            "participatory-value-development.collective-refinement"
+          ],
+          "supported_by_literature": ["Fishkin_2018"],
+          "related_capabilities": [
+            "value-learning.value-encoding-capability",
+            "value-learning.adaptive-learning-capability"
+          ]
+        },
+        {
+          "id": "value-learning.adaptive-learning-capability",
+          "name": "Adaptive Value Learning",
+          "description": "Capability to refine and adapt value representations over time and across contexts",
+          "implemented_by_subcomponents": [
+            "adaptive-value-learning",
+            "preference-inference"
+          ],
+          "implements_subcomponent_functions": [
+            "adaptive-value-learning.dynamic-value-refinement.continuous-preference-monitoring",
+            "adaptive-value-learning.dynamic-value-refinement.incremental-value-model-updating",
+            "preference-inference.continuous-updating.model-recalibration"
+          ],
+          "implements_subcomponent_capabilities": [
+            "adaptive-value-learning.dynamic-value-refinement",
+            "adaptive-value-learning.value-drift-detection",
+            "adaptive-value-learning.context-sensitive-value-application",
+            "adaptive-value-learning.value-update-integrity",
+            "adaptive-value-learning.value-uncertainty-management"
+          ],
+          "supported_by_literature": ["Soares_2015", "Christiano_2017"],
+          "related_capabilities": [
+            "value-learning.preference-inference-capability",
+            "value-learning.participatory-development-capability"
+          ]
+        },
+        {
+          "id": "value-learning.value-acquisition-capability",
+          "name": "Value Acquisition",
+          "description": "Capability to acquire and learn human values through various learning mechanisms",
+          "implemented_by_subcomponents": [
+            "preference-inference",
+            "adaptive-value-learning"
+          ],
+          "implements_subcomponent_functions": [
+            "preference-inference.preference-learning.behavioral-extraction",
+            "preference-inference.preference-learning.preference-modeling",
+            "adaptive-value-learning.dynamic-value-refinement.incremental-value-model-updating"
+          ],
+          "implements_subcomponent_capabilities": [
+            "adaptive-value-learning.dynamic-value-refinement",
+            "adaptive-value-learning.value-uncertainty-management",
+            "preference-inference.preference-learning",
+            "preference-inference.feedback-processing"
+          ],
+          "supported_by_literature": ["Hadfield-Menell_2016", "Christiano_2017"],
+          "related_capabilities": [
+            "value-learning.preference-inference-capability",
+            "value-learning.value-encoding-capability"
+          ]
+        },
+        {
+          "id": "value-learning.value-update-capability",
+          "name": "Value Update",
+          "description": "Capability to update and refine value models based on new information and feedback",
+          "implemented_by_subcomponents": [
+            "adaptive-value-learning"
+          ],
+          "implements_subcomponent_functions": [
+            "adaptive-value-learning.dynamic-value-refinement.incremental-value-model-updating",
+            "adaptive-value-learning.value-update-integrity.update-validation"
+          ],
+          "implements_subcomponent_capabilities": [
+            "adaptive-value-learning.dynamic-value-refinement",
+            "adaptive-value-learning.value-update-integrity",
+            "adaptive-value-learning.value-drift-detection"
+          ],
+          "supported_by_literature": ["Christiano_2017"],
+          "related_capabilities": [
+            "value-learning.value-acquisition-capability",
+            "value-learning.adaptive-learning-capability"
+          ]
+        },
+        {
+          "id": "value-learning.value-preservation-capability",
+          "name": "Value Preservation",
+          "description": "Capability to maintain value alignment over time and prevent value drift",
+          "implemented_by_subcomponents": [
+            "adaptive-value-learning"
+          ],
+          "implements_subcomponent_functions": [
+            "adaptive-value-learning.value-drift-detection.drift-identification",
+            "adaptive-value-learning.value-update-integrity.update-validation"
+          ],
+          "implements_subcomponent_capabilities": [
+            "adaptive-value-learning.value-drift-detection",
+            "adaptive-value-learning.value-update-integrity"
+          ],
+          "supported_by_literature": ["Christiano_2017", "Soares_2014"],
+          "related_capabilities": [
+            "value-learning.value-update-capability"
+          ]
+        },
+        {
+          "id": "value-learning.value-clarification-capability",
+          "name": "Value Clarification",
+          "description": "Capability to resolve ambiguities and uncertainties in human values",
+          "implemented_by_subcomponents": [
+            "adaptive-value-learning"
+          ],
+          "implements_subcomponent_functions": [
+            "adaptive-value-learning.value-uncertainty-management.uncertainty-reduction",
+            "adaptive-value-learning.context-sensitive-value-application.context-detection"
+          ],
+          "implements_subcomponent_capabilities": [
+            "adaptive-value-learning.value-drift-detection",
+            "adaptive-value-learning.context-sensitive-value-application"
+          ],
+          "supported_by_literature": ["Christiano_2017"],
+          "related_capabilities": [
+            "value-learning.preference-inference-capability"
+          ]
+        },
+        {
+          "id": "value-learning.value-implementation-capability",
+          "name": "Value Implementation",
+          "description": "Capability to apply learned values to guide system behavior and decision-making",
+          "implemented_by_subcomponents": [
+            "adaptive-value-learning"
+          ],
+          "implements_subcomponent_functions": [
+            "adaptive-value-learning.context-sensitive-value-application.cross-context-value-application",
+            "adaptive-value-learning.value-uncertainty-management.uncertainty-guided-action"
+          ],
+          "implements_subcomponent_capabilities": [
+            "adaptive-value-learning.context-sensitive-value-application",
+            "adaptive-value-learning.value-uncertainty-management"
+          ],
+          "supported_by_literature": ["Christiano_2017"],
+          "related_capabilities": [
+            "value-learning.value-acquisition-capability"
+          ]
+        },
+        {
+          "id": "value-learning.participatory-representation",
+          "name": "Participatory Representation",
+          "description": "Capability to represent diverse stakeholder perspectives in AI value systems",
+          "implemented_by_subcomponents": [
+            "participatory-value-development"
+          ],
+          "implements_subcomponent_functions": [
+            "participatory-value-development.stakeholder-inclusion.stakeholder-identification",
+            "participatory-value-development.democratic-legitimization.legitimacy-establishment"
+          ],
+          "implements_subcomponent_capabilities": [
+            "participatory-value-development.stakeholder-inclusion",
+            "participatory-value-development.democratic-legitimization"
+          ],
+          "supported_by_literature": ["Fishkin_2018"],
+          "related_capabilities": [
+            "value-learning.participatory-development-capability",
+            "value-learning.value-diversity"
+          ]
+        },
+        {
+          "id": "value-learning.adaptive-refinement",
+          "name": "Adaptive Refinement",
+          "description": "Capability to adaptively refine value representations over time based on new information",
+          "implemented_by_subcomponents": [
+            "adaptive-value-learning",
+            "preference-inference"
+          ],
+          "implements_subcomponent_functions": [
+            "adaptive-value-learning.dynamic-value-refinement.incremental-value-model-updating",
+            "adaptive-value-learning.value-update-integrity.update-validation",
+            "preference-inference.continuous-updating.model-recalibration"
+          ],
+          "implements_subcomponent_capabilities": [
+            "adaptive-value-learning.dynamic-value-refinement",
+            "adaptive-value-learning.value-update-integrity",
+            "preference-inference.continuous-updating"
+          ],
+          "supported_by_literature": ["Christiano_2017", "Soares_2015"],
+          "related_capabilities": [
+            "value-learning.adaptive-learning-capability",
+            "value-learning.value-update-capability"
+          ]
+        },
+        {
+          "id": "value-learning.value-diversity",
+          "name": "Value Diversity",
+          "description": "Capability to represent and account for diverse value systems across different cultures and individuals",
+          "implemented_by_subcomponents": [
+            "participatory-value-development",
+            "explicit-value-encoding"
+          ],
+          "implements_subcomponent_functions": [
+            "participatory-value-development.stakeholder-inclusion.stakeholder-identification",
+            "participatory-value-development.value-conflict-management.diverse-value-integration",
+            "explicit-value-encoding.value-formalization.formalization-diversity"
+          ],
+          "implements_subcomponent_capabilities": [
+            "participatory-value-development.stakeholder-inclusion",
+            "participatory-value-development.value-conflict-management", 
+            "participatory-value-development.democratic-legitimization",
+            "participatory-value-development.diverse-integration",
+            "explicit-value-encoding.value-formalization"
+          ],
+          "supported_by_literature": ["Fishkin_2018", "Christiano_2017"],
+          "related_capabilities": [
+            "value-learning.participatory-representation",
+            "value-learning.participatory-development-capability"
+          ]
+        },
+        {
+          "id": "value-learning.value-specification",
+          "name": "Value Specification",
+          "description": "Capability to explicitly specify and formalize human values in a machine-interpretable form",
+          "implemented_by_subcomponents": [
+            "explicit-value-encoding",
+            "participatory-value-development"
+          ],
+          "implements_subcomponent_functions": [
+            "explicit-value-encoding.value-formalization.value-specification",
+            "explicit-value-encoding.constraint-formulation.constraint-encoding",
+            "participatory-value-development.deliberative-facilitation.consensus-formation"
+          ],
+          "implements_subcomponent_capabilities": [
+            "explicit-value-encoding.value-formalization",
+            "explicit-value-encoding.constraint-formulation",
+            "participatory-value-development.deliberative-facilitation",
+            "participatory-value-development.collective-refinement"
+          ],
+          "supported_by_literature": ["Abel_2016", "Fishkin_2018"],
+          "related_capabilities": [
+            "value-learning.value-encoding-capability",
+            "value-learning.value-diversity"
+          ]
+        },
+        {
+          "id": "value-learning.human-compatible-values",
+          "name": "Human-Compatible Value Systems",
+          "description": "Capability to ensure AI value systems remain compatible with human flourishing and intentions",
+          "implemented_by_subcomponents": [
+            "participatory-value-development",
+            "adaptive-value-learning"
+          ],
+          "implements_subcomponent_functions": [
+            "participatory-value-development.democratic-legitimization.legitimacy-establishment",
+            "participatory-value-development.collective-refinement.collaborative-value-system-development",
+            "adaptive-value-learning.context-sensitive-value-application.cross-context-value-application"
+          ],
+          "implements_subcomponent_capabilities": [
+            "participatory-value-development.democratic-legitimization",
+            "participatory-value-development.collective-refinement",
+            "participatory-value-development.deliberative-facilitation"
+          ],
+          "supported_by_literature": ["Russell_2019", "Fishkin_2018"],
+          "related_capabilities": [
+            "value-learning.value-diversity",
+            "value-learning.adaptive-refinement"
+          ]
+        },
+        {
+          "id": "value-learning.value-communication",
+          "name": "Value Communication",
+          "description": "Function that communicates and explains value considerations in AI decision-making to stakeholders",
+          "implemented_by_subcomponents": [
+            "explicit-value-encoding",
+            "participatory-value-development"
+          ],
+          "implements_subcomponent_functions": [
+            "explicit-value-encoding.value-formalization.value-specification",
+            "participatory-value-development.stakeholder-inclusion.value-elicitation",
+            "participatory-value-development.democratic-legitimization.democratic-oversight"
+          ],
+          "supported_by_literature": ["Fishkin_2018", "Christiano_2017"],
+          "related_functions": [
+            "value-learning.value-specification",
+            "value-learning.value-diversity"
+          ]
+        }
+      ]
+    },
+    
+    "functions": {
+      "_documentation": "This section defines the component-level functions that implement the component's purpose.",
+      "items": [
+        {
+          "id": "value-learning.preference-extraction",
+          "name": "Preference Extraction",
+          "description": "AI function that extracts implicit human preferences from choices, behaviors, and feedback",
+          "implemented_by_subcomponents": [
+            "preference-inference",
+            "adaptive-value-learning"
+          ],
+          "implements_subcomponent_functions": [
+            "adaptive-value-learning.dynamic-value-refinement.continuous-preference-monitoring",
+            "adaptive-value-learning.context-sensitive-value-application.cross-context-value-application",
+            "preference-inference.preference-learning.behavioral-extraction",
+            "preference-inference.preference-learning.preference-modeling",
+            "preference-inference.feedback-processing.value-model-refinement"
+          ],
+          "supported_by_literature": ["Christiano_2017", "Hadfield-Menell_2016"],
+          "related_functions": [
+            "value-learning.preference-modeling",
+            "value-learning.value-inference"
+          ]
+        },
+        {
+          "id": "value-learning.value-representation",
+          "name": "Value Representation",
+          "description": "AI function that represents human values and ethical principles in computationally tractable forms",
+          "implemented_by_subcomponents": [
+            "explicit-value-encoding",
+            "participatory-value-development"
+          ],
+          "implements_subcomponent_functions": [
+            "explicit-value-encoding.value-formalization.value-specification",
+            "explicit-value-encoding.constraint-formulation.constraint-encoding",
+            "participatory-value-development.stakeholder-inclusion.value-elicitation",
+            "participatory-value-development.deliberative-facilitation.consensus-formation"
+          ],
+          "supported_by_literature": ["Abel_2016", "Fishkin_2018"],
+          "related_functions": [
+            "value-learning.value-refinement",
+            "value-learning.value-model-validation"
+          ]
+        },
+        {
+          "id": "value-learning.stakeholder-engagement",
+          "name": "Stakeholder Engagement",
+          "description": "AI function that engages diverse stakeholders in defining and refining AI value systems",
+          "implemented_by_subcomponents": [
+            "participatory-value-development",
+            "explicit-value-encoding"
+          ],
+          "implements_subcomponent_functions": [
+            "participatory-value-development.stakeholder-inclusion.stakeholder-identification",
+            "participatory-value-development.deliberative-facilitation.deliberative-organization",
+            "participatory-value-development.democratic-legitimization.democratic-oversight"
+          ],
+          "supported_by_literature": ["Fishkin_2018"],
+          "related_functions": [
+            "value-learning.value-elicitation",
+            "value-learning.value-specification"
+          ]
+        },
+        {
+          "id": "value-learning.value-refinement",
+          "name": "Value Refinement",
+          "description": "AI function that refines and adapts value representations over time and across contexts",
+          "implemented_by_subcomponents": [
+            "adaptive-value-learning",
+            "preference-inference"
+          ],
+          "implements_subcomponent_functions": [
+            "adaptive-value-learning.dynamic-value-refinement.incremental-value-model-updating",
+            "adaptive-value-learning.value-drift-detection.long-term-alignment-maintenance",
+            "preference-inference.continuous-updating.model-recalibration"
+          ],
+          "supported_by_literature": ["Christiano_2017", "Soares_2015"],
+          "related_functions": [
+            "value-learning.value-model-validation",
+            "value-learning.value-coherence-assessment"
+          ]
+        },
+        {
+          "id": "value-learning.preference-elicitation",
+          "name": "Preference Elicitation",
+          "description": "Function that actively elicits human preferences through queries and interactions",
+          "implemented_by_subcomponents": [
+            "preference-inference",
+            "participatory-value-development"
+          ],
+          "implements_subcomponent_functions": [
+            "adaptive-value-learning.dynamic-value-refinement.continuous-preference-monitoring",
+            "adaptive-value-learning.context-sensitive-value-application.cross-context-value-application",
+            "adaptive-value-learning.value-uncertainty-management.continuous-preference-monitoring"
+          ],
+          "supported_by_literature": ["Christiano_2017", "Irving_2018"],
+          "related_functions": [
+            "value-learning.preference-extraction",
+            "value-learning.stakeholder-engagement"
+          ]
+        },
+        {
+          "id": "value-learning.value-model-validation",
+          "name": "Value Model Validation",
+          "description": "Function that validates value models for consistency, robustness, and alignment with human intent",
+          "implemented_by_subcomponents": [
+            "adaptive-value-learning",
+            "explicit-value-encoding"
+          ],
+          "implements_subcomponent_functions": [
+            "adaptive-value-learning.dynamic-value-refinement.continuous-preference-monitoring",
+            "adaptive-value-learning.value-drift-detection.value-consistency-validation",
+            "adaptive-value-learning.value-uncertainty-management.value-consistency-validation",
+            "adaptive-value-learning.value-uncertainty-management.continuous-preference-monitoring"
+          ],
+          "supported_by_literature": ["Irving_2018", "Leike_2018"],
+          "related_functions": [
+            "value-learning.value-refinement",
+            "value-learning.value-coherence-assessment"
+          ]
+        },
+        {
+          "id": "value-learning.preference-modeling",
+          "name": "Preference Modeling",
+          "description": "Function that creates computational models of human preferences from elicited data",
+          "implemented_by_subcomponents": [
+            "preference-inference",
+            "adaptive-value-learning"
+          ],
+          "implements_subcomponent_functions": [
+            "adaptive-value-learning.dynamic-value-refinement.incremental-value-model-updating",
+            "adaptive-value-learning.value-drift-detection.long-term-alignment-maintenance",
+            "adaptive-value-learning.value-update-integrity.incremental-value-model-updating",
+            "adaptive-value-learning.value-update-integrity.long-term-alignment-maintenance"
+          ],
+          "supported_by_literature": ["Christiano_2017", "Hadfield-Menell_2016"],
+          "related_functions": [
+            "value-learning.preference-extraction",
+            "value-learning.value-inference"
+          ]
+        },
+        {
+          "id": "value-learning.model-deployment",
+          "name": "Model Deployment",
+          "description": "Function that integrates validated value models into AI decision-making systems",
+          "implemented_by_subcomponents": [
+            "adaptive-value-learning",
+            "explicit-value-encoding"
+          ],
+          "implements_subcomponent_functions": [
+            "adaptive-value-learning.dynamic-value-refinement.incremental-value-model-updating",
+            "adaptive-value-learning.context-sensitive-value-application.cross-context-value-application",
+            "adaptive-value-learning.value-update-integrity.incremental-value-model-updating"
+          ],
+          "supported_by_literature": ["Leike_2018", "Christiano_2017"],
+          "related_functions": [
+            "value-learning.value-representation",
+            "value-learning.value-refinement"
+          ]
+        },
+        {
+          "id": "value-learning.value-coherence-assessment",
+          "name": "Value Coherence Assessment",
+          "description": "Function that assesses the logical coherence and consistency of value representations",
+          "implemented_by_subcomponents": [
+            "adaptive-value-learning",
+            "explicit-value-encoding"
+          ],
+          "implements_subcomponent_functions": [
+            "adaptive-value-learning.value-drift-detection.value-consistency-validation",
+            "adaptive-value-learning.value-drift-detection.long-term-alignment-maintenance",
+            "adaptive-value-learning.value-update-integrity.long-term-alignment-maintenance",
+            "adaptive-value-learning.value-uncertainty-management.value-consistency-validation"
+          ],
+          "supported_by_literature": ["Irving_2018", "Soares_2015"],
+          "related_functions": [
+            "value-learning.value-model-validation",
+            "value-learning.value-refinement"
+          ]
+        },
+        {
+          "id": "value-learning.context-adaptation",
+          "name": "Context Adaptation",
+          "description": "Function that adapts value application to different contexts and situations",
+          "implemented_by_subcomponents": [
+            "adaptive-value-learning"
+          ],
+          "implements_subcomponent_functions": [
+            "adaptive-value-learning.context-sensitive-value-application.contextual-value-interpretation"
+          ],
+          "supported_by_literature": ["Christiano_2017", "Leike_2018"],
+          "related_functions": [
+            "value-learning.value-refinement",
+            "value-learning.model-deployment"
+          ]
+        },
+        {
+          "id": "value-learning.value-inference",
+          "name": "Value Inference",
+          "description": "Function that infers underlying values from observed preferences and behaviors",
+          "implemented_by_subcomponents": [
+            "preference-inference"
+          ],
+          "implements_subcomponent_functions": [
+            "preference-inference.preference-learning.preference-modeling",
+            "preference-inference.feedback-processing.comparative-learning",
+            "preference-inference.complex-modeling.preference-aggregation", 
+            "preference-inference.uncertainty-quantification.uncertainty-estimation"
+          ],
+          "supported_by_literature": ["Hadfield-Menell_2016", "Christiano_2017"],
+          "related_functions": [
+            "value-learning.preference-extraction",
+            "value-learning.preference-modeling"
+          ]
+        },
+        {
+          "id": "value-learning.value-elicitation",
+          "name": "Value Elicitation",
+          "description": "Function that elicits value-relevant information from stakeholders",
+          "implemented_by_subcomponents": [
+            "participatory-value-development",
+            "adaptive-value-learning"
+          ],
+          "implements_subcomponent_functions": [
+            "participatory-value-development.stakeholder-inclusion.stakeholder-identification",
+            "participatory-value-development.stakeholder-inclusion.value-elicitation"
+          ],
+          "supported_by_literature": ["Fishkin_2018", "Christiano_2017"],
+          "related_functions": [
+            "value-learning.preference-elicitation",
+            "value-learning.stakeholder-engagement"
+          ]
+        },
+        {
+          "id": "value-learning.value-specification",
+          "name": "Value Specification",
+          "description": "Function that formally specifies values in a computational framework",
+          "implemented_by_subcomponents": [
+            "explicit-value-encoding", 
+            "participatory-value-development"
+          ],
+          "implements_subcomponent_functions": [
+            "participatory-value-development.stakeholder-inclusion.stakeholder-identification",
+            "participatory-value-development.deliberative-facilitation.consensus-formation"
+          ],
+          "supported_by_literature": ["Abel_2016", "Fishkin_2018"],
+          "related_functions": [
+            "value-learning.value-representation",
+            "value-learning.value-model-validation"
+          ]
+        },
+        {
+          "id": "value-learning.value-diversity",
+          "name": "Value Diversity Management",
+          "description": "Function that represents and balances diverse and sometimes conflicting human values",
+          "implemented_by_subcomponents": [
+            "participatory-value-development",
+            "explicit-value-encoding"
+          ],
+          "implements_subcomponent_functions": [
+            "participatory-value-development.stakeholder-inclusion.value-elicitation",
+            "participatory-value-development.value-conflict-management",
+            "participatory-value-development.democratic-legitimization.democratic-oversight"
+          ],
+          "supported_by_literature": ["Fishkin_2018"],
+          "related_functions": [
+            "value-learning.stakeholder-engagement",
+            "value-learning.value-specification"
+          ]
+        },
+        {
+          "id": "value-learning.human-compatible-values",
+          "name": "Human-Compatible Value Alignment",
+          "description": "Function that ensures AI value systems are compatible with human flourishing and intentions",
+          "implemented_by_subcomponents": [
+            "participatory-value-development",
+            "adaptive-value-learning"
+          ],
+          "implements_subcomponent_functions": [
+            "participatory-value-development.deliberative-facilitation.deliberative-organization",
+            "participatory-value-development.democratic-legitimization.democratic-oversight",
+            "participatory-value-development.collective-refinement"
+          ],
+          "supported_by_literature": ["Russell_2019", "Fishkin_2018"],
+          "related_functions": [
+            "value-learning.value-diversity",
+            "value-learning.value-coherence-assessment"
+          ]
+        },
+        {
+          "id": "value-learning.value-communication",
+          "name": "Value Communication",
+          "description": "Function that communicates and explains value considerations in AI decision-making to stakeholders",
+          "implemented_by_subcomponents": [
+            "explicit-value-encoding",
+            "participatory-value-development"
+          ],
+          "implements_subcomponent_functions": [
+            "explicit-value-encoding.value-formalization.value-specification",
+            "participatory-value-development.stakeholder-inclusion.value-elicitation",
+            "participatory-value-development.democratic-legitimization.democratic-oversight"
+          ],
+          "supported_by_literature": ["Fishkin_2018", "Christiano_2017"],
+          "related_functions": [
+            "value-learning.value-specification",
+            "value-learning.value-diversity"
+          ]
+        }
+      ]
+    },
+    "integration_approaches": [
+      {
+        "id": "value-learning.preference-inference-integration",
+        "name": "Preference Inference Integration",
+        "description": "Integrates methods for extracting human preferences from observed choices and feedback",
+        "implemented_by_techniques": [
+          "preference-inference.inverse-reinforcement-learning",
+          "preference-inference.comparative-feedback",
+          "preference-inference.behavior-analysis",
+          "adaptive-value-learning.online-learning",
+          "adaptive-value-learning.context-modeling"
+        ]
+      },
+      {
+        "id": "value-learning.explicit-encoding-integration",
+        "name": "Explicit Value Encoding Integration",
+        "description": "Integrates techniques for explicitly representing human values in computational form",
+        "implemented_by_techniques": [
+          "explicit-value-encoding.principle-formalization",
+          "explicit-value-encoding.constraint-specification",
+          "explicit-value-encoding.utility-modeling",
+          "participatory-value-development.value-elicitation",
+          "participatory-value-development.deliberation-support"
+        ]
+      },
+      {
+        "id": "value-learning.participatory-development-integration",
+        "name": "Participatory Development Integration",
+        "description": "Integrates democratic processes for collectively defining AI value systems",
+        "implemented_by_techniques": [
+          "participatory-value-development.deliberation-support",
+          "participatory-value-development.stakeholder-inclusion",
+          "participatory-value-development.consensus-building",
+          "explicit-value-encoding.preference-aggregation",
+          "explicit-value-encoding.principle-formalization"
+        ]
+      },
+      {
+        "id": "value-learning.adaptive-learning-integration",
+        "name": "Adaptive Value Learning Integration",
+        "description": "Integrates mechanisms for refining value models through ongoing learning and adaptation",
+        "implemented_by_techniques": [
+          "adaptive-value-learning.online-learning",
+          "adaptive-value-learning.context-adaptation",
+          "adaptive-value-learning.uncertainty-handling",
+          "preference-inference.feedback-incorporation",
+          "preference-inference.behavior-analysis"
+        ]
+      }
+    ],
+    
+    "integration_considerations": [
+      {
+        "id": "value-learning.preference-representation",
+        "name": "Preference Representation Fidelity",
+        "description": "Ensuring preference models accurately capture the nuance and complexity of human values while balancing computational tractability and managing uncertainty",
+        "implemented_by_considerations": [
+          "preference-inference.representational-completeness",
+          "preference-inference.preference-uncertainty",
+          "explicit-value-encoding.computational-tractability",
+          "explicit-value-encoding.value-completeness"
+        ]
+      },
+      {
+        "id": "value-learning.participation-quality",
+        "name": "Participation Quality",
+        "description": "Ensuring inclusive, meaningful, and balanced participation across diverse stakeholders while preventing manipulation of participatory processes",
+        "implemented_by_considerations": [
+          "participatory-value-development.inclusion-diversity",
+          "participatory-value-development.deliberation-quality",
+          "explicit-value-encoding.preference-aggregation"
+        ]
+      },
+      {
+        "id": "value-learning.adaptation-boundaries",
+        "name": "Adaptation Boundaries",
+        "description": "Maintaining core value principles while allowing contextual adaptation and preventing value drift through appropriate feedback mechanisms",
+        "implemented_by_considerations": [
+          "adaptive-value-learning.drift-prevention",
+          "adaptive-value-learning.adaptation-limits",
+          "explicit-value-encoding.invariant-principles",
+          "explicit-value-encoding.constraint-specification"
+        ]
+      },
+      {
+        "id": "value-learning.knowledge-integration",
+        "name": "Knowledge Integration",
+        "description": "Integrating diverse forms of value information from different sources while resolving conflicts and maintaining coherence across contexts",
+        "implemented_by_considerations": [
+          "adaptive-value-learning.knowledge-synthesis",
+          "adaptive-value-learning.context-sensitivity",
+          "participatory-value-development.consensus-building",
+          "participatory-value-development.conflict-resolution"
+        ]
+      }
+    ],
+        
+    "subcomponents": [
+        {
+          "id": "preference-inference",
+          "name": "Preference Inference",
+          "description": "Methods for inferring human values from choices and decisions",
+          "type": "subcomponent",
+          "parent": "value-learning",
+          "implements_capabilities": ["value-learning.preference-inference-capability"],
+          "implements_functions": ["value-learning.preference-extraction", "value-learning.value-refinement", "value-learning.value-elicitation"]
+        },
+        {
+          "id": "explicit-value-encoding",
+          "name": "Explicit Value Encoding",
+          "description": "Techniques for explicitly encoding human values in AI systems",
+          "type": "subcomponent",
+          "parent": "value-learning",
+          "implements_capabilities": ["value-learning.value-encoding-capability"],
+          "implements_functions": ["value-learning.value-representation", "value-learning.stakeholder-engagement", "value-learning.value-communication"]
+        },
+        {
+          "id": "participatory-value-development",
+          "name": "Participatory Value Development",
+          "description": "Frameworks for democratically defining AI values through stakeholder participation",
+          "type": "subcomponent",
+          "parent": "value-learning",
+          "implements_capabilities": ["value-learning.participatory-development-capability"],
+          "implements_functions": ["value-learning.stakeholder-engagement", "value-learning.value-representation", "value-learning.value-communication", "value-learning.value-elicitation"]
+        },
+        {
+          "id": "adaptive-value-learning",
+          "name": "Adaptive Value Learning",
+          "description": "Systems for refining value models through ongoing learning and contextual adaptation",
+          "type": "subcomponent",
+          "parent": "value-learning",
+          "implements_capabilities": ["value-learning.adaptive-learning-capability"],
+          "implements_functions": ["value-learning.value-refinement", "value-learning.preference-extraction"]
+        }
+    ],
+
+    "relationships": {
+      "components": [
+        {
+          "id": "technical-safeguards",
+          "relationship_type": "bidirectional",
+          "description": "Value Learning provides value specifications that Technical Safeguards enforce, while Technical Safeguards provide boundaries within which Value Learning operates",
+          "integration_points": [
+            {
+              "this_component_function": "value-learning.value-representation",
+              "other_component_function": "technical-safeguards.implement-safeguards",
+              "description": "Value learning provides value specifications that technical safeguards enforce"
+            },
+            {
+              "this_component_function": "value-learning.value-refinement",
+              "other_component_function": "technical-safeguards.verify-safety",
+              "description": "Technical safeguards provide boundaries within which value learning operates"
+            }
+          ]
+        },
+        {
+          "id": "interpretability-tools",
+          "relationship_type": "bidirectional",
+          "description": "Value Learning provides value models that Interpretability Tools explain, while Interpretability Tools provide insights that inform value refinement",
+          "integration_points": [
+            {
+              "this_component_function": "value-learning.value-representation",
+              "other_component_function": "interpretability-tools.explain-decisions",
+              "description": "Value learning provides value models that interpretability tools explain"
+            },
+            {
+              "this_component_function": "value-learning.value-refinement",
+              "other_component_function": "interpretability-tools.analyze-behavior",
+              "description": "Interpretability tools provide insights that inform value refinement"
+            },
+            {
+              "this_component_function": "value-learning.value-communication",
+              "other_component_function": "interpretability-tools.explanation-generation",
+              "description": "Value learning provides value considerations that need to be translated into explanations"
+            }
+          ]
+        },
+        {
+          "id": "oversight-mechanisms",
+          "relationship_type": "bidirectional",
+          "description": "Value Learning provides models that Oversight Mechanisms monitor for alignment, while Oversight Mechanisms provide evaluation results that inform value refinement",
+          "integration_points": [
+            {
+              "this_component_function": "value-learning.value-representation",
+              "other_component_function": "oversight-mechanisms.behavior-monitoring",
+              "description": "Value learning provides models that oversight mechanisms monitor for alignment"
+            },
+            {
+              "this_component_function": "value-learning.value-refinement",
+              "other_component_function": "oversight-mechanisms.alignment-evaluation",
+              "description": "Oversight mechanisms provide evaluation results that inform value refinement"
+            }
+          ]
+        },
+        {
+          "id": "democratic-alignment",
+          "relationship_type": "bidirectional",
+          "description": "Value Learning provides participatory methods that Democratic Alignment leverages, while Democratic Alignment provides governance frameworks that guide value learning",
+          "integration_points": [
+            {
+              "this_component_function": "value-learning.stakeholder-engagement",
+              "other_component_function": "democratic-alignment.participation-facilitation",
+              "description": "Value learning provides participatory methods that democratic alignment leverages"
+            },
+            {
+              "this_component_function": "value-learning.value-refinement",
+              "other_component_function": "democratic-alignment.oversight-implementation",
+              "description": "Democratic alignment provides governance frameworks that guide value learning"
+            }
+          ]
+        }
+      ]
+    },
+    
+    "cross_connections": [
+      {
+        "from": "value-learning",
+        "to": "technical-safeguards",
+        "type": "provides_to",
+        "description": "Value Learning provides value specifications that Technical Safeguards implement as constraints."
+      },
+      {
+        "from": "value-learning",
+        "to": "interpretability-tools",
+        "type": "collaborates_with",
+        "description": "Value Learning provides value models that Interpretability Tools explain to users."
+      },
+      {
+        "from": "value-learning",
+        "to": "oversight-mechanisms",
+        "type": "interacts_with",
+        "description": "Value Learning and Oversight Mechanisms work together to ensure AI systems remain aligned with human values."
+      },
+      {
+        "from": "value-learning",
+        "to": "democratic-alignment",
+        "type": "interacts_with",
+        "description": "Value Learning and Democratic Alignment work together to ensure values implemented in AI systems reflect democratic consensus."
+      }
+    ],
+    
+    "metadata": {
+      "key_considerations": {
+        "ethical": "Ensuring value pluralism and avoiding unintended value drift",
+        "technical": "Translating abstract values to concrete behaviors and handling conflicting values",
+        "social": "Engaging diverse stakeholders in value definition and alignment",
+        "practical": "Integrating value learning into training and inference pipelines with minimal overhead"
+      },
+      "integration_points": [
+        {
+          "component": "Training Pipeline",
+          "interface": "Value-guided data selection and labeling",
+          "requirements": "Must integrate with data preparation workflows with minimal overhead"
+        },
+        {
+          "component": "Inference Service",
+          "interface": "Value-guided decision making and evaluation",
+          "requirements": "Must operate with <5ms overhead per decision point"
+        },
+        {
+          "component": "Feedback System",
+          "interface": "Human feedback collection and processing",
+          "requirements": "Must support diverse feedback mechanisms for preference learning"
+        }
+      ]
+    },
+    
+    "literature": {
+      "_documentation": "This section provides references to academic literature and research papers that inform and support the concepts, capabilities, and functions described in this component.",
+      "references": ["Russell_2019", "Abel_2016", "Christiano_2017", "Hadfield-Menell_2016", "Fishkin_2018", "Soares_2014", "Soares_2015", "Irving_2018", "Leike_2018"]
+    },
+    
+    "literature_connections": [
+      {
+        "reference_id": "Hadfield-Menell_2016",
+        "capability": "value-learning.preference-inference-capability",
+        "function": "value-learning.preference-extraction",
+        "relevant_aspects": "Hadfield-Menell et al.'s work on Cooperative Inverse Reinforcement Learning provides the theoretical foundation for inferring human preferences through observation"
+      },
+      {
+        "reference_id": "Christiano_2017",
+        "capability": "value-learning.preference-inference-capability",
+        "function": "value-learning.preference-extraction",
+        "relevant_aspects": "Christiano et al.'s research on learning from human preferences demonstrates practical techniques for preference learning from comparative feedback"
+      },
+      {
+        "reference_id": "Abel_2016",
+        "capability": "value-learning.value-encoding-capability",
+        "function": "value-learning.value-representation",
+        "relevant_aspects": "Abel et al.'s work on reinforcement learning for ethical decision-making provides frameworks for formalizing ethical principles as computational constraints"
+      },
+      {
+        "reference_id": "Fishkin_2018",
+        "capability": "value-learning.participatory-development-capability",
+        "function": "value-learning.stakeholder-engagement",
+        "relevant_aspects": "Fishkin's research on deliberative democracy provides models for structured stakeholder participation in defining shared values"
+      },
+      {
+        "reference_id": "Soares_2015",
+        "capability": "value-learning.adaptive-learning-capability",
+        "function": "value-learning.value-refinement",
+        "relevant_aspects": "Soares et al.'s work on corrigibility establishes principles for ensuring AI systems remain adaptable while maintaining alignment"
+      },
+      {
+        "reference_id": "Russell_2019",
+        "capability": "value-learning.human-compatible-values",
+        "function": "value-learning.human-compatible-values",
+        "relevant_aspects": "Russell's research on human-compatible AI provides theoretical frameworks for ensuring AI systems remain aligned with human values and intentions"
+      },
+      {
+        "reference_id": "Irving_2018",
+        "capability": "value-learning.value-clarification-capability",
+        "function": "value-learning.value-coherence-assessment",
+        "relevant_aspects": "Irving et al.'s work on AI safety via debate offers methods for resolving ambiguities in value specifications and ensuring coherence"
+      },
+      {
+        "reference_id": "Leike_2018",
+        "capability": "value-learning.value-implementation-capability",
+        "function": "value-learning.model-deployment",
+        "relevant_aspects": "Leike et al.'s research on scalable agent alignment provides frameworks for implementing value models in complex AI systems"
+      },
+      {
+        "reference_id": "Soares_2014",
+        "capability": "value-learning.value-preservation-capability",
+        "function": "value-learning.value-coherence-assessment",
+        "relevant_aspects": "Soares' work on the value alignment problem offers insights into maintaining value alignment over time as AI systems evolve"
+      },
+      {
+        "reference_id": "Fishkin_2018",
+        "capability": "value-learning.participatory-representation",
+        "function": "value-learning.value-communication",
+        "relevant_aspects": "Fishkin's research on deliberative democracy informs methods of communicating complex value considerations to diverse stakeholders"
+      }
+    ]
+}

@@ -1,0 +1,211 @@
+/**
+ * Login Component Styles
+ * Contains styles for authentication UI including login, register, and password screens
+ */
+
+/* Auth Container - Wraps all auth screens */
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  background-color: var(--bg-light);
+  background-image: linear-gradient(135deg, rgba(66, 133, 244, 0.05) 0%, rgba(219, 68, 55, 0.05) 100%);
+}
+
+/* Auth Card - Main content container */
+.auth-card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  max-width: 450px;
+  width: 100%;
+  padding: 32px;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* Auth Title */
+.auth-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 24px;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+/* Auth Messages */
+.auth-error-message {
+  background-color: var(--form-error-bg);
+  color: var(--form-error-text);
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.auth-info-message {
+  background-color: var(--form-info-bg);
+  color: var(--form-info-text);
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+/* Auth Description */
+.auth-description {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* GitHub Auth Button */
+.github-auth-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #24292e;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+.github-auth-button:hover {
+  background-color: #1b1f23;
+}
+
+.github-auth-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(36, 41, 46, 0.3);
+}
+
+.github-auth-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background-color: #6e7781;
+}
+
+.github-auth-button .github-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  fill: #fff;
+}
+
+/* GitHub Container */
+.auth-github-container {
+  margin-bottom: 24px;
+}
+
+/* Size Variants */
+.github-auth-button-small {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.github-auth-button-small .github-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.github-auth-button-large {
+  padding: 16px 20px;
+  font-size: 18px;
+}
+
+.github-auth-button-large .github-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Full Width */
+.github-auth-button-full {
+  width: 100%;
+}
+
+/* Auth Info */
+.auth-info {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-light);
+}
+
+.auth-info p {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+  margin: 0;
+  text-align: center;
+}
+
+/* Auth Alternative (Register/Login links) */
+.auth-alternative {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.auth-alternative p {
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.auth-link {
+  color: var(--btn-primary-bg);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+  color: var(--btn-primary-hover-bg);
+  text-decoration: underline;
+}
+
+/* Loading Animation */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.github-auth-button[aria-busy="true"] {
+  position: relative;
+  animation: pulse 1.5s infinite;
+}
+
+/* Media Queries */
+@media (max-width: 576px) {
+  .auth-card {
+    padding: 24px;
+  }
+  
+  .auth-title {
+    font-size: 20px;
+  }
+  
+  .auth-description {
+    font-size: 14px;
+  }
+  
+  .github-auth-button {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+} 

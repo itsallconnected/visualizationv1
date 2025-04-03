@@ -1,0 +1,73 @@
+/* 
+ * EncryptionStatusIndicator.css
+ * Styles for the encryption status indicator component
+ */
+
+.encryption-status-indicator {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.encryption-status-indicator:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.encryption-status-indicator:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.5);
+}
+
+/* Size variations */
+.encryption-indicator-sm {
+  padding: 4px;
+  font-size: 12px;
+}
+
+.encryption-indicator-md {
+  padding: 6px;
+  font-size: 16px;
+}
+
+.encryption-indicator-lg {
+  padding: 8px;
+  font-size: 20px;
+}
+
+/* Icon styles */
+.encryption-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Label styles */
+.encryption-label {
+  margin-left: 8px;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
+/* Indicators with labels have a different shape */
+.encryption-status-indicator:has(.encryption-label) {
+  border-radius: 20px;
+  padding-right: 12px;
+}
+
+/* Animation for decryption transition */
+@keyframes unlock-animation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.encryption-status-indicator.just-unlocked .encryption-icon {
+  animation: unlock-animation 0.5s ease;
+} 

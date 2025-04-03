@@ -1,0 +1,1045 @@
+{
+  "_documentation": "This component implements tools and methods for making AI reasoning processes transparent and understandable to humans, enabling inspection of how AI systems reach conclusions, detection of biases, and maintenance of meaningful human oversight by transforming opaque 'black box' systems into transparent processes subject to democratic scrutiny.",
+  "id": "interpretability-tools",
+  "name": "Interpretability Tools",
+  "description": "Methods and interfaces that make AI reasoning processes transparent and understandable to humans. These tools enable people to inspect how AI systems reach conclusions, identify potential biases, and maintain meaningful human oversight by transforming opaque 'black box' systems into transparent processes subject to democratic scrutiny.",
+  "type": "component",
+  "parent": "ai-alignment",
+  
+  "overview": {
+    "_documentation": "This section provides a concise summary of the component's purpose, key capabilities, and primary functions. It should be specific about what this particular component does and how it contributes to the component group's goals. Focus on the WHAT and WHY, with a high-level HOW.",
+    "purpose": "To enable humans to understand, inspect, and verify AI reasoning processes and decision-making, ensuring that advanced AI systems remain transparent, accountable, and aligned with human values and intentions",
+    "key_capabilities": [
+      {
+        "id": "interpretability-tools.feature-analysis-capability",
+        "name": "Feature Analysis",
+        "description": "AI capability to identify, visualize, and explain the features and patterns that AI systems detect and utilize in their processing",
+        "implemented_by_subcomponents": ["feature-analysis", "proxy-understanding"]
+      },
+      {
+        "id": "interpretability-tools.mechanistic-capability",
+        "name": "Mechanistic Understanding",
+        "description": "AI capability to analyze and explain the internal mechanisms and computational processes of AI systems",
+        "implemented_by_subcomponents": ["mechanistic-interpretability", "feature-analysis"]
+      },
+      {
+        "id": "interpretability-tools.explanation-capability",
+        "name": "Explanation Generation",
+        "description": "AI capability to produce human-understandable explanations for AI reasoning and decisions in multiple formats",
+        "implemented_by_subcomponents": ["explanation-systems", "feature-analysis"]
+      },
+      {
+        "id": "interpretability-tools.proxy-understanding-capability",
+        "name": "Indirect Understanding",
+        "description": "AI capability to indirectly test and verify AI understanding through behavioral analysis and proxy methods",
+        "implemented_by_subcomponents": ["proxy-understanding", "mechanistic-interpretability"]
+      }
+    ],
+    "primary_functions": [
+      {
+        "id": "interpretability-tools.feature-inspection",
+        "name": "Feature Inspection",
+        "description": "AI function that enables examination of the features and patterns that AI systems detect and use in their processing",
+        "implemented_by_subcomponents": ["feature-analysis", "explanation-systems"]
+      },
+      {
+        "id": "interpretability-tools.mechanism-inspection",
+        "name": "Mechanism Inspection",
+        "description": "AI function that facilitates understanding of internal AI mechanisms and computational processes",
+        "implemented_by_subcomponents": ["mechanistic-interpretability", "proxy-understanding"]
+      },
+      {
+        "id": "interpretability-tools.decision-explanation",
+        "name": "Decision Explanation",
+        "description": "AI function that provides clear, comprehensible explanations of AI decisions and reasoning processes",
+        "implemented_by_subcomponents": ["explanation-systems", "feature-analysis"]
+      },
+      {
+        "id": "interpretability-tools.proxy-validation",
+        "name": "Proxy Validation",
+        "description": "AI function that verifies AI understanding through indirect testing and proxy methods",
+        "implemented_by_subcomponents": ["proxy-understanding", "mechanistic-interpretability"]
+      }
+    ]
+  },
+  
+  "capabilities": {
+    "_documentation": "This section defines the component-level capabilities that enable the component to fulfill its purpose and implement its functions.",
+    "items": [
+      {
+        "id": "interpretability-tools.feature-analysis-capability",
+        "name": "Feature Analysis",
+        "description": "Capability to identify, visualize, and explain the features and patterns that AI systems detect and utilize in their processing",
+        "implemented_by_subcomponents": [
+          "feature-analysis", 
+          "proxy-understanding"
+        ],
+        "implements_subcomponent_capabilities": [
+          "feature-analysis.feature-identification",
+          "feature-analysis.representation-visualization",
+          "feature-analysis.importance-quantification",
+          "feature-analysis.relationship-mapping"
+        ],
+        "supported_by_literature": ["Olah2017", "Lundberg2017"],
+        "related_capabilities": [
+          "interpretability-tools.explanation-capability"
+        ]
+      },
+      {
+        "id": "interpretability-tools.mechanistic-capability",
+        "name": "Mechanistic Understanding",
+        "description": "Capability to analyze and explain the internal mechanisms and computational processes of AI systems",
+        "implemented_by_subcomponents": [
+          "mechanistic-interpretability", 
+          "feature-analysis"
+        ],
+        "implements_subcomponent_capabilities": [
+          "mechanistic-interpretability.reverse-engineering",
+          "mechanistic-interpretability.algorithm-identification-capability",
+          "mechanistic-interpretability.circuit-mapping",
+          "mechanistic-interpretability.information-tracing"
+        ],
+        "supported_by_literature": ["Elhage2021"],
+        "related_capabilities": [
+          "interpretability-tools.proxy-understanding-capability"
+        ]
+      },
+      {
+        "id": "interpretability-tools.explanation-capability",
+        "name": "Explanation Generation",
+        "description": "Capability to produce human-understandable explanations for AI reasoning and decisions in multiple formats",
+        "implemented_by_subcomponents": [
+          "explanation-systems", 
+          "feature-analysis"
+        ],
+        "implements_subcomponent_capabilities": [
+          "explanation-systems.explanation-generation",
+          "explanation-systems.contextual-explanations",
+          "feature-analysis.importance-quantification",
+          "feature-analysis.relationship-mapping"
+        ],
+        "supported_by_literature": ["Doshi-Velez2017", "Kim2018"],
+        "related_capabilities": [
+          "interpretability-tools.feature-analysis-capability"
+        ]
+      },
+      {
+        "id": "interpretability-tools.proxy-understanding-capability",
+        "name": "Indirect Understanding",
+        "description": "Capability to indirectly test and verify AI understanding through behavioral analysis and proxy methods",
+        "implemented_by_subcomponents": [
+          "proxy-understanding", 
+          "mechanistic-interpretability"
+        ],
+        "implements_subcomponent_capabilities": [
+          "proxy-understanding.behavioral-testing",
+          "proxy-understanding.contrastive-testing",
+          "mechanistic-interpretability.reverse-engineering",
+          "mechanistic-interpretability.information-tracing"
+        ],
+        "supported_by_literature": ["Armstrong2016", "Critch2020"],
+        "related_capabilities": [
+          "interpretability-tools.mechanistic-capability"
+        ]
+      },
+      {
+        "id": "interpretability-tools.feature-analysis",
+        "name": "Feature Analysis",
+        "description": "Capability to analyze and understand the features that AI systems use in their processing",
+        "implemented_by_subcomponents": [
+          "feature-analysis",
+          "mechanistic-interpretability"
+        ],
+        "implements_subcomponent_functions": [
+          "feature-analysis.feature-identification.feature-detection",
+          "feature-analysis.feature-identification.feature-categorization",
+          "feature-analysis.importance-quantification.feature-attribution",
+          "mechanistic-interpretability.information-tracing.feature-tracking"
+        ],
+        "implements_subcomponent_capabilities": [
+          "feature-analysis.feature-identification",
+          "feature-analysis.importance-quantification",
+          "feature-analysis.relationship-mapping",
+          "feature-analysis.representation-visualization"
+        ],
+        "supported_by_literature": ["Olah2017", "Lundberg2017"],
+        "related_capabilities": [
+          "interpretability-tools.feature-analysis-capability",
+          "interpretability-tools.visualization"
+        ]
+      },
+      {
+        "id": "interpretability-tools.visualization",
+        "name": "Visualization",
+        "description": "Capability to create visual representations of AI system internals and decision processes",
+        "implemented_by_subcomponents": [
+          "feature-analysis",
+          "explanation-systems"
+        ],
+        "implements_subcomponent_functions": [
+          "feature-analysis.representation-visualization.activation-visualization",
+          "feature-analysis.representation-visualization.latent-space-mapping",
+          "explanation-systems.explanation-generation.visual-explanation",
+          "explanation-systems.contextual-explanations.context-visualization"
+        ],
+        "implements_subcomponent_capabilities": [
+          "feature-analysis.representation-visualization",
+          "explanation-systems.explanation-generation"
+        ],
+        "supported_by_literature": ["Olah2017", "Kim2018"],
+        "related_capabilities": [
+          "interpretability-tools.feature-analysis",
+          "interpretability-tools.explanation-capability"
+        ]
+      },
+      {
+        "id": "interpretability-tools.attribution",
+        "name": "Attribution",
+        "description": "Capability to attribute decisions to specific features or components of AI systems",
+        "implemented_by_subcomponents": [
+          "feature-analysis",
+          "explanation-systems"
+        ],
+        "implements_subcomponent_functions": [
+          "feature-analysis.importance-quantification.feature-attribution",
+          "feature-analysis.importance-quantification.contribution-analysis",
+          "explanation-systems.explanation-generation.visual-explanation",
+          "explanation-systems.contextual-explanations.evidence-presentation"
+        ],
+        "implements_subcomponent_capabilities": [
+          "feature-analysis.importance-quantification",
+          "mechanistic-interpretability.information-tracing"
+        ],
+        "supported_by_literature": ["Lundberg2017", "Sundararajan2017"],
+        "related_capabilities": [
+          "interpretability-tools.feature-analysis",
+          "interpretability-tools.decision-explanation"
+        ]
+      },
+      {
+        "id": "interpretability-tools.conceptual-understanding",
+        "name": "Conceptual Understanding",
+        "description": "Capability to understand the high-level concepts learned and utilized by AI systems",
+        "implemented_by_subcomponents": [
+          "feature-analysis",
+          "explanation-systems"
+        ],
+        "implements_subcomponent_functions": [
+          "feature-analysis.feature-identification.feature-categorization",
+          "feature-analysis.relationship-mapping.concept-mapping",
+          "explanation-systems.contextual-explanations.concept-explanation",
+          "explanation-systems.explanation-generation.natural-language-explanation"
+        ],
+        "implements_subcomponent_capabilities": [
+          "feature-analysis.feature-identification",
+          "feature-analysis.relationship-mapping",
+          "explanation-systems.contextual-explanations"
+        ],
+        "supported_by_literature": ["Kim2018", "Bau2017"],
+        "related_capabilities": [
+          "interpretability-tools.deep-understanding",
+          "interpretability-tools.model-understanding"
+        ]
+      },
+      {
+        "id": "interpretability-tools.deep-understanding",
+        "name": "Deep Understanding",
+        "description": "Capability to understand deep neural networks and other complex AI architectures",
+        "implemented_by_subcomponents": [
+          "mechanistic-interpretability",
+          "feature-analysis"
+        ],
+        "implements_subcomponent_functions": [
+          "mechanistic-interpretability.circuit-mapping.circuit-discovery",
+          "mechanistic-interpretability.reverse-engineering.algorithm-identification",
+          "feature-analysis.representation-visualization.latent-space-mapping",
+          "feature-analysis.feature-identification.feature-detection"
+        ],
+        "implements_subcomponent_capabilities": [
+          "mechanistic-interpretability.circuit-mapping",
+          "mechanistic-interpretability.reverse-engineering",
+          "feature-analysis.representation-visualization",
+          "feature-analysis.feature-identification"
+        ],
+        "supported_by_literature": ["Elhage2021", "Olah2017"],
+        "related_capabilities": [
+          "interpretability-tools.model-understanding",
+          "interpretability-tools.component-analysis"
+        ]
+      },
+      {
+        "id": "interpretability-tools.model-understanding",
+        "name": "Model Understanding",
+        "description": "Capability to understand AI models as complete systems and their overall behavior",
+        "implemented_by_subcomponents": [
+          "mechanistic-interpretability",
+          "proxy-understanding"
+        ],
+        "implements_subcomponent_functions": [
+          "mechanistic-interpretability.reverse-engineering.computational-decomposition",
+          "mechanistic-interpretability.reverse-engineering.algorithm-identification",
+          "proxy-understanding.behavioral-testing.systematic-testing",
+          "proxy-understanding.contrastive-testing.comparative-analysis"
+        ],
+        "implements_subcomponent_capabilities": [
+          "mechanistic-interpretability.reverse-engineering",
+          "proxy-understanding.behavioral-testing",
+          "proxy-understanding.contrastive-testing"
+        ],
+        "supported_by_literature": ["Elhage2021", "Armstrong2016"],
+        "related_capabilities": [
+          "interpretability-tools.deep-understanding",
+          "interpretability-tools.causal-understanding"
+        ]
+      },
+      {
+        "id": "interpretability-tools.component-analysis",
+        "name": "Component Analysis",
+        "description": "Capability to analyze specific components and subsystems within AI architectures",
+        "implemented_by_subcomponents": [
+          "mechanistic-interpretability",
+          "feature-analysis"
+        ],
+        "implements_subcomponent_functions": [
+          "mechanistic-interpretability.circuit-mapping.component-decomposition",
+          "mechanistic-interpretability.circuit-mapping.circuit-discovery",
+          "feature-analysis.relationship-mapping.component-correlation"
+        ],
+        "implements_subcomponent_capabilities": [
+          "mechanistic-interpretability.circuit-mapping"
+        ],
+        "supported_by_literature": ["Elhage2021", "Olah2017"],
+        "related_capabilities": [
+          "interpretability-tools.deep-understanding",
+          "interpretability-tools.causal-understanding"
+        ]
+      },
+      {
+        "id": "interpretability-tools.causal-understanding",
+        "name": "Causal Understanding",
+        "description": "Capability to understand causal relationships between inputs, internal mechanisms, and outputs of AI systems",
+        "implemented_by_subcomponents": [
+          "mechanistic-interpretability",
+          "feature-analysis"
+        ],
+        "implements_subcomponent_functions": [
+          "mechanistic-interpretability.information-tracing.causal-tracing",
+          "mechanistic-interpretability.information-tracing.feature-tracking",
+          "feature-analysis.relationship-mapping.causal-analysis"
+        ],
+        "implements_subcomponent_capabilities": [
+          "mechanistic-interpretability.information-tracing"
+        ],
+        "supported_by_literature": ["Pearl2018", "Chattopadhyay2019"],
+        "related_capabilities": [
+          "interpretability-tools.model-understanding",
+          "interpretability-tools.component-analysis"
+        ]
+      },
+      {
+        "id": "interpretability-tools.behavior-analysis-capability",
+        "name": "Behavior Analysis",
+        "description": "Capability to analyze AI system behavior to identify patterns, biases, and unexpected behaviors",
+        "implemented_by_subcomponents": [
+          "proxy-understanding",
+          "explanation-systems"
+        ],
+        "implements_subcomponent_functions": [
+          "proxy-understanding.behavioral-testing.systematic-testing",
+          "proxy-understanding.behavioral-testing.stress-testing",
+          "explanation-systems.explanation-generation.behavioral-summary",
+          "explanation-systems.contextual-explanations.context-awareness"
+        ],
+        "implements_subcomponent_capabilities": [
+          "proxy-understanding.behavioral-testing",
+          "explanation-systems.explanation-generation",
+          "explanation-systems.contextual-explanations"
+        ],
+        "supported_by_literature": ["Armstrong2016", "Doshi-Velez2017"],
+        "related_capabilities": [
+          "interpretability-tools.proxy-understanding-capability",
+          "interpretability-tools.explanation-capability"
+        ]
+      },
+      {
+        "id": "interpretability-tools.explainability-capability",
+        "name": "Explainability",
+        "description": "Capability to explain AI decisions in human-understandable terms for diverse stakeholders",
+        "implemented_by_subcomponents": [
+          "explanation-systems",
+          "feature-analysis"
+        ],
+        "implements_subcomponent_functions": [
+          "explanation-systems.explanation-generation.natural-language-explanation",
+          "explanation-systems.explanation-generation.visual-explanation",
+          "feature-analysis.importance-quantification.feature-attribution",
+          "feature-analysis.relationship-mapping.causal-analysis"
+        ],
+        "implements_subcomponent_capabilities": [
+          "explanation-systems.explanation-generation",
+          "explanation-systems.contextual-explanations",
+          "feature-analysis.importance-quantification",
+          "feature-analysis.relationship-mapping"
+        ],
+        "supported_by_literature": ["Doshi-Velez2017", "Kim2018"],
+        "related_capabilities": [
+          "interpretability-tools.explanation-capability",
+          "interpretability-tools.feature-analysis-capability"
+        ]
+      }
+    ]
+  },
+  
+  "functions": {
+    "_documentation": "This section defines the component-level functions that implement the component's purpose.",
+    "items": [
+      {
+        "id": "interpretability-tools.feature-inspection",
+        "name": "Feature Inspection",
+        "description": "Function that enables examination of the features and patterns that AI systems detect and use in their processing",
+        "implemented_by_subcomponents": [
+          "feature-analysis", 
+          "explanation-systems"
+        ],
+        "implements_subcomponent_functions": [
+          "feature-analysis.feature-identification.feature-detection",
+          "feature-analysis.feature-identification.feature-categorization",
+          "feature-analysis.representation-visualization.latent-space-mapping",
+          "feature-analysis.representation-visualization.activation-visualization"
+        ],
+        "supported_by_literature": ["Olah2017", "Lundberg2017"],
+        "related_functions": [
+          "interpretability-tools.decision-explanation"
+        ]
+      },
+      {
+        "id": "interpretability-tools.mechanism-inspection",
+        "name": "Mechanism Inspection",
+        "description": "Function that facilitates understanding of internal AI mechanisms and computational processes",
+        "implemented_by_subcomponents": [
+          "mechanistic-interpretability", 
+          "proxy-understanding"
+        ],
+        "implements_subcomponent_functions": [
+          "mechanistic-interpretability.reverse-engineering.computational-decomposition",
+          "mechanistic-interpretability.circuit-mapping.component-decomposition",
+          "mechanistic-interpretability.circuit-mapping.circuit-discovery"
+        ],
+        "supported_by_literature": ["Elhage2021", "Olah2017"],
+        "related_functions": [
+          "interpretability-tools.proxy-validation"
+        ]
+      },
+      {
+        "id": "interpretability-tools.decision-explanation",
+        "name": "Decision Explanation",
+        "description": "Function that provides clear, comprehensible explanations of AI decisions and reasoning processes",
+        "implemented_by_subcomponents": [
+          "explanation-systems", 
+          "feature-analysis"
+        ],
+        "implements_subcomponent_functions": [
+          "explanation-systems.explanation-generation.natural-language-explanation",
+          "explanation-systems.explanation-generation.visual-explanation",
+          "explanation-systems.contextual-explanations.audience-adaptation",
+          "feature-analysis.importance-quantification.feature-attribution"
+        ],
+        "supported_by_literature": ["Doshi-Velez2017", "Kim2018"],
+        "related_functions": [
+          "interpretability-tools.feature-inspection"
+        ]
+      },
+      {
+        "id": "interpretability-tools.proxy-validation",
+        "name": "Proxy Validation",
+        "description": "Function that verifies AI understanding through indirect testing and proxy methods",
+        "implemented_by_subcomponents": [
+          "proxy-understanding", 
+          "mechanistic-interpretability"
+        ],
+        "implements_subcomponent_functions": [
+          "proxy-understanding.behavioral-testing.systematic-testing",
+          "proxy-understanding.behavioral-testing.stress-testing",
+          "proxy-understanding.contrastive-testing.comparative-analysis",
+          "mechanistic-interpretability.reverse-engineering.computational-decomposition"
+        ],
+        "supported_by_literature": ["Armstrong2016", "Critch2020"],
+        "related_functions": [
+          "interpretability-tools.mechanism-inspection"
+        ]
+      },
+      {
+        "id": "interpretability-tools.analyze-behavior",
+        "name": "Behavior Analysis",
+        "description": "Function that analyzes AI system behavior to identify patterns and biases",
+        "implemented_by_subcomponents": [
+          "proxy-understanding",
+          "explanation-systems"
+        ],
+        "implements_subcomponent_functions": [
+          "proxy-understanding.behavioral-testing.systematic-testing",
+          "proxy-understanding.behavioral-testing.stress-testing",
+          "explanation-systems.explanation-generation.behavioral-summary",
+          "explanation-systems.contextual-explanations.context-awareness"
+        ],
+        "supported_by_literature": ["Armstrong2016", "Doshi-Velez2017"],
+        "related_functions": [
+          "interpretability-tools.proxy-validation",
+          "interpretability-tools.decision-explanation"
+        ]
+      },
+      {
+        "id": "interpretability-tools.explain-decisions",
+        "name": "Explain Decisions",
+        "description": "Function that explains AI decisions in human-understandable terms",
+        "implemented_by_subcomponents": [
+          "explanation-systems",
+          "feature-analysis"
+        ],
+        "implements_subcomponent_functions": [
+          "explanation-systems.explanation-generation.natural-language-explanation",
+          "explanation-systems.explanation-generation.visual-explanation",
+          "feature-analysis.importance-quantification.feature-attribution",
+          "feature-analysis.relationship-mapping.causal-analysis"
+        ],
+        "supported_by_literature": ["Doshi-Velez2017", "Kim2018"],
+        "related_functions": [
+          "interpretability-tools.decision-explanation",
+          "interpretability-tools.feature-inspection"
+        ]
+      },
+      {
+        "id": "interpretability-tools.model-understanding",
+        "name": "Model Understanding",
+        "description": "Function that provides comprehensive understanding of AI model behavior",
+        "implemented_by_subcomponents": [
+          "mechanistic-interpretability",
+          "proxy-understanding"
+        ],
+        "implements_subcomponent_functions": [
+          "mechanistic-interpretability.reverse-engineering.computational-decomposition",
+          "mechanistic-interpretability.circuit-mapping.circuit-discovery",
+          "proxy-understanding.behavioral-testing.systematic-testing",
+          "proxy-understanding.contrastive-testing.comparative-analysis"
+        ],
+        "supported_by_literature": ["Elhage2021", "Olah2017"],
+        "related_functions": [
+          "interpretability-tools.mechanism-inspection",
+          "interpretability-tools.decision-explanation"
+        ]
+      },
+      {
+        "id": "interpretability-tools.deep-understanding",
+        "name": "Deep Understanding",
+        "description": "Function that provides deep insight into complex neural networks",
+        "implemented_by_subcomponents": [
+          "mechanistic-interpretability",
+          "feature-analysis"
+        ],
+        "implements_subcomponent_functions": [
+          "mechanistic-interpretability.circuit-mapping.circuit-discovery",
+          "mechanistic-interpretability.reverse-engineering.algorithm-identification",
+          "feature-analysis.representation-visualization.latent-space-mapping",
+          "feature-analysis.feature-identification.feature-detection"
+        ],
+        "supported_by_literature": ["Elhage2021", "Olah2017"],
+        "related_functions": [
+          "interpretability-tools.mechanism-inspection",
+          "interpretability-tools.model-understanding"
+        ]
+      },
+      {
+        "id": "interpretability-tools.component-analysis",
+        "name": "Component Analysis",
+        "description": "Function that analyzes individual components within AI systems",
+        "implemented_by_subcomponents": [
+          "mechanistic-interpretability",
+          "feature-analysis"
+        ],
+        "implements_subcomponent_functions": [
+          "mechanistic-interpretability.circuit-mapping.component-decomposition",
+          "mechanistic-interpretability.information-tracing.computational-tracing",
+          "feature-analysis.feature-identification.feature-categorization",
+          "feature-analysis.importance-quantification.feature-attribution"
+        ],
+        "supported_by_literature": ["Elhage2021", "Olah2017"],
+        "related_functions": [
+          "interpretability-tools.mechanism-inspection",
+          "interpretability-tools.deep-understanding"
+        ]
+      },
+      {
+        "id": "interpretability-tools.causal-understanding",
+        "name": "Causal Understanding",
+        "description": "Function that provides causal understanding of AI reasoning processes",
+        "implemented_by_subcomponents": [
+          "mechanistic-interpretability",
+          "proxy-understanding"
+        ],
+        "implements_subcomponent_functions": [
+          "mechanistic-interpretability.information-tracing.computational-tracing",
+          "mechanistic-interpretability.information-tracing.activation-analysis",
+          "proxy-understanding.behavioral-testing.causal-testing",
+          "proxy-understanding.contrastive-testing.comparative-analysis"
+        ],
+        "supported_by_literature": ["Pearl2018", "Elhage2021"],
+        "related_functions": [
+          "interpretability-tools.mechanism-inspection",
+          "interpretability-tools.model-understanding"
+        ]
+      },
+      {
+        "id": "interpretability-tools.feature-analysis",
+        "name": "Feature Analysis",
+        "description": "Function that analyzes features used by AI systems in their processing",
+        "implemented_by_subcomponents": [
+          "feature-analysis",
+          "mechanistic-interpretability"
+        ],
+        "implements_subcomponent_functions": [
+          "feature-analysis.feature-identification.feature-detection",
+          "feature-analysis.feature-identification.feature-categorization",
+          "feature-analysis.importance-quantification.feature-attribution",
+          "mechanistic-interpretability.circuit-mapping.component-decomposition"
+        ],
+        "supported_by_literature": ["Olah2017", "Lundberg2017"],
+        "related_functions": [
+          "interpretability-tools.feature-inspection",
+          "interpretability-tools.component-analysis"
+        ]
+      },
+      {
+        "id": "interpretability-tools.attribution",
+        "name": "Attribution",
+        "description": "Function that attributes decisions to specific parts of AI systems",
+        "implemented_by_subcomponents": [
+          "feature-analysis",
+          "explanation-systems"
+        ],
+        "implements_subcomponent_functions": [
+          "feature-analysis.importance-quantification.feature-attribution",
+          "feature-analysis.importance-quantification.contribution-analysis",
+          "explanation-systems.explanation-generation.visual-explanation",
+          "explanation-systems.contextual-explanations.evidence-presentation"
+        ],
+        "supported_by_literature": ["Lundberg2017", "Sundararajan2017"],
+        "related_functions": [
+          "interpretability-tools.feature-analysis",
+          "interpretability-tools.decision-explanation"
+        ]
+      },
+      {
+        "id": "interpretability-tools.explanation-generation",
+        "name": "Explanation Generation",
+        "description": "Function that creates human-understandable explanations of AI decisions in various formats",
+        "implemented_by_subcomponents": [
+          "explanation-systems",
+          "feature-analysis"
+        ],
+        "implements_subcomponent_functions": [
+          "explanation-systems.explanation-generation.natural-language-explanation",
+          "explanation-systems.explanation-generation.visual-explanation",
+          "explanation-systems.contextual-explanations.concept-explanation",
+          "feature-analysis.importance-quantification.feature-attribution"
+        ],
+        "implements_capability": "interpretability-tools.explanation-capability",
+        "supported_by_literature": ["Doshi-Velez2017", "Kim2018"],
+        "related_functions": [
+          "interpretability-tools.decision-explanation",
+          "interpretability-tools.explain-decisions"
+        ]
+      },
+      {
+        "id": "interpretability-tools.conceptual-understanding",
+        "name": "Conceptual Understanding",
+        "description": "Function that provides understanding of high-level concepts learned by AI systems",
+        "implemented_by_subcomponents": [
+          "feature-analysis",
+          "explanation-systems"
+        ],
+        "implements_subcomponent_functions": [
+          "feature-analysis.feature-identification.feature-categorization",
+          "feature-analysis.relationship-mapping.concept-mapping",
+          "explanation-systems.contextual-explanations.concept-explanation",
+          "explanation-systems.explanation-generation.natural-language-explanation"
+        ],
+        "supported_by_literature": ["Kim2018", "Bau2017"],
+        "related_functions": [
+          "interpretability-tools.deep-understanding",
+          "interpretability-tools.feature-analysis"
+        ]
+      },
+      {
+        "id": "interpretability-tools.visualization",
+        "name": "Visualization",
+        "description": "Function that visualizes internal AI representations and processes",
+        "implemented_by_subcomponents": [
+          "feature-analysis",
+          "explanation-systems"
+        ],
+        "implements_subcomponent_functions": [
+          "feature-analysis.representation-visualization.activation-visualization",
+          "feature-analysis.representation-visualization.latent-space-mapping",
+          "explanation-systems.explanation-generation.visual-explanation",
+          "explanation-systems.contextual-explanations.context-visualization"
+        ],
+        "supported_by_literature": ["Olah2017", "Kim2018"],
+        "related_functions": [
+          "interpretability-tools.feature-inspection",
+          "interpretability-tools.decision-explanation"
+        ]
+      }
+    ]
+  },
+  
+  "integration_approaches": [
+    {
+      "id": "interpretability-tools.feature-analysis-integration",
+      "name": "Feature Analysis Integration",
+      "description": "Integrates methods for visualizing and understanding features learned by AI systems",
+      "implemented_by_techniques": [
+        "feature-analysis.gradient-visualization", 
+        "feature-analysis.feature-attribution", 
+        "explanation-systems.visualization-generation"
+      ]
+    },
+    {
+      "id": "interpretability-tools.mechanistic-understanding-integration",
+      "name": "Mechanistic Understanding Integration",
+      "description": "Integrates methods for analyzing internal AI mechanisms and computations",
+      "implemented_by_techniques": [
+        "mechanistic-interpretability.circuit-analysis", 
+        "mechanistic-interpretability.activation-tracing", 
+        "proxy-understanding.behavioral-testing"
+      ]
+    },
+    {
+      "id": "interpretability-tools.explanation-generation-integration",
+      "name": "Explanation Generation Integration",
+      "description": "Integrates methods for generating human-understandable explanations of AI decisions",
+      "implemented_by_techniques": [
+        "explanation-systems.natural-language-generation", 
+        "explanation-systems.visual-explanation", 
+        "feature-analysis.feature-visualization"
+      ]
+    },
+    {
+      "id": "interpretability-tools.indirect-understanding-integration",
+      "name": "Indirect Understanding Integration",
+      "description": "Integrates methods for indirectly verifying AI understanding through testing",
+      "implemented_by_techniques": [
+        "proxy-understanding.behavioral-testing", 
+        "proxy-understanding.comparative-analysis", 
+        "mechanistic-interpretability.computational-tracing"
+      ]
+    }
+  ],
+  
+  "integration_considerations": [
+    {
+      "id": "interpretability-tools.explanation-fidelity",
+      "name": "Explanation Fidelity",
+      "description": "Ensuring that explanations accurately reflect AI system reasoning",
+      "implemented_by_considerations": [
+        "explanation-systems.explanation-accuracy", 
+        "mechanistic-interpretability.mechanistic-fidelity", 
+        "feature-analysis.feature-relevance",
+        "proxy-understanding.verification-validity"
+      ]
+    },
+    {
+      "id": "interpretability-tools.human-interpretability",
+      "name": "Human Interpretability",
+      "description": "Making explanations understandable to humans with varying technical backgrounds",
+      "implemented_by_considerations": [
+        "explanation-systems.cognitive-accessibility", 
+        "feature-analysis.visualization-clarity", 
+        "explanation-systems.audience-adaptation",
+        "proxy-understanding.intuitive-validation"
+      ]
+    },
+    {
+      "id": "interpretability-tools.integration-adaptability",
+      "name": "Integration Adaptability",
+      "description": "Ensuring interpretability tools can adapt to different AI architectures",
+      "implemented_by_considerations": [
+        "mechanistic-interpretability.architecture-adaptability", 
+        "feature-analysis.cross-architecture-compatibility", 
+        "explanation-systems.model-agnosticism",
+        "proxy-understanding.transferability"
+      ]
+    },
+    {
+      "id": "interpretability-tools.verification-coverage",
+      "name": "Verification Coverage",
+      "description": "Ensuring comprehensive coverage across different model components and behaviors",
+      "implemented_by_considerations": [
+        "proxy-understanding.test-coverage", 
+        "mechanistic-interpretability.circuit-coverage", 
+        "proxy-understanding.blind-spot-detection",
+        "mechanistic-interpretability.analysis-depth"
+      ]
+    }
+  ],
+  
+  "subcomponents": [
+    {
+      "id": "feature-analysis",
+      "name": "Feature Analysis",
+      "description": "Methods that expose and explain the features used by AI systems",
+      "type": "subcomponent",
+      "parent": "interpretability-tools",
+      "implements_capabilities": [
+        "interpretability-tools.feature-analysis-capability",
+        "interpretability-tools.explanation-capability"
+      ],
+      "implements_functions": [
+        "interpretability-tools.feature-inspection", 
+        "interpretability-tools.decision-explanation",
+        "interpretability-tools.explanation-generation"
+      ]
+    },
+    {
+      "id": "mechanistic-interpretability",
+      "name": "Mechanistic Interpretability",
+      "description": "Understanding internal model mechanisms and circuits",
+      "type": "subcomponent",
+      "parent": "interpretability-tools",
+      "implements_capabilities": [
+        "interpretability-tools.mechanistic-capability",
+        "interpretability-tools.proxy-understanding-capability"
+      ],
+      "implements_functions": [
+        "interpretability-tools.mechanism-inspection", 
+        "interpretability-tools.proxy-validation"
+      ]
+    },
+    {
+      "id": "explanation-systems",
+      "name": "Explanation Systems",
+      "description": "Human-understandable explanations of AI reasoning and decisions",
+      "type": "subcomponent",
+      "parent": "interpretability-tools",
+      "implements_capabilities": [
+        "interpretability-tools.explanation-capability",
+        "interpretability-tools.feature-analysis-capability"
+      ],
+      "implements_functions": [
+        "interpretability-tools.decision-explanation", 
+        "interpretability-tools.feature-inspection",
+        "interpretability-tools.explanation-generation"
+      ]
+    },
+    {
+      "id": "proxy-understanding",
+      "name": "Proxy Understanding",
+      "description": "Indirect methods for testing system comprehension",
+      "type": "subcomponent",
+      "parent": "interpretability-tools",
+      "implements_capabilities": [
+        "interpretability-tools.proxy-understanding-capability",
+        "interpretability-tools.feature-analysis-capability"
+      ],
+      "implements_functions": [
+        "interpretability-tools.proxy-validation", 
+        "interpretability-tools.mechanism-inspection"
+      ]
+    }
+  ],
+  
+  "literature": {
+    "_documentation": "This section lists all literature references relevant to this component. Each reference is a descriptive ID that corresponds to an entry in the literature database. IMPORTANT: (1) References should be added to the [component-group]_literature.json file IMMEDIATELY after identifying them. (2) Every reference listed here MUST have a corresponding entry in the literature_connections section below. (3) Use the format LastNameYYYY (e.g., 'LeCun2015') for all reference IDs.",
+    "references": ["Olah2017", "Lundberg2017", "Doshi-Velez2017", "Kim2018", "Elhage2021", "Armstrong2016", "Critch2020"]
+  },
+  
+  "literature_connections": [
+    {
+      "reference_id": "Olah2017",
+      "capability": "interpretability-tools.feature-analysis-capability",
+      "function": "interpretability-tools.feature-inspection",
+      "relevant_aspects": "Olah et al.'s pioneering work on neural network feature visualization provides foundational methods for our feature analysis integration approach"
+    },
+    {
+      "reference_id": "Lundberg2017",
+      "capability": "interpretability-tools.feature-analysis-capability",
+      "function": "interpretability-tools.feature-inspection",
+      "relevant_aspects": "Lundberg & Lee's unified approach to model prediction attribution informs our feature attribution pattern within the feature analysis integration approach"
+    },
+    {
+      "reference_id": "Doshi-Velez2017",
+      "capability": "interpretability-tools.explanation-capability",
+      "function": "interpretability-tools.decision-explanation",
+      "relevant_aspects": "Doshi-Velez & Kim's framework for evaluating interpretability methods provides theoretical foundations for our explanation generation integration approach"
+    },
+    {
+      "reference_id": "Kim2018",
+      "capability": "interpretability-tools.explanation-capability",
+      "function": "interpretability-tools.decision-explanation",
+      "relevant_aspects": "Kim et al.'s concept-based explanations for neural networks inform our visual explanation pattern within the explanation generation integration approach"
+    },
+    {
+      "reference_id": "Elhage2021",
+      "capability": "interpretability-tools.mechanistic-capability",
+      "function": "interpretability-tools.mechanism-inspection",
+      "relevant_aspects": "Elhage et al.'s mathematical framework for transformer circuits provides advanced techniques for our mechanistic understanding integration approach"
+    },
+    {
+      "reference_id": "Armstrong2016",
+      "capability": "interpretability-tools.proxy-understanding-capability",
+      "function": "interpretability-tools.proxy-validation",
+      "relevant_aspects": "Armstrong & Cotton-Barratt's work on AI interruptibility informs our proxy testing pattern within the indirect understanding integration approach"
+    },
+    {
+      "reference_id": "Critch2020",
+      "capability": "interpretability-tools.proxy-understanding-capability",
+      "function": "interpretability-tools.proxy-validation",
+      "relevant_aspects": "Critch & Brown's research on AI compartmentalization contributes to our comparative analysis pattern for testing system behavior"
+    },
+    {
+      "reference_id": "Doshi-Velez2017",
+      "capability": "interpretability-tools.explanation-capability",
+      "function": "interpretability-tools.explanation-generation",
+      "relevant_aspects": "Doshi-Velez & Kim's comprehensive framework for interpretability methods directly informs our approach to generating human-understandable explanations"
+    }
+  ],
+  
+  "relationships": {
+    "components": [
+      {
+        "id": "technical-safeguards",
+        "relationship_type": "bidirectional",
+        "description": "Interpretability Tools provide visibility into Technical Safeguards' operation, while Technical Safeguards provide safety guarantees for Interpretability Tools",
+        "integration_points": [
+          {
+            "this_component_function": "interpretability-tools.mechanism-inspection",
+            "other_component_function": "technical-safeguards.property-validation",
+            "description": "Mechanistic interpretability provides insights into system properties that need formal verification"
+          },
+          {
+            "this_component_function": "interpretability-tools.proxy-validation",
+            "other_component_function": "technical-safeguards.boundary-enforcement",
+            "description": "Proxy understanding provides validation methods for ensuring boundary enforcement effectiveness"
+          },
+          {
+            "this_component_function": "interpretability-tools.explanation-generation",
+            "other_component_function": "technical-safeguards.verify-safety",
+            "description": "Explanation generation makes safety properties understandable to humans for verification"
+          }
+        ]
+      },
+      {
+        "id": "value-learning",
+        "relationship_type": "bidirectional",
+        "description": "Interpretability Tools provide insights that inform value refinement, while Value Learning provides value models that Interpretability Tools explain",
+        "integration_points": [
+          {
+            "this_component_function": "interpretability-tools.feature-inspection",
+            "other_component_function": "value-learning.value-representation",
+            "description": "Feature analysis reveals how values are encoded in AI representations"
+          },
+          {
+            "this_component_function": "interpretability-tools.decision-explanation",
+            "other_component_function": "value-learning.preference-extraction",
+            "description": "Decision explanation clarifies how extracted preferences influence AI decisions"
+          },
+          {
+            "this_component_function": "interpretability-tools.explanation-generation",
+            "other_component_function": "value-learning.value-communication",
+            "description": "Explanation generation translates complex value considerations into understandable formats"
+          }
+        ]
+      },
+      {
+        "id": "oversight-mechanisms",
+        "relationship_type": "bidirectional",
+        "description": "Interpretability Tools provide explanation capabilities that Oversight Mechanisms leverage, while Oversight Mechanisms provide monitoring data that Interpretability Tools analyze",
+        "integration_points": [
+          {
+            "this_component_function": "interpretability-tools.decision-explanation",
+            "other_component_function": "oversight-mechanisms.behavior-monitoring",
+            "description": "Decision explanation provides explanations for behaviors detected by monitoring systems"
+          },
+          {
+            "this_component_function": "interpretability-tools.proxy-validation",
+            "other_component_function": "oversight-mechanisms.alignment-evaluation",
+            "description": "Proxy validation provides verification methods used by alignment evaluation processes"
+          },
+          {
+            "this_component_function": "interpretability-tools.explanation-generation",
+            "other_component_function": "oversight-mechanisms.oversight-transparency",
+            "description": "Explanation generation creates understandable explanations that support oversight transparency"
+          }
+        ]
+      },
+      {
+        "id": "democratic-alignment",
+        "relationship_type": "bidirectional",
+        "description": "Interpretability Tools provide transparent insights for democratic governance, while Democratic Alignment provides stakeholder requirements that shape interpretability approaches",
+        "integration_points": [
+          {
+            "this_component_function": "interpretability-tools.decision-explanation",
+            "other_component_function": "democratic-alignment.oversight-implementation",
+            "description": "Decision explanation provides explanations needed for democratic oversight"
+          },
+          {
+            "this_component_function": "interpretability-tools.feature-inspection",
+            "other_component_function": "democratic-alignment.value-elicitation",
+            "description": "Feature inspection reveals how elicited values are represented in AI systems"
+          },
+          {
+            "this_component_function": "interpretability-tools.explanation-generation",
+            "other_component_function": "democratic-alignment.participation-facilitation",
+            "description": "Explanation generation makes AI decisions comprehensible to diverse stakeholders, facilitating meaningful participation"
+          }
+        ]
+      }
+    ]
+  },
+  
+  "cross_connections": [
+    {
+      "from": "interpretability-tools.explainability-capability",
+      "to": "democratic-alignment.deliberative-capacity-capability",
+      "type": "enabling",
+      "description": "Explainability tools enable more effective democratic deliberation by making AI systems understandable to diverse stakeholders"
+    },
+    {
+      "from": "interpretability-tools.mechanistic-understanding-capability",
+      "to": "technical-safeguards.formal-verification-capability",
+      "type": "complementary",
+      "description": "Mechanistic understanding provides insights that enable more effective formal verification of AI systems"
+    },
+    {
+      "from": "interpretability-tools.proxy-understanding-capability",
+      "to": "value-learning.value-encoding-capability",
+      "type": "supporting",
+      "description": "Proxy understanding techniques help validate whether encoded values are being properly implemented"
+    }
+  ],
+  
+  "metadata": {
+    "key_considerations": {
+      "ethical": "Ensuring interpretability methods respect privacy and data sensitivity",
+      "technical": "Balancing interpretability with system performance and complexity",
+      "social": "Making interpretations accessible to diverse stakeholders with varying technical backgrounds",
+      "practical": "Scaling interpretability approaches to advanced AI architectures"
+    },
+    "integration_points": [
+      {
+        "component": "value-learning",
+        "interface": "Verification of value implementation",
+        "requirements": "Must verify alignment with intended values at multiple levels"
+      },
+      {
+        "component": "democratic-alignment",
+        "interface": "Making AI decisions comprehensible for democratic oversight",
+        "requirements": "Must translate technical details into forms accessible to diverse stakeholders"
+      },
+      {
+        "component": "technical-safeguards",
+        "interface": "Identifying potential safety issues through system inspection",
+        "requirements": "Must maintain robustness across evolving system architectures"
+      }
+    ]
+  }
+} 

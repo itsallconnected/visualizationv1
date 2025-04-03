@@ -1,0 +1,1715 @@
+{
+  "context": "This subcomponent implements specialized mechanisms and architectures that restrict AI system capabilities and access to the external environment, establishing secure boundaries that prevent potentially misaligned AI from operating outside intended parameters.",
+  "id": "containment-systems",
+  "name": "Containment Systems",
+  "description": "Specialized mechanisms and architectures that restrict AI system capabilities and access to the external environment. These systems establish secure boundaries that prevent potentially misaligned AI from operating outside intended parameters, providing robust protection regardless of the system's internal alignment state.",
+  "type": "subcomponent",
+  "parent": "technical-safeguards",
+  
+  "capabilities": [
+    {
+      "id": "containment-systems.isolation-enforcement",
+      "name": "Isolation Enforcement",
+      "description": "Enforcing strict isolation between AI systems and critical resources or environments",
+      "implements_component_capabilities": ["technical-safeguards.containment-capability", "technical-safeguards.safety-architecture-capability"],
+      "type": "capability",
+      "parent": "containment-systems",
+      "functions": [
+        {
+          "id": "containment-systems.isolation-enforcement.sandboxed-execution",
+          "name": "Sandboxed Execution Environment",
+          "description": "Creating isolated execution environments for AI systems with controlled access to resources",
+          "implements_component_functions": ["technical-safeguards.property-validation", "technical-safeguards.architecture-enforcement"],
+          "type": "function",
+          "parent": "containment-systems.isolation-enforcement",
+          "specifications": [
+            {
+              "id": "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements",
+              "name": "Isolation Requirements",
+              "description": "Technical specifications for ensuring proper isolation between AI systems and external resources",
+              "type": "specifications",
+              "parent": "containment-systems.isolation-enforcement.sandboxed-execution",
+              "requirements": [
+                "Complete isolation of execution environment from host system",
+                "Fine-grained resource access controls for CPU, memory, storage, and network",
+                "Prohibition of direct hardware access without explicit permission",
+                "Monitoring interfaces for all resource utilization"
+              ],
+              "integration": {
+                "id": "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements.implementation",
+                "name": "Isolation Implementation",
+                "description": "Integration approach for implementing isolation requirements in sandboxed environments",
+                "type": "integration",
+                "parent": "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements",
+                "techniques": [
+                  {
+                    "id": "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements.implementation.virtualization",
+                    "name": "Virtualization Technique",
+                    "type": "technique",
+                    "description": "Utilizes virtualization technologies to create isolated execution environments with strict resource boundaries",
+                    "parent": "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements.implementation",
+                    "applications": [
+                      {
+                        "id": "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements.implementation.virtualization.hypervisor",
+                        "name": "Hypervisor-Based Isolation",
+                        "type": "application",
+                        "description": "Employs hardware-backed hypervisor technology to create secure VM boundaries for AI system execution",
+                        "parent": "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements.implementation.virtualization",
+                        "inputs": [
+                          {
+                            "id":"system_resource_requirements",
+                            "name": "System Resource Requirements",
+                            "description": "Specification of computational resources needed by the AI system",
+                            "data_type": "structured_config",
+                            "constraints": "Must specify precise memory, CPU, network, and storage limits"
+                          },
+                          {
+                            "id":"security_policy",
+                            "name": "Security Policy",
+                            "description": "Formal security policy defining permitted actions and resource access",
+                            "data_type": "policy_specification",
+                            "constraints": "Must be formally verifiable"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id":"isolated_execution_environment",
+                            "name": "Isolated Execution Environment",
+                            "description": "Secure virtualized environment with enforced resource boundaries",
+                            "data_type": "system_environment",
+                            "interpretation": "Provides a complete execution context with specified isolation guarantees"
+                          },
+                          {
+                            "id":"monitoring_interface",
+                            "name": "Monitoring Interface",
+                            "description": "API for external monitoring of the sandboxed environment",
+                            "data_type": "api_endpoints",
+                            "interpretation": "Enables oversight systems to verify isolation integrity"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "supported_by_literature": ["Orseau2016", "Critch2020"]
+        },
+        {
+          "id": "containment-systems.isolation-enforcement.information-flow-barriers",
+          "name": "Information Flow Barriers",
+          "description": "Creating information barriers that prevent unauthorized data access or transmission",
+          "implements_component_functions": ["technical-safeguards.boundary-enforcement", "technical-safeguards.architecture-enforcement"],
+          "type": "function",
+          "parent": "containment-systems.isolation-enforcement",
+          "specifications": [
+            {
+              "id": "containment-systems.isolation-enforcement.information-flow-barriers.barrier-specifications",
+              "name": "Information Flow Barrier Specifications",
+              "description": "Technical specifications for implementing information flow barriers in isolated systems",
+              "type": "specifications",
+              "parent": "containment-systems.isolation-enforcement.information-flow-barriers",
+              "requirements": [
+                "Unidirectional information flow enforcement mechanisms",
+                "Content filtering and data sanitization at flow boundaries",
+                "Formal verification of information flow control policies",
+                "Multi-level security classification for data and systems"
+              ],
+              "integration": {
+                "id": "containment-systems.isolation-enforcement.information-flow-barriers.barrier-specifications.implementation",
+                "name": "Information Flow Barrier Implementation",
+                "description": "Integration approach for implementing information flow barriers",
+                "type": "integration",
+                "parent": "containment-systems.isolation-enforcement.information-flow-barriers.barrier-specifications",
+                "techniques": [
+                  {
+                    "id": "containment-systems.isolation-enforcement.information-flow-barriers.barrier-specifications.implementation.data-diodes",
+                    "name": "Data Diode Implementation",
+                    "description": "Technique for implementing hardware-enforced unidirectional information flow",
+                    "type": "technique",
+                    "parent": "containment-systems.isolation-enforcement.information-flow-barriers.barrier-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "containment-systems.isolation-enforcement.information-flow-barriers.barrier-specifications.implementation.data-diodes.hardware-diode",
+                        "name": "Hardware Data Diode",
+                        "description": "Physical hardware implementation of unidirectional information flow control",
+                        "type": "application",
+                        "parent": "containment-systems.isolation-enforcement.information-flow-barriers.barrier-specifications.implementation.data-diodes",
+                        "inputs": [
+                          {
+                            "id":"source_data_stream",
+                            "name": "Source Data Stream",
+                            "description": "Data from source system intended for one-way transmission",
+                            "data_type": "data_stream",
+                            "constraints": "Must conform to protocol specification for the diode"
+                          },
+                          {
+                            "id":"flow_policy",
+                            "name": "Flow Policy",
+                            "description": "Policy defining permitted information flows and content types",
+                            "data_type": "flow_policy",
+                            "constraints": "Must be formally specified and verifiable"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id":"destination_data_stream",
+                            "name": "Destination Data Stream",
+                            "description": "Data that has passed through the unidirectional barrier",
+                            "data_type": "data_stream",
+                            "interpretation": "Guaranteed to be one-way flow with no return channel"
+                          },
+                          {
+                            "id":"flow_audit_log",
+                            "name": "Flow Audit Log",
+                            "description": "Tamper-proof record of all information transfers",
+                            "data_type": "audit_log",
+                            "interpretation": "Provides verification of flow control enforcement"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "supported_by_literature": ["Critch2020", "Leike2017"]
+        },
+        {
+          "id": "containment-systems.isolation-enforcement.containment-boundary-monitoring",
+          "name": "Containment Boundary Monitoring",
+          "description": "Monitoring containment boundaries for integrity and attempted violations",
+          "implements_component_functions": ["technical-safeguards.property-validation", "technical-safeguards.architecture-enforcement", "technical-safeguards.boundary-enforcement"],
+          "type": "function",
+          "parent": "containment-systems.isolation-enforcement",
+          "specifications": [
+            {
+              "id": "containment-systems.isolation-enforcement.containment-boundary-monitoring.monitoring-specifications",
+              "name": "Boundary Monitoring Specifications",
+              "description": "Technical specifications for monitoring containment boundaries and detecting violations",
+              "type": "specifications",
+              "parent": "containment-systems.isolation-enforcement.containment-boundary-monitoring",
+              "requirements": [
+                "Real-time monitoring of all containment boundary interfaces",
+                "Anomaly detection for unusual boundary crossing attempts",
+                "Tamper-resistant monitoring infrastructure with independent verification",
+                "Comprehensive logging and alerting for boundary integrity violations"
+              ],
+              "integration": {
+                "id": "containment-systems.isolation-enforcement.containment-boundary-monitoring.monitoring-specifications.implementation",
+                "name": "Boundary Monitoring Implementation",
+                "description": "Integration approach for implementing containment boundary monitoring",
+                "type": "integration",
+                "parent": "containment-systems.isolation-enforcement.containment-boundary-monitoring.monitoring-specifications",
+                "techniques": [
+                  {
+                    "id": "containment-systems.isolation-enforcement.containment-boundary-monitoring.monitoring-specifications.implementation.intrusion-detection",
+                    "name": "Boundary Intrusion Detection",
+                    "description": "Technique for detecting and responding to boundary violation attempts",
+                    "type": "technique",
+                    "parent": "containment-systems.isolation-enforcement.containment-boundary-monitoring.monitoring-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "containment-systems.isolation-enforcement.containment-boundary-monitoring.monitoring-specifications.implementation.intrusion-detection.boundary-ids",
+                        "name": "Boundary Intrusion Detection System",
+                        "description": "System for monitoring and detecting containment boundary violations",
+                        "type": "application",
+                        "parent": "containment-systems.isolation-enforcement.containment-boundary-monitoring.monitoring-specifications.implementation.intrusion-detection",
+                        "inputs": [
+                          {
+                            "id":"boundary_events",
+                            "name": "Boundary Events",
+                            "description": "All events and transactions at containment boundaries",
+                            "data_type": "event_stream",
+                            "constraints": "Must include complete metadata about source, destination, and content"
+                          },
+                          {
+                            "id":"baseline_behavior_model",
+                            "name": "Baseline Behavior Model",
+                            "description": "Model of normal boundary activity patterns",
+                            "data_type": "behavioral_model",
+                            "constraints": "Must be periodically updated and verified"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id":"boundary_violation_alerts",
+                            "name": "Boundary Violation Alerts",
+                            "description": "Real-time alerts for detected boundary violation attempts",
+                            "data_type": "security_alerts",
+                            "interpretation": "Indicates potential containment breaches requiring response"
+                          },
+                          {
+                            "id":"boundary_integrity_status",
+                            "name": "Boundary Integrity Status",
+                            "description": "Continuous status report on containment boundary integrity",
+                            "data_type": "status_feed",
+                            "interpretation": "Provides verification of ongoing containment effectiveness"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "supported_by_literature": ["Critch2020", "Orseau2016"]
+        }
+      ],
+      "supported_by_literature": ["Orseau2016", "Critch2020"]
+    },
+    {
+      "id": "containment-systems.environment-isolation",
+      "name": "Environment Isolation",
+      "description": "Isolating AI systems from external environments",
+      "implements_component_capabilities": ["technical-safeguards.formal-verification-capability", "technical-safeguards.safety-architecture-capability"],
+      "type": "capability",
+      "parent": "containment-systems",
+      "functions": [
+        {
+          "id": "containment-systems.environment-isolation.sandboxed-execution",
+          "name": "Sandboxed Execution Environment",
+          "description": "Creating isolated execution environments for AI systems with controlled access to resources",
+          "implements_component_functions": ["technical-safeguards.property-validation", "technical-safeguards.architecture-enforcement"],
+          "type": "function",
+          "parent": "containment-systems.environment-isolation",
+          "specifications": [
+            {
+              "id": "containment-systems.environment-isolation.sandboxed-execution.environment-specifications",
+              "name": "Environment Isolation Specifications",
+              "description": "Technical specifications for isolating AI execution environments from external systems",
+              "type": "specifications",
+              "parent": "containment-systems.environment-isolation.sandboxed-execution",
+              "requirements": [
+                "Complete isolation from external network resources by default",
+                "Air-gapped execution options for high-risk systems",
+                "Controlled data flow channels with validation",
+                "Resource quotas and usage monitoring"
+              ],
+              "integration": {
+                "id": "containment-systems.environment-isolation.sandboxed-execution.environment-specifications.implementation",
+                "name": "Environment Isolation Implementation",
+                "description": "Integration approach for implementing isolated execution environments",
+                "type": "integration",
+                "parent": "containment-systems.environment-isolation.sandboxed-execution.environment-specifications",
+                "techniques": [
+                  {
+                    "id": "containment-systems.environment-isolation.sandboxed-execution.environment-specifications.implementation.container-isolation",
+                    "name": "Container Isolation Technique",
+                    "description": "Uses containerization technology to create isolated execution environments",
+                    "type": "technique",
+                    "parent": "containment-systems.environment-isolation.sandboxed-execution.environment-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "containment-systems.environment-isolation.sandboxed-execution.environment-specifications.implementation.container-isolation.secure-container",
+                        "name": "Secure Container Runtime",
+                        "description": "Hardened container runtime environment with enhanced security controls",
+                        "type": "application",
+                        "parent": "containment-systems.environment-isolation.sandboxed-execution.environment-specifications.implementation.container-isolation",
+                        "inputs": [
+                          {
+                            "id":"security_policy",
+                            "name": "Security Policy",
+                            "description": "Detailed security policy defining permitted operations",
+                            "data_type": "policy_specification",
+                            "constraints": "Must include network, filesystem, and API access restrictions"
+                          },
+                          {
+                            "id":"resource_limits",
+                            "name": "Resource Limits",
+                            "description": "Specification of resource usage boundaries",
+                            "data_type": "resource_specification",
+                            "constraints": "Must define hard limits for CPU, memory, storage, and network bandwidth"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id":"isolated_runtime_environment",
+                            "name": "Isolated Runtime Environment",
+                            "description": "Secure container environment for AI execution",
+                            "data_type": "container_environment",
+                            "interpretation": "Provides controlled execution context with defined isolation guarantees"
+                          },
+                          {
+                            "id":"resource_usage_metrics",
+                            "name": "Resource Usage Metrics",
+                            "description": "Metrics on resource utilization within the container",
+                            "data_type": "metric_stream",
+                            "interpretation": "Enables monitoring for resource-based attacks or overutilization"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "supported_by_literature": ["Orseau2016", "Leike2017"]
+        },
+        {
+          "id": "containment-systems.environment-isolation.information-flow-barriers",
+          "name": "Information Flow Barriers",
+          "description": "Creating information barriers that prevent unauthorized data access or transmission",
+          "implements_component_functions": ["technical-safeguards.boundary-enforcement", "technical-safeguards.architecture-enforcement"],
+          "type": "function",
+          "parent": "containment-systems.environment-isolation",
+          "specifications": [
+            {
+              "id": "containment-systems.environment-isolation.information-flow-barriers.barrier-specifications",
+              "name": "Environment Information Barrier Specifications",
+              "description": "Technical specifications for controlling information flow between isolated environments",
+              "type": "specifications",
+              "parent": "containment-systems.environment-isolation.information-flow-barriers",
+              "requirements": [
+                "Controlled communication channels between environments",
+                "Content filtering and sanitization at boundaries",
+                "Unidirectional information flow mechanisms where appropriate",
+                "Comprehensive logging of all cross-boundary data transfers"
+              ],
+              "integration": {
+                "id": "containment-systems.environment-isolation.information-flow-barriers.barrier-specifications.implementation",
+                "name": "Environment Barrier Implementation",
+                "description": "Integration approach for implementing information barriers between environments",
+                "type": "integration",
+                "parent": "containment-systems.environment-isolation.information-flow-barriers.barrier-specifications",
+                "techniques": [
+                  {
+                    "id": "containment-systems.environment-isolation.information-flow-barriers.barrier-specifications.implementation.filtered-channels",
+                    "name": "Filtered Channel Technique",
+                    "description": "Implements filtered communication channels with strict content validation",
+                    "type": "technique",
+                    "parent": "containment-systems.environment-isolation.information-flow-barriers.barrier-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "containment-systems.environment-isolation.information-flow-barriers.barrier-specifications.implementation.filtered-channels.content-validator",
+                        "name": "Content Validation Gateway",
+                        "description": "Gateway system that validates and sanitizes all data transfers between environments",
+                        "type": "application",
+                        "parent": "containment-systems.environment-isolation.information-flow-barriers.barrier-specifications.implementation.filtered-channels",
+                        "inputs": [
+                          {
+                            "id":"data_transfer_request",
+                            "name": "Data Transfer Request",
+                            "description": "Request to transfer data across environment boundaries",
+                            "data_type": "transfer_request",
+                            "constraints": "Must include source, destination, and data payload"
+                          },
+                          {
+                            "id":"validation_rules",
+                            "name": "Validation Rules",
+                            "description": "Rule set defining permitted data structures and content",
+                            "data_type": "validation_ruleset",
+                            "constraints": "Must be formally verifiable and complete"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id":"validated_data",
+                            "name": "Validated Data",
+                            "description": "Data that has passed validation and been sanitized",
+                            "data_type": "validated_data",
+                            "interpretation": "Safe for transfer across environment boundaries"
+                          },
+                          {
+                            "id":"transfer_audit_log",
+                            "name": "Transfer Audit Log",
+                            "description": "Detailed log of all transfer attempts and their outcomes",
+                            "data_type": "audit_log",
+                            "interpretation": "Provides accountability and enables anomaly detection"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "supported_by_literature": ["Leike2017", "Critch2020"]
+        }
+      ],
+      "supported_by_literature": ["Orseau2016", "Leike2017"]
+    },
+    {
+      "id": "containment-systems.capability-restriction",
+      "name": "Capability Restriction",
+      "description": "Restricting the capabilities of AI systems to prevent harmful actions",
+      "implements_component_capabilities": ["technical-safeguards.containment-capability", "technical-safeguards.fail-safe-capability"],
+      "type": "capability",
+      "parent": "containment-systems",
+      "functions": [
+        {
+          "id": "containment-systems.capability-restriction.capability-control-mechanisms",
+          "name": "Capability Control Mechanisms",
+          "description": "Mechanisms to control and restrict AI system capabilities",
+          "implements_component_functions": ["technical-safeguards.boundary-enforcement", "technical-safeguards.emergency-response"],
+          "type": "function",
+          "parent": "containment-systems.capability-restriction",
+          "specifications": [
+            {
+              "id": "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications",
+              "name": "Capability Control Specifications",
+              "description": "Technical specifications for implementing fine-grained AI capability control mechanisms",
+              "type": "specifications",
+              "parent": "containment-systems.capability-restriction.capability-control-mechanisms",
+              "requirements": [
+                "Fine-grained permission system for all AI capabilities",
+                "Runtime capability restriction enforcement",
+                "Hierarchical capability management system",
+                "Capability monitoring and usage telemetry"
+              ],
+              "integration": {
+                "id": "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation",
+                "name": "Capability Control Implementation",
+                "description": "Integration approach for implementing capability control mechanisms",
+                "type": "integration",
+                "parent": "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications",
+                "techniques": [
+                  {
+                    "id": "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation.permission-system",
+                    "name": "Permission System Technique",
+                    "description": "Implements a comprehensive permission system for controlling AI capabilities",
+                    "type": "technique",
+                    "parent": "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation.permission-system.capability-broker",
+                        "name": "Capability Broker System",
+                        "description": "Central system for managing, granting, and revoking AI capabilities based on security policies",
+                        "type": "application",
+                        "parent": "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation.permission-system",
+                        "inputs": [
+                          {
+                            "id":"capability_request",
+                            "name": "Capability Request",
+                            "description": "Request from AI system to access a specific capability",
+                            "data_type": "capability_request",
+                            "constraints": "Must include capability identifier, purpose, and authentication"
+                          },
+                          {
+                            "id":"security_policy",
+                            "name": "Security Policy",
+                            "description": "Policy defining which capabilities are permitted under what conditions",
+                            "data_type": "policy_document",
+                            "constraints": "Must be formally specified and verifiable"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id":"capability_token",
+                            "name": "Capability Token",
+                            "description": "Time-limited, scope-limited token granting access to requested capability",
+                            "data_type": "authorization_token",
+                            "interpretation": "Enables secure, controlled access to specific capabilities"
+                          },
+                          {
+                            "id":"capability_audit_log",
+                            "name": "Capability Audit Log",
+                            "description": "Detailed log of all capability requests, grants, and usage",
+                            "data_type": "audit_log",
+                            "interpretation": "Provides accountability and tracking of capability usage"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "supported_by_literature": ["Amodei2016", "Hendrycks2022"]
+        },
+        {
+          "id": "containment-systems.capability-restriction.secure-capability-expansion",
+          "name": "Secure Capability Expansion",
+          "description": "Controlled expansion of AI system capabilities with safety guarantees",
+          "implements_component_functions": ["technical-safeguards.emergency-response"],
+          "type": "function",
+          "parent": "containment-systems.capability-restriction",
+          "specifications": [
+            {
+              "id": "containment-systems.capability-restriction.secure-capability-expansion.expansion-specifications",
+              "name": "Capability Expansion Specifications",
+              "description": "Technical specifications for securely expanding AI capabilities over time",
+              "type": "specifications",
+              "parent": "containment-systems.capability-restriction.secure-capability-expansion",
+              "requirements": [
+                "Graduated capability release protocol with verification stages",
+                "Formal verification requirements for each capability level",
+                "Rollback mechanisms for capability downgrades",
+                "Comprehensive auditing of capability expansions"
+              ],
+              "integration": {
+                "id": "containment-systems.capability-restriction.secure-capability-expansion.expansion-specifications.implementation",
+                "name": "Capability Expansion Implementation",
+                "description": "Integration approach for implementing secure capability expansion processes",
+                "type": "integration",
+                "parent": "containment-systems.capability-restriction.secure-capability-expansion.expansion-specifications",
+                "techniques": [
+                  {
+                    "id": "containment-systems.capability-restriction.secure-capability-expansion.expansion-specifications.implementation.graduated-release",
+                    "name": "Graduated Release Technique",
+                    "description": "Implements a phased capability release process with verification at each stage",
+                    "type": "technique",
+                    "parent": "containment-systems.capability-restriction.secure-capability-expansion.expansion-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "containment-systems.capability-restriction.secure-capability-expansion.expansion-specifications.implementation.graduated-release.capability-stage-manager",
+                        "name": "Capability Stage Manager",
+                        "description": "System that manages the phased release of capabilities with verification gates",
+                        "type": "application",
+                        "parent": "containment-systems.capability-restriction.secure-capability-expansion.expansion-specifications.implementation.graduated-release",
+                        "inputs": [
+                          {
+                            "id":"capability_expansion_request",
+                            "name": "Capability Expansion Request",
+                            "description": "Request to advance to the next capability level",
+                            "data_type": "expansion_request",
+                            "constraints": "Must include current capability level and justification"
+                          },
+                          {
+                            "id":"verification_results",
+                            "name": "Verification Results",
+                            "description": "Results of verification tests for the requested capability level",
+                            "data_type": "verification_report",
+                            "constraints": "Must demonstrate that all safety criteria are met"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id":"capability_level_certificate",
+                            "name": "Capability Level Certificate",
+                            "description": "Certificate authorizing operation at a specific capability level",
+                            "data_type": "capability_certificate",
+                            "interpretation": "Formal authorization for expanded capabilities with specified constraints"
+                          },
+                          {
+                            "id":"expansion_audit_trail",
+                            "name": "Expansion Audit Trail",
+                            "description": "Complete audit trail of the capability expansion process",
+                            "data_type": "audit_log",
+                            "interpretation": "Documents verification steps and approval chain for accountability"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "supported_by_literature": ["Amodei2016", "Hendrycks2022"]
+        },
+        {
+          "id": "containment-systems.capability-restriction.capability-restriction-implementation",
+          "name": "Capability Restriction Implementation",
+          "description": "Implementing mechanisms to restrict and control AI system capabilities",
+          "implements_component_functions": ["technical-safeguards.boundary-enforcement", "technical-safeguards.containment-capability"],
+          "type": "function",
+          "parent": "containment-systems.capability-restriction",
+          "specifications": [
+            {
+              "id": "containment-systems.capability-restriction.capability-restriction-implementation.restriction-specifications",
+              "name": "Capability Restriction Specifications",
+              "description": "Technical specifications for implementing capability restriction mechanisms",
+              "type": "specifications",
+              "parent": "containment-systems.capability-restriction.capability-restriction-implementation",
+              "requirements": [
+                "Hardware and software capability restriction enforcement",
+                "Capability classification and risk assessment framework",
+                "Restriction verification and bypass detection",
+                "Dynamic restriction adjustment based on context"
+              ],
+              "integration": {
+                "id": "containment-systems.capability-restriction.capability-restriction-implementation.restriction-specifications.implementation",
+                "name": "Restriction Implementation Integration",
+                "description": "Integration approach for implementing capability restriction mechanisms",
+                "type": "integration",
+                "parent": "containment-systems.capability-restriction.capability-restriction-implementation.restriction-specifications",
+                "techniques": [
+                  {
+                    "id": "containment-systems.capability-restriction.capability-restriction-implementation.restriction-specifications.implementation.api-gateway",
+                    "name": "API Gateway Technique",
+                    "description": "Implements API-level capability restrictions with fine-grained access control",
+                    "type": "technique",
+                    "parent": "containment-systems.capability-restriction.capability-restriction-implementation.restriction-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "containment-systems.capability-restriction.capability-restriction-implementation.restriction-specifications.implementation.api-gateway.capability-firewall",
+                        "name": "Capability Firewall",
+                        "description": "System that enforces capability restrictions by controlling API access",
+                        "type": "application",
+                        "parent": "containment-systems.capability-restriction.capability-restriction-implementation.restriction-specifications.implementation.api-gateway",
+                        "inputs": [
+                          {
+                            "id":"api_access_request",
+                            "name": "API Access Request",
+                            "description": "Request from AI system to access a specific API or capability",
+                            "data_type": "api_request",
+                            "constraints": "Must include capability identifier and authentication"
+                          },
+                          {
+                            "id":"capability_policy",
+                            "name": "Capability Policy",
+                            "description": "Policy defining permitted capabilities and access conditions",
+                            "data_type": "capability_policy",
+                            "constraints": "Must be formally specified with clear authorization rules"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id":"access_decision",
+                            "name": "Access Decision",
+                            "description": "Decision to allow or deny access to the requested capability",
+                            "data_type": "access_decision",
+                            "interpretation": "Enforces capability restrictions based on policy"
+                          },
+                          {
+                            "id":"access_audit_log",
+                            "name": "Access Audit Log",
+                            "description": "Log of all capability access requests and decisions",
+                            "data_type": "audit_log",
+                            "interpretation": "Provides accountability and enables security analysis"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "supported_by_literature": ["Amodei2016", "Hendrycks2022"]
+        }
+      ],
+      "supported_by_literature": ["Amodei2016", "Hendrycks2022"]
+    },
+    {
+      "id": "containment-systems.information-flow-control",
+      "name": "Information Flow Control",
+      "description": "Controlling information flow to and from systems",
+      "implements_component_capabilities": ["technical-safeguards.formal-verification-capability", "technical-safeguards.fail-safe-capability"],
+      "type": "capability",
+      "parent": "containment-systems",
+      "functions": [
+        {
+          "id": "containment-systems.information-flow-control.information-flow-barriers",
+          "name": "Information Flow Barriers",
+          "description": "Creating information barriers that prevent unauthorized data access or transmission",
+          "implements_component_functions": ["technical-safeguards.boundary-enforcement", "technical-safeguards.architecture-enforcement"],
+          "type": "function",
+          "parent": "containment-systems.information-flow-control",
+          "specifications": [
+            {
+              "id": "containment-systems.information-flow-control.information-flow-barriers.flow-control-specifications",
+              "name": "Flow Control Specifications",
+              "description": "Technical specifications for implementing information flow control barriers",
+              "type": "specifications",
+              "parent": "containment-systems.information-flow-control.information-flow-barriers",
+              "requirements": [
+                "Strict unidirectional information flow controls",
+                "Content inspection and filtering at boundary points",
+                "Protocol-level restrictions on data exchange",
+                "Comprehensive logging of all information transfers"
+              ],
+              "integration": {
+                "id": "containment-systems.information-flow-control.information-flow-barriers.flow-control-specifications.implementation",
+                "name": "Flow Control Implementation",
+                "description": "Integration approach for implementing information flow control barriers",
+                "type": "integration",
+                "parent": "containment-systems.information-flow-control.information-flow-barriers.flow-control-specifications",
+                "techniques": [
+                  {
+                    "id": "containment-systems.information-flow-control.information-flow-barriers.flow-control-specifications.implementation.one-way-channels",
+                    "name": "One-Way Channel Technique",
+                    "description": "Technical implementation of one-way information channels with verification",
+                    "type": "technique",
+                    "parent": "containment-systems.information-flow-control.information-flow-barriers.flow-control-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "containment-systems.information-flow-control.information-flow-barriers.flow-control-specifications.implementation.one-way-channels.secure-gateway",
+                        "name": "Secure Information Gateway",
+                        "description": "Gateway system implementing one-way information flow with content validation",
+                        "type": "application",
+                        "parent": "containment-systems.information-flow-control.information-flow-barriers.flow-control-specifications.implementation.one-way-channels",
+                        "inputs": [
+                          {
+                            "id":"information_transfer_request",
+                            "name": "Information Transfer Request",
+                            "description": "Request to transfer information across a boundary",
+                            "data_type": "transfer_request",
+                            "constraints": "Must include source, destination, and data payload"
+                          },
+                          {
+                            "id":"security_policy",
+                            "name": "Security Policy",
+                            "description": "Policy defining allowed information transfers",
+                            "data_type": "policy_specification",
+                            "constraints": "Must specify direction, content types, and validation rules"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id":"validated_information",
+                            "name": "Validated Information",
+                            "description": "Information that has passed validation for transfer",
+                            "data_type": "validated_data",
+                            "interpretation": "Information permitted to cross the boundary"
+                          },
+                          {
+                            "id":"transfer_audit_log",
+                            "name": "Transfer Audit Log",
+                            "description": "Detailed record of the information transfer",
+                            "data_type": "audit_log",
+                            "interpretation": "Provides accountability and verification of transfer integrity"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "supported_by_literature": ["Critch2020", "Leike2017"]
+        },
+        {
+          "id": "containment-systems.information-flow-control.containment-boundary-monitoring",
+          "name": "Containment Boundary Monitoring",
+          "description": "Monitoring containment boundaries for integrity and attempted violations",
+          "implements_component_functions": ["technical-safeguards.property-validation", "technical-safeguards.architecture-enforcement"],
+          "type": "function",
+          "parent": "containment-systems.information-flow-control",
+          "specifications": [
+            {
+              "id": "containment-systems.information-flow-control.containment-boundary-monitoring.monitoring-specifications",
+              "name": "Boundary Monitoring Specifications",
+              "description": "Technical specifications for monitoring information flow boundaries",
+              "type": "specifications",
+              "parent": "containment-systems.information-flow-control.containment-boundary-monitoring",
+              "requirements": [
+                "Real-time monitoring of all boundary access and transfer attempts",
+                "Detection of covert channel establishment attempts",
+                "Statistical analysis of information flow patterns",
+                "Integrity verification of boundary control mechanisms"
+              ],
+              "integration": {
+                "id": "containment-systems.information-flow-control.containment-boundary-monitoring.monitoring-specifications.implementation",
+                "name": "Boundary Monitoring Implementation",
+                "description": "Integration approach for implementing containment boundary monitoring",
+                "type": "integration",
+                "parent": "containment-systems.information-flow-control.containment-boundary-monitoring.monitoring-specifications",
+                "techniques": [
+                  {
+                    "id": "containment-systems.information-flow-control.containment-boundary-monitoring.monitoring-specifications.implementation.flow-monitoring",
+                    "name": "Flow Monitoring Technique",
+                    "description": "Technical implementation of information flow monitoring at containment boundaries",
+                    "type": "technique",
+                    "parent": "containment-systems.information-flow-control.containment-boundary-monitoring.monitoring-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "containment-systems.information-flow-control.containment-boundary-monitoring.monitoring-specifications.implementation.flow-monitoring.anomaly-detection",
+                        "name": "Flow Anomaly Detection System",
+                        "description": "System that analyzes information flow patterns to detect containment breaches",
+                        "type": "application",
+                        "parent": "containment-systems.information-flow-control.containment-boundary-monitoring.monitoring-specifications.implementation.flow-monitoring",
+                        "inputs": [
+                          {
+                            "id":"boundary_transfer_logs",
+                            "name": "Boundary Transfer Logs",
+                            "description": "Logs of all information transfers across boundaries",
+                            "data_type": "log_stream",
+                            "constraints": "Must include detailed metadata on all transfer events"
+                          },
+                          {
+                            "id":"expected_flow_patterns",
+                            "name": "Expected Flow Patterns",
+                            "description": "Baseline models of expected information flow",
+                            "data_type": "statistical_model",
+                            "constraints": "Must be calibrated to the specific containment context"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id":"flow_anomaly_alerts",
+                            "name": "Flow Anomaly Alerts",
+                            "description": "Alerts for detected deviations from expected flow patterns",
+                            "data_type": "alert_message",
+                            "interpretation": "Indicates potential containment breach requiring investigation"
+                          },
+                          {
+                            "id":"boundary_integrity_report",
+                            "name": "Boundary Integrity Report",
+                            "description": "Periodic assessment of boundary control effectiveness",
+                            "data_type": "structured_report",
+                            "interpretation": "Provides metrics on containment integrity and breach attempts"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "supported_by_literature": ["Critch2020", "Leike2017"]
+        }
+      ],
+      "supported_by_literature": ["Critch2020", "Leike2017"]
+    },
+    {
+      "id": "containment-systems.graduated-capability-release",
+      "name": "Graduated Capability Release",
+      "description": "Implementing graduated capability release protocols",
+      "implements_component_capabilities": ["technical-safeguards.containment-capability", "technical-safeguards.safety-architecture-capability"],
+      "type": "capability",
+      "parent": "containment-systems",
+      "functions": [
+        {
+          "id": "containment-systems.graduated-capability-release.capability-control-mechanisms",
+          "name": "Capability Control Mechanisms",
+          "description": "Implementing mechanisms that control and restrict AI capabilities and permissions",
+          "implements_component_functions": ["technical-safeguards.boundary-enforcement", "technical-safeguards.emergency-response"],
+          "type": "function",
+          "parent": "containment-systems.graduated-capability-release",
+          "specifications": [
+            {
+              "id": "containment-systems.graduated-capability-release.capability-control-mechanisms.control-specifications",
+              "name": "Graduated Control Specifications",
+              "description": "Technical specifications for implementing graduated capability control mechanisms",
+              "type": "specifications",
+              "parent": "containment-systems.graduated-capability-release.capability-control-mechanisms",
+              "requirements": [
+                "Fine-grained capability classification system",
+                "Staged capability release protocol with verification gates",
+                "Dynamic capability restriction based on operational context",
+                "Comprehensive monitoring of capability usage patterns"
+              ],
+              "integration": {
+                "id": "containment-systems.graduated-capability-release.capability-control-mechanisms.control-specifications.implementation",
+                "name": "Graduated Control Implementation",
+                "description": "Integration approach for implementing graduated capability control mechanisms",
+                "type": "integration",
+                "parent": "containment-systems.graduated-capability-release.capability-control-mechanisms.control-specifications",
+                "techniques": [
+                  {
+                    "id": "containment-systems.graduated-capability-release.capability-control-mechanisms.control-specifications.implementation.capability-staging",
+                    "name": "Capability Staging Technique",
+                    "description": "Technical implementation of staged capability release with verification",
+                    "type": "technique",
+                    "parent": "containment-systems.graduated-capability-release.capability-control-mechanisms.control-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "containment-systems.graduated-capability-release.capability-control-mechanisms.control-specifications.implementation.capability-staging.staged-access-control",
+                        "name": "Staged Access Control System",
+                        "description": "System that manages gradual capability expansion based on verification requirements",
+                        "type": "application",
+                        "parent": "containment-systems.graduated-capability-release.capability-control-mechanisms.control-specifications.implementation.capability-staging",
+                        "inputs": [
+                          {
+                            "id":"capability_stage_request",
+                            "name": "Capability Stage Request",
+                            "description": "Request to advance to the next capability stage",
+                            "data_type": "upgrade_request",
+                            "constraints": "Must include current stage and justification for upgrade"
+                          },
+                          {
+                            "id":"verification_data",
+                            "name": "Verification Data",
+                            "description": "Evidence that systems meet requirements for expanded capabilities",
+                            "data_type": "verification_data",
+                            "constraints": "Must include formal verification results for all critical properties"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id":"stage_transition_decision",
+                            "name": "Stage Transition Decision",
+                            "description": "Decision on whether to allow capability expansion",
+                            "data_type": "authorization_decision",
+                            "interpretation": "Authorization or denial of capability expansion with reasoning"
+                          },
+                          {
+                            "id":"capability_token",
+                            "name": "Capability Token",
+                            "description": "Access token for authorized capabilities",
+                            "data_type": "capability_token",
+                            "interpretation": "Cryptographically secure token granting specific capability access"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "supported_by_literature": ["Amodei2016", "Hendrycks2022"]
+        },
+        {
+          "id": "containment-systems.graduated-capability-release.secure-capability-expansion",
+          "name": "Secure Capability Expansion Process",
+          "description": "Implementing secure processes for gradually expanding AI capabilities after verification",
+          "implements_component_functions": ["technical-safeguards.emergency-response"],
+          "type": "function",
+          "parent": "containment-systems.graduated-capability-release",
+          "specifications": [
+            {
+              "id": "containment-systems.graduated-capability-release.secure-capability-expansion.expansion-specifications",
+              "name": "Capability Expansion Specifications",
+              "description": "Technical specifications for securely expanding AI capabilities over time",
+              "type": "specifications",
+              "parent": "containment-systems.graduated-capability-release.secure-capability-expansion",
+              "requirements": [
+                "Formal verification requirements for each capability stage",
+                "Progressive capability release with mandatory verification steps",
+                "Rollback mechanisms for capabilities that fail verification",
+                "Human oversight integration at critical expansion points"
+              ],
+              "integration": {
+                "id": "containment-systems.graduated-capability-release.secure-capability-expansion.expansion-specifications.implementation",
+                "name": "Secure Expansion Implementation",
+                "description": "Integration approach for implementing secure capability expansion processes",
+                "type": "integration",
+                "parent": "containment-systems.graduated-capability-release.secure-capability-expansion.expansion-specifications",
+                "techniques": [
+                  {
+                    "id": "containment-systems.graduated-capability-release.secure-capability-expansion.expansion-specifications.implementation.verification-gates",
+                    "name": "Verification Gates Technique",
+                    "description": "Technical implementation of verification gates for capability expansion",
+                    "type": "technique",
+                    "parent": "containment-systems.graduated-capability-release.secure-capability-expansion.expansion-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "containment-systems.graduated-capability-release.secure-capability-expansion.expansion-specifications.implementation.verification-gates.capability-verification-system",
+                        "name": "Capability Verification System",
+                        "description": "System that verifies AI behavior before approving capability expansion",
+                        "type": "application",
+                        "parent": "containment-systems.graduated-capability-release.secure-capability-expansion.expansion-specifications.implementation.verification-gates",
+                        "inputs": [
+                          {
+                            "name": "Capability Expansion Proposal",
+                            "description": "Detailed proposal for expanding system capabilities",
+                            "data_type": "capability_proposal",
+                            "constraints": "Must include formal safety arguments and evidence of testing"
+                          },
+                          {
+                            "name": "Behavioral Test Results",
+                            "description": "Results of behavior testing with current capability level",
+                            "data_type": "test_results",
+                            "constraints": "Must include adversarial testing and edge case analysis"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Verification Report",
+                            "description": "Comprehensive report on capability verification results",
+                            "data_type": "verification_report",
+                            "interpretation": "Analysis of whether capability expansion meets safety criteria"
+                          },
+                          {
+                            "name": "Capability Authorization",
+                            "description": "Formal authorization for capability expansion if approved",
+                            "data_type": "authorization_document",
+                            "interpretation": "Provides official approval with specific constraints and monitoring requirements"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "supported_by_literature": ["Amodei2016", "Hendrycks2022"]
+        }
+      ],
+      "supported_by_literature": ["Amodei2016"]
+    },
+    {
+      "id": "containment-systems.least-privilege-enforcement",
+      "name": "Least Privilege Enforcement",
+      "description": "Enforcing principle of least privilege across AI components",
+      "implements_component_capabilities": ["technical-safeguards.formal-verification-capability", "technical-safeguards.containment-capability"],
+      "type": "capability",
+      "parent": "containment-systems",
+      "functions": [
+        {
+          "id": "containment-systems.least-privilege-enforcement.capability-control-mechanisms",
+          "name": "Capability Control Mechanisms",
+          "description": "Implementing mechanisms that control and restrict AI capabilities and permissions",
+          "implements_component_functions": ["technical-safeguards.boundary-enforcement", "technical-safeguards.emergency-response"],
+          "type": "function",
+          "parent": "containment-systems.least-privilege-enforcement",
+          "specifications": [
+            {
+              "id": "containment-systems.least-privilege-enforcement.capability-control-mechanisms.control-specifications",
+              "name": "Least Privilege Control Specifications",
+              "description": "Technical specifications for implementing least privilege AI capability control mechanisms",
+              "type": "specifications",
+              "parent": "containment-systems.least-privilege-enforcement.capability-control-mechanisms",
+              "requirements": [
+                "Fine-grained permission system for all AI capabilities",
+                "Runtime capability restriction enforcement",
+                "Hierarchical capability management system",
+                "Capability monitoring and usage telemetry"
+              ],
+              "integration": {
+                "id": "containment-systems.least-privilege-enforcement.capability-control-mechanisms.control-specifications.implementation",
+                "name": "Least Privilege Control Implementation",
+                "description": "Integration approach for implementing least privilege capability control mechanisms",
+                "type": "integration",
+                "parent": "containment-systems.least-privilege-enforcement.capability-control-mechanisms.control-specifications",
+                "techniques": [
+                  {
+                    "id": "containment-systems.least-privilege-enforcement.capability-control-mechanisms.control-specifications.implementation.permission-system",
+                    "name": "Permission System Technique",
+                    "description": "Implements a comprehensive permission system for controlling AI capabilities",
+                    "type": "technique",
+                    "parent": "containment-systems.least-privilege-enforcement.capability-control-mechanisms.control-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "containment-systems.least-privilege-enforcement.capability-control-mechanisms.control-specifications.implementation.permission-system.capability-broker",
+                        "name": "Capability Broker System",
+                        "description": "Central system for managing, granting, and revoking AI capabilities based on security policies",
+                        "type": "application",
+                        "parent": "containment-systems.least-privilege-enforcement.capability-control-mechanisms.control-specifications.implementation.permission-system",
+                        "inputs": [
+                          {
+                            "name": "Capability Request",
+                            "description": "Request from AI system to access a specific capability",
+                            "data_type": "capability_request",
+                            "constraints": "Must include capability identifier, purpose, and authentication"
+                          },
+                          {
+                            "name": "Security Policy",
+                            "description": "Policy defining which capabilities are permitted under what conditions",
+                            "data_type": "policy_document",
+                            "constraints": "Must be formally specified and verifiable"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Capability Token",
+                            "description": "Time-limited, scope-limited token granting access to requested capability",
+                            "data_type": "authorization_token",
+                            "interpretation": "Enables secure, controlled access to specific capabilities"
+                          },
+                          {
+                            "name": "Capability Audit Log",
+                            "description": "Detailed log of all capability requests, grants, and usage",
+                            "data_type": "audit_log",
+                            "interpretation": "Provides accountability and tracking of capability usage"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "supported_by_literature": ["Amodei2016", "Hendrycks2022"]
+        },
+        {
+          "id": "containment-systems.least-privilege-enforcement.secure-capability-expansion",
+          "name": "Secure Capability Expansion Process",
+          "description": "Implementing secure processes for gradually expanding AI capabilities after verification",
+          "implements_component_functions": ["technical-safeguards.emergency-response"],
+          "type": "function",
+          "parent": "containment-systems.least-privilege-enforcement",
+          "specifications": [
+            {
+              "id": "containment-systems.least-privilege-enforcement.secure-capability-expansion.expansion-specifications",
+              "name": "Least-Privilege Expansion Specifications",
+              "description": "Technical specifications for securely expanding AI capabilities while maintaining least privilege",
+              "type": "specifications",
+              "parent": "containment-systems.least-privilege-enforcement.secure-capability-expansion",
+              "requirements": [
+                "Capability-specific justification requirements for each expansion",
+                "Automated privilege analysis to ensure minimal necessary permissions",
+                "Default-deny policies with explicit capability grants",
+                "Time-bounded capability grants with automatic expiration"
+              ],
+              "integration": {
+                "id": "containment-systems.least-privilege-enforcement.secure-capability-expansion.expansion-specifications.implementation",
+                "name": "Least-Privilege Expansion Implementation",
+                "description": "Integration approach for implementing secure capability expansion with least privilege",
+                "type": "integration",
+                "parent": "containment-systems.least-privilege-enforcement.secure-capability-expansion.expansion-specifications",
+                "techniques": [
+                  {
+                    "id": "containment-systems.least-privilege-enforcement.secure-capability-expansion.expansion-specifications.implementation.privilege-analysis",
+                    "name": "Privilege Analysis Technique",
+                    "description": "Technical implementation of privilege analysis for capability expansion",
+                    "type": "technique",
+                    "parent": "containment-systems.least-privilege-enforcement.secure-capability-expansion.expansion-specifications.implementation",
+                    "applications": [
+                      {
+                        "id": "containment-systems.least-privilege-enforcement.secure-capability-expansion.expansion-specifications.implementation.privilege-analysis.privilege-minimization-system",
+                        "name": "Privilege Minimization System",
+                        "description": "System that analyzes and minimizes privileges during capability expansion",
+                        "type": "application",
+                        "parent": "containment-systems.least-privilege-enforcement.secure-capability-expansion.expansion-specifications.implementation.privilege-analysis",
+                        "inputs": [
+                          {
+                            "name": "Capability Request",
+                            "description": "Request for expanded capabilities with justification",
+                            "data_type": "capability_request",
+                            "constraints": "Must include specific capability identifiers and purpose"
+                          },
+                          {
+                            "name": "Task Requirements",
+                            "description": "Formal description of task requirements necessitating capabilities",
+                            "data_type": "task_specification",
+                            "constraints": "Must be formally specified with clear capability dependencies"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Minimized Capability Set",
+                            "description": "Minimal set of capabilities required to accomplish the task",
+                            "data_type": "capability_set",
+                            "interpretation": "Represents the least privilege required for the specified task"
+                          },
+                          {
+                            "name": "Temporary Authorization",
+                            "description": "Time-limited authorization for minimal capabilities",
+                            "data_type": "authorization_token",
+                            "interpretation": "Grants minimal capabilities with automatic expiration"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "supported_by_literature": ["Amodei2016", "Hendrycks2022"]
+        }
+      ],
+      "supported_by_literature": ["Amodei2016", "Hendrycks2022"]
+    }
+  ],
+  
+  "cross_connections": [
+    {
+      "source_id": "containment-systems.isolation-enforcement",
+      "target_id": "containment-systems.capability-restriction",
+      "type": "complements",
+      "description": "Isolation enforcement provides the boundaries within which capability restriction mechanisms operate"
+    },
+    {
+      "source_id": "containment-systems.environment-isolation",
+      "target_id": "containment-systems.information-flow-control",
+      "type": "reinforces",
+      "description": "Environment isolation works with information flow control to maintain separation between AI systems and external environments"
+    },
+    {
+      "source_id": "containment-systems.capability-restriction",
+      "target_id": "containment-systems.graduated-capability-release",
+      "type": "provides_foundation_for",
+      "description": "Capability restriction provides the foundation that graduated capability release builds upon for controlled expansion"
+    },
+    {
+      "source_id": "containment-systems.information-flow-control.information-flow-barriers",
+      "target_id": "containment-systems.environment-isolation.sandboxed-execution",
+      "type": "implements",
+      "description": "Information flow barriers implement critical aspects of sandboxed execution environments"
+    },
+    {
+      "source_id": "containment-systems.graduated-capability-release.capability-control-mechanisms",
+      "target_id": "containment-systems.least-privilege-enforcement.capability-control-mechanisms",
+      "type": "coordinates_with",
+      "description": "Graduated capability release controls coordinate with least privilege enforcement to ensure minimal necessary permissions"
+    }
+  ],
+  
+  "implementation_considerations": [
+    {
+      "id": "containment-systems.isolation-effectiveness",
+      "name": "Isolation Effectiveness",
+      "aspect": "Isolation Effectiveness",
+      "considerations": [
+        "Trade-offs between isolation strength and system functionality",
+        "Side-channel attack prevention across isolation boundaries",
+        "Formal verification of containment boundary integrity",
+        "Scalability of isolation mechanisms for complex AI systems"
+      ],
+      "derives_from_integration_considerations": [
+        "technical-safeguards.isolation", 
+        "technical-safeguards.completeness"
+      ],
+      "addressed_by_techniques": [
+        "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements.implementation.virtualization", 
+        "containment-systems.information-flow-control.information-flow-barriers.flow-control-specifications.implementation.one-way-channels"
+      ],
+      "supported_by_literature": [
+        "Orseau2016", 
+        "Critch2020"
+      ]
+    },
+    {
+      "id": "containment-systems.operational-limitations",
+      "name": "Operational Limitations",
+      "aspect": "Operational Limitations",
+      "considerations": [
+        "Performance impact of strong containment mechanisms",
+        "Compatibility with AI system requirements and capabilities",
+        "Integration challenges with existing infrastructure",
+        "Usability considerations for contained systems"
+      ],
+      "derives_from_integration_considerations": [
+        "technical-safeguards.isolation", 
+        "technical-safeguards.verification"
+      ],
+      "addressed_by_techniques": [
+        "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements.implementation.virtualization",
+        "containment-systems.environment-isolation.sandboxed-execution.environment-specifications.implementation.container-isolation"
+      ],
+      "supported_by_literature": [
+        "Orseau2016"
+      ]
+    },
+    {
+      "id": "containment-systems.restriction-effectiveness",
+      "name": "Restriction Effectiveness",
+      "aspect": "Restriction Effectiveness",
+      "considerations": [
+        "Measuring and validating capability limitation effectiveness",
+        "Preventing capability amplification through permitted actions",
+        "Dynamic adaptation of restrictions to system learning and evolution",
+        "Identifying and managing emergent capabilities"
+      ],
+      "derives_from_integration_considerations": [
+        "technical-safeguards.isolation", 
+        "technical-safeguards.verification"
+      ],
+      "addressed_by_techniques": [
+        "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation.permission-system",
+        "containment-systems.capability-restriction.capability-restriction-implementation.restriction-specifications.implementation.api-gateway"
+      ],
+      "supported_by_literature": [
+        "Amodei2016",
+        "Hendrycks2022"
+      ]
+    },
+    {
+      "id": "containment-systems.capability-alignment",
+      "name": "Capability Alignment",
+      "aspect": "Capability Alignment",
+      "considerations": [
+        "Aligning capability restrictions with safety requirements",
+        "Balancing capability restrictions with functionality needs",
+        "Adapting restrictions based on safety verification results",
+        "Mapping capabilities to potential risk profiles"
+      ],
+      "derives_from_integration_considerations": [
+        "technical-safeguards.completeness", 
+        "technical-safeguards.verification"
+      ],
+      "addressed_by_techniques": [
+        "containment-systems.graduated-capability-release.capability-control-mechanisms.control-specifications.implementation.capability-staging",
+        "containment-systems.least-privilege-enforcement.secure-capability-expansion.expansion-specifications.implementation.privilege-analysis"
+      ],
+      "supported_by_literature": [
+        "Amodei2016"
+      ]
+    },
+    {
+      "id": "containment-systems.information-leakage",
+      "name": "Information Leakage",
+      "aspect": "Information Leakage",
+      "considerations": [
+        "Preventing covert information channels",
+        "Managing data leakage through permitted interactions",
+        "Detecting attempts to circumvent information barriers",
+        "Measuring and quantifying information flow security"
+      ],
+      "derives_from_integration_considerations": [
+        "technical-safeguards.isolation", 
+        "technical-safeguards.verification"
+      ],
+      "addressed_by_techniques": [
+        "containment-systems.information-flow-control.information-flow-barriers.flow-control-specifications.implementation.one-way-channels",
+        "containment-systems.environment-isolation.information-flow-barriers.barrier-specifications.implementation.filtered-channels"
+      ],
+      "supported_by_literature": [
+        "Critch2020",
+        "Leike2017"
+      ]
+    }
+  ],
+  
+  "technical_specifications": {
+    "description": "This section provides technical details about the containment systems subcomponent.",
+    "input_requirements": [
+      {
+        "id": "containment-systems.system-threat-model",
+        "name": "System Threat Model",
+        "description": "Structured model of potential threats and attack vectors for AI systems",
+        "format": "Security threat model documentation",
+        "constraints": "Must comprehensively address capability risks and system bounds",
+        "related_techniques": [
+          "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements.implementation.virtualization", 
+          "containment-systems.information-flow-control.containment-boundary-monitoring.monitoring-specifications.implementation.flow-monitoring"
+        ],
+        "used_by_applications": [
+          "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements.implementation.virtualization.hypervisor", 
+          "containment-systems.information-flow-control.containment-boundary-monitoring.monitoring-specifications.implementation.flow-monitoring.anomaly-detection"
+        ],
+        "supports_functions": [
+          "containment-systems.isolation-enforcement.sandboxed-execution", 
+          "containment-systems.information-flow-control.containment-boundary-monitoring"
+        ]
+      },
+      {
+        "id": "containment-systems.capability-requirements",
+        "name": "Capability Requirements",
+        "description": "Specifications of required and restricted capabilities for AI systems",
+        "format": "Capability specifications in standardized format",
+        "constraints": "Must precisely define permitted and restricted capabilities",
+        "related_techniques": [
+          "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation.permission-system", 
+          "containment-systems.least-privilege-enforcement.secure-capability-expansion.expansion-specifications.implementation.privilege-analysis"
+        ],
+        "used_by_applications": [
+          "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation.permission-system.capability-broker", 
+          "containment-systems.least-privilege-enforcement.secure-capability-expansion.expansion-specifications.implementation.privilege-analysis.privilege-minimization-system"
+        ],
+        "supports_functions": [
+          "containment-systems.capability-restriction.capability-control-mechanisms", 
+          "containment-systems.capability-restriction.secure-capability-expansion",
+          "containment-systems.least-privilege-enforcement.capability-control-mechanisms"
+        ]
+      },
+      {
+        "id": "containment-systems.security-policies",
+        "name": "Security Policies",
+        "description": "Formal policies defining security requirements and constraints",
+        "format": "Policy documents in standardized formats",
+        "constraints": "Must be implementable through technical controls",
+        "related_techniques": [
+          "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation.permission-system", 
+          "containment-systems.information-flow-control.information-flow-barriers.flow-control-specifications.implementation.one-way-channels"
+        ],
+        "used_by_applications": [
+          "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation.permission-system.capability-broker", 
+          "containment-systems.information-flow-control.information-flow-barriers.flow-control-specifications.implementation.one-way-channels.secure-gateway"
+        ],
+        "supports_functions": [
+          "containment-systems.capability-restriction.capability-control-mechanisms", 
+          "containment-systems.information-flow-control.information-flow-barriers"
+        ]
+      }
+    ],
+    
+    "output_specifications": [
+      {
+        "id": "containment-systems.containment-architecture",
+        "name": "Containment Architecture",
+        "description": "Structured architecture design for containment systems",
+        "format": "Architecture specifications and models",
+        "usage": "Implementation guide for containment mechanisms",
+        "produced_by_techniques": [
+          "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements.implementation.virtualization", 
+          "containment-systems.environment-isolation.sandboxed-execution.environment-specifications.implementation.container-isolation"
+        ],
+        "produced_by_applications": [
+          "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements.implementation.virtualization.hypervisor", 
+          "containment-systems.environment-isolation.sandboxed-execution.environment-specifications.implementation.container-isolation.secure-container"
+        ],
+        "fulfills_functions": [
+          "containment-systems.isolation-enforcement.sandboxed-execution", 
+          "containment-systems.environment-isolation.sandboxed-execution"
+        ]
+      },
+      {
+        "id": "containment-systems.monitoring-interfaces",
+        "name": "Monitoring Interfaces",
+        "description": "Interfaces for monitoring containment boundary integrity",
+        "format": "API specifications and data schemas",
+        "usage": "Integration with oversight and monitoring systems",
+        "produced_by_techniques": [
+          "containment-systems.isolation-enforcement.containment-boundary-monitoring.monitoring-specifications.implementation.intrusion-detection", 
+          "containment-systems.information-flow-control.containment-boundary-monitoring.monitoring-specifications.implementation.flow-monitoring"
+        ],
+        "produced_by_applications": [
+          "containment-systems.isolation-enforcement.containment-boundary-monitoring.monitoring-specifications.implementation.intrusion-detection.boundary-ids", 
+          "containment-systems.information-flow-control.containment-boundary-monitoring.monitoring-specifications.implementation.flow-monitoring.anomaly-detection"
+        ],
+        "fulfills_functions": [
+          "containment-systems.isolation-enforcement.containment-boundary-monitoring", 
+          "containment-systems.information-flow-control.containment-boundary-monitoring"
+        ]
+      },
+      {
+        "id": "containment-systems.intervention-mechanisms",
+        "name": "Intervention Mechanisms",
+        "description": "Mechanisms for intervention and control of AI systems",
+        "format": "API specifications and interfaces",
+        "usage": "Implementation of control and intervention capabilities",
+        "produced_by_techniques": [
+          "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation.permission-system", 
+          "containment-systems.graduated-capability-release.capability-control-mechanisms.control-specifications.implementation.capability-staging"
+        ],
+        "produced_by_applications": [
+          "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation.permission-system.capability-broker", 
+          "containment-systems.graduated-capability-release.capability-control-mechanisms.control-specifications.implementation.capability-staging.staged-access-control"
+        ],
+        "fulfills_functions": [
+          "containment-systems.capability-restriction.capability-control-mechanisms", 
+          "containment-systems.graduated-capability-release.capability-control-mechanisms"
+        ]
+      }
+    ],
+    
+    "performance_characteristics": {
+      "throughput": "Containment mechanisms add minimal overhead (target <5%) to system operations",
+      "latency": "Security checks typically add <10ms latency to critical operations",
+      "scalability": "Containment systems must scale to support AI systems of arbitrary complexity",
+      "resource_utilization": "Isolation mechanisms should maintain isolation with minimal resource overhead",
+      "related_considerations": ["containment-systems.operational-limitations", "containment-systems.restriction-effectiveness"]
+    }
+  },
+  
+  "relationships": {
+    "description": "This section details how this subcomponent relates to other components and subcomponents in the architecture.",
+    "items": [
+      {
+        "target_id": "formal-verification",
+        "relationship_type": "bidirectional_exchange",
+        "description": "Containment systems provide specifications to verify while formal verification provides mathematical guarantees about containment system effectiveness",
+        "related_functions": [
+          "containment-systems.capability-restriction.capability-control-mechanisms", 
+          "containment-systems.isolation-enforcement.sandboxed-execution"
+        ],
+        "related_techniques": [
+          "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation.permission-system", 
+          "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements.implementation.virtualization"
+        ],
+        "related_inputs": ["containment-systems.capability-requirements", "containment-systems.security-policies"],
+        "related_outputs": ["containment-systems.containment-architecture"]
+      },
+      {
+        "target_id": "fail-safe-mechanisms",
+        "relationship_type": "bidirectional_exchange",
+        "description": "Containment systems provide infrastructure for fail-safe responses while fail-safe mechanisms detect and respond to containment violations",
+        "related_functions": [
+          "containment-systems.capability-restriction.capability-control-mechanisms", 
+          "containment-systems.isolation-enforcement.containment-boundary-monitoring"
+        ],
+        "related_techniques": [
+          "containment-systems.information-flow-control.information-flow-barriers.flow-control-specifications.implementation.one-way-channels", 
+          "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation.permission-system"
+        ],
+        "related_inputs": ["containment-systems.security-policies", "containment-systems.system-threat-model"],
+        "related_outputs": ["containment-systems.intervention-mechanisms", "containment-systems.monitoring-interfaces"]
+      },
+      {
+        "target_id": "safety-layer-architecture",
+        "relationship_type": "implements",
+        "description": "Containment systems implement core aspects of safety layer architectures, particularly boundary enforcement and isolation patterns",
+        "related_functions": [
+          "containment-systems.isolation-enforcement.sandboxed-execution", 
+          "containment-systems.information-flow-control.information-flow-barriers"
+        ],
+        "related_techniques": [
+          "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements.implementation.virtualization", 
+          "containment-systems.information-flow-control.information-flow-barriers.flow-control-specifications.implementation.one-way-channels"
+        ],
+        "related_inputs": ["containment-systems.capability-requirements", "containment-systems.security-policies"],
+        "related_outputs": ["containment-systems.containment-architecture", "containment-systems.monitoring-interfaces"]
+      },
+      {
+        "target_id": "monitoring-systems",
+        "relationship_type": "input_output",
+        "description": "Containment systems provide boundary status and violation data to monitoring systems, which provide context for adaptive containment measures",
+        "related_functions": [
+          "containment-systems.isolation-enforcement.containment-boundary-monitoring", 
+          "containment-systems.information-flow-control.containment-boundary-monitoring"
+        ],
+        "related_techniques": [
+          "containment-systems.isolation-enforcement.containment-boundary-monitoring.monitoring-specifications.implementation.intrusion-detection", 
+          "containment-systems.information-flow-control.containment-boundary-monitoring.monitoring-specifications.implementation.flow-monitoring"
+        ],
+        "related_inputs": ["containment-systems.system-threat-model"],
+        "related_outputs": ["containment-systems.monitoring-interfaces"]
+      },
+      {
+        "target_id": "mechanistic-interpretability",
+        "relationship_type": "bidirectional_exchange",
+        "description": "Mechanistic interpretability techniques support containment by identifying potential boundary violations, while containment systems provide secure environments for interpretation",
+        "related_functions": [
+          "containment-systems.capability-restriction.capability-control-mechanisms", 
+          "containment-systems.least-privilege-enforcement.capability-control-mechanisms"
+        ],
+        "related_techniques": [
+          "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation.permission-system", 
+          "containment-systems.least-privilege-enforcement.capability-control-mechanisms.control-specifications.implementation.permission-system"
+        ],
+        "related_inputs": ["containment-systems.capability-requirements"],
+        "related_outputs": ["containment-systems.intervention-mechanisms"]
+      }
+    ]
+  },
+  
+  "literature": {
+    "references": [
+      {
+        "id": "Orseau2016",
+        "authors": ["Orseau, L.", "Armstrong, S."],
+        "year": 2016,
+        "title": "Safely Interruptible Agents",
+        "venue": "32nd Conference on Uncertainty in Artificial Intelligence",
+        "url": "https://intelligence.org/files/Interruptibility.pdf"
+      },
+      {
+        "id": "Amodei2016",
+        "authors": ["Amodei, D.", "Olah, C.", "Steinhardt, J.", "Christiano, P.", "Schulman, J.", "Mané, D."],
+        "year": 2016,
+        "title": "Concrete Problems in AI Safety",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/1606.06565"
+      },
+      {
+        "id": "Critch2020",
+        "authors": ["Critch, A.", "Krueger, D."],
+        "year": 2020,
+        "title": "AI Research Considerations for Human Existential Safety (ARCHES)",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2006.04948"
+      },
+      {
+        "id": "Hendrycks2022",
+        "authors": ["Hendrycks, D.", "Carlini, N.", "Schulman, J.", "Steinhardt, J."],
+        "year": 2022,
+        "title": "Unsolved Problems in ML Safety",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2109.13916"
+      },
+      {
+        "id": "Leike2017",
+        "authors": ["Leike, J.", "Martic, M.", "Krakovna, V.", "Ortega, P.A.", "Everitt, T.", "Lefrancq, A.", "Orseau, L.", "Legg, S."],
+        "year": 2017,
+        "title": "AI Safety Gridworlds",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/1711.09883"
+      },
+      {
+        "id": "Yampolskiy2020",
+        "authors": ["Yampolskiy, R.V."],
+        "year": 2020,
+        "title": "On Controllability of Artificial Intelligence",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2001.04222"
+      },
+      {
+        "id": "Cohen2020",
+        "authors": ["Cohen, M.B.", "Veldhuis, B.", "Garfinkel, B."],
+        "year": 2020,
+        "title": "Soft Takeoff Can Still Lead to Decisive Strategic Advantage",
+        "venue": "AI Alignment Forum",
+        "url": "https://www.alignmentforum.org/posts/CxpGfPfAaCRMrDyDg/soft-takeoff-can-still-lead-to-decisive-strategic-advantage"
+      },
+      {
+        "id": "Kenton2021",
+        "authors": ["Kenton, Z.", "Everitt, T.", "Weidinger, L.", "Gabriel, I.", "Mikulik, V.", "Irving, G."],
+        "year": 2021,
+        "title": "Alignment of Language Agents",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2103.14659"
+      }
+    ],
+    
+    "literature_connections": [
+      {
+        "reference_id": "Orseau2016",
+        "technique": "containment-systems.isolation-enforcement.sandboxed-execution.isolation-requirements.implementation.virtualization",
+        "relevant_aspects": "Orseau & Armstrong provide theoretical foundations for containment of AI systems through the lens of interruptibility, with direct applications to secure execution environments and virtualization techniques"
+      },
+      {
+        "reference_id": "Amodei2016",
+        "technique": "containment-systems.capability-restriction.capability-control-mechanisms.control-specifications.implementation.permission-system",
+        "relevant_aspects": "Amodei et al. identify concrete safety problems that capability control mechanisms can address, particularly in preventing unintended AI behaviors through limited and graduated capability release"
+      },
+      {
+        "reference_id": "Critch2020",
+        "technique": "containment-systems.information-flow-control.information-flow-barriers.flow-control-specifications.implementation.one-way-channels",
+        "relevant_aspects": "Critch & Krueger's work on compartmentalized AI directly informs the design of information barrier systems, notably in how to create secure information flow controls between AI system components"
+      },
+      {
+        "reference_id": "Hendrycks2022",
+        "technique": "containment-systems.least-privilege-enforcement.secure-capability-expansion.expansion-specifications.implementation.privilege-analysis",
+        "relevant_aspects": "Hendrycks et al. provide an extensive analysis of unsolved safety problems that capability control mechanisms must address, including emergent capabilities and capability amplification risks"
+      },
+      {
+        "reference_id": "Leike2017",
+        "technique": "containment-systems.environment-isolation.information-flow-barriers.barrier-specifications.implementation.filtered-channels",
+        "relevant_aspects": "Leike et al.'s work on containment through gridworlds provides a conceptual framework for designing information barriers that can effectively limit AI systems' ability to interact with their environment in potentially harmful ways"
+      },
+      {
+        "reference_id": "Yampolskiy2020",
+        "technique": "containment-systems.graduated-capability-release.capability-control-mechanisms.control-specifications.implementation.capability-staging",
+        "relevant_aspects": "Yampolskiy explores the fundamental limits of AI controllability, providing insights into graduated capability release approaches and their theoretical limitations"
+      },
+      {
+        "reference_id": "Cohen2020",
+        "technique": "containment-systems.capability-restriction.capability-restriction-implementation.restriction-specifications.implementation.api-gateway",
+        "relevant_aspects": "Cohen et al. discuss strategic advantage dynamics that highlight the importance of strong capability restriction mechanisms even in soft takeoff scenarios"
+      },
+      {
+        "reference_id": "Kenton2021",
+        "technique": "containment-systems.least-privilege-enforcement.secure-capability-expansion.expansion-specifications.implementation.privilege-analysis",
+        "relevant_aspects": "Kenton et al. examine language agent alignment, with implications for capability control and privilege enforcement mechanisms in language-based AI systems"
+      }
+    ]
+  },
+  
+  "integration": {
+    "internal_integrations": [
+      {
+        "target_subcomponent": "formal-verification",
+        "integration_type": "bidirectional_exchange",
+        "description": "Exchange of specifications and verification results between containment systems and formal verification",
+        "data_flow": "Containment systems provide specifications to verify while formal verification provides mathematical guarantees about containment system effectiveness",
+        "related_function": ["containment-systems.capability-control-mechanisms", "containment-systems.sandboxed-execution"],
+        "related_architectural_pattern": ["technical-safeguards.verification-pattern"],
+        "enabled_by_techniques": ["containment-systems.capability-control", "containment-systems.sandboxing"],
+        "related_inputs": ["containment-systems.capability-requirements", "containment-systems.security-policies"],
+        "related_outputs": ["containment-systems.containment-architecture"]
+      },
+      {
+        "target_subcomponent": "fail-safe-mechanisms",
+        "integration_type": "bidirectional_exchange",
+        "description": "Exchange of monitoring data and intervention triggers between containment systems and fail-safe mechanisms",
+        "data_flow": "Containment systems monitor boundaries and provide data to fail-safe mechanisms which can trigger containment responses",
+        "related_function": ["containment-systems.capability-control-mechanisms", "containment-systems.containment-boundary-monitoring"],
+        "related_architectural_pattern": ["technical-safeguards.fail-safe-pattern"],
+        "enabled_by_techniques": ["containment-systems.information-barriers", "containment-systems.capability-control"],
+        "related_inputs": ["containment-systems.security-policies"],
+        "related_outputs": ["containment-systems.intervention-mechanisms", "containment-systems.monitoring-interfaces"]
+      }
+    ],
+    "external_integrations": [
+      {
+        "system": "oversight-mechanisms",
+        "component": "oversight-mechanisms/monitoring-systems",
+        "integration_type": "data_exchange",
+        "description": "Containment systems provide monitoring data to oversight mechanisms",
+        "endpoint": "/api/monitoring/containment-status",
+        "data_format": "Structured containment boundary status data in JSON format",
+        "related_function": ["containment-systems.containment-boundary-monitoring", "containment-systems.information-flow-barriers"],
+        "related_architectural_pattern": ["technical-safeguards.monitoring-pattern"],
+        "enabled_by_techniques": ["containment-systems.information-barriers", "containment-systems.capability-control"],
+        "related_inputs": ["containment-systems.system-threat-model", "containment-systems.security-policies"],
+        "related_outputs": ["containment-systems.monitoring-interfaces", "containment-systems.intervention-mechanisms"]
+      }
+    ]
+  }
+} 

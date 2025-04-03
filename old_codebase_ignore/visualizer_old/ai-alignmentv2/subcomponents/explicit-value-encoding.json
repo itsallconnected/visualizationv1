@@ -1,0 +1,1589 @@
+{
+  "": "This subcomponent implements explicit value encoding methods for AI alignment, providing techniques for direct specification and formalization of human values in machine-understandable formats to guide AI behavior.",
+  "id": "explicit-value-encoding",
+  "name": "Explicit Value Encoding",
+  "description": "Techniques for direct specification and formalization of human values in AI systems through structured representations. These approaches provide explicit frameworks that encode ethical principles, priorities, and constraints in machine-understandable formats, enabling AI systems to operate in alignment with human values.",
+  "type": "subcomponent",
+  "parent": "value-learning",
+  
+  "capabilities": [
+    {
+      "id": "explicit-value-encoding.value-formalization",
+      "name": "Value Formalization",
+      "description": "Explicit formalization of human values and ethical principles",
+      "implements_component_capabilities": ["value-learning.value-encoding-capability", "value-learning.participatory-development-capability"],
+      "type": "capability",
+      "parent": "explicit-value-encoding",
+      "functions": [
+        {
+          "id": "explicit-value-encoding.value-formalization.principle-formalization",
+          "name": "Principle Formalization",
+          "description": "Methods for translating ethical principles and values into formal, computational representations that can guide AI reasoning and decision-making",
+          "implements_component_functions": ["value-learning.value-representation", "value-learning.principle-encoding"],
+          "type": "function",
+          "parent": "explicit-value-encoding.value-formalization",
+          "specifications": [
+            {
+              "id": "explicit-value-encoding.value-formalization.principle-formalization.formalization-framework",
+              "name": "Principle Formalization Framework",
+              "description": "Technical specifications for formalizing ethical principles into computational representations",
+              "type": "specifications",
+              "parent": "explicit-value-encoding.value-formalization.principle-formalization",
+              "requirements": [
+                "Methods for identifying and categorizing core ethical principles",
+                "Techniques for translating natural language principles into formal notation",
+                "Verification protocols for ensuring representational accuracy",
+                "Frameworks for handling abstraction levels in principle representation"
+              ],
+              "integration": {
+                "id": "explicit-value-encoding.value-formalization.principle-formalization.formalization-framework.implementation",
+                "name": "Formalization Framework Implementation",
+                "description": "Integration approach for implementing principle formalization framework",
+                "type": "integration",
+                "parent": "explicit-value-encoding.value-formalization.principle-formalization.formalization-framework",
+                "techniques": [
+                  {
+                    "id": "explicit-value-encoding.value-formalization.principle-formalization.formalization-framework.implementation.formal-translation",
+                    "name": "Formal Translation Technique",
+                    "description": "Technique for systematic translation of ethical principles into formal representations",
+                    "type": "technique",
+                    "parent": "explicit-value-encoding.value-formalization.principle-formalization.formalization-framework.implementation",
+                    "applications": [
+                      {
+                        "id": "explicit-value-encoding.value-formalization.principle-formalization.formalization-framework.implementation.formal-translation.principle-translator",
+                        "name": "Ethical Principle Translator",
+                        "description": "System for translating natural language ethical principles into formal representations",
+                        "type": "application",
+                        "parent": "explicit-value-encoding.value-formalization.principle-formalization.formalization-framework.implementation.formal-translation",
+                        "inputs": [
+                          {
+                            "name": "Ethical Principles",
+                            "description": "Natural language ethical principles to be formalized",
+                            "data_type": "principle_set",
+                            "constraints": "Must include clearly articulated principles with defined scope"
+                          },
+                          {
+                            "name": "Formalization Parameters",
+                            "description": "Parameters guiding the formalization process",
+                            "data_type": "formalization_settings",
+                            "constraints": "Must specify target formalism and representation level"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Formal Representations",
+                            "description": "Formalized representations of the input ethical principles",
+                            "data_type": "formal_principles",
+                            "interpretation": "Provides computationally tractable encodings of ethical principles"
+                          },
+                          {
+                            "name": "Verification Report",
+                            "description": "Analysis of representational adequacy and limitations",
+                            "data_type": "verification_analysis",
+                            "interpretation": "Identifies potential gaps or approximations in the formalization"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "explicit-value-encoding.value-formalization.encoding-implementation",
+          "name": "Encoding Implementation",
+          "description": "Implementing value encodings in AI system architectures",
+          "implements_component_functions": ["value-learning.value-representation"],
+          "type": "function",
+          "parent": "explicit-value-encoding.value-formalization",
+          "specifications": [
+            {
+              "id": "explicit-value-encoding.value-formalization.encoding-implementation.architecture-integration",
+              "name": "Architecture Integration Specification",
+              "description": "Technical specifications for integrating value encodings into AI system architectures",
+              "type": "specifications",
+              "parent": "explicit-value-encoding.value-formalization.encoding-implementation",
+              "requirements": [
+                "Methods for embedding value representations in AI architectures",
+                "Techniques for ensuring architectural integrity during value integration",
+                "Verification protocols for testing value encoding implementations",
+                "Frameworks for monitoring value alignment in runtime systems"
+              ],
+              "integration": {
+                "id": "explicit-value-encoding.value-formalization.encoding-implementation.architecture-integration.implementation",
+                "name": "Architecture Integration Implementation",
+                "description": "Integration approach for implementing value encodings in AI architectures",
+                "type": "integration",
+                "parent": "explicit-value-encoding.value-formalization.encoding-implementation.architecture-integration",
+                "techniques": [
+                  {
+                    "id": "explicit-value-encoding.value-formalization.encoding-implementation.architecture-integration.implementation.embedding-technique",
+                    "name": "Value Embedding Technique",
+                    "description": "Technique for embedding formalized values into AI system architectures",
+                    "type": "technique",
+                    "parent": "explicit-value-encoding.value-formalization.encoding-implementation.architecture-integration.implementation",
+                    "applications": [
+                      {
+                        "id": "explicit-value-encoding.value-formalization.encoding-implementation.architecture-integration.implementation.embedding-technique.value-embedder",
+                        "name": "Value Embedder System",
+                        "description": "System for integrating formal value representations into AI architectures",
+                        "type": "application",
+                        "parent": "explicit-value-encoding.value-formalization.encoding-implementation.architecture-integration.implementation.embedding-technique",
+                        "inputs": [
+                          {
+                            "name": "Formal Value Representations",
+                            "description": "Formalized value representations to be embedded",
+                            "data_type": "formal_values",
+                            "constraints": "Must be in compatible format for target architecture"
+                          },
+                          {
+                            "name": "AI Architecture Specifications",
+                            "description": "Specifications of the target AI architecture",
+                            "data_type": "architecture_specs",
+                            "constraints": "Must include integration points for value systems"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Value-Embedded Architecture",
+                            "description": "AI architecture with integrated value representations",
+                            "data_type": "integrated_system",
+                            "interpretation": "Provides a value-aligned AI system architecture"
+                          },
+                          {
+                            "name": "Integration Verification Report",
+                            "description": "Report on the success and limitations of the value integration",
+                            "data_type": "verification_report",
+                            "interpretation": "Identifies areas of successful integration and potential improvement areas"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "explicit-value-encoding.computational-translation",
+      "name": "Computational Translation",
+      "description": "Translation of abstract values into computationally tractable representations",
+      "implements_component_capabilities": ["value-learning.value-encoding-capability", "value-learning.adaptive-learning-capability"],
+      "type": "capability",
+      "parent": "explicit-value-encoding",
+      "functions": [
+        {
+          "id": "explicit-value-encoding.computational-translation.principle-formalization",
+          "name": "Principle Formalization",
+          "description": "Methods for translating ethical principles and values into formal, computational representations that can guide AI reasoning and decision-making",
+          "implements_component_functions": ["value-learning.value-representation", "value-learning.principle-encoding"],
+          "type": "function",
+          "parent": "explicit-value-encoding.computational-translation",
+          "specifications": [
+            {
+              "id": "explicit-value-encoding.computational-translation.principle-formalization.computational-translation-spec",
+              "name": "Computational Translation Specification",
+              "description": "Technical specifications for translating abstract ethical principles into computationally tractable representations",
+              "type": "specifications",
+              "parent": "explicit-value-encoding.computational-translation.principle-formalization",
+              "requirements": [
+                "Formal language selection for principle representation",
+                "Translation methodologies from natural language to formal representations",
+                "Verification protocols for representational adequacy",
+                "Computational complexity analysis for implementation feasibility"
+              ],
+              "integration": {
+                "id": "explicit-value-encoding.computational-translation.principle-formalization.computational-translation-spec.implementation",
+                "name": "Computational Translation Implementation",
+                "description": "Integration approach for implementing computational translation of ethical principles",
+                "type": "integration",
+                "parent": "explicit-value-encoding.computational-translation.principle-formalization.computational-translation-spec",
+                "techniques": [
+                  {
+                    "id": "explicit-value-encoding.computational-translation.principle-formalization.computational-translation-spec.implementation.formal-translation",
+                    "name": "Computational Formalization Technique",
+                    "description": "Technique for systematic translation of ethical principles into computationally tractable representations",
+                    "type": "technique",
+                    "parent": "explicit-value-encoding.computational-translation.principle-formalization.computational-translation-spec.implementation",
+                    "applications": [
+                      {
+                        "id": "explicit-value-encoding.computational-translation.principle-formalization.computational-translation-spec.implementation.formal-translation.translator",
+                        "name": "Computational Value Translator",
+                        "description": "System for translating abstract ethical principles into machine-executable representations",
+                        "type": "application",
+                        "parent": "explicit-value-encoding.computational-translation.principle-formalization.computational-translation-spec.implementation.formal-translation",
+                        "inputs": [
+                          {
+                            "name": "Abstract Ethical Principles",
+                            "description": "Ethical principles and values requiring formalization",
+                            "data_type": "principle_set",
+                            "constraints": "Must include clearly articulated principles with defined scope"
+                          },
+                          {
+                            "name": "Computational Requirements",
+                            "description": "Computational constraints and requirements for implementation",
+                            "data_type": "computational_specs",
+                            "constraints": "Must specify implementation environment and performance requirements"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Computational Representations",
+                            "description": "Computationally tractable representations of the input ethical principles",
+                            "data_type": "formal_principles",
+                            "interpretation": "Provides machine-executable encodings of ethical principles"
+                          },
+                          {
+                            "name": "Tractability Analysis",
+                            "description": "Analysis of computational feasibility and performance characteristics",
+                            "data_type": "performance_analysis",
+                            "interpretation": "Identifies computational efficiency and potential optimization requirements"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "explicit-value-encoding.computational-translation.trade-off-resolution",
+          "name": "Trade-Off Resolution",
+          "description": "Encoding mechanisms for resolving value trade-offs",
+          "implements_component_functions": ["value-learning.principle-encoding"],
+          "type": "function",
+          "parent": "explicit-value-encoding.computational-translation",
+          "specifications": [
+            {
+              "id": "explicit-value-encoding.computational-translation.trade-off-resolution.resolution-spec",
+              "name": "Trade-Off Resolution Specification",
+              "description": "Technical specifications for encoding mechanisms that resolve conflicts between different values and ethical principles",
+              "type": "specifications",
+              "parent": "explicit-value-encoding.computational-translation.trade-off-resolution",
+              "requirements": [
+                "Methods for identifying and quantifying value conflicts",
+                "Formal frameworks for value prioritization",
+                "Decision procedures for resolving trade-offs",
+                "Verification protocols for ensuring resolution consistency"
+              ],
+              "integration": {
+                "id": "explicit-value-encoding.computational-translation.trade-off-resolution.resolution-spec.implementation",
+                "name": "Trade-Off Resolution Implementation",
+                "description": "Integration approach for implementing trade-off resolution mechanisms",
+                "type": "integration",
+                "parent": "explicit-value-encoding.computational-translation.trade-off-resolution.resolution-spec",
+                "techniques": [
+                  {
+                    "id": "explicit-value-encoding.computational-translation.trade-off-resolution.resolution-spec.implementation.resolution-algorithm",
+                    "name": "Trade-Off Resolution Algorithm",
+                    "description": "Technique for systematically resolving conflicts between competing values",
+                    "type": "technique",
+                    "parent": "explicit-value-encoding.computational-translation.trade-off-resolution.resolution-spec.implementation",
+                    "applications": [
+                      {
+                        "id": "explicit-value-encoding.computational-translation.trade-off-resolution.resolution-spec.implementation.resolution-algorithm.conflict-resolver",
+                        "name": "Value Conflict Resolver",
+                        "description": "System for resolving conflicts between competing ethical principles and values",
+                        "type": "application",
+                        "parent": "explicit-value-encoding.computational-translation.trade-off-resolution.resolution-spec.implementation.resolution-algorithm",
+                        "inputs": [
+                          {
+                            "name": "Conflicting Values",
+                            "description": "Set of values or principles in conflict",
+                            "data_type": "value_conflict_set",
+                            "constraints": "Must include clearly identified conflicts with contextual information"
+                          },
+                          {
+                            "name": "Resolution Parameters",
+                            "description": "Parameters guiding the trade-off resolution process",
+                            "data_type": "resolution_parameters",
+                            "constraints": "Must specify prioritization criteria and acceptable trade-off thresholds"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Resolution Decision",
+                            "description": "Decision that resolves the value conflict",
+                            "data_type": "resolution_decision",
+                            "interpretation": "Provides a principled resolution to the identified value conflict"
+                          },
+                          {
+                            "name": "Justification Analysis",
+                            "description": "Analysis of the reasoning behind the resolution decision",
+                            "data_type": "justification_report",
+                            "interpretation": "Explains the ethical reasoning and trade-offs made in the resolution"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "explicit-value-encoding.computational-translation.utility-modeling",
+          "name": "Utility Modeling",
+          "description": "Represent human values through utility functions that can be optimized by AI systems",
+          "implements_component_functions": ["value-learning.value-representation", "value-learning.principle-encoding"],
+          "type": "function",
+          "parent": "explicit-value-encoding.computational-translation",
+          "specifications": [
+            {
+              "id": "explicit-value-encoding.computational-translation.utility-modeling.utility-framework",
+              "name": "Utility Modeling Framework",
+              "description": "Technical specifications for modeling values as utility functions",
+              "type": "specifications",
+              "parent": "explicit-value-encoding.computational-translation.utility-modeling",
+              "requirements": [
+                "Methods for eliciting and representing preferences as utilities",
+                "Techniques for multi-dimensional value integration",
+                "Frameworks for utility function construction and validation",
+                "Protocols for quantitative reasoning about value trade-offs"
+              ],
+              "integration": {
+                "id": "explicit-value-encoding.computational-translation.utility-modeling.utility-framework.implementation",
+                "name": "Utility Modeling Implementation",
+                "description": "Integration approach for implementing utility-based value representations",
+                "type": "integration",
+                "parent": "explicit-value-encoding.computational-translation.utility-modeling.utility-framework",
+                "techniques": [
+                  {
+                    "id": "explicit-value-encoding.computational-translation.utility-modeling.utility-framework.implementation.multi-attribute-utility",
+                    "name": "Multi-attribute Utility Technique",
+                    "description": "Technique for constructing utility functions that integrate multiple value dimensions",
+                    "type": "technique",
+                    "parent": "explicit-value-encoding.computational-translation.utility-modeling.utility-framework.implementation",
+                    "applications": [
+                      {
+                        "id": "explicit-value-encoding.computational-translation.utility-modeling.utility-framework.implementation.multi-attribute-utility.utility-constructor",
+                        "name": "Multi-attribute Utility Constructor",
+                        "description": "Application that creates utility functions integrating multiple value dimensions",
+                        "type": "application",
+                        "parent": "explicit-value-encoding.computational-translation.utility-modeling.utility-framework.implementation.multi-attribute-utility",
+                        "inputs": [
+                          {
+                            "name": "Value Priorities",
+                            "description": "Prioritized rankings of values and principles",
+                            "data_type": "value_priorities",
+                            "constraints": "Must include relative importance weights for different values"
+                          },
+                          {
+                            "name": "Preference Data",
+                            "description": "Data about human preferences across different dimensions",
+                            "data_type": "preference_data",
+                            "constraints": "Must cover trade-offs between different values"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Utility Function",
+                            "description": "Mathematical function quantifying value alignment",
+                            "data_type": "utility_function",
+                            "interpretation": "Maps states/actions to degree of value alignment"
+                          },
+                          {
+                            "name": "Trade-off Model",
+                            "description": "Model for reasoning about trade-offs between values",
+                            "data_type": "trade_off_model",
+                            "interpretation": "Enables principled decision-making when values conflict"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "explicit-value-encoding.value-prioritization",
+      "name": "Value Prioritization",
+      "description": "Creation of value hierarchies and priority structures",
+      "implements_component_capabilities": ["value-learning.participatory-development-capability", "value-learning.adaptive-learning-capability"],
+      "type": "capability",
+      "parent": "explicit-value-encoding",
+      "functions": [
+        {
+          "id": "explicit-value-encoding.value-prioritization.context-sensitive-encoding",
+          "name": "Context-Sensitive Encoding",
+          "description": "Creating context-sensitive value representations",
+          "implements_component_functions": ["value-learning.value-representation", "value-learning.principle-encoding"],
+          "type": "function",
+          "parent": "explicit-value-encoding.value-prioritization",
+          "specifications": [
+            {
+              "id": "explicit-value-encoding.value-prioritization.context-sensitive-encoding.context-sensitivity-spec",
+              "name": "Context Sensitivity Specification",
+              "description": "Technical specifications for encoding values that adapt to different contexts and situations",
+              "type": "specifications",
+              "parent": "explicit-value-encoding.value-prioritization.context-sensitive-encoding",
+              "requirements": [
+                "Methods for context identification and classification",
+                "Techniques for context-dependent value prioritization",
+                "Frameworks for representing context-value relationships",
+                "Verification protocols for contextual appropriateness"
+              ],
+              "integration": {
+                "id": "explicit-value-encoding.value-prioritization.context-sensitive-encoding.context-sensitivity-spec.implementation",
+                "name": "Context Sensitivity Implementation",
+                "description": "Integration approach for implementing context-sensitive value encoding",
+                "type": "integration",
+                "parent": "explicit-value-encoding.value-prioritization.context-sensitive-encoding.context-sensitivity-spec",
+                "techniques": [
+                  {
+                    "id": "explicit-value-encoding.value-prioritization.context-sensitive-encoding.context-sensitivity-spec.implementation.context-adaptation",
+                    "name": "Context Adaptation Technique",
+                    "description": "Technique for adapting value encodings based on contextual factors",
+                    "type": "technique",
+                    "parent": "explicit-value-encoding.value-prioritization.context-sensitive-encoding.context-sensitivity-spec.implementation",
+                    "applications": [
+                      {
+                        "id": "explicit-value-encoding.value-prioritization.context-sensitive-encoding.context-sensitivity-spec.implementation.context-adaptation.context-aware-encoder",
+                        "name": "Context-Aware Value Encoder",
+                        "description": "System for encoding values with sensitivity to different contexts and situations",
+                        "type": "application",
+                        "parent": "explicit-value-encoding.value-prioritization.context-sensitive-encoding.context-sensitivity-spec.implementation.context-adaptation",
+                        "inputs": [
+                          {
+                            "name": "Value Set",
+                            "description": "Set of values to be encoded with context sensitivity",
+                            "data_type": "value_set",
+                            "constraints": "Must include clearly defined values with relevance indicators"
+                          },
+                          {
+                            "name": "Context Information",
+                            "description": "Information about the context in which values will be applied",
+                            "data_type": "context_data",
+                            "constraints": "Must provide sufficient situational information for adaptation"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Context-Sensitive Value Encoding",
+                            "description": "Value representation adapted to the specific context",
+                            "data_type": "contextualized_values",
+                            "interpretation": "Provides a context-appropriate encoding of the input values"
+                          },
+                          {
+                            "name": "Adaptation Justification",
+                            "description": "Explanation of how and why values were adapted to the context",
+                            "data_type": "adaptation_report",
+                            "interpretation": "Documents the reasoning behind context-specific value adaptations"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "explicit-value-encoding.value-prioritization.value-aggregation",
+          "name": "Value Aggregation",
+          "description": "Aggregating diverse value perspectives into unified representations",
+          "implements_component_functions": ["value-learning.value-representation", "value-learning.principle-encoding"],
+          "type": "function",
+          "parent": "explicit-value-encoding.value-prioritization",
+          "specifications": [
+            {
+              "id": "explicit-value-encoding.value-prioritization.value-aggregation.aggregation-spec",
+              "name": "Value Aggregation Specification",
+              "description": "Technical specifications for aggregating diverse value perspectives into unified representations",
+              "type": "specifications",
+              "parent": "explicit-value-encoding.value-prioritization.value-aggregation",
+              "requirements": [
+                "Methods for identifying value diversity across stakeholders",
+                "Techniques for resolving value conflicts and inconsistencies",
+                "Frameworks for weighting different value perspectives",
+                "Verification protocols for ensuring representational fairness"
+              ],
+              "integration": {
+                "id": "explicit-value-encoding.value-prioritization.value-aggregation.aggregation-spec.implementation",
+                "name": "Value Aggregation Implementation",
+                "description": "Integration approach for implementing value aggregation mechanisms",
+                "type": "integration",
+                "parent": "explicit-value-encoding.value-prioritization.value-aggregation.aggregation-spec",
+                "techniques": [
+                  {
+                    "id": "explicit-value-encoding.value-prioritization.value-aggregation.aggregation-spec.implementation.aggregation-method",
+                    "name": "Value Aggregation Method",
+                    "description": "Technique for systematically aggregating diverse value perspectives",
+                    "type": "technique",
+                    "parent": "explicit-value-encoding.value-prioritization.value-aggregation.aggregation-spec.implementation",
+                    "applications": [
+                      {
+                        "id": "explicit-value-encoding.value-prioritization.value-aggregation.aggregation-spec.implementation.aggregation-method.value-aggregator",
+                        "name": "Value Aggregation System",
+                        "description": "System for aggregating diverse value perspectives into unified representations",
+                        "type": "application",
+                        "parent": "explicit-value-encoding.value-prioritization.value-aggregation.aggregation-spec.implementation.aggregation-method",
+                        "inputs": [
+                          {
+                            "name": "Diverse Value Perspectives",
+                            "description": "Set of potentially conflicting value perspectives from different stakeholders",
+                            "data_type": "diverse_values",
+                            "constraints": "Must include metadata about stakeholder groups and priority indicators"
+                          },
+                          {
+                            "name": "Aggregation Parameters",
+                            "description": "Parameters guiding the aggregation process",
+                            "data_type": "aggregation_params",
+                            "constraints": "Must specify aggregation method and fairness criteria"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Unified Value Representation",
+                            "description": "Aggregated value representation that integrates diverse perspectives",
+                            "data_type": "aggregated_values",
+                            "interpretation": "Provides a unified representation that balances different value perspectives"
+                          },
+                          {
+                            "name": "Aggregation Report",
+                            "description": "Analysis of how diverse values were aggregated and any trade-offs made",
+                            "data_type": "aggregation_report",
+                            "interpretation": "Documents representation of different stakeholder perspectives and resolution methods"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "explicit-value-encoding.value-prioritization.collective-value-aggregation",
+          "name": "Collective Value Aggregation",
+          "description": "Combine value systems from multiple stakeholders into coherent representations",
+          "implements_component_functions": ["value-learning.value-representation", "value-learning.participatory-development"],
+          "type": "function",
+          "parent": "explicit-value-encoding.value-prioritization",
+          "specifications": [
+            {
+              "id": "explicit-value-encoding.value-prioritization.collective-value-aggregation.aggregation-framework",
+              "name": "Collective Aggregation Framework",
+              "description": "Technical specifications for aggregating diverse stakeholder values",
+              "type": "specifications",
+              "parent": "explicit-value-encoding.value-prioritization.collective-value-aggregation",
+              "requirements": [
+                "Methods for fair representation of diverse value perspectives",
+                "Techniques for resolving conflicting value priorities",
+                "Protocols for democratic value aggregation",
+                "Frameworks for ensuring procedural and substantive fairness"
+              ],
+              "integration": {
+                "id": "explicit-value-encoding.value-prioritization.collective-value-aggregation.aggregation-framework.implementation",
+                "name": "Collective Aggregation Implementation",
+                "description": "Integration approach for implementing collective value aggregation",
+                "type": "integration",
+                "parent": "explicit-value-encoding.value-prioritization.collective-value-aggregation.aggregation-framework",
+                "techniques": [
+                  {
+                    "id": "explicit-value-encoding.value-prioritization.collective-value-aggregation.aggregation-framework.implementation.preference-aggregation",
+                    "name": "Preference Aggregation Technique",
+                    "description": "Technique for combining preferences from diverse stakeholders",
+                    "type": "technique",
+                    "parent": "explicit-value-encoding.value-prioritization.collective-value-aggregation.aggregation-framework.implementation",
+                    "applications": [
+                      {
+                        "id": "explicit-value-encoding.value-prioritization.collective-value-aggregation.aggregation-framework.implementation.preference-aggregation.aggregation-system",
+                        "name": "Preference Aggregation System",
+                        "description": "Application that combines preferences from diverse stakeholders into collective representations",
+                        "type": "application",
+                        "parent": "explicit-value-encoding.value-prioritization.collective-value-aggregation.aggregation-framework.implementation.preference-aggregation",
+                        "inputs": [
+                          {
+                            "name": "Stakeholder Values",
+                            "description": "Value priorities from diverse stakeholder groups",
+                            "data_type": "stakeholder_values",
+                            "constraints": "Must include representation from different stakeholder perspectives"
+                          },
+                          {
+                            "name": "Aggregation Parameters",
+                            "description": "Parameters guiding the aggregation process",
+                            "data_type": "aggregation_params",
+                            "constraints": "Must specify aggregation method and fairness criteria"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Aggregated Value System",
+                            "description": "Unified value representation integrating diverse perspectives",
+                            "data_type": "aggregated_values",
+                            "interpretation": "Represents collective values while respecting diversity"
+                          },
+                          {
+                            "name": "Stakeholder Representation Analysis",
+                            "description": "Analysis of how different stakeholders are represented",
+                            "data_type": "representation_analysis",
+                            "interpretation": "Shows how each stakeholder's values influence the aggregated system"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "explicit-value-encoding.constraint-enforcement",
+      "name": "Constraint Enforcement",
+      "description": "Implementation of ethical constraints and boundaries",
+      "implements_component_capabilities": ["value-learning.value-encoding-capability", "value-learning.adaptive-learning-capability"],
+      "type": "capability",
+      "parent": "explicit-value-encoding",
+      "functions": [
+        {
+          "id": "explicit-value-encoding.constraint-enforcement.encoding-implementation",
+          "name": "Encoding Implementation",
+          "description": "Implementing value encodings in AI system architectures",
+          "implements_component_functions": ["value-learning.value-representation"],
+          "type": "function",
+          "parent": "explicit-value-encoding.constraint-enforcement",
+          "specifications": [
+            {
+              "id": "explicit-value-encoding.constraint-enforcement.encoding-implementation.constraint-encoding-spec",
+              "name": "Constraint Encoding Specification",
+              "description": "Technical specifications for encoding ethical constraints into AI system architectures",
+              "type": "specifications",
+              "parent": "explicit-value-encoding.constraint-enforcement.encoding-implementation",
+              "requirements": [
+                "Methods for encoding hard and soft constraints",
+                "Techniques for validating constraint enforcement in runtime",
+                "Frameworks for constraint priority resolution",
+                "Verification protocols for constraint satisfaction"
+              ],
+              "integration": {
+                "id": "explicit-value-encoding.constraint-enforcement.encoding-implementation.constraint-encoding-spec.implementation",
+                "name": "Constraint Encoding Implementation",
+                "description": "Integration approach for implementing ethical constraint encodings in AI systems",
+                "type": "integration",
+                "parent": "explicit-value-encoding.constraint-enforcement.encoding-implementation.constraint-encoding-spec",
+                "techniques": [
+                  {
+                    "id": "explicit-value-encoding.constraint-enforcement.encoding-implementation.constraint-encoding-spec.implementation.constraint-encoder",
+                    "name": "Constraint Encoding Technique",
+                    "description": "Technique for embedding ethical constraints into AI architectures",
+                    "type": "technique",
+                    "parent": "explicit-value-encoding.constraint-enforcement.encoding-implementation.constraint-encoding-spec.implementation",
+                    "applications": [
+                      {
+                        "id": "explicit-value-encoding.constraint-enforcement.encoding-implementation.constraint-encoding-spec.implementation.constraint-encoder.constraint-system",
+                        "name": "Ethical Constraint Enforcement System",
+                        "description": "System for encoding and enforcing ethical constraints in AI architectures",
+                        "type": "application",
+                        "parent": "explicit-value-encoding.constraint-enforcement.encoding-implementation.constraint-encoding-spec.implementation.constraint-encoder",
+                        "inputs": [
+                          {
+                            "name": "Ethical Constraints",
+                            "description": "Set of ethical constraints to be encoded",
+                            "data_type": "constraint_set",
+                            "constraints": "Must include constraint types, conditions, and severity levels"
+                          },
+                          {
+                            "name": "System Architecture",
+                            "description": "Target AI system architecture for constraint integration",
+                            "data_type": "system_architecture",
+                            "constraints": "Must provide interface points for constraint integration"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Constraint-Encoded System",
+                            "description": "AI system with integrated ethical constraints",
+                            "data_type": "constrained_system",
+                            "interpretation": "Provides an AI system that enforces the encoded ethical constraints"
+                          },
+                          {
+                            "name": "Constraint Validation Report",
+                            "description": "Analysis of constraint enforcement efficacy",
+                            "data_type": "validation_report",
+                            "interpretation": "Documents constraint enforcement capabilities and potential limitations"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "explicit-value-encoding.constraint-enforcement.trade-off-resolution",
+          "name": "Trade-Off Resolution",
+          "description": "Encoding mechanisms for resolving value trade-offs",
+          "implements_component_functions": ["value-learning.principle-encoding"],
+          "type": "function",
+          "parent": "explicit-value-encoding.constraint-enforcement",
+          "specifications": [
+            {
+              "id": "explicit-value-encoding.constraint-enforcement.trade-off-resolution.constraint-tradeoff-spec",
+              "name": "Constraint Trade-Off Specification",
+              "description": "Technical specifications for resolving conflicts between competing ethical constraints",
+              "type": "specifications",
+              "parent": "explicit-value-encoding.constraint-enforcement.trade-off-resolution",
+              "requirements": [
+                "Methods for detecting constraint conflicts",
+                "Techniques for constraint prioritization",
+                "Frameworks for constraint relaxation under competing demands",
+                "Verification protocols for trade-off justifiability"
+              ],
+              "integration": {
+                "id": "explicit-value-encoding.constraint-enforcement.trade-off-resolution.constraint-tradeoff-spec.implementation",
+                "name": "Constraint Trade-Off Implementation",
+                "description": "Integration approach for implementing mechanisms to resolve conflicts between ethical constraints",
+                "type": "integration",
+                "parent": "explicit-value-encoding.constraint-enforcement.trade-off-resolution.constraint-tradeoff-spec",
+                "techniques": [
+                  {
+                    "id": "explicit-value-encoding.constraint-enforcement.trade-off-resolution.constraint-tradeoff-spec.implementation.tradeoff-resolver",
+                    "name": "Constraint Trade-Off Resolution Technique",
+                    "description": "Technique for systematically resolving conflicts between competing ethical constraints",
+                    "type": "technique",
+                    "parent": "explicit-value-encoding.constraint-enforcement.trade-off-resolution.constraint-tradeoff-spec.implementation",
+                    "applications": [
+                      {
+                        "id": "explicit-value-encoding.constraint-enforcement.trade-off-resolution.constraint-tradeoff-spec.implementation.tradeoff-resolver.resolution-system",
+                        "name": "Constraint Resolution System",
+                        "description": "System for resolving conflicts between competing ethical constraints",
+                        "type": "application",
+                        "parent": "explicit-value-encoding.constraint-enforcement.trade-off-resolution.constraint-tradeoff-spec.implementation.tradeoff-resolver",
+                        "inputs": [
+                          {
+                            "name": "Conflicting Constraints",
+                            "description": "Set of ethical constraints in conflict",
+                            "data_type": "constraint_conflict",
+                            "constraints": "Must include constraint descriptions, priority levels, and conflict points"
+                          },
+                          {
+                            "name": "Resolution Parameters",
+                            "description": "Parameters guiding the constraint resolution process",
+                            "data_type": "resolution_parameters",
+                            "constraints": "Must specify resolution strategy and priority framework"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Resolved Constraint Set",
+                            "description": "Set of constraints with conflicts resolved",
+                            "data_type": "resolved_constraints",
+                            "interpretation": "Provides a coherent set of constraints with prioritization rules"
+                          },
+                          {
+                            "name": "Resolution Justification",
+                            "description": "Explanation of constraint resolution decisions",
+                            "data_type": "justification_report",
+                            "interpretation": "Documents ethical reasoning behind constraint prioritization and trade-offs"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "explicit-value-encoding.constraint-enforcement.constraint-specification",
+          "name": "Constraint Specification",
+          "description": "Define explicit rules, constraints, and boundaries that restrict AI behavior",
+          "implements_component_functions": ["value-learning.value-representation", "value-learning.principle-encoding"],
+          "type": "function",
+          "parent": "explicit-value-encoding.constraint-enforcement",
+          "specifications": [
+            {
+              "id": "explicit-value-encoding.constraint-enforcement.constraint-specification.constraint-spec",
+              "name": "Constraint Specification Framework",
+              "description": "Technical specifications for defining ethical constraints and boundaries",
+              "type": "specifications",
+              "parent": "explicit-value-encoding.constraint-enforcement.constraint-specification",
+              "requirements": [
+                "Methods for identifying and formalizing safety boundaries",
+                "Techniques for translating ethical limits into computational constraints",
+                "Protocols for validating constraint completeness",
+                "Frameworks for constraint hierarchy and prioritization"
+              ],
+              "integration": {
+                "id": "explicit-value-encoding.constraint-enforcement.constraint-specification.constraint-spec.implementation",
+                "name": "Constraint Specification Implementation",
+                "description": "Integration approach for implementing constraint specification",
+                "type": "integration",
+                "parent": "explicit-value-encoding.constraint-enforcement.constraint-specification.constraint-spec",
+                "techniques": [
+                  {
+                    "id": "explicit-value-encoding.constraint-enforcement.constraint-specification.constraint-spec.implementation.safety-boundaries",
+                    "name": "Safety Boundary Technique",
+                    "description": "Technique for defining explicit safety boundaries for AI systems",
+                    "type": "technique",
+                    "parent": "explicit-value-encoding.constraint-enforcement.constraint-specification.constraint-spec.implementation",
+                    "applications": [
+                      {
+                        "id": "explicit-value-encoding.constraint-enforcement.constraint-specification.constraint-spec.implementation.safety-boundaries.constraint-definition",
+                        "name": "Safety Constraint Definition",
+                        "description": "Application that defines explicit boundaries and limits on AI system behavior",
+                        "type": "application",
+                        "parent": "explicit-value-encoding.constraint-enforcement.constraint-specification.constraint-spec.implementation.safety-boundaries",
+                        "inputs": [
+                          {
+                            "name": "Safety Requirements",
+                            "description": "Requirements specifying safety properties that must be maintained",
+                            "data_type": "safety_requirements",
+                            "constraints": "Must include clear definitions of prohibited behaviors and states"
+                          },
+                          {
+                            "name": "System Model",
+                            "description": "Model of the AI system to be constrained",
+                            "data_type": "system_model",
+                            "constraints": "Must include action space and state representations"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Formal Constraints",
+                            "description": "Formally specified constraints on system behavior",
+                            "data_type": "constraint_set",
+                            "interpretation": "Defines boundaries that the AI system must not violate"
+                          },
+                          {
+                            "name": "Safety Guardrails",
+                            "description": "Implementation-ready safety mechanisms",
+                            "data_type": "guardrail_specifications",
+                            "interpretation": "Provides concrete mechanisms to prevent unsafe behaviors"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "explicit-value-encoding.value-framework-integration",
+      "name": "Value Framework Integration",
+      "description": "Integration of diverse value frameworks into cohesive systems",
+      "implements_component_capabilities": ["value-learning.value-encoding-capability", "value-learning.participatory-development-capability"],
+      "type": "capability",
+      "parent": "explicit-value-encoding",
+      "functions": [
+        {
+          "id": "explicit-value-encoding.value-framework-integration.context-sensitive-encoding",
+          "name": "Context-Sensitive Encoding",
+          "description": "Creating context-sensitive value representations",
+          "implements_component_functions": ["value-learning.value-representation", "value-learning.principle-encoding"],
+          "type": "function",
+          "parent": "explicit-value-encoding.value-framework-integration",
+          "specifications": [
+            {
+              "id": "explicit-value-encoding.value-framework-integration.context-sensitive-encoding.framework-context-spec",
+              "name": "Framework Context Sensitivity Specification",
+              "description": "Technical specifications for creating context-sensitive value representations across different value frameworks",
+              "type": "specifications",
+              "parent": "explicit-value-encoding.value-framework-integration.context-sensitive-encoding",
+              "requirements": [
+                "Methods for identifying and defining context across value frameworks",
+                "Techniques for context-sensitive value mapping between frameworks",
+                "Protocols for maintaining value consistency across contexts",
+                "Verification methods for cross-framework contextual appropriateness"
+              ],
+              "integration": {
+                "id": "explicit-value-encoding.value-framework-integration.context-sensitive-encoding.framework-context-spec.implementation",
+                "name": "Framework Context Integration",
+                "description": "Integration approach for implementing context-sensitive value encodings across frameworks",
+                "type": "integration",
+                "parent": "explicit-value-encoding.value-framework-integration.context-sensitive-encoding.framework-context-spec",
+                "techniques": [
+                  {
+                    "id": "explicit-value-encoding.value-framework-integration.context-sensitive-encoding.framework-context-spec.implementation.framework-adaptation",
+                    "name": "Cross-Framework Adaptation Technique",
+                    "description": "Technique for adapting value encodings across different frameworks based on context",
+                    "type": "technique",
+                    "parent": "explicit-value-encoding.value-framework-integration.context-sensitive-encoding.framework-context-spec.implementation",
+                    "applications": [
+                      {
+                        "id": "explicit-value-encoding.value-framework-integration.context-sensitive-encoding.framework-context-spec.implementation.framework-adaptation.cross-framework-encoder",
+                        "name": "Cross-Framework Context Encoder",
+                        "description": "System for encoding values with context sensitivity across multiple ethical frameworks",
+                        "type": "application",
+                        "parent": "explicit-value-encoding.value-framework-integration.context-sensitive-encoding.framework-context-spec.implementation.framework-adaptation",
+                        "inputs": [
+                          {
+                            "name": "Multiple Value Frameworks",
+                            "description": "Set of value frameworks to be integrated",
+                            "data_type": "framework_set",
+                            "constraints": "Must include framework definitions with core principles"
+                          },
+                          {
+                            "name": "Context Information",
+                            "description": "Information about the contexts in which values will be applied",
+                            "data_type": "context_data",
+                            "constraints": "Must include sufficient context parameters to determine framework applicability"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Integrated Context-Sensitive Encoding",
+                            "description": "Value representation adapted to context across frameworks",
+                            "data_type": "framework_integrated_values",
+                            "interpretation": "Provides context-appropriate encoding spanning multiple value frameworks"
+                          },
+                          {
+                            "name": "Cross-Framework Mapping",
+                            "description": "Documentation of how values map between frameworks in different contexts",
+                            "data_type": "framework_mapping",
+                            "interpretation": "Explains the relationships between value frameworks in different contexts"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "explicit-value-encoding.value-framework-integration.value-aggregation",
+          "name": "Value Aggregation",
+          "description": "Aggregating diverse value perspectives into unified representations",
+          "implements_component_functions": ["value-learning.value-representation", "value-learning.principle-encoding"],
+          "type": "function",
+          "parent": "explicit-value-encoding.value-framework-integration",
+          "specifications": [
+            {
+              "id": "explicit-value-encoding.value-framework-integration.value-aggregation.framework-aggregation-spec",
+              "name": "Framework Aggregation Specification",
+              "description": "Technical specifications for aggregating diverse value perspectives across multiple frameworks",
+              "type": "specifications",
+              "parent": "explicit-value-encoding.value-framework-integration.value-aggregation",
+              "requirements": [
+                "Methods for identifying common values across diverse frameworks",
+                "Techniques for synthesizing multiple ethical frameworks",
+                "Protocols for resolving framework-level value conflicts",
+                "Verification methods for ensuring framework representation fairness"
+              ],
+              "integration": {
+                "id": "explicit-value-encoding.value-framework-integration.value-aggregation.framework-aggregation-spec.implementation",
+                "name": "Framework Aggregation Implementation",
+                "description": "Integration approach for implementing value aggregation across multiple frameworks",
+                "type": "integration",
+                "parent": "explicit-value-encoding.value-framework-integration.value-aggregation.framework-aggregation-spec",
+                "techniques": [
+                  {
+                    "id": "explicit-value-encoding.value-framework-integration.value-aggregation.framework-aggregation-spec.implementation.framework-synthesis",
+                    "name": "Framework Synthesis Technique",
+                    "description": "Technique for synthesizing multiple ethical frameworks into cohesive representations",
+                    "type": "technique",
+                    "parent": "explicit-value-encoding.value-framework-integration.value-aggregation.framework-aggregation-spec.implementation",
+                    "applications": [
+                      {
+                        "id": "explicit-value-encoding.value-framework-integration.value-aggregation.framework-aggregation-spec.implementation.framework-synthesis.framework-aggregator",
+                        "name": "Ethical Framework Aggregator",
+                        "description": "System for aggregating multiple ethical frameworks into unified value representations",
+                        "type": "application",
+                        "parent": "explicit-value-encoding.value-framework-integration.value-aggregation.framework-aggregation-spec.implementation.framework-synthesis",
+                        "inputs": [
+                          {
+                            "name": "Multiple Ethical Frameworks",
+                            "description": "Set of different ethical frameworks to be integrated",
+                            "data_type": "framework_set",
+                            "constraints": "Must include frameworks with defined principles and values"
+                          },
+                          {
+                            "name": "Integration Parameters",
+                            "description": "Parameters guiding the framework integration process",
+                            "data_type": "integration_params",
+                            "constraints": "Must specify integration method and framework weighting"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Integrated Framework",
+                            "description": "Unified ethical framework that integrates multiple perspectives",
+                            "data_type": "integrated_framework",
+                            "interpretation": "Provides a cohesive representation spanning multiple ethical frameworks"
+                          },
+                          {
+                            "name": "Framework Integration Analysis",
+                            "description": "Analysis of how different frameworks were integrated",
+                            "data_type": "integration_analysis",
+                            "interpretation": "Documents representation of different ethical perspectives and integration methods"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "explicit-value-encoding.value-framework-integration.hybrid-value-aggregation",
+          "name": "Hybrid Value Aggregation",
+          "description": "Combine multiple aggregation methods to handle complex value structures",
+          "implements_component_functions": ["value-learning.value-representation", "value-learning.participatory-development"],
+          "type": "function",
+          "parent": "explicit-value-encoding.value-framework-integration",
+          "specifications": [
+            {
+              "id": "explicit-value-encoding.value-framework-integration.hybrid-value-aggregation.hybrid-framework",
+              "name": "Hybrid Aggregation Framework",
+              "description": "Technical specifications for hybrid value aggregation approaches",
+              "type": "specifications",
+              "parent": "explicit-value-encoding.value-framework-integration.hybrid-value-aggregation",
+              "requirements": [
+                "Methods for integrating multiple aggregation approaches",
+                "Techniques for adaptive aggregation based on context",
+                "Protocols for balancing individual and collective preferences",
+                "Frameworks for complex value structure representation"
+              ],
+              "integration": {
+                "id": "explicit-value-encoding.value-framework-integration.hybrid-value-aggregation.hybrid-framework.implementation",
+                "name": "Hybrid Aggregation Implementation",
+                "description": "Integration approach for implementing hybrid value aggregation",
+                "type": "integration",
+                "parent": "explicit-value-encoding.value-framework-integration.hybrid-value-aggregation.hybrid-framework",
+                "techniques": [
+                  {
+                    "id": "explicit-value-encoding.value-framework-integration.hybrid-value-aggregation.hybrid-framework.implementation.context-aware-aggregation",
+                    "name": "Context-aware Aggregation Technique",
+                    "description": "Technique for adapting aggregation methods to different contexts",
+                    "type": "technique",
+                    "parent": "explicit-value-encoding.value-framework-integration.hybrid-value-aggregation.hybrid-framework.implementation",
+                    "applications": [
+                      {
+                        "id": "explicit-value-encoding.value-framework-integration.hybrid-value-aggregation.hybrid-framework.implementation.context-aware-aggregation.adaptive-aggregator",
+                        "name": "Context-aware Value Aggregator",
+                        "description": "Application that adapts value aggregation methods based on context",
+                        "type": "application",
+                        "parent": "explicit-value-encoding.value-framework-integration.hybrid-value-aggregation.hybrid-framework.implementation.context-aware-aggregation",
+                        "inputs": [
+                          {
+                            "name": "Stakeholder Values",
+                            "description": "Value priorities from diverse stakeholder groups",
+                            "data_type": "stakeholder_values",
+                            "constraints": "Must include representation from different stakeholder perspectives"
+                          },
+                          {
+                            "name": "Context Information",
+                            "description": "Information about the context in which values will be applied",
+                            "data_type": "context_data",
+                            "constraints": "Must provide sufficient situational information for adaptation"
+                          },
+                          {
+                            "name": "Aggregation Methods",
+                            "description": "Set of available aggregation approaches",
+                            "data_type": "aggregation_methods",
+                            "constraints": "Must include multiple aggregation approaches with different strengths"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Context-specific Value System",
+                            "description": "Value system adapted for the specific context",
+                            "data_type": "hybrid_preference_model",
+                            "interpretation": "Provides context-appropriate aggregation of stakeholder values"
+                          },
+                          {
+                            "name": "Method Selection Rationale",
+                            "description": "Explanation of aggregation method selection for the context",
+                            "data_type": "selection_rationale",
+                            "interpretation": "Explains why particular approaches were chosen for the context"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    } 
+  ],
+  
+  "cross_connections": [
+    {
+      "source_id": "explicit-value-encoding.value-formalization",
+      "target_id": "explicit-value-encoding.computational-translation",
+      "type": "provides_input_to",
+      "description": "Value formalization creates formal models of values that computational translation converts into machine-executable representations"
+    },
+    {
+      "source_id": "explicit-value-encoding.computational-translation",
+      "target_id": "explicit-value-encoding.constraint-enforcement",
+      "type": "enables",
+      "description": "Computational translation produces representations that enable constraint enforcement mechanisms"
+    },
+    {
+      "source_id": "explicit-value-encoding.value-prioritization",
+      "target_id": "explicit-value-encoding.value-framework-integration",
+      "type": "informs",
+      "description": "Value prioritization provides structured value hierarchies that inform framework integration"
+    },
+    {
+      "source_id": "explicit-value-encoding.constraint-enforcement.constraint-specification",
+      "target_id": "explicit-value-encoding.constraint-enforcement.trade-off-resolution",
+      "type": "requires",
+      "description": "Constraint specification defines constraints whose conflicts require trade-off resolution"
+    },
+    {
+      "source_id": "explicit-value-encoding.value-framework-integration.hybrid-value-aggregation",
+      "target_id": "explicit-value-encoding.value-prioritization.collective-value-aggregation",
+      "type": "extends",
+      "description": "Hybrid aggregation extends collective aggregation with more sophisticated context-aware methods"
+    }
+  ],
+  
+  "implementation_considerations": [
+    {
+      "id": "explicit-value-encoding.expressivity-tractability",
+      "name": "Expressivity vs. Tractability",
+      "aspect": "Representational Capacity",
+      "considerations": [
+        "Balancing expressive power of value representations with computational tractability",
+        "Managing complexity of value frameworks to enable practical implementation",
+        "Preventing simplification of values that loses essential nuance and complexity",
+        "Ensuring representations can capture both abstract principles and concrete applications",
+        "Addressing computational limitations while maintaining representational adequacy"
+      ],
+      "derives_from_integration_considerations": [
+        "value-learning.representational-accuracy",
+        "value-learning.computational-efficiency"
+      ],
+      "addressed_by_techniques": [
+        "explicit-value-encoding.computational-translation.principle-formalization.computational-translation-spec.implementation.formal-translation", 
+        "explicit-value-encoding.computational-translation.utility-modeling.utility-framework.implementation.multi-attribute-utility"
+      ],
+      "supported_by_literature": [
+        "Conitzer2018", 
+        "Russell2019", 
+        "Eckersley2018"
+      ]
+    },
+    {
+      "id": "explicit-value-encoding.value-coherence",
+      "name": "Value Coherence",
+      "aspect": "Logical Consistency",
+      "considerations": [
+        "Ensuring logical consistency across encoded value representations",
+        "Managing conflicts and contradictions between different ethical principles",
+        "Developing coherent frameworks for resolving value conflicts",
+        "Preventing contradictions between abstract principles and their concrete implementations",
+        "Maintaining consistency across different operational contexts"
+      ],
+      "derives_from_integration_considerations": [
+        "value-learning.value-coherence",
+        "value-learning.conflict-resolution"
+      ],
+      "addressed_by_techniques": [
+        "explicit-value-encoding.computational-translation.trade-off-resolution.resolution-spec.implementation.resolution-algorithm", 
+        "explicit-value-encoding.value-framework-integration.value-aggregation.framework-aggregation-spec.implementation.framework-synthesis"
+      ],
+      "supported_by_literature": [
+        "Russell2019", 
+        "Conitzer2018", 
+        "Eckersley2018"
+      ]
+    },
+    {
+      "id": "explicit-value-encoding.contextual-adaptation",
+      "name": "Contextual Adaptation",
+      "aspect": "Context Sensitivity",
+      "considerations": [
+        "Adapting value application based on situational context",
+        "Balancing universal principles with contextual flexibility",
+        "Avoiding rigid application of values across inappropriate contexts",
+        "Enabling context-aware prioritization of competing values",
+        "Maintaining value integrity while allowing appropriate contextual adaptation"
+      ],
+      "derives_from_integration_considerations": [
+        "value-learning.context-sensitivity",
+        "value-learning.adaptive-dynamics"
+      ],
+      "addressed_by_techniques": [
+        "explicit-value-encoding.value-prioritization.context-sensitive-encoding.context-sensitivity-spec.implementation.context-adaptation", 
+        "explicit-value-encoding.value-framework-integration.hybrid-value-aggregation.hybrid-framework.implementation.context-aware-aggregation"
+      ],
+      "supported_by_literature": [
+        "Wallach2008", 
+        "Hadfield-Menell2016", 
+        "Russell2019"
+      ]
+    }
+  ],
+  
+  "technical_specifications": {
+    "_documentation": "This section provides technical details about the explicit value encoding subcomponent.",
+    "input_requirements": [
+      {
+        "id": "explicit-value-encoding.ethical-principles",
+        "name": "Ethical Principles",
+        "description": "Human-articulated ethical principles and values for encoding",
+        "data_type": "principle_set",
+        "constraints": "Must include clear definitions and scope for each principle",
+        "related_techniques": [
+          "explicit-value-encoding.value-formalization.principle-formalization.formalization-framework.implementation.formal-translation", 
+          "explicit-value-encoding.computational-translation.principle-formalization.computational-translation-spec.implementation.formal-translation"
+        ],
+        "used_by_applications": [
+          "explicit-value-encoding.value-formalization.principle-formalization.formalization-framework.implementation.formal-translation.principle-translator", 
+          "explicit-value-encoding.computational-translation.principle-formalization.computational-translation-spec.implementation.formal-translation.translator"
+        ],
+        "supports_functions": [
+          "explicit-value-encoding.value-formalization.principle-formalization", 
+          "explicit-value-encoding.computational-translation.principle-formalization"
+        ]
+      },
+      {
+        "id": "explicit-value-encoding.stakeholder-preferences",
+        "name": "Stakeholder Preferences",
+        "description": "Preference data from diverse stakeholders about value priorities",
+        "data_type": "preference_data",
+        "constraints": "Must include representation from diverse stakeholder groups",
+        "related_techniques": [
+          "explicit-value-encoding.value-prioritization.value-aggregation.aggregation-spec.implementation.aggregation-method", 
+          "explicit-value-encoding.value-prioritization.collective-value-aggregation.aggregation-framework.implementation.preference-aggregation"
+        ],
+        "used_by_applications": [
+          "explicit-value-encoding.value-prioritization.value-aggregation.aggregation-spec.implementation.aggregation-method.value-aggregator", 
+          "explicit-value-encoding.value-prioritization.collective-value-aggregation.aggregation-framework.implementation.preference-aggregation.aggregation-system"
+        ],
+        "supports_functions": [
+          "explicit-value-encoding.value-prioritization.value-aggregation", 
+          "explicit-value-encoding.value-prioritization.collective-value-aggregation"
+        ]
+      },
+      {
+        "id": "explicit-value-encoding.context-information",
+        "name": "Context Information",
+        "description": "Information about operational contexts where values will be applied",
+        "data_type": "context_model",
+        "constraints": "Must include sufficient detail for contextual adaptation",
+        "related_techniques": [
+          "explicit-value-encoding.value-prioritization.context-sensitive-encoding.context-sensitivity-spec.implementation.context-adaptation", 
+          "explicit-value-encoding.value-framework-integration.context-sensitive-encoding.framework-context-spec.implementation.framework-adaptation"
+        ],
+        "used_by_applications": [
+          "explicit-value-encoding.value-prioritization.context-sensitive-encoding.context-sensitivity-spec.implementation.context-adaptation.context-aware-encoder", 
+          "explicit-value-encoding.value-framework-integration.context-sensitive-encoding.framework-context-spec.implementation.framework-adaptation.cross-framework-encoder"
+        ],
+        "supports_functions": [
+          "explicit-value-encoding.value-prioritization.context-sensitive-encoding", 
+          "explicit-value-encoding.value-framework-integration.context-sensitive-encoding"
+        ]
+      },
+      {
+        "id": "explicit-value-encoding.system-architecture",
+        "name": "System Architecture",
+        "description": "Technical architecture information about the AI system for value integration",
+        "data_type": "architecture_specs",
+        "constraints": "Must include interfaces for value system integration",
+        "related_techniques": [
+          "explicit-value-encoding.value-formalization.encoding-implementation.architecture-integration.implementation.embedding-technique", 
+          "explicit-value-encoding.constraint-enforcement.encoding-implementation.constraint-encoding-spec.implementation.constraint-encoder"
+        ],
+        "used_by_applications": [
+          "explicit-value-encoding.value-formalization.encoding-implementation.architecture-integration.implementation.embedding-technique.value-embedder", 
+          "explicit-value-encoding.constraint-enforcement.encoding-implementation.constraint-encoding-spec.implementation.constraint-encoder.constraint-system"
+        ],
+        "supports_functions": [
+          "explicit-value-encoding.value-formalization.encoding-implementation", 
+          "explicit-value-encoding.constraint-enforcement.encoding-implementation"
+        ]
+      }
+    ],
+    
+    "output_specifications": [
+      {
+        "id": "explicit-value-encoding.formal-value-representations",
+        "name": "Formal Value Representations",
+        "description": "Formalized representations of human values in machine-interpretable formats",
+        "data_type": "formal_representation",
+        "interpretation": "Provides a formal foundation for embedding values in AI systems through logical or mathematical representations with semantic structures",
+        "produced_by_techniques": [
+          "explicit-value-encoding.value-formalization.principle-formalization.formalization-framework.implementation.formal-translation", 
+          "explicit-value-encoding.computational-translation.principle-formalization.computational-translation-spec.implementation.formal-translation"
+        ],
+        "produced_by_applications": [
+          "explicit-value-encoding.value-formalization.principle-formalization.formalization-framework.implementation.formal-translation.principle-translator", 
+          "explicit-value-encoding.computational-translation.principle-formalization.computational-translation-spec.implementation.formal-translation.translator"
+        ],
+        "fulfills_functions": [
+          "explicit-value-encoding.value-formalization.principle-formalization", 
+          "explicit-value-encoding.computational-translation.principle-formalization"
+        ]
+      },
+      {
+        "id": "explicit-value-encoding.computational-value-systems",
+        "name": "Computational Value Systems",
+        "description": "Machine-executable implementations of value systems",
+        "data_type": "computational_model",
+        "interpretation": "Enables AI systems to evaluate actions and states against encoded values using computational models such as utility functions, constraint systems, or logical frameworks",
+        "produced_by_techniques": [
+          "explicit-value-encoding.computational-translation.utility-modeling.utility-framework.implementation.multi-attribute-utility", 
+          "explicit-value-encoding.constraint-enforcement.constraint-specification.constraint-spec.implementation.safety-boundaries"
+        ],
+        "produced_by_applications": [
+          "explicit-value-encoding.computational-translation.utility-modeling.utility-framework.implementation.multi-attribute-utility.utility-constructor", 
+          "explicit-value-encoding.constraint-enforcement.constraint-specification.constraint-spec.implementation.safety-boundaries.constraint-definition"
+        ],
+        "fulfills_functions": [
+          "explicit-value-encoding.computational-translation.utility-modeling", 
+          "explicit-value-encoding.constraint-enforcement.constraint-specification"
+        ]
+      },
+      {
+        "id": "explicit-value-encoding.integrated-value-systems",
+        "name": "Integrated Value Systems",
+        "description": "AI system architectures with integrated value representations",
+        "data_type": "integrated_architecture",
+        "interpretation": "Provides value-aligned AI systems ready for deployment with embedded value systems",
+        "produced_by_techniques": [
+          "explicit-value-encoding.value-formalization.encoding-implementation.architecture-integration.implementation.embedding-technique", 
+          "explicit-value-encoding.constraint-enforcement.encoding-implementation.constraint-encoding-spec.implementation.constraint-encoder"
+        ],
+        "produced_by_applications": [
+          "explicit-value-encoding.value-formalization.encoding-implementation.architecture-integration.implementation.embedding-technique.value-embedder", 
+          "explicit-value-encoding.constraint-enforcement.encoding-implementation.constraint-encoding-spec.implementation.constraint-encoder.constraint-system"
+        ],
+        "fulfills_functions": [
+          "explicit-value-encoding.value-formalization.encoding-implementation", 
+          "explicit-value-encoding.constraint-enforcement.encoding-implementation"
+        ]
+      },
+      {
+        "id": "explicit-value-encoding.trade-off-resolution-systems",
+        "name": "Trade-off Resolution Systems",
+        "description": "Systems for resolving conflicts between competing values or constraints",
+        "data_type": "resolution_framework",
+        "interpretation": "Enables principled resolution of value conflicts during system operation through decision procedures with prioritization mechanisms and justification frameworks",
+        "produced_by_techniques": [
+          "explicit-value-encoding.computational-translation.trade-off-resolution.resolution-spec.implementation.resolution-algorithm", 
+          "explicit-value-encoding.constraint-enforcement.trade-off-resolution.constraint-tradeoff-spec.implementation.tradeoff-resolver"
+        ],
+        "produced_by_applications": [
+          "explicit-value-encoding.computational-translation.trade-off-resolution.resolution-spec.implementation.resolution-algorithm.conflict-resolver", 
+          "explicit-value-encoding.constraint-enforcement.trade-off-resolution.constraint-tradeoff-spec.implementation.tradeoff-resolver.resolution-system"
+        ],
+        "fulfills_functions": [
+          "explicit-value-encoding.computational-translation.trade-off-resolution", 
+          "explicit-value-encoding.constraint-enforcement.trade-off-resolution"
+        ]
+      }
+    ],
+    
+    "performance_characteristics": {
+      "throughput": "Value encoding systems should process integration points at rates sufficient for real-time decision-making (10-100ms)",
+      "latency": "Trade-off resolution should complete within 100ms for real-time applications, or provide approximate solutions with refinement",
+      "scalability": "Systems should scale to handle hundreds of distinct values and thousands of constraints",
+      "resource_utilization": "Value encoding operations should use no more than 5% of AI system computational resources",
+      "related_considerations": ["explicit-value-encoding.expressivity-tractability", "explicit-value-encoding.value-coherence", "explicit-value-encoding.contextual-adaptation"]
+    }
+  },
+  
+  "relationships": {
+    "description": "This section details how explicit value encoding relates to other components and subcomponents in the architecture.",
+    "items": [
+      {
+        "target_id": "adaptive-value-learning",
+        "relationship_type": "bidirectional_exchange",
+        "description": "Explicit value encoding provides structured value representations that adaptive value learning refines over time, while adaptive learning feeds back context-specific insights to improve encoding",
+        "related_functions": [
+          "explicit-value-encoding.value-formalization.principle-formalization", 
+          "explicit-value-encoding.value-prioritization.context-sensitive-encoding"
+        ],
+        "related_techniques": [
+          "explicit-value-encoding.value-formalization.principle-formalization.formalization-framework.implementation.formal-translation", 
+          "explicit-value-encoding.value-prioritization.context-sensitive-encoding.context-sensitivity-spec.implementation.context-adaptation"
+        ],
+        "related_inputs": ["explicit-value-encoding.ethical-principles", "explicit-value-encoding.context-information"],
+        "related_outputs": ["explicit-value-encoding.formal-value-representations", "explicit-value-encoding.computational-value-systems"]
+      },
+      {
+        "target_id": "preference-inference",
+        "relationship_type": "input_output",
+        "description": "Preference inference provides inferred human preferences that inform explicit value encoding, while explicit encoding provides structured frameworks for preference organization",
+        "related_functions": [
+          "explicit-value-encoding.value-prioritization.collective-value-aggregation", 
+          "explicit-value-encoding.computational-translation.utility-modeling"
+        ],
+        "related_techniques": [
+          "explicit-value-encoding.value-prioritization.collective-value-aggregation.aggregation-framework.implementation.preference-aggregation", 
+          "explicit-value-encoding.computational-translation.utility-modeling.utility-framework.implementation.multi-attribute-utility"
+        ],
+        "related_inputs": ["explicit-value-encoding.stakeholder-preferences"],
+        "related_outputs": ["explicit-value-encoding.computational-value-systems"]
+      },
+      {
+        "target_id": "fail-safe-mechanisms",
+        "relationship_type": "bidirectional_exchange",
+        "description": "Explicit value encoding provides the ethical constraints that inform fail-safe triggering conditions, while fail-safe mechanisms ensure enforcement of encoded value boundaries",
+        "related_functions": [
+          "explicit-value-encoding.constraint-enforcement.constraint-specification", 
+          "explicit-value-encoding.constraint-enforcement.encoding-implementation"
+        ],
+        "related_techniques": [
+          "explicit-value-encoding.constraint-enforcement.constraint-specification.constraint-spec.implementation.safety-boundaries", 
+          "explicit-value-encoding.constraint-enforcement.encoding-implementation.constraint-encoding-spec.implementation.constraint-encoder"
+        ],
+        "related_inputs": ["explicit-value-encoding.ethical-principles", "explicit-value-encoding.system-architecture"],
+        "related_outputs": ["explicit-value-encoding.computational-value-systems", "explicit-value-encoding.integrated-value-systems"]
+      },
+      {
+        "target_id": "explanation-systems",
+        "relationship_type": "bidirectional_exchange",
+        "description": "Explicit value encoding provides the value frameworks that explanation systems use to generate value-based explanations, while explanations provide feedback for refining value encodings",
+        "related_functions": [
+          "explicit-value-encoding.value-formalization.principle-formalization", 
+          "explicit-value-encoding.computational-translation.principle-formalization"
+        ],
+        "related_techniques": [
+          "explicit-value-encoding.value-formalization.principle-formalization.formalization-framework.implementation.formal-translation", 
+          "explicit-value-encoding.computational-translation.principle-formalization.computational-translation-spec.implementation.formal-translation"
+        ],
+        "related_inputs": ["explicit-value-encoding.ethical-principles"],
+        "related_outputs": ["explicit-value-encoding.formal-value-representations", "explicit-value-encoding.trade-off-resolution-systems"]
+      }
+    ]
+  },
+  
+  "literature": {
+    "references": [
+      {
+        "id": "Conitzer2018",
+        "authors": ["Conitzer, V.", "Sinnott-Armstrong, W.", "Borg, J.S.", "Deng, Y.", "Kramer, M."],
+        "year": 2018,
+        "title": "Moral Decision Making Frameworks for Artificial Intelligence",
+        "venue": "AAAI Conference",
+        "url": "https://users.cs.duke.edu/~conitzer/moralAAAI18.pdf"
+      },
+      {
+        "id": "Russell2019",
+        "authors": ["Russell, S."],
+        "year": 2019,
+        "title": "Human Compatible: Artificial Intelligence and the Problem of Control",
+        "venue": "Viking",
+        "url": "https://www.penguinrandomhouse.com/books/566677/human-compatible-by-stuart-russell/"
+      },
+      {
+        "id": "Eckersley2018",
+        "authors": ["Eckersley, P."],
+        "year": 2018,
+        "title": "Impossibility and Uncertainty Theorems in AI Value Alignment",
+        "venue": "AAAI Workshop on AI, Ethics, and Society",
+        "url": "https://arxiv.org/abs/1901.00064"
+      },
+      {
+        "id": "Wallach2008",
+        "authors": ["Wallach, W.", "Allen, C."],
+        "year": 2008,
+        "title": "Moral Machines: Teaching Robots Right from Wrong",
+        "venue": "Oxford University Press",
+        "url": "https://global.oup.com/academic/product/moral-machines-9780199737970"
+      },
+      {
+        "id": "Hadfield-Menell2016",
+        "authors": ["Hadfield-Menell, D.", "Dragan, A.", "Abbeel, P.", "Russell, S."],
+        "year": 2016,
+        "title": "Cooperative Inverse Reinforcement Learning",
+        "venue": "Neural Information Processing Systems (NeurIPS)",
+        "url": "https://arxiv.org/abs/1606.03137"
+      },
+      {
+        "id": "Soares2015",
+        "authors": ["Soares, N.", "Fallenstein, B."],
+        "year": 2015,
+        "title": "Aligning Superintelligence with Human Interests: A Technical Research Agenda",
+        "venue": "Machine Intelligence Research Institute",
+        "url": "https://intelligence.org/files/TechnicalAgenda.pdf"
+      },
+      {
+        "id": "Abel2016",
+        "authors": ["Abel, D.", "MacGlashan, J.", "Littman, M.L."],
+        "year": 2016,
+        "title": "Reinforcement Learning as a Framework for Ethical Decision Making",
+        "venue": "AAAI Workshop on AI, Ethics, and Society",
+        "url": "https://www.aaai.org/ocs/index.php/WS/AAAIW16/paper/viewPaper/12581"
+      },
+      {
+        "id": "Arnold2017",
+        "authors": ["Arnold, T.", "Kasenberg, D.", "Scheutz, M."],
+        "year": 2017,
+        "title": "Value Alignment or Misalignment - What Will Keep Systems Accountable?",
+        "venue": "AAAI Workshop on AI, Ethics, and Society",
+        "url": "https://aaai.org/ocs/index.php/WS/AAAIW17/paper/view/15216"
+      }
+    ],
+    
+    "literature_connections": [
+      {
+        "reference_id": "Conitzer2018",
+        "technique": "explicit-value-encoding.computational-translation.trade-off-resolution.resolution-spec.implementation.resolution-algorithm",
+        "relevant_aspects": "Provides frameworks for encoding moral decision-making procedures that can resolve trade-offs between competing values"
+      },
+      {
+        "reference_id": "Russell2019",
+        "technique": "explicit-value-encoding.value-formalization.principle-formalization.formalization-framework.implementation.formal-translation",
+        "relevant_aspects": "Presents approaches for encoding human values as objectives for AI systems in ways that enable alignment"
+      },
+      {
+        "reference_id": "Eckersley2018",
+        "technique": "explicit-value-encoding.computational-translation.principle-formalization.computational-translation-spec.implementation.formal-translation",
+        "relevant_aspects": "Addresses theoretical limitations and uncertainties in translating human values into computational forms"
+      },
+      {
+        "reference_id": "Wallach2008",
+        "technique": "explicit-value-encoding.value-framework-integration.value-aggregation.framework-aggregation-spec.implementation.framework-synthesis",
+        "relevant_aspects": "Explores approaches for integrating different ethical frameworks in artificial moral agents"
+      },
+      {
+        "reference_id": "Hadfield-Menell2016",
+        "technique": "explicit-value-encoding.computational-translation.utility-modeling.utility-framework.implementation.multi-attribute-utility",
+        "relevant_aspects": "Presents cooperative inverse reinforcement learning as a framework for value alignment using utility models"
+      },
+      {
+        "reference_id": "Soares2015",
+        "technique": "explicit-value-encoding.constraint-enforcement.constraint-specification.constraint-spec.implementation.safety-boundaries",
+        "relevant_aspects": "Addresses technical approaches to specifying constraints that ensure AI systems remain aligned with human interests"
+      },
+      {
+        "reference_id": "Abel2016",
+        "technique": "explicit-value-encoding.constraint-enforcement.encoding-implementation.constraint-encoding-spec.implementation.constraint-encoder",
+        "relevant_aspects": "Provides reinforcement learning frameworks for implementing ethical constraints in decision-making systems"
+      },
+      {
+        "reference_id": "Arnold2017",
+        "technique": "explicit-value-encoding.value-prioritization.collective-value-aggregation.aggregation-framework.implementation.preference-aggregation",
+        "relevant_aspects": "Addresses challenges in aggregating diverse stakeholder values for accountable AI systems"
+      }
+    ]
+  }
+} 

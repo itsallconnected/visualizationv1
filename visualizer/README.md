@@ -1,127 +1,83 @@
-# AI Alignment 3D Visualization
+# AI Alignment Visualization Tool
 
-A 3D hierarchical visualization for AI alignment components, showing relationships between various components, subcomponents, and capabilities in an interactive 3D environment.
+A React-based visualization tool for exploring AI alignment concepts and their relationships.
 
-## Features
+## Architecture
 
-- Interactive 3D visualization of AI alignment components
-- Hierarchical structure with expandable/collapsible nodes
-- Details panel showing information about selected nodes
-- Smooth orbital animations for child nodes
-- Draggable nodes for customizing the visualization
-- Responsive design supporting different screen sizes
+This project uses a GitHub-based architecture:
 
-## Live Demo
+- **Frontend**: React application with THREE.js for 3D visualization
+- **Data Storage**: All data is stored in the GitHub repository directly
+- **Authentication**: GitHub OAuth for user authentication
+- **Hosting**: AWS Amplify for hosting and connecting to a custom domain
 
-The application is deployed at: [https://your-app-name.herokuapp.com](https://your-app-name.herokuapp.com)
+## Key Features
 
-## Local Development
+- Interactive 3D visualization of AI alignment concepts
+- Hierarchical node structure with expandable nodes
+- Multiple visualization spheres
+- Node content encryption for sensitive information
+- Version history tracking through GitHub commits
+- User management and permissions
 
-### Prerequisites
-
-- Python 3.9+
-- pip (Python package manager)
-
-### Setup
+## Development Setup
 
 1. Clone the repository:
    ```
    git clone https://github.com/yourusername/ai-alignment-visualization.git
-   cd ai-alignment-visualization
+   cd ai-alignment-visualization/visualizer
    ```
 
-2. Create and activate a virtual environment:
+2. Install dependencies:
    ```
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   ```
-
-3. Install dependencies:
-   ```
-   pip install -r requirements.txt
+   npm install
    ```
 
-4. Run the application:
+3. Create a `.env.local` file with the following variables:
    ```
-   python app.py
-   ```
-
-5. Open your browser and navigate to [http://localhost:3000](http://localhost:3000)
-
-## Deployment
-
-### Heroku
-
-1. Make sure you have the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) installed.
-
-2. Log in to Heroku:
-   ```
-   heroku login
+   REACT_APP_GITHUB_REPO=yourusername/ai-alignment-visualization
+   REACT_APP_GITHUB_BRANCH=main
+   REACT_APP_GITHUB_CLIENT_ID=your_github_oauth_app_client_id
+   REACT_APP_AUTH_REDIRECT_URI=http://localhost:3000/auth-callback
    ```
 
-3. Create a new Heroku app:
+4. Start the development server:
    ```
-   heroku create your-app-name
-   ```
-
-4. Push to Heroku:
-   ```
-   git push heroku main
+   npm start
    ```
 
-5. Open the deployed app:
-   ```
-   heroku open
-   ```
+## Deployment to AWS Amplify
 
-### Docker
-
-1. Build the Docker image:
-   ```
-   docker build -t ai-alignment-visualization .
-   ```
-
-2. Run the container:
-   ```
-   docker run -p 3000:3000 ai-alignment-visualization
-   ```
-
-3. Open your browser and navigate to [http://localhost:3000](http://localhost:3000)
-
-## Configuration
-
-The application can be configured with the following environment variables:
-
-- `PORT`: Port to run the application on (default: 3000)
-- `FLASK_ENV`: Environment setting (development/production)
-- `LOG_LEVEL`: Logging level (default: INFO)
+1. Create a new Amplify app in the AWS console
+2. Connect it to your GitHub repository
+3. Configure the build settings using the provided `amplify.yml` file
+4. Add environment variables for GitHub integration
+5. Deploy the application
 
 ## Project Structure
 
-```
-.
-├── ai-alignment/        # AI alignment data files
-│   ├── components/      # Component JSON files
-│   ├── subcomponents/   # Subcomponent JSON files
-│   └── literature/      # Literature reference files
-├── static/              # Static assets
-│   └── style.css        # CSS styles
-├── templates/           # HTML templates
-│   └── index.html       # Main visualization page
-├── app.py               # Flask application
-├── requirements.txt     # Python dependencies
-├── Procfile             # Heroku deployment configuration
-└── README.md            # This file
-```
+- `/src/components` - UI components
+- `/src/visualization` - 3D visualization engine
+- `/src/data` - Data handling and processing
+- `/src/auth` - Authentication services
+- `/src/api` - GitHub API integration
+- `/src/utils` - Utility functions
+- `/src/config` - Application configuration
+- `/src/styles` - CSS and styling
 
-## License
+## Data Structure
 
-[MIT License](LICENSE)
+All visualization data is stored in the repository under:
+
+- `/data/components` - Components data
+- `/data/subcomponents` - Subcomponents data
+- `/data/users` - User profiles
+- `/data/spheres` - Visualization spheres configuration
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request 

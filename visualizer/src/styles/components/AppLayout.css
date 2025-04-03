@@ -1,0 +1,261 @@
+/* 
+ * AppLayout.css - Styles for the main application layout
+ * Provides responsive structure for the entire application
+ */
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+/* Header styles */
+.app-header {
+  flex: 0 0 auto;
+  min-height: 60px;
+  width: 100%;
+  padding: 0 16px;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--header-bg-color, #ffffff);
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+}
+
+/* Main body container - sidebar + content */
+.app-body {
+  flex: 1 1 auto;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Sidebar styles */
+.app-sidebar {
+  flex: 0 0 auto;
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--sidebar-bg-color, #f5f5f5);
+  border-right: 1px solid var(--border-color, #e0e0e0);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: var(--sidebar-width, 280px);
+  z-index: 5;
+}
+
+.app-sidebar.collapsed {
+  width: var(--sidebar-collapsed-width, 60px);
+}
+
+.sidebar-content {
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.app-sidebar.collapsed .sidebar-content {
+  padding: 16px 8px;
+  overflow-x: hidden;
+}
+
+/* Sidebar toggle button */
+.sidebar-toggle {
+  position: absolute;
+  top: 20px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--primary-color, #1976d2);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.sidebar-toggle:hover {
+  background-color: var(--primary-dark-color, #1565c0);
+  transform: scale(1.1);
+}
+
+.sidebar-toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.3);
+}
+
+/* Main content area */
+.app-content {
+  flex: 1 1 auto;
+  height: 100%;
+  overflow: auto;
+  padding: 20px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Footer styles */
+.app-footer {
+  flex: 0 0 auto;
+  min-height: 50px;
+  width: 100%;
+  padding: 16px;
+  background-color: var(--footer-bg-color, #f5f5f5);
+  border-top: 1px solid var(--border-color, #e0e0e0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Right sidebar positioning */
+.app-layout.sidebar-right .app-body {
+  flex-direction: row-reverse;
+}
+
+.app-layout.sidebar-right .app-sidebar {
+  border-right: none;
+  border-left: 1px solid var(--border-color, #e0e0e0);
+}
+
+.app-layout.sidebar-right .sidebar-toggle {
+  right: auto;
+  left: -12px;
+}
+
+/* Full width layout */
+.app-layout.full-width .app-content {
+  max-width: 100%;
+}
+
+/* Layout modes */
+.app-layout.layout-mode-compact .app-content {
+  padding: 10px;
+}
+
+.app-layout.layout-mode-compact .app-sidebar {
+  --sidebar-width: 240px;
+}
+
+.app-layout.layout-mode-wide .app-content {
+  padding: 30px;
+}
+
+.app-layout.layout-mode-wide .app-sidebar {
+  --sidebar-width: 320px;
+}
+
+/* Mobile layout adjustments */
+@media (max-width: 768px) {
+  .app-sidebar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    transform: translateX(0);
+  }
+  
+  .app-sidebar.collapsed {
+    transform: translateX(-100%);
+    width: var(--sidebar-width, 280px);
+  }
+  
+  .app-layout.sidebar-right .app-sidebar {
+    left: auto;
+    right: 0;
+    transform: translateX(0);
+  }
+  
+  .app-layout.sidebar-right .app-sidebar.collapsed {
+    transform: translateX(100%);
+  }
+  
+  .app-layout.sidebar-right .sidebar-toggle {
+    top: 70px;
+  }
+  
+  .app-sidebar .sidebar-toggle {
+    top: 70px;
+    right: auto;
+    left: calc(100% - 12px);
+  }
+  
+  .app-layout.sidebar-right .app-sidebar .sidebar-toggle {
+    left: auto;
+    right: calc(100% - 12px);
+  }
+  
+  .app-layout.mobile-layout .app-content {
+    padding: 15px;
+  }
+  
+  .app-header {
+    padding: 0 10px;
+    min-height: 50px;
+  }
+}
+
+/* Dark mode support */
+.app-layout.dark-mode {
+  --background-color: #121212;
+  --text-color: #e0e0e0;
+  --header-bg-color: #1e1e1e;
+  --sidebar-bg-color: #1e1e1e;
+  --footer-bg-color: #1e1e1e;
+  --border-color: #333333;
+}
+
+/* High contrast mode support for accessibility */
+.app-layout.high-contrast-mode {
+  --background-color: #000000;
+  --text-color: #ffffff;
+  --header-bg-color: #000000;
+  --sidebar-bg-color: #000000;
+  --footer-bg-color: #000000;
+  --border-color: #ffffff;
+  --primary-color: #ffff00;
+  --primary-dark-color: #ffcc00;
+}
+
+/* Print styles */
+@media print {
+  .app-layout {
+    height: auto;
+    overflow: visible;
+  }
+  
+  .app-header,
+  .app-footer,
+  .app-sidebar,
+  .sidebar-toggle {
+    display: none !important;
+  }
+  
+  .app-body {
+    display: block;
+  }
+  
+  .app-content {
+    overflow: visible;
+    height: auto;
+    padding: 0;
+    margin: 0;
+  }
+} 

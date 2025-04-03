@@ -1,0 +1,1015 @@
+{
+  "_documentation": "This component implements frameworks for enabling democratic determination of AI values and objectives through participatory processes, extending technical alignment with mechanisms that allow diverse stakeholders to deliberate on and decide what constitutes appropriate AI behavior in different contexts.",
+  "id": "democratic-alignment",
+  "name": "Democratic Alignment",
+  "description": "Frameworks for enabling community determination of AI values and objectives through participatory processes. This approach extends technical alignment with democratic mechanisms that allow diverse stakeholders to deliberate on and decide what constitutes appropriate AI behavior in different contexts, ensuring systems serve collective rather than narrow interests.",
+  "type": "component",
+  "parent": "ai-alignment",
+  
+  "overview": {
+    "_documentation": "This section provides a concise summary of the component's purpose, key capabilities, and primary functions. It should be specific about what this particular component does and how it contributes to the component group's goals. Focus on the WHAT and WHY, with a high-level HOW.",
+    "purpose": "To ensure AI systems serve democratically determined values and objectives through participatory governance, deliberative processes, and inclusive decision-making about AI alignment",
+    "key_capabilities": [
+      {
+        "id": "democratic-alignment.participatory-governance-capability",
+        "name": "Participatory Governance",
+        "description": "AI capability to enable democratic participation in defining AI alignment objectives and governance",
+        "implemented_by_subcomponents": ["participatory-value-definition", "democratic-governance"]
+      },
+      {
+        "id": "democratic-alignment.democratic-implementation-capability",
+        "name": "Democratic Implementation",
+        "description": "AI capability to implement democratically-determined alignment objectives in AI systems",
+        "implemented_by_subcomponents": ["democratic-governance", "participatory-alignment-verification"]
+      },
+      {
+        "id": "democratic-alignment.deliberative-capacity-capability",
+        "name": "Deliberative Capacity Building",
+        "description": "AI capability to enhance collective decision-making about complex AI alignment issues",
+        "implemented_by_subcomponents": ["deliberative-capacity-building", "participatory-value-definition"]
+      },
+      {
+        "id": "democratic-alignment.participatory-oversight-capability",
+        "name": "Participatory Oversight",
+        "description": "AI capability to enable democratic oversight and verification of AI alignment",
+        "implemented_by_subcomponents": ["participatory-alignment-verification", "democratic-governance"]
+      }
+    ],
+    "primary_functions": [
+      {
+        "id": "democratic-alignment.participation-facilitation",
+        "name": "Participation Facilitation",
+        "description": "AI function that enables inclusive participation in AI governance and alignment definition",
+        "implemented_by_subcomponents": ["participatory-value-definition", "deliberative-capacity-building"]
+      },
+      {
+        "id": "democratic-alignment.democratic-governance",
+        "name": "Democratic Governance",
+        "description": "AI function that implements democratic governance structures for AI systems",
+        "implemented_by_subcomponents": ["democratic-governance", "deliberative-capacity-building"]
+      },
+      {
+        "id": "democratic-alignment.value-elicitation",
+        "name": "Value Elicitation",
+        "description": "AI function that elicits values from diverse stakeholders for AI alignment",
+        "implemented_by_subcomponents": ["participatory-value-definition", "participatory-alignment-verification"]
+      },
+      {
+        "id": "democratic-alignment.oversight-implementation",
+        "name": "Oversight Implementation",
+        "description": "AI function that implements democratic oversight mechanisms for AI systems",
+        "implemented_by_subcomponents": ["democratic-governance", "participatory-alignment-verification"]
+      }
+    ]
+  },
+  
+  "capabilities": {
+    "_documentation": "This section defines the component-level capabilities that enable the component to fulfill its purpose and implement its functions.",
+    "items": [
+      {
+        "id": "democratic-alignment.participatory-governance-capability",
+        "name": "Participatory Governance",
+        "description": "Capability to enable participatory governance of AI systems by diverse stakeholders",
+        "implemented_by_subcomponents": [
+          "deliberative-capacity-building",
+          "democratic-governance"
+        ],
+        "implements_subcomponent_functions": [
+          "democratic-governance.inclusive-participation.community-representation",
+          "democratic-governance.democratic-structures.democratic-oversight",
+          "deliberative-capacity-building.participatory-methods.participation-enhancement",
+          "deliberative-capacity-building.deliberative-infrastructure.facilitation-support"
+        ],
+        "implements_subcomponent_capabilities": [
+          "deliberative-capacity-building.ai-literacy",
+          "deliberative-capacity-building.deliberative-infrastructure",
+          "deliberative-capacity-building.inclusive-methodologies",
+          "deliberative-capacity-building.participatory-methods",
+          "democratic-governance.inclusive-participation",
+          "democratic-governance.democratic-structures"
+        ],
+        "supported_by_literature": ["Christian2020", "Vaina2020"],
+        "related_capabilities": [
+          "democratic-alignment.participatory-processes",
+          "democratic-alignment.inclusive-representation"
+        ]
+      },
+      {
+        "id": "democratic-alignment.democratic-implementation-capability",
+        "name": "Democratic Implementation",
+        "description": "Capability to implement democratically-determined alignment objectives in AI systems",
+        "implemented_by_subcomponents": [
+          "democratic-governance",
+          "participatory-alignment-verification"
+        ],
+        "implements_subcomponent_functions": [
+          "democratic-governance.democratic-structures.accountable-decision",
+          "democratic-governance.democratic-control.implementation-process",
+          "participatory-alignment-verification.verification-methods.implementation-verification",
+          "participatory-alignment-verification.alignment-assessment.implementation-monitoring"
+        ],
+        "implements_subcomponent_capabilities": [
+          "democratic-governance.democratic-structures",
+          "democratic-governance.democratic-control",
+          "participatory-alignment-verification.verification-methods",
+          "participatory-alignment-verification.alignment-assessment"
+        ],
+        "supported_by_literature": ["Askell2019", "Allen2021"],
+        "related_capabilities": [
+          "democratic-alignment.participatory-oversight-capability"
+        ]
+      },
+      {
+        "id": "democratic-alignment.deliberative-capacity-capability",
+        "name": "Deliberative Capacity",
+        "description": "Capability to develop and enhance deliberative capacity for AI governance",
+        "implemented_by_subcomponents": [
+          "deliberative-capacity-building",
+          "participatory-value-definition"
+        ],
+        "implements_subcomponent_functions": [
+          "deliberative-capacity-building.ai-literacy.knowledge-building",
+          "deliberative-capacity-building.ai-literacy.skill-development",
+          "deliberative-capacity-building.education-techniques.knowledge-building",
+          "deliberative-capacity-building.participatory-methods.participation-enhancement",
+          "deliberative-capacity-building.participatory-methods.facilitation-support",
+          "participatory-value-definition.stakeholder-elicitation.inclusive-deliberation"
+        ],
+        "implements_subcomponent_capabilities": [
+          "deliberative-capacity-building.ai-literacy",
+          "deliberative-capacity-building.education-techniques",
+          "deliberative-capacity-building.participatory-methods",
+          "deliberative-capacity-building.knowledge-translation",
+          "deliberative-capacity-building.inclusive-methodologies"
+        ],
+        "supported_by_literature": ["Price2022", "Kortz2021"],
+        "related_capabilities": [
+          "democratic-alignment.participatory-governance-capability",
+          "democratic-alignment.participatory-processes"
+        ]
+      },
+      {
+        "id": "democratic-alignment.participatory-oversight-capability",
+        "name": "Participatory Oversight",
+        "description": "Capability to enable democratic oversight and verification of AI alignment",
+        "implemented_by_subcomponents": [
+          "participatory-alignment-verification",
+          "democratic-governance"
+        ],
+        "implements_subcomponent_functions": [
+          "participatory-alignment-verification.verification-methods.public-verification",
+          "participatory-alignment-verification.participatory-auditing.community-auditing",
+          "democratic-governance.multi-stakeholder-oversight.democratic-oversight",
+          "democratic-governance.democratic-structures.democratic-oversight"
+        ],
+        "implements_subcomponent_capabilities": [
+          "participatory-alignment-verification.verification-methods",
+          "participatory-alignment-verification.participatory-auditing",
+          "democratic-governance.multi-stakeholder-oversight",
+          "democratic-governance.democratic-structures"
+        ],
+        "supported_by_literature": ["Irving2018", "Bai2022"],
+        "related_capabilities": [
+          "democratic-alignment.democratic-implementation-capability"
+        ]
+      },
+      {
+        "id": "democratic-alignment.institutional-design",
+        "name": "Institutional Design",
+        "description": "Capability to create and sustain democratic institutions for AI governance",
+        "implemented_by_subcomponents": [
+          "democratic-governance",
+          "deliberative-capacity-building"
+        ],
+        "implements_subcomponent_functions": [
+          "democratic-governance.democratic-structures.institution-creation",
+          "democratic-governance.governance-transparency.institution-design",
+          "deliberative-capacity-building.deliberative-infrastructure.infrastructure-development",
+          "deliberative-capacity-building.technical-capacity.infrastructure-development"
+        ],
+        "implements_subcomponent_capabilities": [
+          "democratic-governance.democratic-structures",
+          "democratic-governance.governance-transparency",
+          "deliberative-capacity-building.deliberative-infrastructure",
+          "deliberative-capacity-building.technical-capacity"
+        ],
+        "supported_by_literature": ["Allen2021", "Christian2020"],
+        "related_capabilities": [
+          "democratic-alignment.democratic-implementation-capability",
+          "democratic-alignment.participatory-governance-capability"
+        ]
+      },
+      {
+        "id": "democratic-alignment.accountability",
+        "name": "Accountability Mechanisms",
+        "description": "Capability to ensure AI systems are accountable to democratic oversight",
+        "implemented_by_subcomponents": [
+          "democratic-governance",
+          "participatory-alignment-verification"
+        ],
+        "implements_subcomponent_functions": [
+          "democratic-governance.democratic-structures.accountable-decision",
+          "democratic-governance.multi-stakeholder-oversight.power-sharing",
+          "participatory-alignment-verification.participatory-auditing.community-auditing",
+          "participatory-alignment-verification.alignment-assessment.system-evaluation"
+        ],
+        "implements_subcomponent_capabilities": [
+          "democratic-governance.democratic-structures",
+          "democratic-governance.multi-stakeholder-oversight",
+          "participatory-alignment-verification.participatory-auditing",
+          "participatory-alignment-verification.alignment-assessment"
+        ],
+        "supported_by_literature": ["Kortz2021", "Irving2018"],
+        "related_capabilities": [
+          "democratic-alignment.transparency",
+          "democratic-alignment.participatory-oversight-capability"
+        ]
+      },
+      {
+        "id": "democratic-alignment.transparency",
+        "name": "Transparency Systems",
+        "description": "Capability to enable transparent governance and operation of AI systems",
+        "implemented_by_subcomponents": [
+          "democratic-governance",
+          "participatory-alignment-verification"
+        ],
+        "implements_subcomponent_functions": [
+          "democratic-governance.governance-transparency.transparency-maintenance",
+          "democratic-governance.governance-transparency.democratic-contestation",
+          "participatory-alignment-verification.verification-methods.public-verification",
+          "participatory-alignment-verification.participatory-auditing.transparency-enhancement"
+        ],
+        "implements_subcomponent_capabilities": [
+          "democratic-governance.governance-transparency",
+          "participatory-alignment-verification.verification-methods",
+          "participatory-alignment-verification.participatory-auditing"
+        ],
+        "supported_by_literature": ["Vaina2020", "Bai2022"],
+        "related_capabilities": [
+          "democratic-alignment.accountability",
+          "democratic-alignment.participatory-governance-capability"
+        ]
+      },
+      {
+        "id": "democratic-alignment.participatory-processes",
+        "name": "Participatory Processes",
+        "description": "Capability to design and implement effective participatory processes for AI governance",
+        "implemented_by_subcomponents": [
+          "deliberative-capacity-building",
+          "participatory-value-definition"
+        ],
+        "implements_subcomponent_functions": [
+          "deliberative-capacity-building.participatory-methods.participation-enhancement",
+          "deliberative-capacity-building.participatory-methods.facilitation-support",
+          "participatory-value-definition.democratic-input.participatory-value-definition",
+          "participatory-value-definition.democratic-input.stakeholder-engagement",
+          "participatory-value-definition.stakeholder-elicitation.inclusive-deliberation"
+        ],
+        "implements_subcomponent_capabilities": [
+          "democratic-governance.inclusive-participation",
+          "deliberative-capacity-building.participatory-methods",
+          "participatory-value-definition.democratic-input",
+          "participatory-value-definition.stakeholder-elicitation"
+        ],
+        "supported_by_literature": ["Christian2020", "Vaina2020"],
+        "related_capabilities": [
+          "democratic-alignment.participatory-governance-capability",
+          "democratic-alignment.inclusive-representation"
+        ]
+      },
+      {
+        "id": "democratic-alignment.inclusive-representation",
+        "name": "Inclusive Representation",
+        "description": "Capability to ensure diverse and representative stakeholder participation in AI governance",
+        "implemented_by_subcomponents": [
+          "participatory-value-definition",
+          "democratic-governance"
+        ],
+        "implements_subcomponent_functions": [
+          "participatory-value-definition.democratic-input.stakeholder-engagement",
+          "participatory-value-definition.diverse-integration.perspective-integration",
+          "democratic-governance.inclusive-participation.community-representation",
+          "democratic-governance.balanced-power.community-representation"
+        ],
+        "implements_subcomponent_capabilities": [
+          "democratic-governance.balanced-power"
+        ],
+        "supported_by_literature": ["Christian2020", "Kortz2021"],
+        "related_capabilities": [
+          "democratic-alignment.participatory-processes",
+          "democratic-alignment.participatory-governance-capability"
+        ]
+      },
+      {
+        "id": "democratic-alignment.control-mechanisms",
+        "name": "Democratic Control Mechanisms",
+        "description": "Capability to implement effective democratic control over AI systems",
+        "implemented_by_subcomponents": [
+          "democratic-governance",
+          "participatory-alignment-verification"
+        ],
+        "implements_subcomponent_functions": [
+          "democratic-governance.democratic-control.implementation-process",
+          "democratic-governance.democratic-control.democratic-oversight",
+          "participatory-alignment-verification.verification-methods.implementation-verification",
+          "participatory-alignment-verification.alignment-assessment.system-evaluation"
+        ],
+        "implements_subcomponent_capabilities": [
+          "democratic-governance.democratic-control",
+          "participatory-alignment-verification.verification-methods",
+          "participatory-alignment-verification.alignment-assessment"
+        ],
+        "supported_by_literature": ["Allen2021", "Irving2018"],
+        "related_capabilities": [
+          "democratic-alignment.accountability",
+          "democratic-alignment.democratic-implementation-capability"
+        ]
+      },
+      {
+        "id": "democratic-alignment.value-pluralism",
+        "name": "Value Pluralism",
+        "description": "Capability to accommodate and integrate multiple value perspectives in AI alignment",
+        "implemented_by_subcomponents": [
+          "participatory-value-definition",
+          "participatory-alignment-verification"
+        ],
+        "implements_subcomponent_functions": [
+          "participatory-value-definition.democratic-input.participatory-value-definition",
+          "participatory-value-definition.diverse-integration.perspective-integration",
+          "participatory-alignment-verification.stakeholder-evaluation.evaluation-specifications",
+          "participatory-alignment-verification.democratic-oversight.oversight-specifications"
+        ],
+        "implements_subcomponent_capabilities": [
+          "participatory-value-definition.diverse-integration",
+          "participatory-alignment-verification.multi-perspective-assessment"
+        ],
+        "supported_by_literature": ["Christian2020", "Kortz2021"],
+        "related_capabilities": [
+          "democratic-alignment.inclusive-representation",
+          "democratic-alignment.deliberative-capacity-capability"
+        ]
+      },
+      {
+        "id": "democratic-alignment.process-transparency",
+        "name": "Process Transparency",
+        "description": "Capability to ensure transparent processes in AI system governance and alignment verification",
+        "implemented_by_subcomponents": [
+          "participatory-alignment-verification",
+          "democratic-governance"
+        ],
+        "implements_subcomponent_functions": [
+          "participatory-alignment-verification.public-auditing.auditing-specifications",
+          "democratic-governance.governance-transparency.transparency-maintenance",
+          "participatory-alignment-verification.verification-methods.public-verification",
+          "democratic-governance.governance-transparency.democratic-contestation"
+        ],
+        "implements_subcomponent_capabilities": [
+          "participatory-alignment-verification.transparent-verification",
+          "democratic-governance.governance-transparency"
+        ],
+        "supported_by_literature": ["Vaina2020", "Bai2022"],
+        "related_capabilities": [
+          "democratic-alignment.transparency",
+          "democratic-alignment.accountability"
+        ]
+      },
+      {
+        "id": "democratic-alignment.inclusive-verification",
+        "name": "Inclusive Verification",
+        "description": "Capability to ensure verification processes are accessible to all stakeholders regardless of technical expertise",
+        "implemented_by_subcomponents": [
+          "participatory-alignment-verification",
+          "deliberative-capacity-building"
+        ],
+        "implements_subcomponent_functions": [
+          "participatory-alignment-verification.stakeholder-evaluation.evaluation-specifications",
+          "participatory-alignment-verification.public-auditing.auditing-specifications",
+          "deliberative-capacity-building.technical-capacity.infrastructure-development",
+          "deliberative-capacity-building.knowledge-translation.knowledge-building"
+        ],
+        "implements_subcomponent_capabilities": [
+          "participatory-alignment-verification.accessible-verification",
+          "deliberative-capacity-building.knowledge-translation"
+        ],
+        "supported_by_literature": ["Irving2018", "Kortz2021"],
+        "related_capabilities": [
+          "democratic-alignment.participatory-oversight-capability",
+          "democratic-alignment.process-transparency"
+        ]
+      }
+    ]
+  },
+  
+  "functions": {
+    "_documentation": "This section defines the component-level functions that implement the component's purpose.",
+    "items": [
+      {
+        "id": "democratic-alignment.participation-facilitation",
+        "name": "Participation Facilitation",
+        "description": "Function that enables inclusive participation in AI governance and alignment definition",
+        "implemented_by_subcomponents": [
+          "participatory-value-definition",
+          "deliberative-capacity-building"
+        ],
+        "implements_subcomponent_functions": [
+          "participatory-value-definition.stakeholder-elicitation.inclusive-deliberation",
+          "participatory-value-definition.democratic-input.participatory-value-definition",
+          "participatory-value-definition.democratic-input.stakeholder-engagement",
+          "participatory-value-definition.diverse-integration.perspective-integration",
+          "deliberative-capacity-building.ai-literacy.knowledge-building",
+          "deliberative-capacity-building.ai-literacy.skill-development",
+          "deliberative-capacity-building.education-techniques.knowledge-building",
+          "deliberative-capacity-building.education-techniques.participation-enhancement",
+          "deliberative-capacity-building.participatory-methods.participation-enhancement",
+          "deliberative-capacity-building.participatory-methods.facilitation-support",
+          "deliberative-capacity-building.deliberative-infrastructure.facilitation-support",
+          "deliberative-capacity-building.technical-capacity.knowledge-building",
+          "deliberative-capacity-building.knowledge-translation.knowledge-building",
+          "deliberative-capacity-building.knowledge-translation.facilitation-support",
+          "deliberative-capacity-building.inclusive-methodologies.skill-development",
+          "deliberative-capacity-building.inclusive-methodologies.facilitation-support"
+        ],
+        "supported_by_literature": ["Christian2020", "Vaina2020"],
+        "related_functions": [
+          "democratic-alignment.value-elicitation",
+          "democratic-alignment.democratic-governance"
+        ]
+      },
+      {
+        "id": "democratic-alignment.democratic-governance",
+        "name": "Democratic Governance",
+        "description": "Function that implements democratic governance structures for AI systems",
+        "implemented_by_subcomponents": [
+          "democratic-governance", 
+          "deliberative-capacity-building"
+        ],
+        "implements_subcomponent_functions": [
+          "democratic-governance.governance-transparency.democratic-contestation",
+          "democratic-governance.inclusive-participation.democratic-contestation",
+          "deliberative-capacity-building.deliberative-infrastructure.infrastructure-development",
+          "deliberative-capacity-building.technical-capacity.infrastructure-development"
+        ],
+        "supported_by_literature": ["Allen2021", "Christian2020"],
+        "related_functions": [
+          "democratic-alignment.participation-facilitation",
+          "democratic-alignment.oversight-implementation"
+        ]
+      },
+      {
+        "id": "democratic-alignment.value-elicitation",
+        "name": "Value Elicitation",
+        "description": "Function that elicits values from diverse stakeholders for AI alignment",
+        "implemented_by_subcomponents": [
+          "participatory-value-definition", 
+          "participatory-alignment-verification"
+        ],
+        "implements_subcomponent_functions": [
+          "participatory-value-definition.stakeholder-elicitation.inclusive-deliberation",
+          "participatory-value-definition.democratic-input.participatory-value-definition",
+          "participatory-value-definition.diverse-integration.perspective-integration",
+          "deliberative-capacity-building.ai-literacy.knowledge-building",
+          "deliberative-capacity-building.education-techniques.knowledge-building",
+          "deliberative-capacity-building.technical-capacity.knowledge-building",
+          "deliberative-capacity-building.knowledge-translation.knowledge-building",
+          "deliberative-capacity-building.inclusive-methodologies.skill-development"
+        ],
+        "supported_by_literature": ["Christian2020", "Kortz2021"],
+        "related_functions": [
+          "democratic-alignment.participation-facilitation",
+          "democratic-alignment.democratic-governance"
+        ]
+      },
+      {
+        "id": "democratic-alignment.oversight-implementation",
+        "name": "Oversight Implementation",
+        "description": "Function that implements democratic oversight mechanisms for AI systems",
+        "implemented_by_subcomponents": [
+          "democratic-governance", 
+          "participatory-alignment-verification"
+        ],
+        "implements_subcomponent_functions": [
+          "deliberative-capacity-building.participatory-methods.facilitation-support",
+          "deliberative-capacity-building.deliberative-infrastructure.infrastructure-development",
+          "deliberative-capacity-building.deliberative-infrastructure.facilitation-support",
+          "deliberative-capacity-building.technical-capacity.infrastructure-development",
+          "deliberative-capacity-building.knowledge-translation.facilitation-support",
+          "deliberative-capacity-building.inclusive-methodologies.facilitation-support"
+        ],
+        "supported_by_literature": ["Irving2018", "Bai2022"],
+        "related_functions": [
+          "democratic-alignment.democratic-governance",
+          "democratic-alignment.democratic-oversight"
+        ]
+      },
+      {
+        "id": "democratic-alignment.democratic-oversight",
+        "name": "Democratic Oversight",
+        "description": "Function that enables democratic oversight of AI system development and deployment",
+        "implemented_by_subcomponents": [
+          "democratic-governance",
+          "participatory-alignment-verification"
+        ],
+        "implements_subcomponent_functions": [
+          "democratic-governance.democratic-structures.democratic-oversight",
+          "democratic-governance.multi-stakeholder-oversight.democratic-oversight",
+          "democratic-governance.democratic-control.democratic-oversight"
+        ],
+        "supported_by_literature": ["Irving2018", "Allen2021"],
+        "related_functions": [
+          "democratic-alignment.oversight-implementation",
+          "democratic-alignment.accountability-implementation"
+        ]
+      },
+      {
+        "id": "democratic-alignment.diverse-representation",
+        "name": "Diverse Representation",
+        "description": "Function that ensures diverse stakeholder representation in AI governance processes",
+        "implemented_by_subcomponents": [
+          "participatory-value-definition",
+          "democratic-governance"
+        ],
+        "implements_subcomponent_functions": [
+          "democratic-governance.inclusive-participation.community-representation",
+          "democratic-governance.balanced-power.community-representation",
+          "participatory-value-definition.democratic-input.stakeholder-engagement"
+        ],
+        "supported_by_literature": ["Christian2020", "Kortz2021"],
+        "related_functions": [
+          "democratic-alignment.participation-facilitation",
+          "democratic-alignment.value-elicitation"
+        ]
+      },
+      {
+        "id": "democratic-alignment.power-distribution",
+        "name": "Power Distribution",
+        "description": "Function that distributes decision-making power across diverse stakeholders in AI governance",
+        "implemented_by_subcomponents": [
+          "democratic-governance",
+          "participatory-alignment-verification"
+        ],
+        "implements_subcomponent_functions": [
+          "democratic-governance.multi-stakeholder-oversight.power-sharing",
+          "democratic-governance.balanced-power.power-sharing"
+        ],
+        "supported_by_literature": ["Christian2020", "Allen2021"],
+        "related_functions": [
+          "democratic-alignment.democratic-governance",
+          "democratic-alignment.diverse-representation"
+        ]
+      },
+      {
+        "id": "democratic-alignment.democratic-expertise",
+        "name": "Democratic Expertise",
+        "description": "Function that builds and distributes expertise on AI governance among diverse stakeholders",
+        "implemented_by_subcomponents": [
+          "deliberative-capacity-building",
+          "participatory-value-definition"
+        ],
+        "implements_subcomponent_functions": [
+          "deliberative-capacity-building.ai-literacy.skill-development"
+        ],
+        "supported_by_literature": ["Kortz2021", "Price2022"],
+        "related_functions": [
+          "democratic-alignment.participation-facilitation",
+          "democratic-alignment.value-elicitation"
+        ]
+      },
+      {
+        "id": "democratic-alignment.accountability-implementation",
+        "name": "Accountability Implementation",
+        "description": "Function that implements accountability mechanisms for AI systems",
+        "implemented_by_subcomponents": [
+          "democratic-governance",
+          "participatory-alignment-verification"
+        ],
+        "implements_subcomponent_functions": [
+          "democratic-governance.democratic-structures.accountable-decision",
+          "democratic-governance.democratic-control.accountable-decision"
+        ],
+        "supported_by_literature": ["Allen2021", "Irving2018"],
+        "related_functions": [
+          "democratic-alignment.democratic-oversight",
+          "democratic-alignment.transparency-implementation"
+        ]
+      },
+      {
+        "id": "democratic-alignment.transparency-implementation",
+        "name": "Transparency Implementation",
+        "description": "Function that implements transparency mechanisms for AI governance and operation",
+        "implemented_by_subcomponents": [
+          "democratic-governance",
+          "participatory-alignment-verification"
+        ],
+        "implements_subcomponent_functions": [
+          "democratic-governance.governance-transparency.transparency-maintenance"
+        ],
+        "supported_by_literature": ["Vaina2020", "Bai2022"],
+        "related_functions": [
+          "democratic-alignment.accountability-implementation",
+          "democratic-alignment.democratic-oversight"
+        ]
+      },
+      {
+        "id": "democratic-alignment.participatory-verification",
+        "name": "Participatory Verification",
+        "description": "Function that enables direct verification of AI alignment by affected communities",
+        "implemented_by_subcomponents": [
+          "participatory-alignment-verification",
+          "participatory-value-definition"
+        ],
+        "implements_subcomponent_functions": [
+          "participatory-alignment-verification.stakeholder-evaluation.evaluation-specifications",
+          "participatory-alignment-verification.verification-methods.public-verification",
+          "participatory-value-definition.verification-processes.community-verification",
+          "participatory-value-definition.stakeholder-elicitation.inclusive-deliberation"
+        ],
+        "supported_by_literature": ["Irving2018", "Bai2022"],
+        "related_functions": [
+          "democratic-alignment.democratic-oversight",
+          "democratic-alignment.accountability-implementation"
+        ]
+      },
+      {
+        "id": "democratic-alignment.governance-frameworks",
+        "name": "Governance Frameworks",
+        "description": "Function that establishes frameworks for democratic governance of AI systems",
+        "implemented_by_subcomponents": [
+          "democratic-governance",
+          "participatory-alignment-verification"
+        ],
+        "implements_subcomponent_functions": [
+          "democratic-governance.democratic-structures.democratic-oversight",
+          "democratic-governance.governance-transparency.democratic-contestation",
+          "participatory-alignment-verification.democratic-oversight.oversight-specifications",
+          "participatory-alignment-verification.verification-methods.implementation-verification"
+        ],
+        "supported_by_literature": ["Allen2021", "Christian2020"],
+        "related_functions": [
+          "democratic-alignment.democratic-governance",
+          "democratic-alignment.democratic-oversight"
+        ]
+      },
+      {
+        "id": "democratic-alignment.transparency-mechanisms",
+        "name": "Transparency Mechanisms",
+        "description": "Function that implements mechanisms for transparent governance and alignment verification",
+        "implemented_by_subcomponents": [
+          "participatory-alignment-verification",
+          "democratic-governance"
+        ],
+        "implements_subcomponent_functions": [
+          "participatory-alignment-verification.public-auditing.auditing-specifications",
+          "democratic-governance.governance-transparency.transparency-maintenance",
+          "participatory-alignment-verification.verification-methods.public-verification",
+          "participatory-alignment-verification.participatory-auditing.transparency-enhancement"
+        ],
+        "supported_by_literature": ["Vaina2020", "Bai2022"],
+        "related_functions": [
+          "democratic-alignment.transparency-implementation",
+          "democratic-alignment.democratic-oversight",
+          "democratic-alignment.accountability-implementation"
+        ]
+      }
+    ]
+  },
+  
+  "integration_approaches": [
+    {
+      "id": "democratic-alignment.participatory-definition-integration",
+      "name": "Participatory Definition Integration",
+      "description": "Integrates processes for collective definition of AI values and objectives",
+      "implemented_by_techniques": [
+        "participatory-value-definition.community-value-articulation", 
+        "participatory-value-definition.deliberative-forums", 
+        "deliberative-capacity-building.deliberative-infrastructure"
+      ]
+    },
+    {
+      "id": "democratic-alignment.governance-structure-integration",
+      "name": "Governance Structure Integration",
+      "description": "Integrates democratic governance mechanisms for AI system oversight",
+      "implemented_by_techniques": [
+        "democratic-governance.polycentric-oversight", 
+        "democratic-governance.stakeholder-representation",
+        "deliberative-capacity-building.deliberative-infrastructure"
+      ]
+    },
+    {
+      "id": "democratic-alignment.verification-integration",
+      "name": "Verification Integration",
+      "description": "Integrates community processes for verifying AI alignment",
+      "implemented_by_techniques": [
+        "participatory-alignment-verification.community-auditing", 
+        "participatory-alignment-verification.transparent-validation",
+        "democratic-governance.stakeholder-representation"
+      ]
+    },
+    {
+      "id": "democratic-alignment.capacity-building-integration",
+      "name": "Capacity Building Integration",
+      "description": "Integrates development of community capability for AI governance",
+      "implemented_by_techniques": [
+        "deliberative-capacity-building.ai-literacy-development", 
+        "deliberative-capacity-building.deliberative-infrastructure",
+        "participatory-value-definition.deliberative-forums"
+      ]
+    }
+  ],
+  
+  "integration_considerations": [
+    {
+      "id": "democratic-alignment.participatory-representation",
+      "name": "Participatory Representation",
+      "description": "Ensuring diverse and inclusive stakeholder representation in democratic processes",
+      "implemented_by_considerations": [
+        "participatory-value-definition.stakeholder-inclusion", 
+        "democratic-governance.inclusivity-assurance",
+        "participatory-value-definition.representation-quality",
+        "democratic-governance.power-distribution"
+      ]
+    },
+    {
+      "id": "democratic-alignment.deliberative-quality",
+      "name": "Deliberative Quality",
+      "description": "Ensuring high-quality deliberation about complex AI alignment issues",
+      "implemented_by_considerations": [
+        "deliberative-capacity-building.knowledge-building", 
+        "deliberative-capacity-building.process-quality",
+        "participatory-value-definition.deliberation-structure",
+        "participatory-value-definition.information-provision"
+      ]
+    },
+    {
+      "id": "democratic-alignment.democratic-verification",
+      "name": "Democratic Verification",
+      "description": "Enabling meaningful verification of AI alignment by diverse stakeholders",
+      "implemented_by_considerations": [
+        "participatory-alignment-verification.verification-accessibility", 
+        "participatory-alignment-verification.feedback-integration",
+        "deliberative-capacity-building.technical-understanding",
+        "deliberative-capacity-building.verification-capacity"
+      ]
+    },
+    {
+      "id": "democratic-alignment.governance-effectiveness",
+      "name": "Governance Effectiveness",
+      "description": "Ensuring democratic governance structures are effective at guiding AI systems",
+      "implemented_by_considerations": [
+        "democratic-governance.governance-efficacy", 
+        "democratic-governance.responsiveness",
+        "participatory-alignment-verification.monitoring-effectiveness",
+        "participatory-alignment-verification.corrective-action"
+      ]
+    }
+  ],
+  
+  "relationships": {
+    "components": [
+      {
+        "id": "technical-safeguards",
+        "relationship_type": "bidirectional",
+        "description": "Democratic Alignment provides governance over how Technical Safeguards are deployed, while Technical Safeguards implement constraints defined by Democratic Alignment processes",
+        "integration_points": [
+          {
+            "this_component_function": "democratic-alignment.democratic-governance",
+            "other_component_function": "technical-safeguards.boundary-enforcement",
+            "description": "Democratic governance defines boundaries that technical safeguards enforce"
+          },
+          {
+            "this_component_function": "democratic-alignment.oversight-implementation",
+            "other_component_function": "technical-safeguards.property-validation",
+            "description": "Democratic oversight requires formal verification of important properties"
+          }
+        ]
+      },
+      {
+        "id": "value-learning",
+        "relationship_type": "bidirectional",
+        "description": "Democratic Alignment provides governance frameworks that guide value learning, while Value Learning provides participatory methods that Democratic Alignment leverages",
+        "integration_points": [
+          {
+            "this_component_function": "democratic-alignment.value-elicitation",
+            "other_component_function": "value-learning.preference-extraction",
+            "description": "Democratic value elicitation informs preference extraction processes"
+          },
+          {
+            "this_component_function": "democratic-alignment.participation-facilitation",
+            "other_component_function": "value-learning.stakeholder-engagement",
+            "description": "Democratic participation frameworks guide stakeholder engagement in value learning"
+          }
+        ]
+      },
+      {
+        "id": "interpretability-tools",
+        "relationship_type": "bidirectional",
+        "description": "Democratic Alignment provides stakeholder requirements that shape interpretability approaches, while Interpretability Tools provide transparent insights for democratic governance",
+        "integration_points": [
+          {
+            "this_component_function": "democratic-alignment.oversight-implementation",
+            "other_component_function": "interpretability-tools.decision-explanation",
+            "description": "Democratic oversight requires explainable decisions for effective governance"
+          },
+          {
+            "this_component_function": "democratic-alignment.value-elicitation",
+            "other_component_function": "interpretability-tools.proxy-validation",
+            "description": "Democratic value elicitation informs what aspects of AI systems should be interpretable"
+          },
+          {
+            "this_component_function": "democratic-alignment.participation-facilitation",
+            "other_component_function": "interpretability-tools.explanation-generation",
+            "description": "Democratic participation requires mechanisms to generate explanations accessible to diverse stakeholders"
+          }
+        ]
+      },
+      {
+        "id": "oversight-mechanisms",
+        "relationship_type": "bidirectional",
+        "description": "Democratic Alignment provides governance frameworks that guide Oversight Mechanisms, while Oversight Mechanisms implement monitoring and intervention systems directed by Democratic Alignment",
+        "integration_points": [
+          {
+            "this_component_function": "democratic-alignment.democratic-governance",
+            "other_component_function": "oversight-mechanisms.behavior-monitoring",
+            "description": "Democratic governance establishes the structure for oversight mechanisms"
+          },
+          {
+            "this_component_function": "democratic-alignment.oversight-implementation",
+            "other_component_function": "oversight-mechanisms.alignment-evaluation",
+            "description": "Democratic oversight implementation guides what behaviors to monitor"
+          }
+        ]
+      }
+    ]
+  },
+  
+  "subcomponents": [
+    {
+      "id": "participatory-value-definition",
+      "name": "Participatory Value Definition",
+      "description": "Methods and frameworks for enabling diverse stakeholders to collectively define and articulate values and objectives for AI systems",
+      "type": "subcomponent",
+      "parent": "democratic-alignment",
+      "implements_capabilities": [
+        "democratic-alignment.participatory-governance-capability",
+        "democratic-alignment.deliberative-capacity-capability"
+      ],
+      "implements_functions": [
+        "democratic-alignment.value-elicitation", 
+        "democratic-alignment.participation-facilitation"
+      ]
+    },
+    {
+      "id": "democratic-governance",
+      "name": "Democratic Governance",
+      "description": "Systems and structures enabling democratic control, oversight, and decision-making over AI systems throughout their lifecycle",
+      "type": "subcomponent",
+      "parent": "democratic-alignment",
+      "implements_capabilities": [
+        "democratic-alignment.democratic-implementation-capability",
+        "democratic-alignment.participatory-governance-capability",
+        "democratic-alignment.participatory-oversight-capability"
+      ],
+      "implements_functions": [
+        "democratic-alignment.democratic-governance", 
+        "democratic-alignment.oversight-implementation",
+        "democratic-alignment.governance-frameworks",
+        "democratic-alignment.transparency-mechanisms"
+      ]
+    },
+    {
+      "id": "participatory-alignment-verification",
+      "name": "Participatory Alignment Verification",
+      "description": "Systems and processes enabling communities to collectively verify, evaluate, and validate whether AI systems are aligned with democratically defined values and objectives",
+      "type": "subcomponent",
+      "parent": "democratic-alignment",
+      "implements_capabilities": [
+        "democratic-alignment.participatory-oversight-capability",
+        "democratic-alignment.democratic-implementation-capability"
+      ],
+      "implements_functions": [
+        "democratic-alignment.oversight-implementation", 
+        "democratic-alignment.value-elicitation",
+        "democratic-alignment.participatory-verification",
+        "democratic-alignment.transparency-mechanisms"
+      ]
+    },
+    {
+      "id": "deliberative-capacity-building",
+      "name": "Deliberative Capacity Building",
+      "description": "Systems and processes that develop the knowledge, skills, and infrastructure necessary for diverse communities to effectively participate in democratic alignment of AI systems",
+      "type": "subcomponent",
+      "parent": "democratic-alignment",
+      "implements_capabilities": [
+        "democratic-alignment.deliberative-capacity-capability",
+        "democratic-alignment.participatory-governance-capability"
+      ],
+      "implements_functions": [
+        "democratic-alignment.participation-facilitation", 
+        "democratic-alignment.democratic-governance",
+        "democratic-alignment.democratic-expertise"
+      ]
+    }
+  ],
+  
+  "cross_connections": [
+    {
+      "from": "democratic-alignment.participatory-governance-capability",
+      "to": "value-learning.participatory-development-capability",
+      "type": "mutual_enhancement",
+      "description": "Democratic governance mechanisms enhance value learning processes by ensuring they reflect diverse stakeholder needs"
+    },
+    {
+      "from": "democratic-alignment.deliberative-capacity-capability",
+      "to": "interpretability-tools.explainability-capability",
+      "type": "enabling",
+      "description": "Interpretability tools enable more effective deliberation by making AI systems more understandable to diverse stakeholders"
+    },
+    {
+      "from": "democratic-alignment.participatory-oversight-capability",
+      "to": "technical-safeguards.formal-verification-capability",
+      "type": "complementary",
+      "description": "Formal verification provides technical assurances that complement democratic oversight of AI systems"
+    }
+  ],
+  
+  "metadata": {
+    "key_considerations": {
+      "ethical": "Ensuring equitable representation of all affected stakeholders",
+      "technical": "Creating interfaces that make AI decision-making comprehensible to diverse participants",
+      "social": "Balancing efficiency with inclusivity in democratic processes",
+      "practical": "Integrating democratic oversight without introducing prohibitive time delays"
+    },
+    "integration_points": [
+      {
+        "component": "value-learning",
+        "interface": "Democratic input to value definition",
+        "requirements": "Must preserve stakeholder input fidelity"
+      },
+      {
+        "component": "interpretability-tools",
+        "interface": "Making AI systems transparent for democratic oversight",
+        "requirements": "Must present information at appropriate levels of abstraction"
+      },
+      {
+        "component": "technical-safeguards",
+        "interface": "Democratic approval of safety parameters",
+        "requirements": "Must support real-time monitoring and intervention"
+      }
+    ]
+  },
+  
+  "literature": {
+    "_documentation": "This section provides references to academic literature and research papers that inform and support the concepts, capabilities, and functions described in this component.",
+    "references": ["Fishkin2018", "Christian2020", "Allen2021", "Kortz2021", "Vaina2020", "Irving2018", "Bai2022", "Price2022", "Askell2019"]
+  },
+  
+  "literature_connections": [
+    {
+      "reference_id": "Fishkin2018",
+      "capability": "democratic-alignment.deliberative-capacity-capability",
+      "function": "democratic-alignment.participation-facilitation",
+      "relevant_aspects": "Fishkin's research on deliberative democracy provides models for structured stakeholder participation in democratic processes"
+    },
+    {
+      "reference_id": "Christian2020",
+      "capability": "democratic-alignment.participatory-governance-capability",
+      "function": "democratic-alignment.democratic-governance",
+      "relevant_aspects": "Christian et al.'s work on collective decision-making offers frameworks for democratic governance of AI systems"
+    },
+    {
+      "reference_id": "Allen2021",
+      "capability": "democratic-alignment.democratic-implementation-capability",
+      "function": "democratic-alignment.oversight-implementation",
+      "relevant_aspects": "Allen's research on institutional design provides models for implementing democratic oversight of AI systems"
+    },
+    {
+      "reference_id": "Kortz2021",
+      "capability": "democratic-alignment.deliberative-capacity-capability",
+      "function": "democratic-alignment.value-elicitation",
+      "relevant_aspects": "Kortz et al.'s work on public understanding of AI offers insights for building AI literacy to support democratic engagement"
+    },
+    {
+      "reference_id": "Irving2018",
+      "capability": "democratic-alignment.participatory-oversight-capability",
+      "function": "democratic-alignment.oversight-implementation",
+      "relevant_aspects": "Irving et al.'s work on AI safety via debate offers methods for participatory verification of AI alignment"
+    },
+    {
+      "reference_id": "Bai2022",
+      "capability": "democratic-alignment.participatory-oversight-capability",
+      "function": "democratic-alignment.participatory-verification",
+      "relevant_aspects": "Bai et al.'s work on constitutional AI provides models for participatory verification of AI alignment"
+    },
+    {
+      "reference_id": "Price2022",
+      "capability": "democratic-alignment.deliberative-capacity-capability",
+      "function": "democratic-alignment.democratic-expertise",
+      "relevant_aspects": "Price et al.'s research on AI literacy and education informs approaches to building deliberative capacity"
+    },
+    {
+      "reference_id": "Askell2019",
+      "capability": "democratic-alignment.democratic-implementation-capability",
+      "function": "democratic-alignment.governance-frameworks",
+      "relevant_aspects": "Askell et al.'s work on cooperation in AI governance provides frameworks for implementing democratic alignment"
+    }
+  ]
+} 

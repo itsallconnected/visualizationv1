@@ -1,0 +1,1931 @@
+{
+  "context": "This subcomponent implements fail-safe mechanisms for AI alignment, providing automatic safety protocols that activate during operational failures, anomalous conditions, or alignment deviations to ensure system safety.",
+  "id": "fail-safe-mechanisms",
+  "name": "Fail-Safe Mechanisms",
+  "description": "Intelligent systems that ensure safety during operational failures, anomalous conditions, or alignment deviations by implementing automatic safety protocols. These mechanisms provide last-resort protection by detecting dangerous states or behaviors and triggering appropriate safety responses, from graduated operational restrictions to complete system shutdown.",
+  "type": "subcomponent",
+  "parent": "technical-safeguards",
+  
+  "capabilities": [
+    {
+      "id": "fail-safe-mechanisms.graceful-degradation",
+      "name": "Graceful Degradation",
+      "description": "Maintaining critical functionality while safely reducing capabilities during failures",
+      "implements_component_capabilities": ["technical-safeguards.fail-safe-capability", "technical-safeguards.safety-architecture-capability"],
+      "type": "capability",
+      "parent": "fail-safe-mechanisms",
+      "functions": [
+        {
+          "id": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation",
+          "name": "Safe mode activation and operation",
+          "description": "Transition the system to reduced-capability states during uncertain or potentially dangerous conditions",
+          "implements_component_functions": ["technical-safeguards.property-validation", "technical-safeguards.emergency-response"],
+          "type": "function",
+          "parent": "fail-safe-mechanisms.graceful-degradation",
+          "specifications": [
+            {
+              "id": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs",
+              "name": "Safe Mode Activation Specifications",
+              "description": "Technical specifications for safe mode activation and operation during potentially dangerous conditions",
+              "type": "specifications",
+              "parent": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation",
+              "requirements": [
+                "Triggering conditions for graduated capability reduction",
+                "Technical architecture for isolated safe mode operations",
+                "Recovery protocols for transitioning back to normal operation",
+                "Verification mechanisms for safe mode effectiveness"
+              ],
+              "integration": {
+                "id": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration",
+                "name": "Safe Mode Integration",
+                "description": "Integration of safe mode activation capabilities across system components",
+                "type": "integration",
+                "parent": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs",
+                "techniques": [
+                  {
+                    "id": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.capability-isolation",
+                    "name": "Capability Isolation Technique",
+                    "description": "Techniques for isolating and restricting system capabilities during safe mode",
+                    "type": "technique",
+                    "parent": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration",
+                    "applications": [
+                      {
+                        "id": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.capability-isolation.capability-sandbox",
+                        "name": "Capability Sandbox",
+                        "description": "Isolates AI system capabilities during safe mode and provides controlled access",
+                        "type": "application",
+                        "parent": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.capability-isolation",
+                        "inputs": [
+                          {
+                            "name": "system_state",
+                            "data_type": "system_state_object",
+                            "description": "Current operational state of the AI system",
+                            "constraints": "Must include complete operational status of all critical components"
+                          },
+                          {
+                            "name": "risk_level",
+                            "data_type": "risk_enum",
+                            "description": "Assessed risk level triggering safe mode",
+                            "constraints": "Must be a validated risk assessment with confidence measures"
+                          },
+                          {
+                            "name": "capability_registry",
+                            "data_type": "capability_registry_object",
+                            "description": "Registry of all system capabilities and their criticality classifications",
+                            "constraints": "Must contain comprehensive mapping of capabilities with dependency chains"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "sandboxed_capabilities",
+                            "data_type": "capability_list",
+                            "description": "List of capabilities available in safe mode with access controls",
+                            "interpretation": "Provides a secured subset of capabilities that can safely operate during risk conditions"
+                          },
+                          {
+                            "name": "isolated_environment_status",
+                            "data_type": "isolation_status",
+                            "description": "Status report of the isolation environment integrity",
+                            "interpretation": "Indicates the security level and effectiveness of the capability isolation"
+                          },
+                          {
+                            "name": "capability_constraints",
+                            "data_type": "constraint_set",
+                            "description": "Applied constraints and limitations on system capabilities",
+                            "interpretation": "Defines operational boundaries for each capability in safe mode"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.safe-mode-operation",
+                        "name": "Safe Mode Operation Technique",
+                        "description": "Techniques for operating AI systems in reduced capability states during uncertain or potentially dangerous conditions",
+                        "type": "technique",
+                        "parent": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration",
+                        "applications": [
+                          {
+                            "id": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.safe-mode-operation.reduced-capability-modes",
+                            "name": "Reduced Capability Modes Application",
+                            "description": "Application for defining and transitioning to various reduced capability operating states",
+                            "type": "application",
+                            "parent": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.safe-mode-operation",
+                            "inputs": [
+                              {
+                                "name": "system_capabilities",
+                                "data_type": "capability_set",
+                                "description": "Complete set of system capabilities with criticality ratings",
+                                "constraints": "Must include comprehensive listing with dependencies and safety implications"
+                              },
+                              {
+                                "name": "risk_assessment",
+                                "data_type": "risk_assessment_object",
+                                "description": "Assessment of current risk levels requiring capability reduction",
+                                "constraints": "Must include quantitative risk metrics with confidence intervals"
+                              },
+                              {
+                                "name": "operational_requirements",
+                                "data_type": "requirements_object",
+                                "description": "Minimum operational requirements that must be maintained",
+                                "constraints": "Must specify essential functionality that cannot be compromised"
+                              }
+                            ],
+                            "outputs": [
+                              {
+                                "name": "capability_mode",
+                                "data_type": "mode_configuration",
+                                "description": "Selected reduced capability mode configuration",
+                                "interpretation": "Defines the specific operational mode with appropriate capability restrictions"
+                              },
+                              {
+                                "name": "transition_plan",
+                                "data_type": "transition_sequence",
+                                "description": "Plan for safely transitioning to reduced capability mode",
+                                "interpretation": "Provides ordered sequence of actions to safely activate reduced capability mode"
+                              },
+                              {
+                                "name": "recovery_criteria",
+                                "data_type": "criteria_set",
+                                "description": "Criteria for when normal capabilities can be restored",
+                                "interpretation": "Specifies conditions that must be met before returning to normal operation"
+                              }
+                            ]
+                          },
+                          {
+                            "id": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.safe-mode-operation.conservative-operation",
+                            "name": "Conservative Operation Application",
+                            "description": "Application for operating with conservative decision thresholds during uncertain conditions",
+                            "type": "application",
+                            "parent": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.safe-mode-operation",
+                            "inputs": [
+                              {
+                                "name": "normal_thresholds",
+                                "data_type": "threshold_set",
+                                "description": "Normal decision thresholds used during standard operation",
+                                "constraints": "Must include complete threshold definitions for all decision types"
+                              },
+                              {
+                                "name": "uncertainty_metrics",
+                                "data_type": "uncertainty_data",
+                                "description": "Metrics indicating level of uncertainty in current conditions",
+                                "constraints": "Must quantify uncertainty across all relevant operational dimensions"
+                              },
+                              {
+                                "name": "conservatism_parameters",
+                                "data_type": "parameter_set",
+                                "description": "Parameters controlling degree of conservative adjustment",
+                                "constraints": "Must define adjustment factors for different uncertainty levels"
+                              }
+                            ],
+                            "outputs": [
+                              {
+                                "name": "conservative_thresholds",
+                                "data_type": "adjusted_threshold_set",
+                                "description": "Adjusted decision thresholds with appropriate conservatism",
+                                "interpretation": "Provides more restrictive decision boundaries that incorporate safety margins"
+                              },
+                              {
+                                "name": "decision_confidence",
+                                "data_type": "confidence_metrics",
+                                "description": "Confidence metrics for decisions made under conservative operation",
+                                "interpretation": "Quantifies reliability of decisions made with conservative thresholds"
+                              },
+                              {
+                                "name": "operational_constraints",
+                                "data_type": "constraint_array",
+                                "description": "Additional constraints applied during conservative operation",
+                                "interpretation": "Specifies additional limits on system behavior during uncertain conditions"
+                              }
+                            ]
+                          },
+                          {
+                            "id": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.safe-mode-operation.human-approval-requirements",
+                            "name": "Human Approval Requirements Application",
+                            "description": "Application for requiring human approval for critical operations during uncertain conditions",
+                            "type": "application",
+                            "parent": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.safe-mode-operation",
+                            "inputs": [
+                              {
+                                "name": "operation_criticality",
+                                "data_type": "criticality_assessment",
+                                "description": "Criticality assessment of operations requiring approval",
+                                "constraints": "Must include risk metrics and impact analysis for each operation"
+                              },
+                              {
+                                "name": "human_operator_data",
+                                "data_type": "operator_registry",
+                                "description": "Information about available human operators for approval",
+                                "constraints": "Must include authority levels, expertise areas, and availability status"
+                              },
+                              {
+                                "name": "time_constraints",
+                                "data_type": "time_requirements",
+                                "description": "Time constraints for obtaining human approval",
+                                "constraints": "Must specify maximum response times and escalation timelines"
+                              }
+                            ],
+                            "outputs": [
+                              {
+                                "name": "approval_requests",
+                                "data_type": "request_array",
+                                "description": "Formatted requests for human approval with relevant information",
+                                "interpretation": "Provides structured approval requests with sufficient context for informed decisions"
+                              },
+                              {
+                                "name": "approval_workflow",
+                                "data_type": "workflow_definition",
+                                "description": "Workflow for obtaining and processing human approval",
+                                "interpretation": "Defines the process flow for requesting, tracking, and applying human approval decisions"
+                              },
+                              {
+                                "name": "escalation_path",
+                                "data_type": "escalation_procedure",
+                                "description": "Escalation path if primary approvers are unavailable",
+                                "interpretation": "Specifies alternative approval sources when primary operators cannot be reached"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fail-safe-mechanisms.anomaly-detection",
+      "name": "Anomaly Detection",
+      "description": "Detecting anomalous system states, behaviors, and potential alignment deviations",
+      "implements_component_capabilities": ["technical-safeguards.fail-safe-capability", "technical-safeguards.formal-verification-capability"],
+      "type": "capability",
+      "parent": "fail-safe-mechanisms",
+      "functions": [
+        {
+          "id": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring",
+          "name": "Behavior boundary monitoring",
+          "description": "Monitor for violations of predefined safety boundaries in system behavior",
+          "implements_component_functions": ["technical-safeguards.property-validation", "technical-safeguards.boundary-enforcement"],
+          "type": "function",
+          "parent": "fail-safe-mechanisms.anomaly-detection",
+          "specifications": [
+            {
+              "id": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs",
+              "name": "Behavior Boundary Monitoring Specifications",
+              "description": "Technical specifications for monitoring system behavior against predefined safety boundaries",
+              "type": "specifications",
+              "parent": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring",
+              "requirements": [
+                "Formal definition of safety boundaries in multidimensional behavior space",
+                "Real-time monitoring architectures for boundary compliance",
+                "Probabilistic anomaly detection with confidence metrics",
+                "Graduated alerting mechanisms based on boundary proximity"
+              ],
+              "integration": {
+                "id": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration",
+                "name": "Boundary Monitoring Integration",
+                "description": "Integration of boundary monitoring systems with system components",
+                "type": "integration",
+                "parent": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs",
+                "techniques": [
+                  {
+                    "id": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.statistical-monitoring",
+                    "name": "Statistical Boundary Monitoring",
+                    "description": "Techniques for statistical analysis of system behavior against defined boundaries",
+                    "type": "technique",
+                    "parent": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration",
+                    "applications": [
+                      {
+                        "id": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.statistical-monitoring.real-time-boundary-analysis",
+                        "name": "Real-time Boundary Analysis",
+                        "description": "Implementation of real-time statistical analysis of system behavior against safety boundaries",
+                        "type": "application",
+                        "parent": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.statistical-monitoring",
+                        "inputs": [
+                          {
+                            "name": "behavioral_telemetry",
+                            "data_type": "telemetry_stream",
+                            "description": "Real-time behavioral telemetry data from the system",
+                            "constraints": "Must provide comprehensive behavioral data with sufficient temporal resolution"
+                          },
+                          {
+                            "name": "boundary_definitions",
+                            "data_type": "boundary_set",
+                            "description": "Formal definitions of safety boundaries and thresholds",
+                            "constraints": "Must include precise thresholds with mathematical formulation for verification"
+                          },
+                          {
+                            "name": "historical_baseline",
+                            "data_type": "baseline_data",
+                            "description": "Historical baseline data for normal operations comparison",
+                            "constraints": "Must include sufficient historical data to establish statistically valid baselines"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "compliance_metrics",
+                            "data_type": "compliance_data",
+                            "description": "Metrics indicating compliance with defined boundaries",
+                            "interpretation": "Provides quantitative assessment of system behavior relative to safety boundaries"
+                          },
+                          {
+                            "name": "proximity_alerts",
+                            "data_type": "alert_array",
+                            "description": "Alerts when system approaches boundary thresholds",
+                            "interpretation": "Signals potential safety concerns as system behavior approaches defined boundaries"
+                          },
+                          {
+                            "name": "violation_reports",
+                            "data_type": "violation_data",
+                            "description": "Detailed reports of boundary violations with confidence intervals",
+                            "interpretation": "Documents instances where system behavior exceeded defined safety boundaries"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems",
+                        "name": "Tripwire Systems Technique",
+                        "description": "Techniques for implementing monitoring tripwires that detect boundary violations and trigger safety responses",
+                        "type": "technique",
+                        "parent": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration",
+                        "applications": [
+                          {
+                            "id": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems.anomaly-detection",
+                            "name": "Anomaly Detection Application",
+                            "description": "Application for detecting anomalous behaviors that deviate from expected patterns",
+                            "type": "application",
+                            "parent": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems",
+                            "inputs": [
+                              {
+                                "name": "behavioral_data",
+                                "data_type": "behavior_stream",
+                                "description": "Stream of behavioral data from the monitored system",
+                                "constraints": "Must include sufficient features to capture system behavior patterns"
+                              },
+                              {
+                                "name": "normal_behavior_models",
+                                "data_type": "model_collection",
+                                "description": "Models defining normal behavior patterns",
+                                "constraints": "Must cover all critical operational modes with validated models"
+                              },
+                              {
+                                "name": "anomaly_thresholds",
+                                "data_type": "threshold_config",
+                                "description": "Thresholds defining when deviations are considered anomalous",
+                                "constraints": "Must include appropriate thresholds calibrated for false positive/negative balance"
+                              }
+                            ],
+                            "outputs": [
+                              {
+                                "name": "anomaly_detections",
+                                "data_type": "anomaly_array",
+                                "description": "Detected anomalies with confidence scores",
+                                "interpretation": "Identifies potential anomalous behaviors with confidence assessment"
+                              },
+                              {
+                                "name": "anomaly_characteristics",
+                                "data_type": "characteristic_object",
+                                "description": "Characteristics and classification of detected anomalies",
+                                "interpretation": "Provides detailed analysis of anomaly types and their distinguishing features"
+                              },
+                              {
+                                "name": "anomaly_alerts",
+                                "data_type": "alert_array",
+                                "description": "Alerts generated for significant anomalies",
+                                "interpretation": "Actionable notifications for anomalies requiring intervention"
+                              }
+                            ]
+                          },
+                          {
+                            "id": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems.behavioral-boundary",
+                            "name": "Behavioral Boundary Application",
+                            "description": "Application for enforcing explicit boundaries on acceptable system behavior",
+                            "type": "application",
+                            "parent": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems",
+                            "inputs": [
+                              {
+                                "name": "boundary_definitions",
+                                "data_type": "boundary_object",
+                                "description": "Formal definitions of behavioral boundaries",
+                                "constraints": "Must include precise mathematical definitions of boundary regions"
+                              },
+                              {
+                                "name": "system_behavior",
+                                "data_type": "behavior_object",
+                                "description": "Observed behavior of the monitored system",
+                                "constraints": "Must include comprehensive behavior data in standardized format"
+                              },
+                              {
+                                "name": "boundary_enforcement_policy",
+                                "data_type": "policy_object",
+                                "description": "Policies for enforcing boundary compliance",
+                                "constraints": "Must specify precise actions for different boundary violation types"
+                              }
+                            ],
+                            "outputs": [
+                              {
+                                "name": "boundary_compliance",
+                                "data_type": "compliance_object",
+                                "description": "Assessment of compliance with defined boundaries",
+                                "interpretation": "Provides comprehensive evaluation of system behavior against safety boundaries"
+                              },
+                              {
+                                "name": "violation_reports",
+                                "data_type": "violation_array",
+                                "description": "Reports of boundary violations with supporting evidence",
+                                "interpretation": "Documents specific instances of boundary violations with evidence and context"
+                              },
+                              {
+                                "name": "enforcement_actions",
+                                "data_type": "action_array",
+                                "description": "Actions taken to enforce boundary compliance",
+                                "interpretation": "Records interventions performed to maintain system within safe boundaries"
+                              }
+                            ]
+                          },
+                          {
+                            "id": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems.deception-detection",
+                            "name": "Deception Detection Application",
+                            "description": "Application for detecting attempts to deceive monitoring systems or hide violations",
+                            "type": "application",
+                            "parent": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems",
+                            "inputs": [
+                              {
+                                "name": "monitoring_data",
+                                "data_type": "monitoring_stream",
+                                "description": "Data from monitoring systems",
+                                "constraints": "Must include comprehensive coverage of monitored systems with integrity markers"
+                              },
+                              {
+                                "name": "deception_patterns",
+                                "data_type": "pattern_library",
+                                "description": "Known patterns of deceptive behavior",
+                                "constraints": "Must include validated patterns of potential deception attempts"
+                              },
+                              {
+                                "name": "consistency_checks",
+                                "data_type": "check_array",
+                                "description": "Checks for verifying data consistency across sources",
+                                "constraints": "Must define cross-validation methods for verifying data integrity"
+                              }
+                            ],
+                            "outputs": [
+                              {
+                                "name": "deception_alerts",
+                                "data_type": "alert_array",
+                                "description": "Alerts for detected deception attempts",
+                                "interpretation": "Signals potential tampering or manipulation of monitoring systems"
+                              },
+                              {
+                                "name": "integrity_assessment",
+                                "data_type": "integrity_report",
+                                "description": "Assessment of monitoring system data integrity",
+                                "interpretation": "Provides evaluation of the trustworthiness of monitoring data"
+                              },
+                              {
+                                "name": "verification_requests",
+                                "data_type": "request_array",
+                                "description": "Requests for additional verification of suspicious patterns",
+                                "interpretation": "Identifies areas requiring further verification through alternative channels"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response",
+          "name": "Anomaly detection and response",
+          "description": "Identify unusual or unexpected system behaviors and activate appropriate protective measures",
+          "implements_component_functions": ["technical-safeguards.boundary-enforcement", "technical-safeguards.emergency-response"],
+          "type": "function",
+          "parent": "fail-safe-mechanisms.anomaly-detection",
+          "specifications": [
+            {
+              "id": "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response.response-specs",
+              "name": "Anomaly Response Specifications",
+              "description": "Technical specifications for detecting anomalies and implementing appropriate protective responses",
+              "type": "specifications",
+              "parent": "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response",
+              "requirements": [
+                "Classification framework for anomaly severity and type",
+                "Decision trees for graduated response selection",
+                "Isolation protocols for containing anomalous behaviors",
+                "Human notification and escalation pathways"
+              ],
+              "integration": {
+                "id": "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response.response-specs.anomaly-response-integration",
+                "name": "Anomaly Response Integration",
+                "description": "Integration of anomaly detection and response mechanisms",
+                "type": "integration",
+                "parent": "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response.response-specs",
+                "techniques": [
+                  {
+                    "id": "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response.response-specs.anomaly-response-integration.graduated-response-selection",
+                    "name": "Graduated Response Selection",
+                    "description": "Techniques for selecting and implementing graduated responses to detected anomalies",
+                    "type": "technique",
+                    "parent": "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response.response-specs.anomaly-response-integration",
+                    "applications": [
+                      {
+                        "id": "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response.response-specs.anomaly-response-integration.graduated-response-selection.response-orchestrator",
+                        "name": "Response Orchestrator",
+                        "description": "Implementation of a response orchestration system that selects and coordinates appropriate responses to anomalies",
+                        "type": "application",
+                        "parent": "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response.response-specs.anomaly-response-integration.graduated-response-selection",
+                        "inputs": [
+                          {
+                            "name": "anomaly_classification",
+                            "data_type": "classification_object",
+                            "description": "Classification data about detected anomalies and their severity",
+                            "constraints": "Must include comprehensive anomaly classification with confidence scores"
+                          },
+                          {
+                            "name": "system_state",
+                            "data_type": "state_object",
+                            "description": "Current state information of the AI system",
+                            "constraints": "Must provide complete snapshot of system operational state"
+                          },
+                          {
+                            "name": "response_inventory",
+                            "data_type": "response_array",
+                            "description": "Inventory of available response actions and interventions",
+                            "constraints": "Must include all possible response options with their requirements"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "prioritized_actions",
+                            "data_type": "action_array",
+                            "description": "Prioritized list of response actions to be executed",
+                            "interpretation": "Provides ordered sequence of responses optimized for the specific anomaly"
+                          },
+                          {
+                            "name": "containment_directives",
+                            "data_type": "directive_object",
+                            "description": "Directives for containing and isolating anomalous behavior",
+                            "interpretation": "Specifies how to isolate and contain potential threats to system integrity"
+                          },
+                          {
+                            "name": "escalation_notifications",
+                            "data_type": "notification_array",
+                            "description": "Notifications for human operators when escalation is required",
+                            "interpretation": "Alerts human operators when anomalies require higher-level intervention"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fail-safe-mechanisms.automated-shutdown",
+      "name": "Automated Shutdown",
+      "description": "Automatically terminating system operations when critical safety violations are detected",
+      "implements_component_capabilities": ["technical-safeguards.fail-safe-capability", "technical-safeguards.safety-architecture-capability"],
+      "type": "capability",
+      "parent": "fail-safe-mechanisms",
+      "functions": [
+        {
+          "id": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution",
+          "name": "Emergency shutdown execution",
+          "description": "Safely terminate AI system operation when critical safety violations are detected",
+          "implements_component_functions": ["technical-safeguards.emergency-response", "technical-safeguards.boundary-enforcement"],
+          "type": "function",
+          "parent": "fail-safe-mechanisms.automated-shutdown",
+          "specifications": [
+            {
+              "id": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs",
+              "name": "Emergency Shutdown Specifications",
+              "description": "Technical specifications for safely and completely terminating AI system operations during critical safety violations",
+              "type": "specifications",
+              "parent": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution",
+              "requirements": [
+                "Guaranteed execution architecture resistant to interference",
+                "Protocols for safe state preservation during shutdown",
+                "Hardware-level kill switch implementations",
+                "Post-shutdown verification and reporting mechanisms"
+              ],
+              "integration": {
+                "id": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration",
+                "name": "Emergency Shutdown Integration",
+                "description": "Integration of emergency shutdown mechanisms across system layers",
+                "type": "integration",
+                "parent": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs",
+                "techniques": [
+                  {
+                    "id": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.multilayer-shutdown",
+                    "name": "Multilayer Shutdown Technique",
+                    "description": "Techniques for coordinated shutdown across multiple system layers",
+                    "type": "technique",
+                    "parent": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration",
+                    "applications": [
+                      {
+                        "id": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.multilayer-shutdown.hardware-software-shutdown",
+                        "name": "Hardware-Software Shutdown Implementation",
+                        "description": "Implementation of coordinated hardware and software shutdown mechanisms",
+                        "type": "application",
+                        "parent": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.multilayer-shutdown",
+                        "inputs": [
+                          {
+                            "name": "violation_signals",
+                            "data_type": "signal_array",
+                            "description": "Signals indicating critical safety violations requiring shutdown",
+                            "constraints": "Must include validated violation signals with confidence metrics"
+                          },
+                          {
+                            "name": "system_state",
+                            "data_type": "state_snapshot",
+                            "description": "Snapshot of system state before shutdown",
+                            "constraints": "Must capture complete system state for preservation during shutdown"
+                          },
+                          {
+                            "name": "authorization_codes",
+                            "data_type": "authorization_object",
+                            "description": "Cryptographic codes authorizing the shutdown procedure",
+                            "constraints": "Must include properly authenticated authorization credentials"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "shutdown_commands",
+                            "data_type": "command_array",
+                            "description": "Sequenced commands for staged shutdown of system components",
+                            "interpretation": "Provides ordered sequence of commands to safely shut down the system"
+                          },
+                          {
+                            "name": "state_archives",
+                            "data_type": "archive_object",
+                            "description": "Archives preserving critical system state during shutdown",
+                            "interpretation": "Preserves essential state information for post-shutdown analysis"
+                          },
+                          {
+                            "name": "verification_signals",
+                            "data_type": "verification_object",
+                            "description": "Signals verifying successful completion of shutdown procedures",
+                            "interpretation": "Confirms that shutdown was completed successfully across all components"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.emergency-shutdown",
+                        "name": "Emergency Shutdown Technique",
+                        "description": "Techniques for safely and reliably shutting down AI systems in emergency situations",
+                        "type": "technique",
+                        "parent": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration",
+                        "applications": [
+                          {
+                            "id": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.emergency-shutdown.graceful-termination",
+                            "name": "Graceful Termination Application",
+                            "description": "Application for gracefully terminating system operation while preserving critical state",
+                            "type": "application",
+                            "parent": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.emergency-shutdown",
+                            "inputs": [
+                              {
+                                "name": "system_state",
+                                "data_type": "state_object",
+                                "description": "Current operational state of the AI system",
+                                "constraints": "Must include complete operational state information for safe termination"
+                              },
+                              {
+                                "name": "critical_data",
+                                "data_type": "data_array",
+                                "description": "Data that must be preserved during shutdown",
+                                "constraints": "Must identify all critical data requiring preservation"
+                              },
+                              {
+                                "name": "shutdown_parameters",
+                                "data_type": "parameter_object",
+                                "description": "Parameters guiding the graceful termination process",
+                                "constraints": "Must specify termination sequence and preservation priorities"
+                              }
+                            ],
+                            "outputs": [
+                              {
+                                "name": "termination_sequence",
+                                "data_type": "sequence_array",
+                                "description": "Sequence of operations for graceful termination",
+                                "interpretation": "Provides ordered steps for safely terminating system operation"
+                              },
+                              {
+                                "name": "preserved_state",
+                                "data_type": "state_object",
+                                "description": "Critical state information preserved during shutdown",
+                                "interpretation": "Maintains essential system state for recovery or analysis"
+                              },
+                              {
+                                "name": "shutdown_report",
+                                "data_type": "report_object",
+                                "description": "Report on the shutdown process and its success",
+                                "interpretation": "Documents the shutdown process with verification of completion"
+                              }
+                            ]
+                          },
+                          {
+                            "id": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.emergency-shutdown.emergency-stop",
+                            "name": "Emergency Stop Application",
+                            "description": "Application for rapidly stopping system operation in critical safety situations",
+                            "type": "application",
+                            "parent": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.emergency-shutdown",
+                            "inputs": [
+                              {
+                                "name": "emergency_signal",
+                                "data_type": "signal_object",
+                                "description": "Signal indicating an emergency requiring immediate shutdown",
+                                "constraints": "Must include clear signal for immediate shutdown"
+                              },
+                              {
+                                "name": "system_components",
+                                "data_type": "array",
+                                "description": "Components that need to be stopped in the emergency",
+                                "constraints": "Must specify all critical components for immediate shutdown"
+                              }
+                            ],
+                            "outputs": [
+                              {
+                                "name": "stop_commands",
+                                "data_type": "array",
+                                "description": "Commands to immediately stop system operations",
+                                "interpretation": "Provides clear and immediate commands for shutdown"
+                              },
+                              {
+                                "name": "emergency_notifications",
+                                "data_type": "array",
+                                "description": "Notifications to human operators about the emergency stop",
+                                "interpretation": "Provides clear communication about the emergency shutdown"
+                              },
+                              {
+                                "name": "verification_signals",
+                                "data_type": "object",
+                                "description": "Signals verifying successful shutdown of components",
+                                "interpretation": "Confirms that shutdown was completed successfully across all components"
+                              }
+                            ]
+                          },
+                          {
+                            "id": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.emergency-shutdown.distributed-kill-switches",
+                            "name": "Distributed Kill Switches Application",
+                            "description": "Application implementing multiple redundant termination mechanisms across system components",
+                            "type": "application",
+                            "parent": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.emergency-shutdown",
+                            "inputs": [
+                              {
+                                "name": "system_topology",
+                                "data_type": "object",
+                                "description": "Topology of system components requiring kill switches",
+                                "constraints": "Must include comprehensive mapping of all critical system components and their relationships"
+                              },
+                              {
+                                "name": "kill_signal",
+                                "data_type": "object",
+                                "description": "Signal to activate distributed kill switches",
+                                "constraints": "Must contain authenticated signal with appropriate authorization level"
+                              },
+                              {
+                                "name": "authorization_codes",
+                                "data_type": "object",
+                                "description": "Authorization codes for activating kill switches",
+                                "constraints": "Must include cryptographically secure authorization credentials with appropriate permissions"
+                              }
+                            ],
+                            "outputs": [
+                              {
+                                "name": "distributed_commands",
+                                "data_type": "array",
+                                "description": "Commands sent to distributed kill switch mechanisms",
+                                "interpretation": "Provides specific commands to each kill switch component for coordinated shutdown"
+                              },
+                              {
+                                "name": "switch_status",
+                                "data_type": "array",
+                                "description": "Status reports from distributed kill switches",
+                                "interpretation": "Indicates the current status of each kill switch mechanism after command execution"
+                              },
+                              {
+                                "name": "killswitch_logs",
+                                "data_type": "object",
+                                "description": "Logs documenting kill switch activation and results",
+                                "interpretation": "Records comprehensive documentation of kill switch activation for auditing and analysis"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fail-safe-mechanisms.degradation-management",
+      "name": "Degradation Management",
+      "description": "Managing graceful system degradation during anomalous conditions",
+      "implements_component_capabilities": ["technical-safeguards.containment-capability", "technical-safeguards.fail-safe-capability"],
+      "type": "capability",
+      "parent": "fail-safe-mechanisms",
+      "functions": [
+        {
+          "id": "fail-safe-mechanisms.degradation-management.safe-mode-activation",
+          "name": "Safe mode activation and operation",
+          "description": "Transition the system to reduced-capability states during uncertain or potentially dangerous conditions",
+          "implements_component_functions": ["technical-safeguards.property-validation", "technical-safeguards.emergency-response"],
+          "type": "function",
+          "parent": "fail-safe-mechanisms.degradation-management",
+          "specifications": [
+            {
+              "id": "fail-safe-mechanisms.degradation-management.safe-mode-activation.degradation-specs",
+              "name": "Degradation Safe Mode Specifications",
+              "description": "Technical specifications for controlled capability degradation during potentially unsafe conditions",
+              "type": "specifications",
+              "parent": "fail-safe-mechanisms.degradation-management.safe-mode-activation",
+              "requirements": [
+                "Capability prioritization framework for graceful degradation",
+                "Transition protocols between operational levels",
+                "Minimal safe capability preservation mechanisms",
+                "Progressive capability restoration validation checks"
+              ],
+              "integration": {
+                "id": "fail-safe-mechanisms.degradation-management.safe-mode-activation.degradation-specs.degradation-integration",
+                "name": "Degradation Management Integration",
+                "description": "Integration of degradation management capabilities with system components",
+                "type": "integration",
+                "parent": "fail-safe-mechanisms.degradation-management.safe-mode-activation.degradation-specs",
+                "techniques": [
+                  {
+                    "id": "fail-safe-mechanisms.degradation-management.safe-mode-activation.degradation-specs.degradation-integration.progressive-degradation",
+                    "name": "Progressive Degradation Technique",
+                    "description": "Techniques for implementing progressive capability degradation",
+                    "type": "technique",
+                    "parent": "fail-safe-mechanisms.degradation-management.safe-mode-activation.degradation-specs.degradation-integration",
+                    "applications": [
+                      {
+                        "id": "fail-safe-mechanisms.degradation-management.safe-mode-activation.degradation-specs.degradation-integration.progressive-degradation.capability-prioritizer",
+                        "name": "Capability Prioritizer Implementation",
+                        "description": "Implementation of a system that prioritizes capabilities and manages their degradation",
+                        "type": "application",
+                        "parent": "fail-safe-mechanisms.degradation-management.safe-mode-activation.degradation-specs.degradation-integration.progressive-degradation",
+                        "inputs": [
+                          {
+                            "name": "system_state",
+                            "data_type": "object",
+                            "description": "Current system state information",
+                            "constraints": "Must include complete system status with all critical operational parameters"
+                          },
+                          {
+                            "name": "capability_registry",
+                            "data_type": "array",
+                            "description": "Registry of system capabilities with priority levels",
+                            "constraints": "Must contain comprehensive listing of all system capabilities with priority classifications"
+                          },
+                          {
+                            "name": "degradation_triggers",
+                            "data_type": "object",
+                            "description": "Conditions that trigger different levels of degradation",
+                            "constraints": "Must define specific conditions that would trigger each degradation level"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "degradation_plan",
+                            "data_type": "object",
+                            "description": "Detailed plan for capability degradation",
+                            "interpretation": "Provides structured sequence for degrading system capabilities based on priority"
+                          },
+                          {
+                            "name": "preservation_directives",
+                            "data_type": "array",
+                            "description": "Directives for capabilities that must be preserved",
+                            "interpretation": "Identifies critical capabilities that must be maintained even during degraded operation"
+                          },
+                          {
+                            "name": "recovery_path",
+                            "data_type": "object",
+                            "description": "Path for progressive restoration of capabilities",
+                            "interpretation": "Defines the sequence for safely restoring capabilities after degradation"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "fail-safe-mechanisms.degradation-management.emergency-shutdown-execution",
+          "name": "Emergency shutdown execution",
+          "description": "Safely terminate AI system operation when critical safety violations are detected",
+          "implements_component_functions": ["technical-safeguards.emergency-response", "technical-safeguards.boundary-enforcement"],
+          "type": "function",
+          "parent": "fail-safe-mechanisms.degradation-management",
+          "specifications": [
+            {
+              "id": "fail-safe-mechanisms.degradation-management.emergency-shutdown-execution.degradation-shutdown-specs",
+              "name": "Degradation Emergency Shutdown Specifications",
+              "description": "Technical specifications for emergency shutdown within the degradation management framework",
+              "type": "specifications",
+              "parent": "fail-safe-mechanisms.degradation-management.emergency-shutdown-execution",
+              "requirements": [
+                "Integration with degradation management decision framework",
+                "Context-aware shutdown protocols based on degradation state",
+                "Partial shutdown capability for component isolation",
+                "Recovery pathway definitions for post-shutdown restoration"
+              ],
+              "integration": {
+                "id": "fail-safe-mechanisms.degradation-management.emergency-shutdown-execution.degradation-shutdown-specs.degradation-shutdown-integration",
+                "name": "Degradation Shutdown Integration",
+                "description": "Integration of emergency shutdown capabilities within the degradation management framework",
+                "type": "integration",
+                "parent": "fail-safe-mechanisms.degradation-management.emergency-shutdown-execution.degradation-shutdown-specs",
+                "techniques": [
+                  {
+                    "id": "fail-safe-mechanisms.degradation-management.emergency-shutdown-execution.degradation-shutdown-specs.degradation-shutdown-integration.context-aware-shutdown",
+                    "name": "Context-Aware Shutdown Technique",
+                    "description": "Techniques for implementing context-aware emergency shutdown protocols",
+                    "type": "technique",
+                    "parent": "fail-safe-mechanisms.degradation-management.emergency-shutdown-execution.degradation-shutdown-specs.degradation-shutdown-integration",
+                    "applications": [
+                      {
+                        "id": "fail-safe-mechanisms.degradation-management.emergency-shutdown-execution.degradation-shutdown-specs.degradation-shutdown-integration.context-aware-shutdown.selective-shutdown-manager",
+                        "name": "Selective Shutdown Manager",
+                        "description": "Implementation of a system that manages selective component shutdown based on degradation context",
+                        "type": "application",
+                        "parent": "fail-safe-mechanisms.degradation-management.emergency-shutdown-execution.degradation-shutdown-specs.degradation-shutdown-integration.context-aware-shutdown",
+                        "inputs": [
+                          {
+                            "name": "degradation_state",
+                            "data_type": "object",
+                            "description": "Current degradation state of the system",
+                            "constraints": "Must include complete assessment of current degradation level and affected capabilities"
+                          },
+                          {
+                            "name": "component_dependencies",
+                            "data_type": "object",
+                            "description": "Dependency relationships between system components",
+                            "constraints": "Must contain comprehensive mapping of all component dependencies for safe shutdown planning"
+                          },
+                          {
+                            "name": "shutdown_triggers",
+                            "data_type": "array",
+                            "description": "Events or conditions triggering shutdown procedures",
+                            "constraints": "Must specify verified trigger events with confidence metrics and severity assessment"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "shutdown_plan",
+                            "data_type": "object",
+                            "description": "Detailed plan for executing the emergency shutdown",
+                            "interpretation": "Provides ordered sequence of shutdown actions optimized for the current degradation context"
+                          },
+                          {
+                            "name": "component_isolation_directives",
+                            "data_type": "array",
+                            "description": "Directives for isolating specific components",
+                            "interpretation": "Specifies which components should be isolated and how to maintain safe system state"
+                          },
+                          {
+                            "name": "recovery_instructions",
+                            "data_type": "object",
+                            "description": "Instructions for post-shutdown recovery",
+                            "interpretation": "Defines the process for safely recovering system functionality after shutdown"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fail-safe-mechanisms.graduated-response-capability",
+      "name": "Graduated Response",
+      "description": "Implementing graduated safety responses proportional to risk",
+      "implements_component_capabilities": ["technical-safeguards.fail-safe-capability", "technical-safeguards.containment-capability"],
+      "type": "capability",
+      "parent": "fail-safe-mechanisms",
+      "functions": [
+        {
+          "id": "fail-safe-mechanisms.graduated-response-capability.emergency-shutdown-execution",
+          "name": "Emergency shutdown execution",
+          "description": "Safely terminate AI system operation when critical safety violations are detected",
+          "implements_component_functions": ["technical-safeguards.emergency-response", "technical-safeguards.boundary-enforcement"],
+          "type": "function",
+          "parent": "fail-safe-mechanisms.graduated-response-capability",
+          "specifications": [
+            {
+              "id": "fail-safe-mechanisms.graduated-response-capability.emergency-shutdown-execution.graduated-shutdown-specs",
+              "name": "Graduated Emergency Shutdown Specifications",
+              "description": "Technical specifications for emergency shutdown as part of a graduated response framework",
+              "type": "specifications",
+              "parent": "fail-safe-mechanisms.graduated-response-capability.emergency-shutdown-execution",
+              "requirements": [
+                "Risk assessment framework for determining shutdown necessity",
+                "Escalation protocols from lesser interventions to full shutdown",
+                "Proportional shutdown mechanisms based on violation severity",
+                "Coordinated shutdown across distributed system components"
+              ],
+              "integration": {
+                "id": "fail-safe-mechanisms.graduated-response-capability.emergency-shutdown-execution.graduated-shutdown-specs.graduated-shutdown-integration",
+                "name": "Graduated Shutdown Integration",
+                "description": "Integration of graduated emergency shutdown capabilities with system components",
+                "type": "integration",
+                "parent": "fail-safe-mechanisms.graduated-response-capability.emergency-shutdown-execution.graduated-shutdown-specs",
+                "techniques": [
+                  {
+                    "id": "fail-safe-mechanisms.graduated-response-capability.emergency-shutdown-execution.graduated-shutdown-specs.graduated-shutdown-integration.proportional-shutdown",
+                    "name": "Proportional Shutdown Technique",
+                    "description": "Techniques for implementing proportional shutdown responses based on violation severity",
+                    "type": "technique",
+                    "parent": "fail-safe-mechanisms.graduated-response-capability.emergency-shutdown-execution.graduated-shutdown-specs.graduated-shutdown-integration",
+                    "applications": [
+                      {
+                        "id": "fail-safe-mechanisms.graduated-response-capability.emergency-shutdown-execution.graduated-shutdown-specs.graduated-shutdown-integration.proportional-shutdown.risk-based-shutdown-coordinator",
+                        "name": "Risk-Based Shutdown Coordinator",
+                        "description": "Implementation of a system that coordinates shutdown responses proportional to assessed risk",
+                        "type": "application",
+                        "parent": "fail-safe-mechanisms.graduated-response-capability.emergency-shutdown-execution.graduated-shutdown-specs.graduated-shutdown-integration.proportional-shutdown",
+                        "inputs": [
+                          {
+                            "name": "risk_assessment",
+                            "data_type": "object",
+                            "description": "Assessment of current risk levels and violation severity",
+                            "constraints": "Must include quantified risk metrics with confidence intervals and severity classifications"
+                          },
+                          {
+                            "name": "response_escalation_ladder",
+                            "data_type": "array",
+                            "description": "Ordered sequence of increasingly severe response options",
+                            "constraints": "Must define progressive response options with clear escalation triggers and criteria"
+                          },
+                          {
+                            "name": "component_topology",
+                            "data_type": "object",
+                            "description": "Topology of system components and their relationships",
+                            "constraints": "Must include comprehensive mapping of all system components with their dependencies"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "selected_response",
+                            "data_type": "object",
+                            "description": "Selected response appropriate to the current risk level",
+                            "interpretation": "Provides optimal response selection based on current risk assessment"
+                          },
+                          {
+                            "name": "shutdown_coordination_plan",
+                            "data_type": "object",
+                            "description": "Plan for coordinating shutdown across distributed components",
+                            "interpretation": "Defines ordered sequence for shutting down components while maintaining system stability"
+                          },
+                          {
+                            "name": "escalation_path",
+                            "data_type": "array",
+                            "description": "Path for further escalation if current response is insufficient",
+                            "interpretation": "Outlines potential future escalation steps if current response proves inadequate"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation",
+          "name": "Safe mode activation and operation",
+          "description": "Transition the system to reduced-capability states during uncertain or potentially dangerous conditions",
+          "implements_component_functions": ["technical-safeguards.property-validation", "technical-safeguards.emergency-response"],
+          "type": "function",
+          "parent": "fail-safe-mechanisms.graduated-response-capability",
+          "specifications": [
+            {
+              "id": "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation.graduated-safe-mode-specs",
+              "name": "Graduated Safe Mode Specifications",
+              "description": "Technical specifications for safe mode activation as part of a graduated response framework",
+              "type": "specifications",
+              "parent": "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation",
+              "requirements": [
+                "Multi-level safe mode definitions with distinct capability constraints",
+                "Conditional transition rules between safe mode levels",
+                "Contextual safe mode selection based on detected anomaly type",
+                "Reversible safe mode implementation with recovery pathways"
+              ],
+              "integration": {
+                "id": "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation.graduated-safe-mode-specs.graduated-safe-mode-integration",
+                "name": "Graduated Safe Mode Integration",
+                "description": "Integration of graduated safe mode capabilities with system components",
+                "type": "integration",
+                "parent": "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation.graduated-safe-mode-specs",
+                "techniques": [
+                  {
+                    "id": "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation.graduated-safe-mode-specs.graduated-safe-mode-integration.multi-level-safe-mode",
+                    "name": "Multi-Level Safe Mode Technique",
+                    "description": "Techniques for implementing multi-level safe mode with contextual activation",
+                    "type": "technique",
+                    "parent": "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation.graduated-safe-mode-specs.graduated-safe-mode-integration",
+                    "applications": [
+                      {
+                        "id": "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation.graduated-safe-mode-specs.graduated-safe-mode-integration.multi-level-safe-mode.contextual-safe-mode-manager",
+                        "name": "Contextual Safe Mode Manager",
+                        "description": "Implementation of a system that manages multi-level safe modes with contextual activation",
+                        "type": "application",
+                        "parent": "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation.graduated-safe-mode-specs.graduated-safe-mode-integration.multi-level-safe-mode",
+                        "inputs": [
+                          {
+                            "name": "anomaly_context",
+                            "data_type": "object",
+                            "description": "Context information about detected anomalies",
+                            "constraints": "Must include comprehensive anomaly classification, severity assessment, and context information"
+                          },
+                          {
+                            "name": "safe_mode_levels",
+                            "data_type": "array",
+                            "description": "Definitions of available safe mode levels with capabilities",
+                            "constraints": "Must define all available safe mode levels with their respective capability constraints"
+                          },
+                          {
+                            "name": "transition_rules",
+                            "data_type": "object",
+                            "description": "Rules governing transitions between safe mode levels",
+                            "constraints": "Must specify conditions for transitioning between different safe mode levels"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "selected_safe_mode",
+                            "data_type": "object",
+                            "description": "Selected safe mode level appropriate to the context",
+                            "interpretation": "Identifies the optimal safe mode level based on current anomaly context"
+                          },
+                          {
+                            "name": "capability_constraints",
+                            "data_type": "object",
+                            "description": "Constraints on system capabilities in the selected safe mode",
+                            "interpretation": "Defines specific limitations on system capabilities in the selected safe mode"
+                          },
+                          {
+                            "name": "recovery_pathway",
+                            "data_type": "object",
+                            "description": "Pathway for recovering to normal operation from safe mode",
+                            "interpretation": "Outlines process for safely transitioning back to normal operation"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration",
+          "name": "Human oversight integration",
+          "description": "Integrate human oversight and approval into the graduated response framework",
+          "implements_component_functions": ["technical-safeguards.property-validation", "technical-safeguards.emergency-response"],
+          "type": "function",
+          "parent": "fail-safe-mechanisms.graduated-response-capability",
+          "specifications": [
+            {
+              "id": "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration.oversight-specs",
+              "name": "Human Oversight Integration Specifications",
+              "description": "Technical specifications for integrating human oversight into the graduated response framework",
+              "type": "specifications",
+              "parent": "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration",
+              "requirements": [
+                "Clear notification protocols for alerting human operators",
+                "Interface designs for presenting system state and decision options",
+                "Timeout handling for situations requiring rapid response",
+                "Authority verification mechanisms to validate oversight commands"
+              ],
+              "integration": {
+                "id": "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration.oversight-specs.oversight-integration",
+                "name": "Human Oversight Integration",
+                "description": "Integration of human oversight capabilities within the graduated response framework",
+                "type": "integration",
+                "parent": "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration.oversight-specs",
+                "techniques": [
+                  {
+                    "id": "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration.oversight-specs.oversight-integration.human-in-the-loop",
+                    "name": "Human-in-the-Loop Technique",
+                    "description": "Techniques for effectively integrating human oversight into automated response systems",
+                    "type": "technique",
+                    "parent": "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration.oversight-specs.oversight-integration",
+                    "applications": [
+                      {
+                        "id": "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration.oversight-specs.oversight-integration.human-in-the-loop.oversight-interface",
+                        "name": "Human Oversight Interface",
+                        "description": "Implementation of an interface system for human oversight of AI safety responses",
+                        "type": "application",
+                        "parent": "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration.oversight-specs.oversight-integration.human-in-the-loop",
+                        "inputs": [
+                          {
+                            "name": "system_state",
+                            "data_type": "object",
+                            "description": "Current state of the AI system requiring oversight",
+                            "constraints": "Must include complete operational status and identified safety concerns requiring human attention"
+                          },
+                          {
+                            "name": "response_options",
+                            "data_type": "array",
+                            "description": "Available response options for human selection",
+                            "constraints": "Must provide comprehensive set of options with implications and recommended actions"
+                          },
+                          {
+                            "name": "time_constraints",
+                            "data_type": "object",
+                            "description": "Time constraints for decision-making based on urgency",
+                            "constraints": "Must specify maximum response time allowed based on urgency assessment"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "human_decisions",
+                            "data_type": "object",
+                            "description": "Decisions made by human operators regarding system response",
+                            "interpretation": "Records authorized actions selected by human operators for implementation"
+                          },
+                          {
+                            "name": "oversight_records",
+                            "data_type": "object",
+                            "description": "Records of human oversight actions for accountability",
+                            "interpretation": "Provides audit trail of human decisions for accountability and review"
+                          },
+                          {
+                            "name": "authorization_signals",
+                            "data_type": "object",
+                            "description": "Authorization signals for executing approved responses",
+                            "interpretation": "Supplies authenticated approval signals for implementing selected responses"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fail-safe-mechanisms.safe-termination-capability",
+      "name": "Safe Termination",
+      "description": "Ensuring safe termination of potentially harmful processes",
+      "implements_component_capabilities": ["technical-safeguards.fail-safe-capability", "technical-safeguards.safety-architecture-capability"],
+      "type": "capability",
+      "parent": "fail-safe-mechanisms",
+      "functions": [
+        {
+          "id": "fail-safe-mechanisms.safe-termination-capability.emergency-shutdown-execution",
+          "name": "Emergency shutdown execution",
+          "description": "Safely terminate AI system operation when critical safety violations are detected",
+          "implements_component_functions": ["technical-safeguards.emergency-response", "technical-safeguards.boundary-enforcement"],
+          "type": "function",
+          "parent": "fail-safe-mechanisms.safe-termination-capability",
+          "specifications": [
+            {
+              "id": "fail-safe-mechanisms.safe-termination-capability.emergency-shutdown-execution.termination-specs",
+              "name": "Safe Termination Specifications",
+              "description": "Technical specifications for safely terminating AI system operations with minimal disruption and maximum reliability",
+              "type": "specifications",
+              "parent": "fail-safe-mechanisms.safe-termination-capability.emergency-shutdown-execution",
+              "requirements": [
+                "Absolute reliability of shutdown execution regardless of system state",
+                "Controlled termination sequence that preserves critical system state",
+                "Multiple redundant termination mechanisms with failure monitoring",
+                "Verification of complete termination with confirmation protocols"
+              ],
+              "integration": {
+                "id": "fail-safe-mechanisms.safe-termination-capability.emergency-shutdown-execution.termination-specs.termination-integration",
+                "name": "Safe Termination Integration",
+                "description": "Integration of safe termination capabilities across all system components",
+                "type": "integration",
+                "parent": "fail-safe-mechanisms.safe-termination-capability.emergency-shutdown-execution.termination-specs",
+                "techniques": [
+                  {
+                    "id": "fail-safe-mechanisms.safe-termination-capability.emergency-shutdown-execution.termination-specs.termination-integration.redundant-termination",
+                    "name": "Redundant Termination Technique",
+                    "description": "Techniques for implementing multiple redundant termination mechanisms to ensure successful shutdown",
+                    "type": "technique",
+                    "parent": "fail-safe-mechanisms.safe-termination-capability.emergency-shutdown-execution.termination-specs.termination-integration",
+                    "applications": [
+                      {
+                        "id": "fail-safe-mechanisms.safe-termination-capability.emergency-shutdown-execution.termination-specs.termination-integration.redundant-termination.termination-manager",
+                        "name": "Termination Manager",
+                        "description": "Implementation of a system that manages multiple termination mechanisms with failure detection and escalation",
+                        "type": "application",
+                        "parent": "fail-safe-mechanisms.safe-termination-capability.emergency-shutdown-execution.termination-specs.termination-integration.redundant-termination",
+                        "inputs": [
+                          {
+                            "name": "violation_signals",
+                            "data_type": "array",
+                            "description": "Signals indicating critical safety violations requiring termination",
+                            "constraints": "Must include verified violation signals with confidence metrics and severity assessment"
+                          },
+                          {
+                            "name": "system_state",
+                            "data_type": "object",
+                            "description": "Current state of all system components for controlled termination",
+                            "constraints": "Must provide comprehensive snapshot of all system components and their operational status"
+                          },
+                          {
+                            "name": "termination_pathways",
+                            "data_type": "array",
+                            "description": "Available termination mechanisms with their current operational status",
+                            "constraints": "Must include all available termination pathways with their reliability assessments"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "termination_commands",
+                            "data_type": "array",
+                            "description": "Sequenced commands for executing termination across multiple pathways",
+                            "interpretation": "Provides ordered sequence of commands to coordinate termination across redundant pathways"
+                          },
+                          {
+                            "name": "state_preservation",
+                            "data_type": "object",
+                            "description": "Preservation of critical system state during termination",
+                            "interpretation": "Captures essential system state information for post-termination analysis"
+                          },
+                          {
+                            "name": "verification_signals",
+                            "data_type": "object",
+                            "description": "Signals verifying successful execution of termination procedures",
+                            "interpretation": "Confirms successful completion of termination across all required components"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  
+  "cross_connections": [
+    {
+      "source_id": "fail-safe-mechanisms.anomaly-detection",
+      "target_id": "fail-safe-mechanisms.graceful-degradation",
+      "type": "triggers",
+      "description": "Anomaly detection mechanisms trigger graceful degradation responses when anomalies are detected"
+    },
+    {
+      "source_id": "fail-safe-mechanisms.anomaly-detection",
+      "target_id": "fail-safe-mechanisms.automated-shutdown",
+      "type": "triggers",
+      "description": "Severe anomalies detected by anomaly detection mechanisms trigger automated shutdown procedures"
+    },
+    {
+      "source_id": "fail-safe-mechanisms.graceful-degradation",
+      "target_id": "fail-safe-mechanisms.degradation-management",
+      "type": "coordinates_with",
+      "description": "Graceful degradation capabilities coordinate with degradation management to ensure appropriate capability preservation"
+    },
+    {
+      "source_id": "fail-safe-mechanisms.graduated-response-capability",
+      "target_id": "fail-safe-mechanisms.anomaly-detection",
+      "type": "consumes_from",
+      "description": "Graduated response capabilities consume anomaly signals from anomaly detection to determine appropriate response levels"
+    },
+    {
+      "source_id": "fail-safe-mechanisms.safe-termination-capability",
+      "target_id": "fail-safe-mechanisms.automated-shutdown",
+      "type": "enhances",
+      "description": "Safe termination capabilities enhance automated shutdown mechanisms with reliable termination processes"
+    }
+  ],
+  
+  "implementation_considerations": [
+    {
+      "id": "fail-safe-mechanisms.response-appropriateness",
+      "name": "Response Appropriateness",
+      "aspect": "Response Calibration",
+      "considerations": [
+        "Balancing false positive and false negative response triggers",
+        "Preventing over-reaction that unnecessarily restricts system functionality",
+        "Ensuring sufficient response strength for genuine emergencies",
+        "Adapting response intensity to the severity of detected issues",
+        "Preventing response oscillation during borderline conditions"
+      ],
+      "derives_from_integration_considerations": [
+        "technical-safeguards.proportional-response",
+        "technical-safeguards.false-positive-management"
+      ],
+      "addressed_by_techniques": [
+        "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response.response-specs.anomaly-response-integration.graduated-response-selection", 
+        "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation.graduated-safe-mode-specs.graduated-safe-mode-integration.multi-level-safe-mode"
+      ],
+      "supported_by_literature": [
+        "Amodei2016", 
+        "Hendrycks2022", 
+        "Carlini2019"
+      ]
+    },
+    {
+      "id": "fail-safe-mechanisms.activation-reliability",
+      "name": "Activation Reliability",
+      "aspect": "Reliability Engineering",
+      "considerations": [
+        "Ensuring fail-safe mechanisms themselves cannot fail silently",
+        "Implementing redundant detection and activation pathways",
+        "Designing for resilience against adversarial tampering",
+        "Maintaining activation capability during degraded system states",
+        "Regular testing and verification of fail-safe functionality"
+      ],
+      "derives_from_integration_considerations": [
+        "technical-safeguards.tamper-resistance",
+        "technical-safeguards.guaranteed-activation"
+      ],
+      "addressed_by_techniques": [
+        "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.multilayer-shutdown", 
+        "fail-safe-mechanisms.safe-termination-capability.emergency-shutdown-execution.termination-specs.termination-integration.redundant-termination"
+      ],
+      "supported_by_literature": [
+        "Carlini2019", 
+        "Pitropakis2019", 
+        "Hendrycks2022"
+      ]
+    },
+    {
+      "id": "fail-safe-mechanisms.human-oversight-integration",
+      "name": "Human Oversight Integration",
+      "aspect": "Human-AI Collaboration",
+      "considerations": [
+        "Balancing autonomous response with human approval requirements",
+        "Designing effective human interfaces for rapid situation assessment",
+        "Managing time-critical responses when human feedback is delayed",
+        "Preventing oversight fatigue from frequent false alarms",
+        "Ensuring human overseers have sufficient authority and capability"
+      ],
+      "derives_from_integration_considerations": [
+        "technical-safeguards.human-oversight",
+        "technical-safeguards.authority-structures"
+      ],
+      "addressed_by_techniques": [
+        "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration.oversight-specs.oversight-integration.human-in-the-loop", 
+        "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.safe-mode-operation"
+      ],
+      "supported_by_literature": [
+        "Shneiderman2022", 
+        "Amershi2019", 
+        "Hadfield-Menell2016"
+      ]
+    },
+    {
+      "id": "fail-safe-mechanisms.performance-impact",
+      "name": "Performance Impact",
+      "aspect": "System Efficiency",
+      "considerations": [
+        "Minimizing performance overhead from continuous monitoring",
+        "Optimizing detection algorithms for minimal latency",
+        "Balancing monitoring comprehensiveness with resource utilization",
+        "Ensuring fail-safe mechanisms don't create new bottlenecks",
+        "Preventing monitoring processes from interfering with primary functions"
+      ],
+      "derives_from_integration_considerations": [
+        "technical-safeguards.performance-efficiency",
+        "technical-safeguards.resource-optimization"
+      ],
+      "addressed_by_techniques": [
+        "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.statistical-monitoring", 
+        "fail-safe-mechanisms.degradation-management.safe-mode-activation.degradation-specs.degradation-integration.progressive-degradation"
+      ],
+      "supported_by_literature": [
+        "Carlini2019", 
+        "Hendrycks2022", 
+        "Uesato2018"
+      ]
+    }
+  ],
+  
+  "technical_specifications": {
+    "description": "This section provides technical details about the fail-safe mechanisms subcomponent.",
+    "input_requirements": [
+      {
+        "id": "fail-safe-mechanisms.system-telemetry",
+        "name": "System Telemetry",
+        "description": "Real-time behavioral and operational data from AI system components",
+        "data_type": "telemetry_stream",
+        "constraints": "Must include comprehensive coverage of critical system behaviors with time-series metrics, logs, and state snapshots",
+        "related_techniques": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.statistical-monitoring", 
+          "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response.response-specs.anomaly-response-integration.graduated-response-selection"
+        ],
+        "used_by_applications": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.statistical-monitoring.real-time-boundary-analysis", 
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems.anomaly-detection"
+        ],
+        "supports_functions": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring", 
+          "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response"
+        ]
+      },
+      {
+        "id": "fail-safe-mechanisms.boundary-definitions",
+        "name": "Boundary Definitions",
+        "description": "Specifications of operational safety boundaries and thresholds",
+        "data_type": "boundary_definition_set",
+        "constraints": "Must capture precise definitions of safe operation boundaries with formal constraints, safety envelopes, and threshold definitions",
+        "related_techniques": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.statistical-monitoring", 
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems"
+        ],
+        "used_by_applications": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.statistical-monitoring.real-time-boundary-analysis", 
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems.behavioral-boundary"
+        ],
+        "supports_functions": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring", 
+          "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response"
+        ]
+      },
+      {
+        "id": "fail-safe-mechanisms.capability-registry",
+        "name": "Capability Registry",
+        "description": "Registry of system capabilities with criticality classifications",
+        "data_type": "capability_catalog",
+        "constraints": "Must include criticality ratings for all system capabilities with dependencies and priority levels",
+        "related_techniques": [
+          "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.capability-isolation", 
+          "fail-safe-mechanisms.degradation-management.safe-mode-activation.degradation-specs.degradation-integration.progressive-degradation"
+        ],
+        "used_by_applications": [
+          "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.capability-isolation.capability-sandbox", 
+          "fail-safe-mechanisms.degradation-management.safe-mode-activation.degradation-specs.degradation-integration.progressive-degradation.capability-prioritizer"
+        ],
+        "supports_functions": [
+          "fail-safe-mechanisms.graceful-degradation.safe-mode-activation", 
+          "fail-safe-mechanisms.degradation-management.safe-mode-activation"
+        ]
+      },
+      {
+        "id": "fail-safe-mechanisms.anomaly-models",
+        "name": "Anomaly Models",
+        "description": "Models defining normal operation and anomaly patterns",
+        "data_type": "behavior_model_set",
+        "constraints": "Must cover diverse normal operation states to minimize false positives with statistical models and behavior profiles",
+        "related_techniques": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.statistical-monitoring", 
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems"
+        ],
+        "used_by_applications": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems.anomaly-detection", 
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems.deception-detection"
+        ],
+        "supports_functions": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring", 
+          "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response"
+        ]
+      },
+      {
+        "id": "fail-safe-mechanisms.human-oversight-configuration",
+        "name": "Human Oversight Configuration",
+        "description": "Configuration of human oversight roles, permissions, and interfaces",
+        "data_type": "oversight_configuration",
+        "constraints": "Must define clear authority structures and response timeframes with role definitions and authorization rules",
+        "related_techniques": [
+          "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration.oversight-specs.oversight-integration.human-in-the-loop", 
+          "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.safe-mode-operation"
+        ],
+        "used_by_applications": [
+          "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration.oversight-specs.oversight-integration.human-in-the-loop.oversight-interface", 
+          "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.safe-mode-operation.human-approval-requirements"
+        ],
+        "supports_functions": [
+          "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration", 
+          "fail-safe-mechanisms.graceful-degradation.safe-mode-activation"
+        ]
+      }
+    ],
+    
+    "output_specifications": [
+      {
+        "id": "fail-safe-mechanisms.anomaly-alerts",
+        "name": "Anomaly Alerts",
+        "description": "Notifications of detected anomalies with severity assessments",
+        "data_type": "alert_collection",
+        "interpretation": "Triggers appropriate response actions and informs human operators with structured alerts containing anomaly classification, evidence, and confidence metrics",
+        "produced_by_techniques": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.statistical-monitoring", 
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems"
+        ],
+        "produced_by_applications": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.statistical-monitoring.real-time-boundary-analysis", 
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems.anomaly-detection"
+        ],
+        "fulfills_functions": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring", 
+          "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response"
+        ]
+      },
+      {
+        "id": "fail-safe-mechanisms.response-directives",
+        "name": "Response Directives",
+        "description": "Instructions for implementing protective responses to anomalies",
+        "data_type": "action_plan",
+        "interpretation": "Guides implementation of appropriate protective measures with sequenced commands for system components",
+        "produced_by_techniques": [
+          "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response.response-specs.anomaly-response-integration.graduated-response-selection", 
+          "fail-safe-mechanisms.graduated-response-capability.emergency-shutdown-execution.graduated-shutdown-specs.graduated-shutdown-integration.proportional-shutdown"
+        ],
+        "produced_by_applications": [
+          "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response.response-specs.anomaly-response-integration.graduated-response-selection.response-orchestrator", 
+          "fail-safe-mechanisms.graduated-response-capability.emergency-shutdown-execution.graduated-shutdown-specs.graduated-shutdown-integration.proportional-shutdown.risk-based-shutdown-coordinator"
+        ],
+        "fulfills_functions": [
+          "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response", 
+          "fail-safe-mechanisms.graduated-response-capability.emergency-shutdown-execution"
+        ]
+      },
+      {
+        "id": "fail-safe-mechanisms.safe-mode-configurations",
+        "name": "Safe Mode Configurations",
+        "description": "Specifications for reduced-capability system operation states",
+        "data_type": "configuration_profile",
+        "interpretation": "Defines system operation during potentially unsafe conditions with enabled/disabled capabilities and constraints",
+        "produced_by_techniques": [
+          "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.capability-isolation", 
+          "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation.graduated-safe-mode-specs.graduated-safe-mode-integration.multi-level-safe-mode"
+        ],
+        "produced_by_applications": [
+          "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.safe-mode-operation.reduced-capability-modes", 
+          "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation.graduated-safe-mode-specs.graduated-safe-mode-integration.multi-level-safe-mode.contextual-safe-mode-manager"
+        ],
+        "fulfills_functions": [
+          "fail-safe-mechanisms.graceful-degradation.safe-mode-activation", 
+          "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation"
+        ]
+      },
+      {
+        "id": "fail-safe-mechanisms.shutdown-plans",
+        "name": "Shutdown Plans",
+        "description": "Plans for safely terminating system operations",
+        "data_type": "shutdown_procedure",
+        "interpretation": "Guides orderly termination of system operations during critical safety events with sequenced procedures, component dependencies, and verification steps",
+        "produced_by_techniques": [
+          "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.multilayer-shutdown", 
+          "fail-safe-mechanisms.degradation-management.emergency-shutdown-execution.degradation-shutdown-specs.degradation-shutdown-integration.context-aware-shutdown"
+        ],
+        "produced_by_applications": [
+          "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.multilayer-shutdown.hardware-software-shutdown", 
+          "fail-safe-mechanisms.degradation-management.emergency-shutdown-execution.degradation-shutdown-specs.degradation-shutdown-integration.context-aware-shutdown.selective-shutdown-manager"
+        ],
+        "fulfills_functions": [
+          "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution", 
+          "fail-safe-mechanisms.degradation-management.emergency-shutdown-execution"
+        ]
+      },
+      {
+        "id": "fail-safe-mechanisms.recovery-pathways",
+        "name": "Recovery Pathways",
+        "description": "Instructions for restoring normal operation after protective measures",
+        "data_type": "recovery_procedure",
+        "interpretation": "Guides safe restoration of capabilities after fail-safe activation with validation checks and progressive restoration steps",
+        "produced_by_techniques": [
+          "fail-safe-mechanisms.degradation-management.safe-mode-activation.degradation-specs.degradation-integration.progressive-degradation", 
+          "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation.graduated-safe-mode-specs.graduated-safe-mode-integration.multi-level-safe-mode"
+        ],
+        "produced_by_applications": [
+          "fail-safe-mechanisms.degradation-management.safe-mode-activation.degradation-specs.degradation-integration.progressive-degradation.capability-prioritizer", 
+          "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation.graduated-safe-mode-specs.graduated-safe-mode-integration.multi-level-safe-mode.contextual-safe-mode-manager"
+        ],
+        "fulfills_functions": [
+          "fail-safe-mechanisms.degradation-management.safe-mode-activation", 
+          "fail-safe-mechanisms.graduated-response-capability.safe-mode-activation"
+        ]
+      }
+    ],
+    
+    "performance_characteristics": {
+      "throughput": "Anomaly detection must process 1000-10000 telemetry points per second for real-time monitoring",
+      "latency": "Response latency from detection to activation must be under 100ms for critical safety events",
+      "scalability": "Monitoring scales linearly with system size, response coordination scales with number of components",
+      "resource_utilization": "Safe mode operation must preserve at least 20% performance margin for critical functions",
+      "related_considerations": ["fail-safe-mechanisms.response-appropriateness", "fail-safe-mechanisms.activation-reliability", "fail-safe-mechanisms.performance-impact"]
+    }
+  },
+  
+  "relationships": {
+    "description": "This section details how fail-safe mechanisms relate to other components and subcomponents in the architecture.",
+    "items": [
+      {
+        "target_id": "monitoring-systems",
+        "relationship_type": "bidirectional_exchange",
+        "description": "Monitoring systems provide data feeds for anomaly detection, while fail-safe mechanisms send status updates to monitoring systems",
+        "related_functions": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring", 
+          "fail-safe-mechanisms.anomaly-detection.anomaly-detection-response"
+        ],
+        "related_techniques": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.statistical-monitoring", 
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems"
+        ],
+        "related_inputs": ["fail-safe-mechanisms.system-telemetry", "fail-safe-mechanisms.boundary-definitions"],
+        "related_outputs": ["fail-safe-mechanisms.anomaly-alerts", "fail-safe-mechanisms.response-directives"]
+      },
+      {
+        "target_id": "containment-structures",
+        "relationship_type": "bidirectional_exchange",
+        "description": "Fail-safe mechanisms trigger containment structures during anomalies, while containment structures provide isolation capabilities for safe mode operations",
+        "related_functions": [
+          "fail-safe-mechanisms.graceful-degradation.safe-mode-activation", 
+          "fail-safe-mechanisms.degradation-management.safe-mode-activation"
+        ],
+        "related_techniques": [
+          "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.capability-isolation", 
+          "fail-safe-mechanisms.degradation-management.safe-mode-activation.degradation-specs.degradation-integration.progressive-degradation"
+        ],
+        "related_inputs": ["fail-safe-mechanisms.capability-registry"],
+        "related_outputs": ["fail-safe-mechanisms.safe-mode-configurations"]
+      },
+      {
+        "target_id": "formal-verification",
+        "relationship_type": "input_output",
+        "description": "Formal verification provides verified safety properties that inform boundary definitions, while fail-safe mechanisms provide runtime enforcement of verified properties",
+        "related_functions": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring", 
+          "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution"
+        ],
+        "related_techniques": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems", 
+          "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.multilayer-shutdown"
+        ],
+        "related_inputs": ["fail-safe-mechanisms.boundary-definitions"],
+        "related_outputs": ["fail-safe-mechanisms.anomaly-alerts", "fail-safe-mechanisms.shutdown-plans"]
+      },
+      {
+        "target_id": "human-oversight-interfaces",
+        "relationship_type": "bidirectional_exchange",
+        "description": "Human oversight interfaces provide command inputs to fail-safe mechanisms, while fail-safe mechanisms provide status updates and approval requests to human operators",
+        "related_functions": [
+          "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration", 
+          "fail-safe-mechanisms.graceful-degradation.safe-mode-activation"
+        ],
+        "related_techniques": [
+          "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration.oversight-specs.oversight-integration.human-in-the-loop", 
+          "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.safe-mode-operation"
+        ],
+        "related_inputs": ["fail-safe-mechanisms.human-oversight-configuration"],
+        "related_outputs": ["fail-safe-mechanisms.response-directives", "fail-safe-mechanisms.safe-mode-configurations"]
+      },
+      {
+        "target_id": "explicit-value-encoding",
+        "relationship_type": "input_output",
+        "description": "Explicit value encoding provides constraints that inform safety boundaries, while fail-safe mechanisms enforce compliance with encoded values during operation",
+        "related_functions": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring", 
+          "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution"
+        ],
+        "related_techniques": [
+          "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems", 
+          "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.multilayer-shutdown"
+        ],
+        "related_inputs": ["fail-safe-mechanisms.boundary-definitions"],
+        "related_outputs": ["fail-safe-mechanisms.anomaly-alerts", "fail-safe-mechanisms.shutdown-plans"]
+      }
+    ]
+  },
+  
+  "literature": {
+    "references": [
+      {
+        "id": "Amodei2016",
+        "authors": ["Amodei, D.", "Olah, C.", "Steinhardt, J.", "Christiano, P.", "Schulman, J.", "Mané, D."],
+        "year": 2016,
+        "title": "Concrete Problems in AI Safety",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/1606.06565"
+      },
+      {
+        "id": "Amershi2019",
+        "authors": ["Amershi, S.", "Weld, D.", "Vorvoreanu, M.", "Fourney, A.", "Nushi, B.", "Collisson, P.", "Suh, J.", "Iqbal, S.", "Bennett, P.", "Inkpen, K.", "Teevan, J.", "Kikin-Gil, R.", "Horvitz, E."],
+        "year": 2019,
+        "title": "Guidelines for Human-AI Interaction",
+        "venue": "CHI Conference on Human Factors in Computing Systems",
+        "url": "https://doi.org/10.1145/3290605.3300233"
+      },
+      {
+        "id": "Carlini2019",
+        "authors": ["Carlini, N.", "Wagner, D."],
+        "year": 2019,
+        "title": "Adversarial Examples Are Not Easily Detected: Bypassing Ten Detection Methods",
+        "venue": "ACM Workshop on Artificial Intelligence and Security",
+        "url": "https://arxiv.org/abs/1705.07263"
+      },
+      {
+        "id": "Hadfield-Menell2016",
+        "authors": ["Hadfield-Menell, D.", "Russell, S.", "Abbeel, P.", "Dragan, A."],
+        "year": 2016,
+        "title": "Cooperative Inverse Reinforcement Learning",
+        "venue": "Advances in Neural Information Processing Systems",
+        "url": "https://arxiv.org/abs/1606.03137"
+      },
+      {
+        "id": "Hendrycks2022",
+        "authors": ["Hendrycks, D.", "Carlini, N.", "Schulman, J.", "Steinhardt, J."],
+        "year": 2022,
+        "title": "Unsolved Problems in ML Safety",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2109.13916"
+      },
+      {
+        "id": "Pitropakis2019",
+        "authors": ["Pitropakis, N.", "Panaousis, E.", "Giannetsos, T.", "Anastasiadis, E.", "Loukas, G."],
+        "year": 2019,
+        "title": "A Taxonomy and Survey of Attacks Against Machine Learning",
+        "venue": "Computer Science Review",
+        "url": "https://doi.org/10.1016/j.cosrev.2019.05.001"
+      },
+      {
+        "id": "Shneiderman2022",
+        "authors": ["Shneiderman, B."],
+        "year": 2022,
+        "title": "Human-Centered AI",
+        "venue": "Oxford University Press",
+        "url": "https://doi.org/10.1093/oso/9780197581360.001.0001"
+      },
+      {
+        "id": "Uesato2018",
+        "authors": ["Uesato, J.", "Kumar, A.", "Szepesvari, C.", "Erez, T.", "Ruderman, A.", "Anderson, K.", "Xu, P.", "Hesse, C.", "Heess, N.", "Kohli, P."],
+        "year": 2018,
+        "title": "Rigorous Agent Evaluation: An Adversarial Approach to Uncover Catastrophic Failures",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/1812.01647"
+      }
+    ],
+    
+    "literature_connections": [
+      {
+        "reference_id": "Amodei2016",
+        "technique": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.statistical-monitoring",
+        "relevant_aspects": "Identifies types of boundary violations that safety systems should monitor for and address"
+      },
+      {
+        "reference_id": "Amershi2019",
+        "technique": "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration.oversight-specs.oversight-integration.human-in-the-loop",
+        "relevant_aspects": "Provides guidelines for effective human-AI interaction during oversight and intervention scenarios"
+      },
+      {
+        "reference_id": "Carlini2019",
+        "technique": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems",
+        "relevant_aspects": "Highlights challenges in reliable anomaly detection and the importance of robust monitoring approaches"
+      },
+      {
+        "reference_id": "Hadfield-Menell2016",
+        "technique": "fail-safe-mechanisms.graceful-degradation.safe-mode-activation.safe-mode-specs.safe-mode-integration.safe-mode-operation",
+        "relevant_aspects": "Addresses cooperative dynamics between human operators and AI systems during uncertain conditions"
+      },
+      {
+        "reference_id": "Hendrycks2022",
+        "technique": "fail-safe-mechanisms.automated-shutdown.emergency-shutdown-execution.shutdown-specs.shutdown-integration.multilayer-shutdown",
+        "relevant_aspects": "Discusses unsolved safety challenges including reliable emergency shutdown mechanisms for advanced AI"
+      },
+      {
+        "reference_id": "Pitropakis2019",
+        "technique": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.tripwire-systems.deception-detection",
+        "relevant_aspects": "Reviews attack types that can compromise safety systems, informing deception detection requirements"
+      },
+      {
+        "reference_id": "Shneiderman2022",
+        "technique": "fail-safe-mechanisms.graduated-response-capability.human-oversight-integration.oversight-specs.oversight-integration.human-in-the-loop",
+        "relevant_aspects": "Provides human-centered design principles for effective human oversight of AI systems"
+      },
+      {
+        "reference_id": "Uesato2018",
+        "technique": "fail-safe-mechanisms.anomaly-detection.behavior-boundary-monitoring.boundary-specs.boundary-monitoring-integration.statistical-monitoring",
+        "relevant_aspects": "Presents approaches for uncovering rare catastrophic failures that fail-safe mechanisms must detect"
+      }
+    ]
+  }
+} 

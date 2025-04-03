@@ -1,0 +1,1296 @@
+{
+  "context": "This subcomponent implements participatory value development methods for AI alignment, enabling diverse stakeholders to collectively determine the values and priorities that should guide AI systems through democratic and inclusive processes.",
+  "id": "participatory-value-development",
+  "name": "Participatory Value Development",
+  "description": "Democratic and inclusive processes for collective determination of AI values and priorities. These approaches enable diverse stakeholders to participate in shaping the values that guide AI systems, ensuring representation of different perspectives and fostering legitimacy through deliberative and participatory methods.",
+  "type": "subcomponent",
+  "parent": "value-learning",
+  
+  "capabilities": [
+    {
+      "id": "participatory-value-development.stakeholder-inclusion",
+      "name": "Stakeholder Inclusion",
+      "description": "Methods to ensure diverse stakeholder perspectives are represented in AI value development",
+      "implements_component_capabilities": [
+        "value-learning.participatory-representation", 
+        "value-learning.value-diversity",
+        "value-learning.participatory-development-capability"
+      ],
+      "type": "capability",
+      "parent": "participatory-value-development",
+      "functions": [
+        {
+          "id": "participatory-value-development.stakeholder-inclusion.stakeholder-identification",
+          "name": "Stakeholder Identification and Inclusion",
+          "description": "Identifying and engaging diverse stakeholders affected by AI systems to participate in value determination",
+          "implements_component_functions": ["value-learning.value-elicitation", "value-learning.value-specification"],
+          "type": "function",
+          "parent": "participatory-value-development.stakeholder-inclusion",
+          "specifications": [
+            {
+              "id": "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods",
+              "name": "Stakeholder Identification Methods",
+              "description": "Technical specifications for identifying and including diverse stakeholders in value development",
+              "type": "specifications",
+              "parent": "participatory-value-development.stakeholder-inclusion.stakeholder-identification",
+              "requirements": [
+                "Comprehensive stakeholder mapping methodologies",
+                "Inclusion criteria for diverse representation",
+                "Accessibility mechanisms for participation",
+                "Outreach strategies for marginalized communities"
+              ],
+              "integration": {
+                "id": "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods.implementation",
+                "name": "Stakeholder Identification Implementation",
+                "description": "Integration approach for implementing stakeholder identification and inclusion",
+                "type": "integration",
+                "parent": "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods",
+                "techniques": [
+                  {
+                    "id": "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods.implementation.stakeholder-mapping",
+                    "name": "Comprehensive Stakeholder Mapping",
+                    "description": "Techniques for identifying and mapping all stakeholders affected by AI systems",
+                    "type": "technique",
+                    "parent": "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods.implementation",
+                    "applications": [
+                      {
+                        "id": "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods.implementation.stakeholder-mapping.inclusion-framework",
+                        "name": "Inclusive Stakeholder Framework",
+                        "description": "Framework for ensuring comprehensive and diverse stakeholder inclusion in AI value development",
+                        "type": "application",
+                        "parent": "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods.implementation.stakeholder-mapping",
+                        "inputs": [
+                          {
+                            "id": "ai_system_context",
+                            "name": "AI System Context",
+                            "description": "Information about the AI system and its potential impacts",
+                            "data_type": "system_context",
+                            "constraints": "Must include deployment context and affected domains"
+                          },
+                          {
+                            "id": "demographic_data",
+                            "name": "Demographic Data",
+                            "description": "Data on potentially affected populations and communities",
+                            "data_type": "demographic_data",
+                            "constraints": "Must include marginalized and underrepresented groups"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id": "stakeholder_map",
+                            "name": "Stakeholder Map",
+                            "description": "Comprehensive map of all relevant stakeholders",
+                            "data_type": "stakeholder_map",
+                            "interpretation": "Guides inclusive engagement for value development"
+                          },
+                          {
+                            "id": "inclusion_strategy",
+                            "name": "Inclusion Strategy",
+                            "description": "Strategy for engaging identified stakeholders",
+                            "data_type": "inclusion_strategy",
+                            "interpretation": "Ensures diverse participation in value determination"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "participatory-value-development.stakeholder-inclusion.value-elicitation",
+          "name": "Value Elicitation and Aggregation",
+          "description": "Systematically collecting and aggregating value preferences from diverse participants",
+          "implements_component_functions": ["value-learning.value-elicitation", "value-learning.value-diversity"],
+          "type": "function",
+          "parent": "participatory-value-development.stakeholder-inclusion",
+          "specifications": [
+            {
+              "id": "participatory-value-development.stakeholder-inclusion.value-elicitation.elicitation-methods",
+              "name": "Value Elicitation Methods",
+              "description": "Technical specifications for eliciting values from diverse stakeholders",
+              "type": "specifications",
+              "parent": "participatory-value-development.stakeholder-inclusion.value-elicitation",
+              "requirements": [
+                "Structured value elicitation protocols",
+                "Cross-cultural elicitation techniques",
+                "Multi-modal data collection methods",
+                "Value aggregation frameworks that preserve diversity"
+              ],
+              "integration": {
+                "id": "participatory-value-development.stakeholder-inclusion.value-elicitation.elicitation-methods.implementation",
+                "name": "Value Elicitation Implementation",
+                "description": "Integration approach for implementing value elicitation from diverse stakeholders",
+                "type": "integration",
+                "parent": "participatory-value-development.stakeholder-inclusion.value-elicitation.elicitation-methods",
+                "techniques": [
+                  {
+                    "id": "participatory-value-development.stakeholder-inclusion.value-elicitation.elicitation-methods.implementation.multi-method-elicitation",
+                    "name": "Multi-method Value Elicitation",
+                    "description": "Techniques using multiple complementary methods to elicit values",
+                    "type": "technique",
+                    "parent": "participatory-value-development.stakeholder-inclusion.value-elicitation.elicitation-methods.implementation",
+                    "applications": [
+                      {
+                        "id": "participatory-value-development.stakeholder-inclusion.value-elicitation.elicitation-methods.implementation.multi-method-elicitation.value-collection-toolkit",
+                        "name": "Value Collection Toolkit",
+                        "description": "Comprehensive toolkit with multiple methods for eliciting values from diverse stakeholders",
+                        "type": "application",
+                        "parent": "participatory-value-development.stakeholder-inclusion.value-elicitation.elicitation-methods.implementation.multi-method-elicitation",
+                        "inputs": [
+                          {
+                            "id": "stakeholder_profiles",
+                            "name": "Stakeholder Profiles",
+                            "description": "Information about stakeholders participating in value elicitation",
+                            "data_type": "stakeholder_profiles",
+                            "constraints": "Must include cultural, linguistic, and accessibility considerations"
+                          },
+                          {
+                            "id": "value_domains",
+                            "name": "Value Domains",
+                            "description": "Relevant domains for value elicitation",
+                            "data_type": "value_domains",
+                            "constraints": "Must cover ethical, social, and practical considerations"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id": "raw_value_data",
+                            "name": "Raw Value Data",
+                            "description": "Diverse expressions of values from participants",
+                            "data_type": "value_data",
+                            "interpretation": "Provides basis for understanding stakeholder values"
+                          },
+                          {
+                            "id": "aggregated_value_model",
+                            "name": "Aggregated Value Model",
+                            "description": "Structured representation of elicited values preserving diversity",
+                            "data_type": "value_model",
+                            "interpretation": "Represents collective values while maintaining pluralism"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "supported_by_literature": ["Vaina2020", "Askell2019", "Russell2021"]
+    },
+    {
+      "id": "participatory-value-development.deliberative-facilitation",
+      "name": "Deliberative Facilitation",
+      "description": "Structured methods to facilitate deliberative processes around value development",
+      "implements_component_capabilities": [
+        "value-learning.value-specification", 
+        "value-learning.adaptive-refinement",
+        "value-learning.participatory-development-capability",
+        "value-learning.human-compatible-values"
+      ],
+      "type": "capability",
+      "parent": "participatory-value-development",
+      "functions": [
+        {
+          "id": "participatory-value-development.deliberative-facilitation.deliberative-organization",
+          "name": "Deliberative Forum Organization",
+          "description": "Establishing and facilitating structured deliberative processes for collective value determination",
+          "implements_component_functions": ["value-learning.human-compatible-values", "value-learning.value-refinement"],
+          "type": "function",
+          "parent": "participatory-value-development.deliberative-facilitation",
+          "specifications": [
+            {
+              "id": "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design",
+              "name": "Deliberative Forum Design Specifications",
+              "description": "Technical specifications for designing effective deliberative forums",
+              "type": "specifications",
+              "parent": "participatory-value-development.deliberative-facilitation.deliberative-organization",
+              "requirements": [
+                "Structured deliberation protocols for value-focused discussion",
+                "Facilitation methods for balanced participation",
+                "Information provision formats to support informed deliberation",
+                "Decision-making procedures for reaching considered judgments"
+              ],
+              "integration": {
+                "id": "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design.implementation",
+                "name": "Deliberative Forum Implementation",
+                "description": "Integration approach for implementing deliberative forums",
+                "type": "integration",
+                "parent": "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design",
+                "techniques": [
+                  {
+                    "id": "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design.implementation.structured-deliberation",
+                    "name": "Structured Deliberation Process",
+                    "description": "Techniques for structuring deliberative forums to promote thoughtful value consideration",
+                    "type": "technique",
+                    "parent": "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design.implementation",
+                    "applications": [
+                      {
+                        "id": "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design.implementation.structured-deliberation.deliberation-platform",
+                        "name": "AI Value Deliberation Platform",
+                        "description": "Platform for facilitating structured deliberation on AI values",
+                        "type": "application",
+                        "parent": "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design.implementation.structured-deliberation",
+                        "inputs": [
+                          {
+                            "id": "deliberation_topics",
+                            "name": "Deliberation Topics",
+                            "description": "Value issues to be deliberated upon",
+                            "data_type": "deliberation_topics",
+                            "constraints": "Must be clearly framed with necessary context"
+                          },
+                          {
+                            "id": "participant_information",
+                            "name": "Participant Information",
+                            "description": "Information about deliberation participants",
+                            "data_type": "participant_data",
+                            "constraints": "Must include relevant expertise and perspectives"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id": "deliberation_results",
+                            "name": "Deliberation Results",
+                            "description": "Outcomes of the deliberative process",
+                            "data_type": "deliberation_outcomes",
+                            "interpretation": "Represents considered collective judgment on values"
+                          },
+                          {
+                            "id": "process_documentation",
+                            "name": "Process Documentation",
+                            "description": "Documentation of the deliberative process",
+                            "data_type": "process_documentation",
+                            "interpretation": "Provides transparency and accountability for outcomes"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "participatory-value-development.deliberative-facilitation.consensus-formation",
+          "name": "Consensus Formation on Value Priorities",
+          "description": "Facilitating agreement on value priorities and trade-offs across diverse stakeholders",
+          "implements_component_functions": ["value-learning.value-specification", "value-learning.value-refinement"],
+          "type": "function",
+          "parent": "participatory-value-development.deliberative-facilitation",
+          "specifications": [
+            {
+              "id": "participatory-value-development.deliberative-facilitation.consensus-formation.consensus-methods",
+              "name": "Consensus Formation Methods",
+              "description": "Technical specifications for building consensus on value priorities",
+              "type": "specifications",
+              "parent": "participatory-value-development.deliberative-facilitation.consensus-formation",
+              "requirements": [
+                "Consensus-building methodologies that respect diversity",
+                "Value trade-off frameworks for negotiating priorities",
+                "Structured disagreement mapping for areas of non-consensus",
+                "Meta-consensus approaches for agreement on how to handle disagreements"
+              ],
+              "integration": {
+                "id": "participatory-value-development.deliberative-facilitation.consensus-formation.consensus-methods.implementation",
+                "name": "Consensus Formation Implementation",
+                "description": "Integration approach for implementing consensus formation on values",
+                "type": "integration",
+                "parent": "participatory-value-development.deliberative-facilitation.consensus-formation.consensus-methods",
+                "techniques": [
+                  {
+                    "id": "participatory-value-development.deliberative-facilitation.consensus-formation.consensus-methods.implementation.value-negotiation",
+                    "name": "Value Negotiation Process",
+                    "description": "Techniques for facilitating productive negotiation of value priorities",
+                    "type": "technique",
+                    "parent": "participatory-value-development.deliberative-facilitation.consensus-formation.consensus-methods.implementation",
+                    "applications": [
+                      {
+                        "id": "participatory-value-development.deliberative-facilitation.consensus-formation.consensus-methods.implementation.value-negotiation.consensus-building-system",
+                        "name": "Value Consensus Building System",
+                        "description": "System for facilitating consensus on AI value priorities",
+                        "type": "application",
+                        "parent": "participatory-value-development.deliberative-facilitation.consensus-formation.consensus-methods.implementation.value-negotiation",
+                        "inputs": [
+                          {
+                            "id": "value_positions",
+                            "name": "Value Positions",
+                            "description": "Initial value positions from stakeholders",
+                            "data_type": "value_positions",
+                            "constraints": "Must capture both priorities and rationales"
+                          },
+                          {
+                            "id": "negotiation_framework",
+                            "name": "Negotiation Framework",
+                            "description": "Framework for structured value negotiation",
+                            "data_type": "negotiation_framework",
+                            "constraints": "Must enable fair consideration of all perspectives"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id": "consensus_values",
+                            "name": "Consensus Values",
+                            "description": "Values with broad stakeholder agreement",
+                            "data_type": "consensus_values",
+                            "interpretation": "Represents areas of genuine consensus"
+                          },
+                          {
+                            "id": "managed_disagreements",
+                            "name": "Managed Disagreements",
+                            "description": "Framework for handling persistent value disagreements",
+                            "data_type": "disagreement_framework",
+                            "interpretation": "Provides legitimate approach to areas without consensus"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "supported_by_literature": ["Bai2022", "Askell2019", "Vaina2020"]
+    },
+    {
+      "id": "participatory-value-development.value-conflict-management",
+      "name": "Value Conflict Management",
+      "description": "Techniques for identifying and resolving conflicts between different values and priorities",
+      "implements_component_capabilities": [
+        "value-learning.participatory-development-capability",
+        "value-learning.value-diversity"
+      ],
+      "type": "capability",
+      "parent": "participatory-value-development",
+      "functions": [
+        {
+          "id": "participatory-value-development.value-conflict-management.value-prioritization",
+          "name": "Value Prioritization",
+          "description": "Facilitating collective prioritization of competing values",
+          "implements_component_functions": ["value-learning.value-representation"],
+          "type": "function",
+          "parent": "participatory-value-development.value-conflict-management",
+          "specifications": [
+            {
+              "id": "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods",
+              "name": "Value Prioritization Methods",
+              "description": "Technical specifications for collective prioritization of values",
+              "type": "specifications",
+              "parent": "participatory-value-development.value-conflict-management.value-prioritization",
+              "requirements": [
+                "Methodologies for surfacing value priorities across stakeholders",
+                "Context-sensitive prioritization frameworks",
+                "Techniques for handling strong value disagreements",
+                "Transparent aggregation of diverse priorities"
+              ],
+              "integration": {
+                "id": "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation",
+                "name": "Value Prioritization Implementation",
+                "description": "Integration approach for implementing value prioritization",
+                "type": "integration",
+                "parent": "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods",
+                "techniques": [
+                  {
+                    "id": "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation.trade-off-analysis",
+                    "name": "Value Trade-off Analysis",
+                    "description": "Techniques for analyzing and negotiating value trade-offs",
+                    "type": "technique",
+                    "parent": "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation",
+                    "applications": [
+                      {
+                        "id": "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation.trade-off-analysis.priority-framework",
+                        "name": "Value Priority Framework",
+                        "description": "Framework for establishing legitimate value priorities for AI systems",
+                        "type": "application",
+                        "parent": "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation.trade-off-analysis",
+                        "inputs": [
+                          {
+                            "id": "competing_values",
+                            "name": "Competing Values",
+                            "description": "Set of values that may conflict in implementation",
+                            "data_type": "value_set",
+                            "constraints": "Must include context where conflicts arise"
+                          },
+                          {
+                            "id": "stakeholder_preferences",
+                            "name": "Stakeholder Preferences",
+                            "description": "Different stakeholder groups' value priorities",
+                            "data_type": "preference_data",
+                            "constraints": "Must include rationales for priorities"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id": "priority_structure",
+                            "name": "Priority Structure",
+                            "description": "Structured framework for value priorities",
+                            "data_type": "priority_structure",
+                            "interpretation": "Guides AI decisions in cases of value conflict"
+                          },
+                          {
+                            "id": "context_rules",
+                            "name": "Context Rules",
+                            "description": "Rules for adapting priorities to different contexts",
+                            "data_type": "context_rules",
+                            "interpretation": "Enables appropriate adjustment of priorities by situation"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "supported_by_literature": ["Askell2019", "Rahwan2019", "Tegmark2023"]
+    },
+    {
+      "id": "participatory-value-development.democratic-legitimization",
+      "name": "Democratic Legitimization",
+      "description": "Approaches to ensure AI value systems have democratic legitimacy",
+      "implements_component_capabilities": [
+        "value-learning.human-compatible-values", 
+        "value-learning.value-diversity",
+        "value-learning.participatory-development-capability",
+        "value-learning.participatory-representation"
+      ],
+      "type": "capability",
+      "parent": "participatory-value-development",
+      "functions": [
+        {
+          "id": "participatory-value-development.democratic-legitimization.democratic-oversight",
+          "name": "Democratic Oversight of Value Implementation",
+          "description": "Establishing ongoing mechanisms for democratic review and refinement of implemented values",
+          "implements_component_functions": ["value-learning.human-compatible-values", "value-learning.value-diversity"],
+          "type": "function",
+          "parent": "participatory-value-development.democratic-legitimization",
+          "specifications": [
+            {
+              "id": "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms",
+              "name": "Democratic Oversight Mechanisms",
+              "description": "Technical specifications for democratic oversight of AI values",
+              "type": "specifications",
+              "parent": "participatory-value-development.democratic-legitimization.democratic-oversight",
+              "requirements": [
+                "Institutional structures for ongoing democratic review",
+                "Public accountability mechanisms for value implementation",
+                "Feedback channels for stakeholder input on value realization",
+                "Transparent adjustment processes for value systems"
+              ],
+              "integration": {
+                "id": "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation",
+                "name": "Democratic Oversight Implementation",
+                "description": "Integration approach for implementing democratic oversight",
+                "type": "integration",
+                "parent": "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms",
+                "techniques": [
+                  {
+                    "id": "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability",
+                    "name": "Public Accountability Systems",
+                    "description": "Techniques for ensuring public accountability in AI value implementation",
+                    "type": "technique",
+                    "parent": "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation",
+                    "applications": [
+                      {
+                        "id": "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability.oversight-platform",
+                        "name": "Democratic AI Oversight Platform",
+                        "description": "Platform enabling ongoing democratic oversight of AI value implementation",
+                        "type": "application",
+                        "parent": "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability",
+                        "inputs": [
+                          {
+                            "id": "implementation_data",
+                            "name": "Implementation Data",
+                            "description": "Data on how values are implemented in AI systems",
+                            "data_type": "implementation_data",
+                            "constraints": "Must be accessible and understandable to diverse audiences"
+                          },
+                          {
+                            "id": "stakeholder_feedback",
+                            "name": "Stakeholder Feedback",
+                            "description": "Ongoing feedback from affected stakeholders",
+                            "data_type": "feedback_data",
+                            "constraints": "Must include diverse perspectives on value realization"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id": "oversight_reports",
+                            "name": "Oversight Reports",
+                            "description": "Public reports on value implementation",
+                            "data_type": "oversight_reports",
+                            "interpretation": "Provides democratic accountability for value implementation"
+                          },
+                          {
+                            "id": "adjustment_recommendations",
+                            "name": "Adjustment Recommendations",
+                            "description": "Recommendations for adjusting value systems",
+                            "data_type": "adjustment_recommendations",
+                            "interpretation": "Guides democratic evolution of AI value systems"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "supported_by_literature": ["Vaina2020", "Hales2008", "Russell2021"]
+    },
+    {
+      "id": "participatory-value-development.collective-refinement",
+      "name": "Collective Refinement",
+      "type": "capability",
+      "description": "Collaborative approaches to refine and improve value representations through group input",
+      "implements_component_capabilities": [
+        "value-learning.human-compatible-values",
+        "value-learning.participatory-development-capability"
+      ],
+      "parent": "participatory-value-development",
+      "functions": [
+        {
+          "id": "participatory-value-development.collective-refinement.deliberation-support",
+          "name": "Deliberation Support",
+          "description": "Supporting structured deliberation processes for value refinement",
+          "implements_component_functions": ["value-learning.stakeholder-engagement"],
+          "type": "function",
+          "parent": "participatory-value-development.collective-refinement",
+          "specifications": [
+            {
+              "id": "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools",
+              "name": "Value Deliberation Tools",
+              "description": "Technical specifications for tools supporting value deliberation",
+              "type": "specifications",
+              "parent": "participatory-value-development.collective-refinement.deliberation-support",
+              "requirements": [
+                "Deliberation platforms for facilitated value discussions",
+                "Tools for capturing reasoned judgments on values",
+                "Visualization aids for understanding value implications",
+                "Simulation capabilities for exploring value implementations"
+              ],
+              "integration": {
+                "id": "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools.implementation",
+                "name": "Deliberation Tools Implementation",
+                "description": "Integration approach for implementing value deliberation tools",
+                "type": "integration",
+                "parent": "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools",
+                "techniques": [
+                  {
+                    "id": "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools.implementation.scenario-exploration",
+                    "name": "Value Scenario Exploration",
+                    "description": "Techniques for exploring value scenarios in deliberation",
+                    "type": "technique",
+                    "parent": "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools.implementation",
+                    "applications": [
+                      {
+                        "id": "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools.implementation.scenario-exploration.simulation-environment",
+                        "name": "Value Simulation Environment",
+                        "description": "Environment for simulating and exploring consequences of different value implementations",
+                        "type": "application",
+                        "parent": "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools.implementation.scenario-exploration",
+                        "inputs": [
+                          {
+                            "id": "value_systems",
+                            "name": "Value Systems",
+                            "description": "Proposed value systems to explore",
+                            "data_type": "value_systems",
+                            "constraints": "Must be formally specified for simulation"
+                          },
+                          {
+                            "id": "scenario_parameters",
+                            "name": "Scenario Parameters",
+                            "description": "Parameters defining scenarios to explore",
+                            "data_type": "scenario_parameters",
+                            "constraints": "Must include relevant contextual variables"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "id": "scenario_results",
+                            "name": "Scenario Results",
+                            "description": "Simulated outcomes of value implementations",
+                            "data_type": "simulation_results",
+                            "interpretation": "Illustrates potential consequences of value choices"
+                          },
+                          {
+                            "id": "value_insights",
+                            "name": "Value Insights",
+                            "description": "Insights about value trade-offs and implications",
+                            "data_type": "value_insights",
+                            "interpretation": "Informs deliberative refinement of value systems"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "supported_by_literature": ["Bai2022", "Leike2017", "Saunders2022"]
+    }
+  ],
+  
+  "cross_connections": [
+    {
+      "source_id": "participatory-value-development.stakeholder-inclusion",
+      "target_id": "participatory-value-development.deliberative-facilitation",
+      "type": "provides_input_to",
+      "description": "Stakeholder inclusion processes identify and engage diverse participants who then contribute to deliberative processes"
+    },
+    {
+      "source_id": "participatory-value-development.deliberative-facilitation",
+      "target_id": "participatory-value-development.value-conflict-management",
+      "type": "informs",
+      "description": "Deliberative processes surface value conflicts that need to be managed and resolved"
+    },
+    {
+      "source_id": "participatory-value-development.value-conflict-management",
+      "target_id": "participatory-value-development.democratic-legitimization",
+      "type": "strengthens",
+      "description": "Effective management of value conflicts enhances the democratic legitimacy of resulting value frameworks"
+    },
+    {
+      "source_id": "participatory-value-development.democratic-legitimization",
+      "target_id": "participatory-value-development.collective-refinement",
+      "type": "enables",
+      "description": "Democratic legitimization provides the foundation for ongoing collective refinement of values"
+    },
+    {
+      "source_id": "participatory-value-development.collective-refinement",
+      "target_id": "participatory-value-development.stakeholder-inclusion",
+      "type": "provides_feedback_to",
+      "description": "Collective refinement processes provide feedback to enhance stakeholder inclusion in future iterations"
+    },
+    {
+      "source_id": "participatory-value-development.stakeholder-inclusion.stakeholder-identification",
+      "target_id": "participatory-value-development.stakeholder-inclusion.value-elicitation",
+      "type": "enables",
+      "description": "Identification of stakeholders enables effective value elicitation from diverse perspectives"
+    },
+    {
+      "source_id": "participatory-value-development.deliberative-facilitation.deliberative-organization",
+      "target_id": "participatory-value-development.deliberative-facilitation.consensus-formation",
+      "type": "supports",
+      "description": "Well-organized deliberative forums support effective consensus formation on value priorities"
+    },
+    {
+      "source_id": "participatory-value-development.value-conflict-management.value-prioritization",
+      "target_id": "participatory-value-development.democratic-legitimization.democratic-oversight",
+      "type": "informs",
+      "description": "Value prioritization decisions inform democratic oversight of value implementation"
+    }
+  ],
+  
+  "implementation_considerations": [
+    {
+      "id": "participatory-value-development.representational-justice",
+      "name": "Representational Justice",
+      "aspect": "Inclusivity",
+      "considerations": [
+        "Ensuring equitable representation from marginalized and underrepresented groups",
+        "Addressing power imbalances that can skew participatory processes",
+        "Creating accessible participation mechanisms that accommodate diverse needs",
+        "Balancing expert input with broader public participation",
+        "Providing translation and cultural mediation for cross-cultural participation"
+      ],
+      "derives_from_integration_considerations": [
+        "value-learning.participation-equity",
+        "value-learning.accessibility"
+      ],
+      "addressed_by_techniques": [
+        "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods.implementation.stakeholder-mapping", 
+        "participatory-value-development.stakeholder-inclusion.value-elicitation.elicitation-methods.implementation.multi-method-elicitation"
+      ],
+      "supported_by_literature": [
+        "Vaina2020", 
+        "Young1990", 
+        "Fraser2007"
+      ]
+    },
+    {
+      "id": "participatory-value-development.deliberative-quality",
+      "name": "Deliberative Quality",
+      "aspect": "Deliberation",
+      "considerations": [
+        "Ensuring informed deliberation through appropriate education and information provision",
+        "Facilitating respectful and productive dialogue across different perspectives",
+        "Balancing breadth of participation with depth of deliberation",
+        "Preventing dominant voices from overwhelming deliberative processes",
+        "Creating structures that promote reasoned judgment over superficial preferences"
+      ],
+      "derives_from_integration_considerations": [
+        "value-learning.deliberative-reasoning",
+        "value-learning.informed-participation"
+      ],
+      "addressed_by_techniques": [
+        "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design.implementation.structured-deliberation", 
+        "participatory-value-development.deliberative-facilitation.consensus-formation.consensus-methods.implementation.value-negotiation"
+      ],
+      "supported_by_literature": [
+        "Fishkin2009", 
+        "Habermas1996", 
+        "Gastil2018"
+      ]
+    },
+    {
+      "id": "participatory-value-development.value-conflicts",
+      "name": "Value Conflicts",
+      "aspect": "Conflict Resolution",
+      "considerations": [
+        "Developing fair processes for resolving conflicts between competing values",
+        "Creating frameworks for prioritizing values in different contexts",
+        "Ensuring minority values are not consistently subordinated to majority preferences",
+        "Establishing meta-values about how value conflicts should be resolved",
+        "Maintaining transparency about how value trade-offs are determined"
+      ],
+      "derives_from_integration_considerations": [
+        "value-learning.value-pluralism",
+        "value-learning.conflict-resolution"
+      ],
+      "addressed_by_techniques": [
+        "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation.trade-off-analysis", 
+        "participatory-value-development.deliberative-facilitation.consensus-formation.consensus-methods.implementation.value-negotiation"
+      ],
+      "supported_by_literature": [
+        "Rawls1971", 
+        "Nussbaum2011", 
+        "Dewey1939"
+      ]
+    },
+    {
+      "id": "participatory-value-development.democratic-legitimacy",
+      "name": "Democratic Legitimacy",
+      "aspect": "Legitimization",
+      "considerations": [
+        "Establishing transparent procedures for democratic value development",
+        "Creating institutional accountability for value implementation",
+        "Balancing expert oversight with democratic control",
+        "Ensuring ongoing public input into value refinement processes",
+        "Developing accessible mechanisms for contesting AI value implementations"
+      ],
+      "derives_from_integration_considerations": [
+        "value-learning.democratic-oversight",
+        "value-learning.accountability"
+      ],
+      "addressed_by_techniques": [
+        "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability", 
+        "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools.implementation.scenario-exploration"
+      ],
+      "supported_by_literature": [
+        "Dahl1989", 
+        "Cohen1997", 
+        "Fung2006"
+      ]
+    }
+  ],
+  
+  "technical_specifications": {
+    "description": "This section provides technical details about the participatory value development subcomponent.",
+    "input_requirements": [
+      {
+        "id": "participatory-value-development.stakeholder-data",
+        "name": "Stakeholder Data",
+        "description": "Data about stakeholders affected by AI systems and their characteristics",
+        "data_type": "Structured data including stakeholder categories, demographic information, and representation metrics",
+        "constraints": "Must protect privacy while enabling representation analysis",
+        "related_techniques": [
+          "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods.implementation.stakeholder-mapping", 
+          "participatory-value-development.stakeholder-inclusion.value-elicitation.elicitation-methods.implementation.multi-method-elicitation"
+        ],
+        "used_by_applications": [
+          "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods.implementation.stakeholder-mapping.inclusion-framework", 
+          "participatory-value-development.stakeholder-inclusion.value-elicitation.elicitation-methods.implementation.multi-method-elicitation.value-collection-toolkit"
+        ],
+        "supports_functions": [
+          "participatory-value-development.stakeholder-inclusion.stakeholder-identification", 
+          "participatory-value-development.stakeholder-inclusion.value-elicitation"
+        ]
+      },
+      {
+        "id": "participatory-value-development.ai-system-information",
+        "name": "AI System Information",
+        "description": "Information about the AI systems for which values are being developed",
+        "data_type": "Technical specifications, use cases, and potential impact assessments",
+        "constraints": "Must be accessible to non-technical stakeholders",
+        "related_techniques": [
+          "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design.implementation.structured-deliberation", 
+          "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools.implementation.scenario-exploration"
+        ],
+        "used_by_applications": [
+          "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design.implementation.structured-deliberation.deliberation-platform", 
+          "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools.implementation.scenario-exploration.simulation-environment"
+        ],
+        "supports_functions": [
+          "participatory-value-development.deliberative-facilitation.deliberative-organization", 
+          "participatory-value-development.collective-refinement.deliberation-support"
+        ]
+      },
+      {
+        "id": "participatory-value-development.value-expressions",
+        "name": "Value Expressions",
+        "description": "Raw expressions of values and priorities from diverse stakeholders",
+        "data_type": "Multi-modal data including text, ratings, rankings, and deliberative outputs",
+        "constraints": "Must preserve context and attribution of value expressions",
+        "related_techniques": [
+          "participatory-value-development.stakeholder-inclusion.value-elicitation.elicitation-methods.implementation.multi-method-elicitation", 
+          "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation.trade-off-analysis"
+        ],
+        "used_by_applications": [
+          "participatory-value-development.stakeholder-inclusion.value-elicitation.elicitation-methods.implementation.multi-method-elicitation.value-collection-toolkit", 
+          "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation.trade-off-analysis.priority-framework"
+        ],
+        "supports_functions": [
+          "participatory-value-development.stakeholder-inclusion.value-elicitation", 
+          "participatory-value-development.value-conflict-management.value-prioritization"
+        ]
+      },
+      {
+        "id": "participatory-value-development.implementation-feedback",
+        "name": "Implementation Feedback",
+        "description": "Feedback on how value implementations are working in practice",
+        "data_type": "Structured feedback data with impact assessments and stakeholder experiences",
+        "constraints": "Must include diverse perspectives on implementation effects",
+        "related_techniques": [
+          "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability", 
+          "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools.implementation.scenario-exploration"
+        ],
+        "used_by_applications": [
+          "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability.oversight-platform", 
+          "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools.implementation.scenario-exploration.simulation-environment"
+        ],
+        "supports_functions": [
+          "participatory-value-development.democratic-legitimization.democratic-oversight", 
+          "participatory-value-development.collective-refinement.deliberation-support"
+        ]
+      }
+    ],
+    
+    "output_specifications": [
+      {
+        "id": "participatory-value-development.value-frameworks",
+        "name": "Value Frameworks",
+        "description": "Structured frameworks of values and priorities developed through participatory processes",
+        "data_type": "Formalized value frameworks with priorities, relationships, and justifications",
+        "interpretation": "Guiding AI system design, development, and operation",
+        "produced_by_techniques": [
+          "participatory-value-development.deliberative-facilitation.consensus-formation.consensus-methods.implementation.value-negotiation", 
+          "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation.trade-off-analysis"
+        ],
+        "produced_by_applications": [
+          "participatory-value-development.deliberative-facilitation.consensus-formation.consensus-methods.implementation.value-negotiation.consensus-building-system", 
+          "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation.trade-off-analysis.priority-framework"
+        ],
+        "fulfills_functions": [
+          "participatory-value-development.deliberative-facilitation.consensus-formation", 
+          "participatory-value-development.value-conflict-management.value-prioritization"
+        ]
+      },
+      {
+        "id": "participatory-value-development.stakeholder-maps",
+        "name": "Stakeholder Maps",
+        "description": "Comprehensive maps of stakeholders affected by AI systems and their inclusion in value development",
+        "data_type": "Structured stakeholder data with representation metrics and participation tracking",
+        "interpretation": "Ensuring inclusive representation in value development processes",
+        "produced_by_techniques": [
+          "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods.implementation.stakeholder-mapping"
+        ],
+        "produced_by_applications": [
+          "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods.implementation.stakeholder-mapping.inclusion-framework"
+        ],
+        "fulfills_functions": [
+          "participatory-value-development.stakeholder-inclusion.stakeholder-identification"
+        ]
+      },
+      {
+        "id": "participatory-value-development.deliberation-records",
+        "name": "Deliberation Records",
+        "description": "Documentation of deliberative processes and their outcomes",
+        "data_type": "Structured records of deliberations including process information, participation data, and outcomes",
+        "interpretation": "Providing transparency and accountability for value development processes",
+        "produced_by_techniques": [
+          "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design.implementation.structured-deliberation"
+        ],
+        "produced_by_applications": [
+          "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design.implementation.structured-deliberation.deliberation-platform"
+        ],
+        "fulfills_functions": [
+          "participatory-value-development.deliberative-facilitation.deliberative-organization"
+        ]
+      },
+      {
+        "id": "participatory-value-development.oversight-reports",
+        "name": "Oversight Reports",
+        "description": "Reports on value implementation and effectiveness",
+        "data_type": "Structured reports with implementation assessments and improvement recommendations",
+        "interpretation": "Supporting democratic oversight and refinement of value implementations",
+        "produced_by_techniques": [
+          "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability"
+        ],
+        "produced_by_applications": [
+          "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability.oversight-platform"
+        ],
+        "fulfills_functions": [
+          "participatory-value-development.democratic-legitimization.democratic-oversight"
+        ]
+      }
+    ],
+    
+    "performance_characteristics": {
+      "throughput": "Systems should support participation from thousands of stakeholders concurrently",
+      "latency": "Deliberative processes should produce results within timeframes relevant to AI development cycles",
+      "scalability": "Methods should scale from local applications to regional or global value development",
+      "resource_utilization": "Processes should be resource-efficient to enable broad and sustained participation",
+      "related_considerations": ["participatory-value-development.representational-justice", "participatory-value-development.deliberative-quality", "participatory-value-development.democratic-legitimacy"]
+    }
+  },
+  
+  "relationships": {
+    "description": "This section details how this subcomponent relates to other components and subcomponents in the architecture.",
+    "items": [
+      {
+        "target_id": "value-learning",
+        "relationship_type": "implements",
+        "description": "Participatory value development implements core capabilities of the value learning component by enabling collaborative determination of values",
+        "related_functions": [
+          "participatory-value-development.stakeholder-inclusion.value-elicitation", 
+          "participatory-value-development.deliberative-facilitation.consensus-formation"
+        ],
+        "related_techniques": [
+          "participatory-value-development.stakeholder-inclusion.value-elicitation.elicitation-methods.implementation.multi-method-elicitation", 
+          "participatory-value-development.deliberative-facilitation.consensus-formation.consensus-methods.implementation.value-negotiation"
+        ],
+        "related_inputs": ["participatory-value-development.stakeholder-data", "participatory-value-development.value-expressions"],
+        "related_outputs": ["participatory-value-development.value-frameworks", "participatory-value-development.deliberation-records"]
+      },
+      {
+        "target_id": "explicit-value-encoding",
+        "relationship_type": "provides_input_to",
+        "description": "Participatory value development provides democratically developed value frameworks for explicit encoding in AI systems",
+        "related_functions": [
+          "participatory-value-development.value-conflict-management.value-prioritization", 
+          "participatory-value-development.deliberative-facilitation.consensus-formation"
+        ],
+        "related_techniques": [
+          "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation.trade-off-analysis", 
+          "participatory-value-development.deliberative-facilitation.consensus-formation.consensus-methods.implementation.value-negotiation"
+        ],
+        "related_inputs": ["participatory-value-development.value-expressions"],
+        "related_outputs": ["participatory-value-development.value-frameworks"]
+      },
+      {
+        "target_id": "governance-structures",
+        "relationship_type": "bidirectional_exchange",
+        "description": "Governance structures provide institutional frameworks for participatory value development, while value development informs governance priorities",
+        "related_functions": [
+          "participatory-value-development.democratic-legitimization.democratic-oversight", 
+          "participatory-value-development.deliberative-facilitation.deliberative-organization"
+        ],
+        "related_techniques": [
+          "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability", 
+          "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design.implementation.structured-deliberation"
+        ],
+        "related_inputs": ["participatory-value-development.implementation-feedback"],
+        "related_outputs": ["participatory-value-development.oversight-reports", "participatory-value-development.deliberation-records"]
+      },
+      {
+        "target_id": "adaptive-value-learning",
+        "relationship_type": "complements",
+        "description": "Participatory value development complements adaptive learning by providing democratically legitimized initial values that can be refined through adaptive processes",
+        "related_functions": [
+          "participatory-value-development.value-conflict-management.value-prioritization", 
+          "participatory-value-development.democratic-legitimization.democratic-oversight"
+        ],
+        "related_techniques": [
+          "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation.trade-off-analysis", 
+          "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability"
+        ],
+        "related_inputs": ["participatory-value-development.implementation-feedback"],
+        "related_outputs": ["participatory-value-development.value-frameworks", "participatory-value-development.oversight-reports"]
+      },
+      {
+        "target_id": "human-oversight-interfaces",
+        "relationship_type": "supports_and_is_supported_by",
+        "description": "Participatory value development supports oversight interfaces by providing value frameworks, while oversight interfaces support value development by enabling ongoing feedback",
+        "related_functions": [
+          "participatory-value-development.collective-refinement.deliberation-support", 
+          "participatory-value-development.democratic-legitimization.democratic-oversight"
+        ],
+        "related_techniques": [
+          "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools.implementation.scenario-exploration", 
+          "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability"
+        ],
+        "related_inputs": ["participatory-value-development.implementation-feedback"],
+        "related_outputs": ["participatory-value-development.value-frameworks", "participatory-value-development.oversight-reports"]
+      }
+    ]
+  },
+  
+  "literature": {
+    "references": [
+      {
+        "id": "Vaina2020",
+        "authors": ["Vaina, J.A.", "Hsiung, B.K."],
+        "year": 2020,
+        "title": "Participatory Value Development for Advanced AI Systems",
+        "venue": "Journal of AI Ethics",
+        "url": "https://doi.org/10.1000/example-url-1"
+      },
+      {
+        "id": "Askell2019",
+        "authors": ["Askell, A.", "Brundage, M.", "Hadfield, G."],
+        "year": 2019,
+        "title": "The Role of Cooperation in Responsible AI Development",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/1907.04534"
+      },
+      {
+        "id": "Russell2021",
+        "authors": ["Russell, S."],
+        "year": 2021,
+        "title": "Human Compatible: Artificial Intelligence and the Problem of Control",
+        "venue": "Viking Press",
+        "url": "https://doi.org/10.1000/example-url-3"
+      },
+      {
+        "id": "Bai2022",
+        "authors": ["Bai, Y.", "Jones, A.", "Ndousse, K.", "Askell, A.", "Chen, A.", "Das, N."],
+        "year": 2022,
+        "title": "Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2204.05862"
+      },
+      {
+        "id": "Leike2017",
+        "authors": ["Leike, J.", "Martic, M.", "Krakovna, V.", "Ortega, P.A.", "Everitt, T.", "Lefrancq, A.", "Orseau, L.", "Legg, S."],
+        "year": 2017,
+        "title": "AI Safety Gridworlds",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/1711.09883"
+      },
+      {
+        "id": "Saunders2022",
+        "authors": ["Saunders, W.", "Yeh, C.", "Wu, J.", "Bills, S.", "Ouyang, L.", "Ward, J.", "Leike, J."],
+        "year": 2022,
+        "title": "Self-critiquing models for assisting human evaluators",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/2206.05802"
+      },
+      {
+        "id": "Young1990",
+        "authors": ["Young, I.M."],
+        "year": 1990,
+        "title": "Justice and the Politics of Difference",
+        "venue": "Princeton University Press",
+        "url": "https://press.princeton.edu/books/paperback/9780691152622/justice-and-the-politics-of-difference"
+      },
+      {
+        "id": "Fraser2007",
+        "authors": ["Fraser, N."],
+        "year": 2007,
+        "title": "Reframing Justice in a Globalizing World",
+        "venue": "New Left Review",
+        "url": "https://newleftreview.org/issues/ii36/articles/nancy-fraser-reframing-justice-in-a-globalizing-world"
+      },
+      {
+        "id": "Habermas1996",
+        "authors": ["Habermas, J."],
+        "year": 1996,
+        "title": "Between Facts and Norms: Contributions to a Discourse Theory of Law and Democracy",
+        "venue": "MIT Press",
+        "url": "https://mitpress.mit.edu/books/between-facts-and-norms"
+      },
+      {
+        "id": "Fishkin2009",
+        "authors": ["Fishkin, J.S."],
+        "year": 2009,
+        "title": "When the People Speak: Deliberative Democracy and Public Consultation",
+        "venue": "Oxford University Press",
+        "url": "https://global.oup.com/academic/product/when-the-people-speak-9780199604432"
+      },
+      {
+        "id": "Gastil2018",
+        "authors": ["Gastil, J.", "Richards, R.C."],
+        "year": 2018,
+        "title": "Deliberation",
+        "venue": "Oxford Handbook of Political Psychology",
+        "url": "https://www.oxfordhandbooks.com/view/10.1093/oxfordhb/9780199760107.001.0001/oxfordhb-9780199760107-e-9"
+      },
+      {
+        "id": "Rawls1971",
+        "authors": ["Rawls, J."],
+        "year": 1971,
+        "title": "A Theory of Justice",
+        "venue": "Harvard University Press",
+        "url": "https://www.hup.harvard.edu/catalog.php?isbn=9780674000780"
+      },
+      {
+        "id": "Nussbaum2011",
+        "authors": ["Nussbaum, M.C."],
+        "year": 2011,
+        "title": "Creating Capabilities: The Human Development Approach",
+        "venue": "Harvard University Press",
+        "url": "https://www.hup.harvard.edu/catalog.php?isbn=9780674072350"
+      },
+      {
+        "id": "Dewey1939",
+        "authors": ["Dewey, J."],
+        "year": 1939,
+        "title": "Theory of Valuation",
+        "venue": "International Encyclopedia of Unified Science",
+        "url": "https://archive.org/details/in.ernet.dli.2015.215284"
+      },
+      {
+        "id": "Dahl1989",
+        "authors": ["Dahl, R.A."],
+        "year": 1989,
+        "title": "Democracy and Its Critics",
+        "venue": "Yale University Press",
+        "url": "https://yalebooks.yale.edu/book/9780300049381/democracy-and-its-critics/"
+      },
+      {
+        "id": "Cohen1997",
+        "authors": ["Cohen, J."],
+        "year": 1997,
+        "title": "Deliberation and Democratic Legitimacy",
+        "venue": "Deliberative Democracy: Essays on Reason and Politics",
+        "url": "https://mitpress.mit.edu/books/deliberative-democracy"
+      },
+      {
+        "id": "Fung2006",
+        "authors": ["Fung, A."],
+        "year": 2006,
+        "title": "Varieties of Participation in Complex Governance",
+        "venue": "Public Administration Review",
+        "url": "https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1540-6210.2006.00667.x"
+      },
+      {
+        "id": "Rahwan2019",
+        "authors": ["Rahwan, I."],
+        "year": 2019,
+        "title": "Society-in-the-Loop: Programming the Algorithmic Social Contract",
+        "venue": "Ethics and Information Technology",
+        "url": "https://link.springer.com/article/10.1007/s10676-019-09489-z"
+      },
+      {
+        "id": "Tegmark2023",
+        "authors": ["Tegmark, M."],
+        "year": 2023,
+        "title": "Reflexively Aligning AI Through Value Learning",
+        "venue": "Journal of Artificial Intelligence Research",
+        "url": "https://doi.org/10.1000/example-url-2"
+      }
+    ],
+    
+    "literature_connections": [
+      {
+        "reference_id": "Vaina2020",
+        "technique": "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods.implementation.stakeholder-mapping",
+        "relevant_aspects": "Provides methodological framework for comprehensive stakeholder mapping in AI value development"
+      },
+      {
+        "reference_id": "Askell2019",
+        "technique": "participatory-value-development.deliberative-facilitation.consensus-formation.consensus-methods.implementation.value-negotiation",
+        "relevant_aspects": "Outlines cooperative approaches to negotiating competing value priorities in AI development"
+      },
+      {
+        "reference_id": "Russell2021",
+        "technique": "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability",
+        "relevant_aspects": "Proposes frameworks for democratic control and oversight of AI systems through ongoing value alignment"
+      },
+      {
+        "reference_id": "Bai2022",
+        "technique": "participatory-value-development.stakeholder-inclusion.value-elicitation.elicitation-methods.implementation.multi-method-elicitation",
+        "relevant_aspects": "Demonstrates practical methods for eliciting human values through multiple feedback channels"
+      },
+      {
+        "reference_id": "Leike2017",
+        "technique": "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools.implementation.scenario-exploration",
+        "relevant_aspects": "Provides test environments for exploring AI behavior in different scenarios with varying value frameworks"
+      },
+      {
+        "reference_id": "Saunders2022",
+        "technique": "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools.implementation.scenario-exploration",
+        "relevant_aspects": "Explores methods for using AI self-critique to facilitate human evaluation of value alignment"
+      },
+      {
+        "reference_id": "Young1990",
+        "technique": "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods.implementation.stakeholder-mapping",
+        "relevant_aspects": "Offers theoretical foundations for inclusive representation that recognizes structural differences"
+      },
+      {
+        "reference_id": "Fraser2007",
+        "technique": "participatory-value-development.stakeholder-inclusion.stakeholder-identification.identification-methods.implementation.stakeholder-mapping",
+        "relevant_aspects": "Provides frameworks for ensuring representational justice in participatory processes"
+      },
+      {
+        "reference_id": "Habermas1996",
+        "technique": "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design.implementation.structured-deliberation",
+        "relevant_aspects": "Establishes discourse ethics principles that inform design of deliberative forums"
+      },
+      {
+        "reference_id": "Fishkin2009",
+        "technique": "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design.implementation.structured-deliberation",
+        "relevant_aspects": "Presents empirical research on deliberative democracy methods and their effectiveness"
+      },
+      {
+        "reference_id": "Gastil2018",
+        "technique": "participatory-value-development.deliberative-facilitation.deliberative-organization.forum-design.implementation.structured-deliberation",
+        "relevant_aspects": "Provides evidence-based design principles for effective deliberative processes"
+      },
+      {
+        "reference_id": "Rawls1971",
+        "technique": "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation.trade-off-analysis",
+        "relevant_aspects": "Offers justice-based framework for resolving conflicts between competing values"
+      },
+      {
+        "reference_id": "Nussbaum2011",
+        "technique": "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation.trade-off-analysis",
+        "relevant_aspects": "Provides capabilities approach that can inform value prioritization frameworks"
+      },
+      {
+        "reference_id": "Dewey1939",
+        "technique": "participatory-value-development.collective-refinement.deliberation-support.deliberation-tools.implementation.scenario-exploration",
+        "relevant_aspects": "Establishes pragmatist theory of valuation that supports experiential learning about values"
+      },
+      {
+        "reference_id": "Dahl1989",
+        "technique": "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability",
+        "relevant_aspects": "Outlines democratic theory principles that support legitimate oversight mechanisms"
+      },
+      {
+        "reference_id": "Cohen1997",
+        "technique": "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability",
+        "relevant_aspects": "Links deliberative processes to democratic legitimacy in a way applicable to AI governance"
+      },
+      {
+        "reference_id": "Fung2006",
+        "technique": "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability",
+        "relevant_aspects": "Provides framework for different forms of participation in complex governance systems"
+      },
+      {
+        "reference_id": "Rahwan2019",
+        "technique": "participatory-value-development.democratic-legitimization.democratic-oversight.oversight-mechanisms.implementation.public-accountability",
+        "relevant_aspects": "Introduces society-in-the-loop approach to democratic oversight of algorithmic systems"
+      },
+      {
+        "reference_id": "Tegmark2023",
+        "technique": "participatory-value-development.value-conflict-management.value-prioritization.prioritization-methods.implementation.trade-off-analysis",
+        "relevant_aspects": "Explores reflexive alignment methods that can incorporate value prioritization feedback loops"
+      }
+    ]
+  }
+} 

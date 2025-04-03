@@ -1,0 +1,633 @@
+/* Form Styles
+ * Contains styles for all form elements and layouts
+ */
+
+:root {
+  /* Form Colors */
+  --form-bg: #FFFFFF;
+  --form-border: #DADCE0;
+  --form-border-focus: #4A86E8;
+  --form-text: #202124;
+  --form-placeholder: #70757A;
+  --form-disabled-bg: #F1F3F4;
+  --form-disabled-text: #9AA0A6;
+  
+  --form-error-text: #EA4335;
+  --form-error-border: #EA4335;
+  --form-error-bg: #FDEEEE;
+  
+  --form-success-text: #34A853;
+  --form-success-border: #34A853;
+  --form-success-bg: #E6F4EA;
+  
+  --form-warning-text: #FBBC05;
+  --form-warning-border: #FBBC05;
+  --form-warning-bg: #FEF7E0;
+  
+  --form-info-text: #4285F4;
+  --form-info-border: #4285F4;
+  --form-info-bg: #E8F0FE;
+  
+  /* Form Sizing */
+  --form-control-height: 40px;
+  --form-control-padding: 8px 12px;
+  --form-control-border-radius: 4px;
+  --form-font-size: 14px;
+  --form-line-height: 20px;
+  
+  --form-small-height: 32px;
+  --form-small-padding: 6px 8px;
+  --form-small-font-size: 12px;
+  --form-small-line-height: 16px;
+  
+  --form-large-height: 48px;
+  --form-large-padding: 12px 16px;
+  --form-large-font-size: 16px;
+  --form-large-line-height: 24px;
+  
+  /* Form Animation */
+  --form-transition-speed: 0.2s;
+}
+
+/* Form Container */
+.form-container {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 24px;
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+/* Form Label */
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: var(--form-font-size);
+  line-height: var(--form-line-height);
+  font-weight: 500;
+  color: var(--form-text);
+}
+
+.form-label.required::after {
+  content: "*";
+  color: var(--form-error-text);
+  margin-left: 4px;
+}
+
+/* Form Control Base */
+.form-control {
+  display: block;
+  width: 100%;
+  height: var(--form-control-height);
+  padding: var(--form-control-padding);
+  font-size: var(--form-font-size);
+  line-height: var(--form-line-height);
+  font-family: inherit;
+  color: var(--form-text);
+  background-color: var(--form-bg);
+  background-clip: padding-box;
+  border: 1px solid var(--form-border);
+  border-radius: var(--form-control-border-radius);
+  transition: border-color var(--form-transition-speed) ease-in-out, 
+              box-shadow var(--form-transition-speed) ease-in-out;
+}
+
+.form-control:focus {
+  border-color: var(--form-border-focus);
+  outline: 0;
+  box-shadow: 0 0 0 2px rgba(74, 134, 232, 0.25);
+}
+
+.form-control::placeholder {
+  color: var(--form-placeholder);
+  opacity: 1;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: var(--form-disabled-bg);
+  color: var(--form-disabled-text);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+/* Form Control Sizes */
+.form-control-sm {
+  height: var(--form-small-height);
+  padding: var(--form-small-padding);
+  font-size: var(--form-small-font-size);
+  line-height: var(--form-small-line-height);
+  border-radius: var(--form-control-border-radius);
+}
+
+.form-control-lg {
+  height: var(--form-large-height);
+  padding: var(--form-large-padding);
+  font-size: var(--form-large-font-size);
+  line-height: var(--form-large-line-height);
+  border-radius: var(--form-control-border-radius);
+}
+
+/* Form Validation States */
+.form-control.is-valid {
+  border-color: var(--form-success-border);
+  background-color: var(--form-success-bg);
+}
+
+.form-control.is-valid:focus {
+  border-color: var(--form-success-border);
+  box-shadow: 0 0 0 2px rgba(52, 168, 83, 0.25);
+}
+
+.form-control.is-invalid {
+  border-color: var(--form-error-border);
+  background-color: var(--form-error-bg);
+}
+
+.form-control.is-invalid:focus {
+  border-color: var(--form-error-border);
+  box-shadow: 0 0 0 2px rgba(234, 67, 53, 0.25);
+}
+
+.form-control.is-warning {
+  border-color: var(--form-warning-border);
+  background-color: var(--form-warning-bg);
+}
+
+.form-control.is-warning:focus {
+  border-color: var(--form-warning-border);
+  box-shadow: 0 0 0 2px rgba(251, 188, 5, 0.25);
+}
+
+/* Validation Feedback */
+.valid-feedback,
+.invalid-feedback,
+.warning-feedback {
+  display: none;
+  width: 100%;
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.valid-feedback {
+  color: var(--form-success-text);
+}
+
+.invalid-feedback {
+  color: var(--form-error-text);
+}
+
+.warning-feedback {
+  color: var(--form-warning-text);
+}
+
+.was-validated .form-control:valid ~ .valid-feedback,
+.form-control.is-valid ~ .valid-feedback {
+  display: block;
+}
+
+.was-validated .form-control:invalid ~ .invalid-feedback,
+.form-control.is-invalid ~ .invalid-feedback {
+  display: block;
+}
+
+.was-validated .form-control:warning ~ .warning-feedback,
+.form-control.is-warning ~ .warning-feedback {
+  display: block;
+}
+
+/* Form Check (Checkbox & Radio) */
+.form-check {
+  position: relative;
+  display: block;
+  padding-left: 24px;
+  margin-bottom: 12px;
+}
+
+.form-check:last-child {
+  margin-bottom: 0;
+}
+
+.form-check-inline {
+  display: inline-flex;
+  margin-right: 16px;
+}
+
+.form-check-input {
+  position: absolute;
+  margin-top: 2px;
+  margin-left: -24px;
+}
+
+.form-check-label {
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+/* Custom Checkbox & Radio */
+.custom-control {
+  position: relative;
+  display: block;
+  min-height: 20px;
+  padding-left: 28px;
+  margin-bottom: 12px;
+}
+
+.custom-control:last-child {
+  margin-bottom: 0;
+}
+
+.custom-control-inline {
+  display: inline-flex;
+  margin-right: 16px;
+}
+
+.custom-control-input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.custom-control-label {
+  position: relative;
+  margin-bottom: 0;
+  vertical-align: top;
+  cursor: pointer;
+}
+
+.custom-control-label::before {
+  position: absolute;
+  top: 0;
+  left: -28px;
+  display: block;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  content: "";
+  background-color: var(--form-bg);
+  border: 1px solid var(--form-border);
+  transition: background-color var(--form-transition-speed) ease-in-out,
+              border-color var(--form-transition-speed) ease-in-out,
+              box-shadow var(--form-transition-speed) ease-in-out;
+}
+
+.custom-control-label::after {
+  position: absolute;
+  top: 0;
+  left: -28px;
+  display: block;
+  width: 20px;
+  height: 20px;
+  content: "";
+  background: no-repeat 50% / 50% 50%;
+}
+
+.custom-checkbox .custom-control-label::before {
+  border-radius: 3px;
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+  background-color: var(--form-border-focus);
+  border-color: var(--form-border-focus);
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z'/%3e%3c/svg%3e");
+  background-size: 12px;
+}
+
+.custom-radio .custom-control-label::before {
+  border-radius: 50%;
+}
+
+.custom-radio .custom-control-input:checked ~ .custom-control-label::before {
+  background-color: var(--form-border-focus);
+  border-color: var(--form-border-focus);
+}
+
+.custom-radio .custom-control-input:checked ~ .custom-control-label::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='3' fill='%23fff'/%3e%3c/svg%3e");
+}
+
+/* Custom Select */
+.custom-select {
+  display: inline-block;
+  width: 100%;
+  height: var(--form-control-height);
+  padding: var(--form-control-padding);
+  padding-right: 32px;
+  font-size: var(--form-font-size);
+  line-height: var(--form-line-height);
+  color: var(--form-text);
+  vertical-align: middle;
+  background-color: var(--form-bg);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 8px 10px;
+  border: 1px solid var(--form-border);
+  border-radius: var(--form-control-border-radius);
+  appearance: none;
+}
+
+.custom-select:focus {
+  border-color: var(--form-border-focus);
+  outline: 0;
+  box-shadow: 0 0 0 2px rgba(74, 134, 232, 0.25);
+}
+
+/* Custom File Upload */
+.custom-file {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: var(--form-control-height);
+  margin-bottom: 0;
+}
+
+.custom-file-input {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: var(--form-control-height);
+  margin: 0;
+  opacity: 0;
+}
+
+.custom-file-label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  height: var(--form-control-height);
+  padding: var(--form-control-padding);
+  font-size: var(--form-font-size);
+  line-height: var(--form-line-height);
+  color: var(--form-text);
+  background-color: var(--form-bg);
+  border: 1px solid var(--form-border);
+  border-radius: var(--form-control-border-radius);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.custom-file-label::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: block;
+  height: calc(var(--form-control-height) - 2px);
+  padding: var(--form-control-padding);
+  line-height: var(--form-line-height);
+  color: var(--form-text);
+  content: "Browse";
+  background-color: #e9ecef;
+  border-left: 1px solid var(--form-border);
+  border-radius: 0 var(--form-control-border-radius) var(--form-control-border-radius) 0;
+}
+
+/* Textarea */
+textarea.form-control {
+  height: auto;
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  gap: 16px;
+}
+
+/* Form Row & Grid */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -8px;
+  margin-left: -8px;
+}
+
+.form-row > .form-group {
+  padding-right: 8px;
+  padding-left: 8px;
+  flex: 1 0 0%;
+  max-width: 100%;
+}
+
+/* Input Group */
+.input-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+}
+
+.input-group > .form-control {
+  position: relative;
+  flex: 1 1 auto;
+  width: 1%;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.input-group-prepend,
+.input-group-append {
+  display: flex;
+}
+
+.input-group-text {
+  display: flex;
+  align-items: center;
+  padding: var(--form-control-padding);
+  font-size: var(--form-font-size);
+  line-height: var(--form-line-height);
+  color: var(--form-text);
+  text-align: center;
+  white-space: nowrap;
+  background-color: #e9ecef;
+  border: 1px solid var(--form-border);
+}
+
+.input-group-prepend .input-group-text {
+  border-right: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input-group-append .input-group-text {
+  border-left: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.input-group > .form-control:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input-group > .form-control:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Help Text */
+.form-text {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--form-placeholder);
+}
+
+/* Floating Labels */
+.form-floating {
+  position: relative;
+}
+
+.form-floating > .form-control {
+  height: calc(var(--form-control-height) + 8px);
+  padding: 16px 12px 8px;
+}
+
+.form-floating > label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 16px 12px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+  border: 1px solid transparent;
+  transform-origin: 0 0;
+  transition: opacity var(--form-transition-speed) ease-in-out,
+              transform var(--form-transition-speed) ease-in-out;
+}
+
+.form-floating > .form-control:placeholder-shown ~ label {
+  opacity: 0.65;
+  transform: scale(1) translateY(calc(var(--form-control-height) / 3));
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+  opacity: 0.85;
+  transform: scale(0.85) translateY(-.5rem);
+}
+
+/* Switch Toggle */
+.form-switch {
+  padding-left: 48px;
+}
+
+.form-switch .form-check-input {
+  width: 40px;
+  margin-left: -48px;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+  background-position: left center;
+  background-size: contain;
+  border-radius: 12px;
+  transition: background-position var(--form-transition-speed) ease-in-out;
+}
+
+.form-switch .form-check-input:checked {
+  background-position: right center;
+  background-color: var(--form-border-focus);
+}
+
+/* Range Slider */
+.form-range {
+  width: 100%;
+  height: 24px;
+  padding: 0;
+  background-color: transparent;
+  appearance: none;
+}
+
+.form-range:focus {
+  outline: none;
+}
+
+.form-range::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  background-color: var(--form-border-focus);
+  border: 0;
+  border-radius: 50%;
+  transition: background-color var(--form-transition-speed) ease-in-out,
+              box-shadow var(--form-transition-speed) ease-in-out;
+  appearance: none;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  color: transparent;
+  cursor: pointer;
+  background-color: var(--form-border);
+  border-color: transparent;
+  border-radius: 4px;
+}
+
+/* Form Grid Layouts */
+@media (min-width: 576px) {
+  .form-row-cols-1 > .form-group {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .form-row-cols-2 > .form-group {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  
+  .form-row-cols-3 > .form-group {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+  
+  .form-row-cols-4 > .form-group {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .form-control,
+  .custom-control-label::before,
+  .custom-file-label,
+  .form-floating > label,
+  .form-switch .form-check-input,
+  .form-range::-webkit-slider-thumb {
+    transition: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (forced-colors: active) {
+  .form-control:focus,
+  .custom-control-input:focus ~ .custom-control-label::before,
+  .form-check-input:focus {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+} 

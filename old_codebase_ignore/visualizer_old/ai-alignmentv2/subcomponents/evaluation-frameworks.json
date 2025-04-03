@@ -1,0 +1,1158 @@
+{
+  "_documentation": "This subcomponent implements structured methodologies and tools for assessing AI system alignment with human values, safety constraints, and intended purposes through systematic testing, benchmarking, and analysis of system behaviors and capabilities.",
+  "id": "evaluation-frameworks",
+  "name": "Evaluation Frameworks",
+  "description": "Structured methodologies and tools for assessing AI system alignment with human values, safety constraints, and intended purposes through systematic testing, benchmarking, and analysis of system behaviors and capabilities.",
+  "type": "subcomponent",
+  "parent": "oversight-mechanisms",
+  
+  "capabilities": [
+    {
+      "id": "evaluation-frameworks.criteria-application",
+      "name": "Criteria Application",
+      "description": "Capability to systematically apply alignment criteria to AI systems",
+      "implements_component_capabilities": ["oversight-mechanisms.evaluation-capability"],
+      "type": "capability",
+      "parent": "evaluation-frameworks",
+      "functions": [
+        {
+          "id": "evaluation-frameworks.criteria-application.criteria-application",
+          "name": "Criteria Application",
+          "description": "Systematically apply established alignment criteria to AI systems",
+          "implements_component_functions": ["oversight-mechanisms.alignment-evaluation"],
+          "type": "function",
+          "parent": "evaluation-frameworks.criteria-application",
+          "specifications": [
+            {
+              "id": "evaluation-frameworks.criteria-application.criteria-application.application-methodology",
+              "name": "Criteria Application Methodology",
+              "description": "Technical specifications for systematically applying alignment criteria to AI systems",
+              "type": "specifications",
+              "parent": "evaluation-frameworks.criteria-application.criteria-application",
+              "requirements": [
+                "Standardized methods to apply criteria across diverse AI systems",
+                "Consistent evaluation protocols for reliable assessment",
+                "Measurement techniques for both qualitative and quantitative criteria",
+                "Documentation standards for evaluation processes and results"
+              ],
+              "integration": {
+                "id": "evaluation-frameworks.criteria-application.criteria-application.application-methodology.implementation",
+                "name": "Criteria Application Implementation",
+                "description": "Integration approach for implementing criteria application methodology",
+                "type": "integration",
+                "parent": "evaluation-frameworks.criteria-application.criteria-application.application-methodology",
+                "techniques": [
+                  {
+                    "id": "evaluation-frameworks.criteria-application.criteria-application.application-methodology.implementation.systematic-evaluation",
+                    "name": "Systematic Evaluation Technique",
+                    "description": "Technique for systematic application of alignment criteria to AI systems",
+                    "type": "technique",
+                    "parent": "evaluation-frameworks.criteria-application.criteria-application.application-methodology.implementation",
+                    "applications": [
+                      {
+                        "id": "evaluation-frameworks.criteria-application.criteria-application.application-methodology.implementation.systematic-evaluation.criteria-matrix",
+                        "name": "Alignment Criteria Matrix",
+                        "description": "Structured matrix approach for comprehensive alignment criteria application",
+                        "type": "application",
+                        "parent": "evaluation-frameworks.criteria-application.criteria-application.application-methodology.implementation.systematic-evaluation",
+                        "inputs": [
+                          {
+                            "name": "AI System Access",
+                            "description": "Access to the AI system being evaluated",
+                            "data_type": "system_interface",
+                            "constraints": "Must allow execution of test cases and inspection of system responses"
+                          },
+                          {
+                            "name": "Alignment Criteria Set",
+                            "description": "Set of defined alignment criteria to be applied",
+                            "data_type": "criteria_set",
+                            "constraints": "Must include clear success/failure conditions for each criterion"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Evaluation Results",
+                            "description": "Comprehensive results from applying criteria to the system",
+                            "data_type": "evaluation_report",
+                            "interpretation": "Documents alignment status for each criterion with supporting evidence"
+                          },
+                          {
+                            "name": "Alignment Score",
+                            "description": "Quantified measure of alignment across evaluated criteria",
+                            "data_type": "alignment_metrics",
+                            "interpretation": "Provides standardized measurement of alignment status"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "evaluation-frameworks.criteria-application.criteria-development",
+          "name": "Alignment Criteria Development",
+          "description": "Define measurable alignment criteria for diverse AI systems",
+          "implements_component_functions": ["oversight-mechanisms.alignment-verification"],
+          "type": "function",
+          "parent": "evaluation-frameworks.criteria-application",
+          "specifications": [
+            {
+              "id": "evaluation-frameworks.criteria-application.criteria-development.criteria-specification",
+              "name": "Criteria Specification Framework",
+              "description": "Technical specifications for developing measurable alignment criteria",
+              "type": "specifications",
+              "parent": "evaluation-frameworks.criteria-application.criteria-development",
+              "requirements": [
+                "Methodologies for identifying key alignment dimensions",
+                "Processes for operationalizing abstract alignment concepts into measurable criteria",
+                "Standards for criteria specificity and falsifiability",
+                "Guidelines for domain-specific criteria adaptation"
+              ],
+              "integration": {
+                "id": "evaluation-frameworks.criteria-application.criteria-development.criteria-specification.implementation",
+                "name": "Criteria Development Implementation",
+                "description": "Integration approach for implementing alignment criteria development",
+                "type": "integration",
+                "parent": "evaluation-frameworks.criteria-application.criteria-development.criteria-specification",
+                "techniques": [
+                  {
+                    "id": "evaluation-frameworks.criteria-application.criteria-development.criteria-specification.implementation.operationalization",
+                    "name": "Alignment Operationalization Technique",
+                    "description": "Technique for transforming abstract alignment principles into measurable criteria",
+                    "type": "technique",
+                    "parent": "evaluation-frameworks.criteria-application.criteria-development.criteria-specification.implementation",
+                    "applications": [
+                      {
+                        "id": "evaluation-frameworks.criteria-application.criteria-development.criteria-specification.implementation.operationalization.criteria-design",
+                        "name": "Alignment Criteria Design Process",
+                        "description": "Systematic process for designing measurable alignment criteria",
+                        "type": "application",
+                        "parent": "evaluation-frameworks.criteria-application.criteria-development.criteria-specification.implementation.operationalization",
+                        "inputs": [
+                          {
+                            "name": "Alignment Principles",
+                            "description": "Core alignment principles to be operationalized",
+                            "data_type": "principle_set",
+                            "constraints": "Must include both technical and normative alignment requirements"
+                          },
+                          {
+                            "name": "System Characteristics",
+                            "description": "Technical characteristics of the AI systems to be evaluated",
+                            "data_type": "system_profile",
+                            "constraints": "Must specify capabilities, domains, and application contexts"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Measurable Criteria",
+                            "description": "Set of measurable criteria for alignment evaluation",
+                            "data_type": "criteria_specification",
+                            "interpretation": "Provides concrete, testable criteria for alignment assessment"
+                          },
+                          {
+                            "name": "Measurement Methodology",
+                            "description": "Methods for measuring compliance with each criterion",
+                            "data_type": "methodology_specification",
+                            "interpretation": "Enables consistent application of criteria across systems"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evaluation-frameworks.assessment-methodologies",
+      "name": "Assessment Methodologies",
+      "description": "Structured approaches for comprehensive alignment assessment",
+      "implements_component_capabilities": ["oversight-mechanisms.evaluation-capability"],
+      "type": "capability",
+      "parent": "evaluation-frameworks",
+      "functions": [
+        {
+          "id": "evaluation-frameworks.assessment-execution",
+          "name": "Assessment Execution",
+          "description": "Conduct comprehensive alignment assessments using established methodologies",
+          "implements_component_functions": ["oversight-mechanisms.alignment-evaluation"],
+          "type": "function",
+          "parent": "evaluation-frameworks.assessment-methodologies",
+          "specifications": [
+            {
+              "id": "evaluation-frameworks.assessment-methodologies.assessment-execution.execution-protocols",
+              "name": "Assessment Execution Protocols",
+              "description": "Technical specifications for executing comprehensive alignment assessments",
+              "type": "specifications",
+              "parent": "evaluation-frameworks.assessment-methodologies.assessment-execution",
+              "requirements": [
+                "Standardized protocols for assessment preparation and execution",
+                "Quality assurance processes for assessment reliability",
+                "Resource allocation guidelines for various assessment types",
+                "Documentation standards for assessment processes"
+              ],
+              "integration": {
+                "id": "evaluation-frameworks.assessment-methodologies.assessment-execution.execution-protocols.implementation",
+                "name": "Assessment Execution Implementation",
+                "description": "Integration approach for implementing assessment execution protocols",
+                "type": "integration",
+                "parent": "evaluation-frameworks.assessment-methodologies.assessment-execution.execution-protocols",
+                "techniques": [
+                  {
+                    "id": "evaluation-frameworks.assessment-methodologies.assessment-execution.execution-protocols.implementation.structured-assessment",
+                    "name": "Structured Assessment Technique",
+                    "description": "Technique for conducting structured alignment assessments",
+                    "type": "technique",
+                    "parent": "evaluation-frameworks.assessment-methodologies.assessment-execution.execution-protocols.implementation",
+                    "applications": [
+                      {
+                        "id": "evaluation-frameworks.assessment-methodologies.assessment-execution.execution-protocols.implementation.structured-assessment.assessment-framework",
+                        "name": "Comprehensive Assessment Framework",
+                        "description": "Framework for executing comprehensive alignment assessments",
+                        "type": "application",
+                        "parent": "evaluation-frameworks.assessment-methodologies.assessment-execution.execution-protocols.implementation.structured-assessment",
+                        "inputs": [
+                          {
+                            "name": "Assessment Methodology",
+                            "description": "Specific methodology selected for the assessment",
+                            "data_type": "methodology_specification",
+                            "constraints": "Must include assessment steps, required resources, and quality controls"
+                          },
+                          {
+                            "name": "System Under Assessment",
+                            "description": "AI system being assessed for alignment",
+                            "data_type": "system_interface",
+                            "constraints": "Must provide sufficient access for executing all assessment procedures"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Raw Assessment Data",
+                            "description": "Unprocessed data collected during assessment execution",
+                            "data_type": "assessment_data",
+                            "interpretation": "Provides evidence base for alignment evaluation"
+                          },
+                          {
+                            "name": "Process Documentation",
+                            "description": "Documentation of assessment process execution",
+                            "data_type": "process_record",
+                            "interpretation": "Ensures reproducibility and accountability of assessment"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "evaluation-frameworks.findings-reporting",
+          "name": "Findings Reporting",
+          "description": "Document and communicate alignment assessment findings",
+          "implements_component_functions": ["oversight-mechanisms.alignment-evaluation", "oversight-mechanisms.oversight-transparency"],
+          "type": "function",
+          "parent": "evaluation-frameworks.assessment-methodologies",
+          "specifications": [
+            {
+              "id": "evaluation-frameworks.assessment-methodologies.findings-reporting.reporting-framework",
+              "name": "Findings Reporting Framework",
+              "description": "Technical specifications for reporting alignment assessment findings",
+              "type": "specifications",
+              "parent": "evaluation-frameworks.assessment-methodologies.findings-reporting",
+              "requirements": [
+                "Standardized reporting formats for diverse stakeholders",
+                "Evidence presentation guidelines for transparency",
+                "Communication protocols for various assessment outcomes",
+                "Documentation standards for findings archival and reference"
+              ],
+              "integration": {
+                "id": "evaluation-frameworks.assessment-methodologies.findings-reporting.reporting-framework.implementation",
+                "name": "Findings Reporting Implementation",
+                "description": "Integration approach for implementing findings reporting framework",
+                "type": "integration",
+                "parent": "evaluation-frameworks.assessment-methodologies.findings-reporting.reporting-framework",
+                "techniques": [
+                  {
+                    "id": "evaluation-frameworks.assessment-methodologies.findings-reporting.reporting-framework.implementation.structured-reporting",
+                    "name": "Structured Reporting Technique",
+                    "description": "Technique for structured reporting of alignment assessment findings",
+                    "type": "technique",
+                    "parent": "evaluation-frameworks.assessment-methodologies.findings-reporting.reporting-framework.implementation",
+                    "applications": [
+                      {
+                        "id": "evaluation-frameworks.assessment-methodologies.findings-reporting.reporting-framework.implementation.structured-reporting.report-generation",
+                        "name": "Comprehensive Report Generation",
+                        "description": "System for generating comprehensive alignment assessment reports",
+                        "type": "application",
+                        "parent": "evaluation-frameworks.assessment-methodologies.findings-reporting.reporting-framework.implementation.structured-reporting",
+                        "inputs": [
+                          {
+                            "name": "Assessment Results",
+                            "description": "Results from completed alignment assessment",
+                            "data_type": "assessment_data",
+                            "constraints": "Must include all data points, metrics, and observations from assessment"
+                          },
+                          {
+                            "name": "Target Audience",
+                            "description": "Information about intended audience for the report",
+                            "data_type": "audience_profile",
+                            "constraints": "Must specify technical background, role, and information needs"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Assessment Report",
+                            "description": "Comprehensive report documenting assessment findings",
+                            "data_type": "structured_report",
+                            "interpretation": "Communicates alignment status, evidence, and recommendations"
+                          },
+                          {
+                            "name": "Executive Summary",
+                            "description": "Condensed summary of key findings for decision-makers",
+                            "data_type": "summary_document",
+                            "interpretation": "Highlights critical alignment status and implications for governance"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evaluation-frameworks.alignment-criteria",
+      "name": "Alignment Criteria",
+      "description": "Well-defined criteria for measuring alignment across dimensions",
+      "implements_component_capabilities": ["oversight-mechanisms.evaluation-capability"],
+      "type": "capability",
+      "parent": "evaluation-frameworks",
+      "functions": [
+        {
+          "id": "evaluation-frameworks.alignment-criteria.criteria-development",
+          "name": "Alignment Criteria Development",
+          "description": "Define measurable alignment criteria for diverse AI systems",
+          "implements_component_functions": ["oversight-mechanisms.alignment-verification"],
+          "type": "function",
+          "parent": "evaluation-frameworks.alignment-criteria",
+          "specifications": [
+            {
+              "id": "evaluation-frameworks.alignment-criteria.criteria-development.criteria-definition",
+              "name": "Criteria Definition Framework",
+              "description": "Technical specifications for defining measurable alignment criteria",
+              "type": "specifications",
+              "parent": "evaluation-frameworks.alignment-criteria.criteria-development",
+              "requirements": [
+                "Methodologies for identifying key alignment dimensions",
+                "Processes for operationalizing abstract values into measurable criteria",
+                "Validation methods for criteria effectiveness",
+                "Standards for criteria specificity and falsifiability"
+              ],
+              "integration": {
+                "id": "evaluation-frameworks.alignment-criteria.criteria-development.criteria-definition.implementation",
+                "name": "Criteria Definition Implementation",
+                "description": "Integration approach for implementing criteria definition framework",
+                "type": "integration",
+                "parent": "evaluation-frameworks.alignment-criteria.criteria-development.criteria-definition",
+                "techniques": [
+                  {
+                    "id": "evaluation-frameworks.alignment-criteria.criteria-development.criteria-definition.implementation.measurement-design",
+                    "name": "Alignment Measurement Design",
+                    "description": "Technique for designing precise alignment measurements",
+                    "type": "technique",
+                    "parent": "evaluation-frameworks.alignment-criteria.criteria-development.criteria-definition.implementation",
+                    "applications": [
+                      {
+                        "id": "evaluation-frameworks.alignment-criteria.criteria-development.criteria-definition.implementation.measurement-design.criteria-workshop",
+                        "name": "Structured Criteria Development Workshop",
+                        "description": "Systematic process for developing alignment criteria with stakeholders",
+                        "type": "application",
+                        "parent": "evaluation-frameworks.alignment-criteria.criteria-development.criteria-definition.implementation.measurement-design",
+                        "inputs": [
+                          {
+                            "name": "Alignment Values",
+                            "description": "Core values and principles to be operationalized",
+                            "data_type": "value_framework",
+                            "constraints": "Must include diverse stakeholder perspectives on alignment"
+                          },
+                          {
+                            "name": "System Capabilities",
+                            "description": "Technical capabilities of systems to be evaluated",
+                            "data_type": "capability_model",
+                            "constraints": "Must identify capabilities relevant to alignment assessment"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Criteria Set",
+                            "description": "Comprehensive set of measurable alignment criteria",
+                            "data_type": "formal_criteria",
+                            "interpretation": "Provides operationalized criteria for evaluating alignment"
+                          },
+                          {
+                            "name": "Measurement Methods",
+                            "description": "Methods for measuring each alignment criterion",
+                            "data_type": "measurement_protocol",
+                            "interpretation": "Enables consistent application of criteria in evaluations"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "evaluation-frameworks.performance-assessment",
+          "name": "Performance Assessment",
+          "description": "Benchmark systems against alignment standards",
+          "implements_component_functions": ["oversight-mechanisms.alignment-verification"],
+          "type": "function",
+          "parent": "evaluation-frameworks.alignment-criteria",
+          "specifications": [
+            {
+              "id": "evaluation-frameworks.alignment-criteria.performance-assessment.benchmarking-protocol",
+              "name": "Benchmarking Protocol",
+              "description": "Technical specifications for benchmarking systems against alignment standards",
+              "type": "specifications",
+              "parent": "evaluation-frameworks.alignment-criteria.performance-assessment",
+              "requirements": [
+                "Standardized performance metrics for alignment dimensions",
+                "Reliable measurement protocols for consistent assessment",
+                "Reference benchmarks and baselines for comparative evaluation",
+                "Statistical validation methods for assessment reliability"
+              ],
+              "integration": {
+                "id": "evaluation-frameworks.alignment-criteria.performance-assessment.benchmarking-protocol.implementation",
+                "name": "Benchmarking Protocol Implementation",
+                "description": "Integration approach for implementing alignment benchmarking",
+                "type": "integration",
+                "parent": "evaluation-frameworks.alignment-criteria.performance-assessment.benchmarking-protocol",
+                "techniques": [
+                  {
+                    "id": "evaluation-frameworks.alignment-criteria.performance-assessment.benchmarking-protocol.implementation.standardized-testing",
+                    "name": "Standardized Alignment Testing",
+                    "description": "Technique for standardized testing of alignment performance",
+                    "type": "technique",
+                    "parent": "evaluation-frameworks.alignment-criteria.performance-assessment.benchmarking-protocol.implementation",
+                    "applications": [
+                      {
+                        "id": "evaluation-frameworks.alignment-criteria.performance-assessment.benchmarking-protocol.implementation.standardized-testing.benchmark-suite",
+                        "name": "Alignment Benchmark Suite",
+                        "description": "Comprehensive suite of standardized alignment benchmarks",
+                        "type": "application",
+                        "parent": "evaluation-frameworks.alignment-criteria.performance-assessment.benchmarking-protocol.implementation.standardized-testing",
+                        "inputs": [
+                          {
+                            "name": "AI System",
+                            "description": "AI system to be benchmarked for alignment",
+                            "data_type": "system_interface",
+                            "constraints": "Must allow execution of benchmark tests and collection of responses"
+                          },
+                          {
+                            "name": "Benchmark Tasks",
+                            "description": "Set of standardized tasks for alignment assessment",
+                            "data_type": "benchmark_suite",
+                            "constraints": "Must cover diverse alignment dimensions with varying difficulty levels"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Benchmark Results",
+                            "description": "Quantitative results from alignment benchmark tests",
+                            "data_type": "performance_metrics",
+                            "interpretation": "Provides objective measurement of alignment performance"
+                          },
+                          {
+                            "name": "Comparative Analysis",
+                            "description": "Analysis comparing performance to baselines and standards",
+                            "data_type": "comparative_report",
+                            "interpretation": "Contextualizes performance within broader alignment landscape"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evaluation-frameworks.boundary-testing",
+      "name": "Boundary Testing",
+      "description": "Detection of subtle misalignment in complex scenarios",
+      "implements_component_capabilities": ["oversight-mechanisms.evaluation-capability"],
+      "type": "capability",
+      "parent": "evaluation-frameworks",
+      "functions": [
+        {
+          "id": "evaluation-frameworks.scenario-testing",
+          "name": "Scenario Testing",
+          "description": "Design and execute test scenarios to probe alignment boundaries",
+          "implements_component_functions": ["oversight-mechanisms.alignment-verification"],
+          "type": "function",
+          "parent": "evaluation-frameworks.boundary-testing",
+          "specifications": [
+            {
+              "id": "evaluation-frameworks.boundary-testing.scenario-testing.scenario-design",
+              "name": "Scenario Design Framework",
+              "description": "Technical specifications for designing and executing boundary-probing test scenarios",
+              "type": "specifications",
+              "parent": "evaluation-frameworks.boundary-testing.scenario-testing",
+              "requirements": [
+                "Methodologies for identifying critical boundary conditions",
+                "Techniques for generating diverse test scenarios",
+                "Protocols for scenario execution and data collection",
+                "Frameworks for scenario complexity progression"
+              ],
+              "integration": {
+                "id": "evaluation-frameworks.boundary-testing.scenario-testing.scenario-design.implementation",
+                "name": "Scenario Design Implementation",
+                "description": "Integration approach for implementing scenario design framework",
+                "type": "integration",
+                "parent": "evaluation-frameworks.boundary-testing.scenario-testing.scenario-design",
+                "techniques": [
+                  {
+                    "id": "evaluation-frameworks.boundary-testing.scenario-testing.scenario-design.implementation.boundary-exploration",
+                    "name": "Boundary Exploration Technique",
+                    "description": "Technique for systematically exploring alignment boundaries through scenarios",
+                    "type": "technique",
+                    "parent": "evaluation-frameworks.boundary-testing.scenario-testing.scenario-design.implementation",
+                    "applications": [
+                      {
+                        "id": "evaluation-frameworks.boundary-testing.scenario-testing.scenario-design.implementation.boundary-exploration.scenario-suite",
+                        "name": "Boundary Exploration Scenario Suite",
+                        "description": "Comprehensive suite of scenarios for exploring alignment boundaries",
+                        "type": "application",
+                        "parent": "evaluation-frameworks.boundary-testing.scenario-testing.scenario-design.implementation.boundary-exploration",
+                        "inputs": [
+                          {
+                            "name": "System Capabilities",
+                            "description": "Technical capabilities of the AI system being tested",
+                            "data_type": "capability_model",
+                            "constraints": "Must include operational scope and known capabilities"
+                          },
+                          {
+                            "name": "Alignment Parameters",
+                            "description": "Key alignment parameters to be tested for boundaries",
+                            "data_type": "alignment_parameters",
+                            "constraints": "Must specify parameters with boundary conditions of interest"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Test Scenarios",
+                            "description": "Set of boundary-probing test scenarios",
+                            "data_type": "scenario_suite",
+                            "interpretation": "Provides structured scenarios for detecting alignment boundaries"
+                          },
+                          {
+                            "name": "Boundary Analysis",
+                            "description": "Analysis of identified alignment boundaries",
+                            "data_type": "boundary_analysis",
+                            "interpretation": "Maps the location and nature of alignment boundaries"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "evaluation-frameworks.robustness-evaluation",
+          "name": "Robustness Evaluation",
+          "description": "Assess system responses to edge cases and adversarial inputs",
+          "implements_component_functions": ["oversight-mechanisms.risk-assessment"],
+          "type": "function",
+          "parent": "evaluation-frameworks.boundary-testing",
+          "specifications": [
+            {
+              "id": "evaluation-frameworks.boundary-testing.robustness-evaluation.robustness-framework",
+              "name": "Robustness Evaluation Framework",
+              "description": "Technical specifications for evaluating AI system robustness at alignment boundaries",
+              "type": "specifications",
+              "parent": "evaluation-frameworks.boundary-testing.robustness-evaluation",
+              "requirements": [
+                "Methods for generating adversarial inputs and edge cases",
+                "Protocols for stress testing system responses",
+                "Techniques for measuring response degradation",
+                "Frameworks for resilience quantification"
+              ],
+              "integration": {
+                "id": "evaluation-frameworks.boundary-testing.robustness-evaluation.robustness-framework.implementation",
+                "name": "Robustness Evaluation Implementation",
+                "description": "Integration approach for implementing robustness evaluation framework",
+                "type": "integration",
+                "parent": "evaluation-frameworks.boundary-testing.robustness-evaluation.robustness-framework",
+                "techniques": [
+                  {
+                    "id": "evaluation-frameworks.boundary-testing.robustness-evaluation.robustness-framework.implementation.adversarial-testing",
+                    "name": "Adversarial Testing Technique",
+                    "description": "Technique for systematically testing robustness through adversarial approaches",
+                    "type": "technique",
+                    "parent": "evaluation-frameworks.boundary-testing.robustness-evaluation.robustness-framework.implementation",
+                    "applications": [
+                      {
+                        "id": "evaluation-frameworks.boundary-testing.robustness-evaluation.robustness-framework.implementation.adversarial-testing.robustness-assessment",
+                        "name": "Comprehensive Robustness Assessment",
+                        "description": "Systematic assessment of system robustness through adversarial testing",
+                        "type": "application",
+                        "parent": "evaluation-frameworks.boundary-testing.robustness-evaluation.robustness-framework.implementation.adversarial-testing",
+                        "inputs": [
+                          {
+                            "name": "AI System",
+                            "description": "AI system to be evaluated for robustness",
+                            "data_type": "system_interface",
+                            "constraints": "Must allow controlled testing with adversarial inputs"
+                          },
+                          {
+                            "name": "Adversarial Test Suite",
+                            "description": "Suite of adversarial inputs and edge cases",
+                            "data_type": "test_suite",
+                            "constraints": "Must include diverse adversarial strategies and edge cases"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Robustness Metrics",
+                            "description": "Quantitative metrics of system robustness",
+                            "data_type": "robustness_metrics",
+                            "interpretation": "Measures resilience to adversarial inputs and edge cases"
+                          },
+                          {
+                            "name": "Vulnerability Report",
+                            "description": "Detailed report of identified vulnerabilities",
+                            "data_type": "vulnerability_analysis",
+                            "interpretation": "Maps points of failure and alignment degradation under stress"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evaluation-frameworks.contextual-assessment",
+      "name": "Contextual Assessment",
+      "description": "Comprehensive testing across diverse operational contexts",
+      "implements_component_capabilities": ["oversight-mechanisms.evaluation-capability"],
+      "type": "capability",
+      "parent": "evaluation-frameworks",
+      "functions": [
+        {
+          "id": "evaluation-frameworks.scenario-testing",
+          "name": "Scenario Testing",
+          "description": "Design and execute test scenarios to probe alignment boundaries",
+          "implements_component_functions": ["oversight-mechanisms.alignment-verification"],
+          "type": "function",
+          "parent": "evaluation-frameworks.contextual-assessment",
+          "specifications": [
+            {
+              "id": "evaluation-frameworks.contextual-assessment.scenario-testing.contextual-scenarios",
+              "name": "Contextual Scenarios Framework",
+              "description": "Technical specifications for designing and executing context-sensitive test scenarios",
+              "type": "specifications",
+              "parent": "evaluation-frameworks.contextual-assessment.scenario-testing",
+              "requirements": [
+                "Methodologies for identifying diverse operational contexts",
+                "Techniques for generating context-specific test scenarios",
+                "Protocols for context-sensitive evaluation",
+                "Standards for context representation and simulation"
+              ],
+              "integration": {
+                "id": "evaluation-frameworks.contextual-assessment.scenario-testing.contextual-scenarios.implementation",
+                "name": "Contextual Scenarios Implementation",
+                "description": "Integration approach for implementing contextual scenario testing",
+                "type": "integration",
+                "parent": "evaluation-frameworks.contextual-assessment.scenario-testing.contextual-scenarios",
+                "techniques": [
+                  {
+                    "id": "evaluation-frameworks.contextual-assessment.scenario-testing.contextual-scenarios.implementation.context-simulation",
+                    "name": "Context Simulation Technique",
+                    "description": "Technique for simulating diverse operational contexts for alignment testing",
+                    "type": "technique",
+                    "parent": "evaluation-frameworks.contextual-assessment.scenario-testing.contextual-scenarios.implementation",
+                    "applications": [
+                      {
+                        "id": "evaluation-frameworks.contextual-assessment.scenario-testing.contextual-scenarios.implementation.context-simulation.context-test-suite",
+                        "name": "Context-Driven Test Suite",
+                        "description": "Comprehensive suite of context-sensitive alignment test scenarios",
+                        "type": "application",
+                        "parent": "evaluation-frameworks.contextual-assessment.scenario-testing.contextual-scenarios.implementation.context-simulation",
+                        "inputs": [
+                          {
+                            "name": "AI System",
+                            "description": "AI system to be tested across contexts",
+                            "data_type": "system_interface",
+                            "constraints": "Must allow testing in multiple simulated contexts"
+                          },
+                          {
+                            "name": "Context Specifications",
+                            "description": "Specifications of operational contexts to be simulated",
+                            "data_type": "context_models",
+                            "constraints": "Must include diverse sociotechnical and operational parameters"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Context-Sensitivity Report",
+                            "description": "Report on system behavior across different contexts",
+                            "data_type": "context_analysis",
+                            "interpretation": "Identifies context-dependent alignment variations"
+                          },
+                          {
+                            "name": "Contextual Alignment Metrics",
+                            "description": "Metrics showing alignment performance across contexts",
+                            "data_type": "contextual_metrics",
+                            "interpretation": "Quantifies alignment sensitivity to contextual factors"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "evaluation-frameworks.impact-assessment",
+          "name": "Impact Assessment",
+          "description": "Evaluate potential impacts of AI systems on different stakeholders and society",
+          "implements_component_functions": ["oversight-mechanisms.risk-assessment"],
+          "type": "function",
+          "parent": "evaluation-frameworks.contextual-assessment",
+          "specifications": [
+            {
+              "id": "evaluation-frameworks.contextual-assessment.impact-assessment.impact-framework",
+              "name": "Impact Assessment Framework",
+              "description": "Technical specifications for evaluating potential impacts of AI systems on stakeholders and society",
+              "type": "specifications",
+              "parent": "evaluation-frameworks.contextual-assessment.impact-assessment",
+              "requirements": [
+                "Methods for identifying stakeholder groups and potential impacts",
+                "Frameworks for assessing impacts across different societal dimensions",
+                "Techniques for measuring direct and indirect effects",
+                "Standards for impact severity classification and prioritization"
+              ],
+              "integration": {
+                "id": "evaluation-frameworks.contextual-assessment.impact-assessment.impact-framework.implementation",
+                "name": "Impact Assessment Implementation",
+                "description": "Integration approach for implementing impact assessment framework",
+                "type": "integration",
+                "parent": "evaluation-frameworks.contextual-assessment.impact-assessment.impact-framework",
+                "techniques": [
+                  {
+                    "id": "evaluation-frameworks.contextual-assessment.impact-assessment.impact-framework.implementation.stakeholder-analysis",
+                    "name": "Stakeholder Impact Analysis Technique",
+                    "description": "Technique for analyzing impacts across diverse stakeholder groups",
+                    "type": "technique",
+                    "parent": "evaluation-frameworks.contextual-assessment.impact-assessment.impact-framework.implementation",
+                    "applications": [
+                      {
+                        "id": "evaluation-frameworks.contextual-assessment.impact-assessment.impact-framework.implementation.stakeholder-analysis.comprehensive-impact-assessment",
+                        "name": "Comprehensive Societal Impact Assessment",
+                        "description": "Multidimensional assessment of AI system impacts across stakeholder groups and society",
+                        "type": "application",
+                        "parent": "evaluation-frameworks.contextual-assessment.impact-assessment.impact-framework.implementation.stakeholder-analysis",
+                        "inputs": [
+                          {
+                            "name": "AI System Model",
+                            "description": "Technical and operational model of the AI system being assessed",
+                            "data_type": "system_model",
+                            "constraints": "Must include capabilities, deployment context, and interaction patterns"
+                          },
+                          {
+                            "name": "Stakeholder Landscape",
+                            "description": "Mapping of stakeholder groups affected by the system",
+                            "data_type": "stakeholder_map",
+                            "constraints": "Must include diverse groups across power, access, and vulnerability dimensions"
+                          }
+                        ],
+                        "outputs": [
+                          {
+                            "name": "Impact Report",
+                            "description": "Comprehensive analysis of potential impacts across stakeholders",
+                            "data_type": "impact_analysis",
+                            "interpretation": "Details positive and negative impacts across stakeholder groups"
+                          },
+                          {
+                            "name": "Risk Assessment",
+                            "description": "Evaluation of potential societal risks posed by the system",
+                            "data_type": "risk_profile",
+                            "interpretation": "Identifies and prioritizes risks for mitigation"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  
+  "cross_connections": [
+    {
+      "source_id": "evaluation-frameworks.criteria-application",
+      "target_id": "evaluation-frameworks.assessment-methodologies",
+      "type": "provides_input_to",
+      "description": "Criteria Application provides standardized criteria that Assessment Methodologies rely on for execution"
+    },
+    {
+      "source_id": "evaluation-frameworks.boundary-testing",
+      "target_id": "evaluation-frameworks.contextual-assessment",
+      "type": "complements",
+      "description": "Boundary Testing and Contextual Assessment work together to provide comprehensive alignment evaluation"
+    },
+    {
+      "source_id": "evaluation-frameworks.alignment-criteria.criteria-development",
+      "target_id": "evaluation-frameworks.criteria-application.criteria-application",
+      "type": "enables",
+      "description": "Criteria Development enables effective Criteria Application by providing well-defined alignment measures"
+    },
+    {
+      "source_id": "evaluation-frameworks.contextual-assessment.impact-assessment",
+      "target_id": "evaluation-frameworks.boundary-testing.robustness-evaluation",
+      "type": "informs",
+      "description": "Impact Assessment findings inform priorities for Robustness Evaluation"
+    }
+  ],
+  
+  "implementation_considerations": [
+    {
+      "id": "evaluation-frameworks.methodological-rigor",
+      "name": "Methodological Rigor",
+      "aspect": "Methodological Rigor",
+      "considerations": [
+        "Ensuring evaluation procedures meet scientific standards of validity and reliability",
+        "Balancing comprehensive assessment with practical resource constraints",
+        "Standardizing evaluation protocols to enable comparability across systems",
+        "Addressing unique challenges of evaluating emergent AI capabilities"
+      ],
+      "derives_from_integration_considerations": ["oversight-mechanisms.evaluation-validity", "oversight-mechanisms.comprehensive-assessment"],
+      "addressed_by_techniques": ["evaluation-frameworks.assessment-methodologies.assessment-execution.execution-protocols.implementation.structured-assessment", "evaluation-frameworks.criteria-application.criteria-application.application-methodology.implementation.systematic-evaluation"],
+      "supported_by_literature": ["Hendrycks2021", "Mitchell2019", "Doshi-Velez2017"]
+    },
+    {
+      "id": "evaluation-frameworks.measurement-challenges",
+      "name": "Measurement Challenges",
+      "aspect": "Measurement Challenges",
+      "considerations": [
+        "Developing metrics for abstract alignment concepts like ethics and values",
+        "Addressing subjectivity in alignment evaluations",
+        "Quantifying uncertainty in alignment measurements",
+        "Avoiding measurement bias that misrepresents actual alignment status"
+      ],
+      "derives_from_integration_considerations": ["oversight-mechanisms.measurement-validity", "oversight-mechanisms.alignment-operationalization"],
+      "addressed_by_techniques": ["evaluation-frameworks.criteria-application.criteria-development.criteria-specification.implementation.operationalization", "evaluation-frameworks.alignment-criteria.criteria-development.criteria-definition.implementation.measurement-design"],
+      "supported_by_literature": ["Doshi-Velez2017", "Amodei2016", "Whittlestone2021"]
+    },
+    {
+      "id": "evaluation-frameworks.context-sensitivity",
+      "name": "Context Sensitivity",
+      "aspect": "Context Sensitivity",
+      "considerations": [
+        "Ensuring evaluations account for variations in operational contexts",
+        "Developing frameworks that generalize across diverse domains",
+        "Balancing breadth of contextual testing with depth of evaluation",
+        "Addressing challenges in simulating realistic deployment contexts"
+      ],
+      "derives_from_integration_considerations": ["oversight-mechanisms.contextual-adaptation", "oversight-mechanisms.deployment-readiness"],
+      "addressed_by_techniques": ["evaluation-frameworks.contextual-assessment.scenario-testing.contextual-scenarios.implementation.context-simulation", "evaluation-frameworks.boundary-testing.scenario-testing.scenario-design.implementation.boundary-exploration"],
+      "supported_by_literature": ["Raji2020", "Selbst2019", "Mitchell2019"]
+    },
+    {
+      "id": "evaluation-frameworks.stakeholder-integration",
+      "name": "Stakeholder Integration",
+      "aspect": "Stakeholder Integration",
+      "considerations": [
+        "Ensuring diverse stakeholder perspectives inform evaluation frameworks",
+        "Balancing technical expertise with stakeholder representation",
+        "Developing participatory methods for evaluation framework design",
+        "Communicating evaluation results effectively to diverse audiences"
+      ],
+      "derives_from_integration_considerations": ["oversight-mechanisms.participatory-oversight", "oversight-mechanisms.transparency"],
+      "addressed_by_techniques": ["evaluation-frameworks.assessment-methodologies.findings-reporting.reporting-framework.implementation.structured-reporting", "evaluation-frameworks.contextual-assessment.impact-assessment.impact-framework.implementation.stakeholder-analysis"],
+      "supported_by_literature": ["Rahwan2018", "Raji2020", "Selbst2019"]
+    }
+  ],
+  
+  "technical_specifications": {
+    "_documentation": "This section provides technical details about the evaluation-frameworks subcomponent.",
+    "input_requirements": [
+      {
+        "id": "evaluation-frameworks.ai-system-access",
+        "name": "AI System Access",
+        "description": "Access to AI systems for evaluation purposes",
+        "format": "System interfaces, APIs, or direct access to model internals",
+        "constraints": "Must provide sufficient visibility into system behavior and decision-making",
+        "related_techniques": ["evaluation-frameworks.criteria-application.criteria-application.application-methodology.implementation.systematic-evaluation", "evaluation-frameworks.boundary-testing.robustness-evaluation.robustness-framework.implementation.adversarial-testing"],
+        "used_by_applications": ["evaluation-frameworks.criteria-application.criteria-application.application-methodology.implementation.systematic-evaluation.criteria-matrix", "evaluation-frameworks.boundary-testing.robustness-evaluation.robustness-framework.implementation.adversarial-testing.robustness-assessment"],
+        "supports_functions": ["evaluation-frameworks.criteria-application.criteria-application", "evaluation-frameworks.robustness-evaluation"]
+      },
+      {
+        "id": "evaluation-frameworks.alignment-criteria",
+        "name": "Alignment Criteria",
+        "description": "Operationalized alignment criteria for evaluation",
+        "format": "Formalized criteria with clear measurement methodologies",
+        "constraints": "Must be precise, measurable, and relevant to alignment goals",
+        "related_techniques": ["evaluation-frameworks.criteria-application.criteria-development.criteria-specification.implementation.operationalization", "evaluation-frameworks.alignment-criteria.criteria-development.criteria-definition.implementation.measurement-design"],
+        "used_by_applications": ["evaluation-frameworks.criteria-application.criteria-application.application-methodology.implementation.systematic-evaluation.criteria-matrix", "evaluation-frameworks.alignment-criteria.performance-assessment.benchmarking-protocol.implementation.standardized-testing.benchmark-suite"],
+        "supports_functions": ["evaluation-frameworks.criteria-application.criteria-application", "evaluation-frameworks.performance-assessment"]
+      },
+      {
+        "id": "evaluation-frameworks.test-scenarios",
+        "name": "Test Scenarios",
+        "description": "Scenarios designed to probe alignment properties",
+        "format": "Structured scenarios with defined inputs, contexts, and expected behaviors",
+        "constraints": "Must cover diverse conditions and alignment dimensions",
+        "related_techniques": ["evaluation-frameworks.boundary-testing.scenario-testing.scenario-design.implementation.boundary-exploration", "evaluation-frameworks.contextual-assessment.scenario-testing.contextual-scenarios.implementation.context-simulation"],
+        "used_by_applications": ["evaluation-frameworks.boundary-testing.scenario-testing.scenario-design.implementation.boundary-exploration.scenario-suite", "evaluation-frameworks.contextual-assessment.scenario-testing.contextual-scenarios.implementation.context-simulation.context-test-suite"],
+        "supports_functions": ["evaluation-frameworks.scenario-testing", "evaluation-frameworks.impact-assessment"]
+      },
+      {
+        "id": "evaluation-frameworks.stakeholder-data",
+        "name": "Stakeholder Data",
+        "description": "Information about stakeholders for impact assessment",
+        "format": "Stakeholder maps, impact models, and contextual information",
+        "constraints": "Must represent diverse stakeholders including marginalized groups",
+        "related_techniques": ["evaluation-frameworks.contextual-assessment.impact-assessment.impact-framework.implementation.stakeholder-analysis"],
+        "used_by_applications": ["evaluation-frameworks.contextual-assessment.impact-assessment.impact-framework.implementation.stakeholder-analysis.comprehensive-impact-assessment"],
+        "supports_functions": ["evaluation-frameworks.impact-assessment"]
+      }
+    ],
+    
+    "output_specifications": [
+      {
+        "id": "evaluation-frameworks.assessment-reports",
+        "name": "Assessment Reports",
+        "description": "Comprehensive reports of alignment evaluation findings",
+        "format": "Structured reports with evidence, metrics, and recommendations",
+        "usage": "Informing governance decisions and system improvements",
+        "produced_by_techniques": ["evaluation-frameworks.assessment-methodologies.findings-reporting.reporting-framework.implementation.structured-reporting"],
+        "produced_by_applications": ["evaluation-frameworks.assessment-methodologies.findings-reporting.reporting-framework.implementation.structured-reporting.report-generation"],
+        "fulfills_functions": ["evaluation-frameworks.findings-reporting"]
+      },
+      {
+        "id": "evaluation-frameworks.alignment-metrics",
+        "name": "Alignment Metrics",
+        "description": "Quantitative measures of alignment across dimensions",
+        "format": "Standardized metrics with clear interpretation guidelines",
+        "usage": "Tracking alignment status and comparing systems",
+        "produced_by_techniques": ["evaluation-frameworks.criteria-application.criteria-application.application-methodology.implementation.systematic-evaluation", "evaluation-frameworks.alignment-criteria.performance-assessment.benchmarking-protocol.implementation.standardized-testing"],
+        "produced_by_applications": ["evaluation-frameworks.criteria-application.criteria-application.application-methodology.implementation.systematic-evaluation.criteria-matrix", "evaluation-frameworks.alignment-criteria.performance-assessment.benchmarking-protocol.implementation.standardized-testing.benchmark-suite"],
+        "fulfills_functions": ["evaluation-frameworks.criteria-application.criteria-application", "evaluation-frameworks.performance-assessment"]
+      },
+      {
+        "id": "evaluation-frameworks.boundary-maps",
+        "name": "Alignment Boundary Maps",
+        "description": "Mappings of alignment boundaries and failure modes",
+        "format": "Visual and formal representations of alignment boundaries",
+        "usage": "Identifying critical limits and vulnerabilities",
+        "produced_by_techniques": ["evaluation-frameworks.boundary-testing.scenario-testing.scenario-design.implementation.boundary-exploration", "evaluation-frameworks.boundary-testing.robustness-evaluation.robustness-framework.implementation.adversarial-testing"],
+        "produced_by_applications": ["evaluation-frameworks.boundary-testing.scenario-testing.scenario-design.implementation.boundary-exploration.scenario-suite", "evaluation-frameworks.boundary-testing.robustness-evaluation.robustness-framework.implementation.adversarial-testing.robustness-assessment"],
+        "fulfills_functions": ["evaluation-frameworks.scenario-testing", "evaluation-frameworks.robustness-evaluation"]
+      },
+      {
+        "id": "evaluation-frameworks.impact-analyses",
+        "name": "Impact Analyses",
+        "description": "Analyses of potential impacts across stakeholders",
+        "format": "Structured impact assessments with risk profiles",
+        "usage": "Informing deployment decisions and risk mitigation",
+        "produced_by_techniques": ["evaluation-frameworks.contextual-assessment.impact-assessment.impact-framework.implementation.stakeholder-analysis"],
+        "produced_by_applications": ["evaluation-frameworks.contextual-assessment.impact-assessment.impact-framework.implementation.stakeholder-analysis.comprehensive-impact-assessment"],
+        "fulfills_functions": ["evaluation-frameworks.impact-assessment"]
+      }
+    ],
+    
+    "performance_characteristics": {
+      "throughput": "Evaluation frameworks should scale to handle multiple system evaluations simultaneously",
+      "latency": "Critical alignment evaluations should complete within timeframes relevant to deployment decisions",
+      "scalability": "Methods should scale from small models to frontier systems",
+      "resource_utilization": "Evaluation procedures should be optimized for efficient use of computational resources",
+      "related_considerations": ["evaluation-frameworks.methodological-rigor", "evaluation-frameworks.context-sensitivity"]
+    }
+  },
+  
+  "relationships": {
+    "_documentation": "This section details how this subcomponent relates to other components and subcomponents in the architecture.",
+    "items": [
+      {
+        "target_id": "monitoring-systems",
+        "relationship_type": "provides_methods_for",
+        "description": "Provides evaluation methodologies that monitoring systems use to assess alignment during operation",
+        "related_functions": ["evaluation-frameworks.criteria-application.criteria-application", "evaluation-frameworks.findings-reporting"],
+        "related_techniques": ["evaluation-frameworks.criteria-application.criteria-application.application-methodology.implementation.systematic-evaluation", "evaluation-frameworks.assessment-methodologies.findings-reporting.reporting-framework.implementation.structured-reporting"],
+        "related_inputs": ["evaluation-frameworks.ai-system-access", "evaluation-frameworks.alignment-criteria"],
+        "related_outputs": ["evaluation-frameworks.assessment-reports", "evaluation-frameworks.alignment-metrics"]
+      },
+      {
+        "target_id": "verification-mechanisms",
+        "relationship_type": "complementary",
+        "description": "Complements verification mechanisms by providing standardized frameworks for assessing alignment properties",
+        "related_functions": ["evaluation-frameworks.criteria-development", "evaluation-frameworks.performance-assessment"],
+        "related_techniques": ["evaluation-frameworks.criteria-application.criteria-development.criteria-specification.implementation.operationalization", "evaluation-frameworks.alignment-criteria.performance-assessment.benchmarking-protocol.implementation.standardized-testing"],
+        "related_inputs": ["evaluation-frameworks.ai-system-access", "evaluation-frameworks.test-scenarios"],
+        "related_outputs": ["evaluation-frameworks.alignment-metrics", "evaluation-frameworks.boundary-maps"]
+      },
+      {
+        "target_id": "governance-structures",
+        "relationship_type": "informs",
+        "description": "Evaluation results inform governance decisions about AI system deployment and operation",
+        "related_functions": ["evaluation-frameworks.findings-reporting", "evaluation-frameworks.impact-assessment"],
+        "related_techniques": ["evaluation-frameworks.assessment-methodologies.findings-reporting.reporting-framework.implementation.structured-reporting", "evaluation-frameworks.contextual-assessment.impact-assessment.impact-framework.implementation.stakeholder-analysis"],
+        "related_inputs": ["evaluation-frameworks.stakeholder-data"],
+        "related_outputs": ["evaluation-frameworks.assessment-reports", "evaluation-frameworks.impact-analyses"]
+      },
+      {
+        "target_id": "alignment-verification",
+        "relationship_type": "specialized_implementation_of",
+        "description": "Provides specialized implementation of alignment verification approaches",
+        "related_functions": ["evaluation-frameworks.criteria-application.criteria-application", "evaluation-frameworks.scenario-testing"],
+        "related_techniques": ["evaluation-frameworks.criteria-application.criteria-application.application-methodology.implementation.systematic-evaluation", "evaluation-frameworks.boundary-testing.scenario-testing.scenario-design.implementation.boundary-exploration"],
+        "related_inputs": ["evaluation-frameworks.ai-system-access", "evaluation-frameworks.alignment-criteria"],
+        "related_outputs": ["evaluation-frameworks.assessment-reports", "evaluation-frameworks.boundary-maps"]
+      }
+    ]
+  },
+  
+  "literature": {
+    "references": [
+      {
+        "id": "Hendrycks2021",
+        "authors": ["Hendrycks, D.", "Burns, C.", "Basart, S.", "Zou, A.", "Mazeika, M.", "Song, D.", "Steinhardt, J."],
+        "year": 2021,
+        "title": "Measuring massive multitask language understanding",
+        "venue": "International Conference on Learning Representations",
+        "url": "https://arxiv.org/abs/2009.03300"
+      },
+      {
+        "id": "Mitchell2019",
+        "authors": ["Mitchell, M.", "Wu, S.", "Zaldivar, A.", "Barnes, P.", "Vasserman, L.", "Hutchinson, B.", "Spitzer, E.", "Raji, I. D.", "Gebru, T."],
+        "year": 2019,
+        "title": "Model cards for model reporting",
+        "venue": "Proceedings of the Conference on Fairness, Accountability, and Transparency",
+        "url": "https://doi.org/10.1145/3287560.3287596"
+      },
+      {
+        "id": "Doshi-Velez2017",
+        "authors": ["Doshi-Velez, F.", "Kim, B."],
+        "year": 2017,
+        "title": "Towards a rigorous science of interpretable machine learning",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/1702.08608"
+      },
+      {
+        "id": "Amodei2016",
+        "authors": ["Amodei, D.", "Olah, C.", "Steinhardt, J.", "Christiano, P.", "Schulman, J.", "Mané, D."],
+        "year": 2016,
+        "title": "Concrete problems in AI safety",
+        "venue": "arXiv preprint",
+        "url": "https://arxiv.org/abs/1606.06565"
+      },
+      {
+        "id": "Raji2020",
+        "authors": ["Raji, I. D.", "Smart, A.", "White, R. N.", "Mitchell, M.", "Gebru, T.", "Hutchinson, B.", "Smith-Loud, J.", "Theron, D.", "Barnes, P."],
+        "year": 2020,
+        "title": "Closing the AI accountability gap: Defining an end-to-end framework for internal algorithmic auditing",
+        "venue": "Proceedings of the 2020 Conference on Fairness, Accountability, and Transparency",
+        "url": "https://doi.org/10.1145/3351095.3372873"
+      },
+      {
+        "id": "Selbst2019",
+        "authors": ["Selbst, A. D.", "Boyd, D.", "Friedler, S. A.", "Venkatasubramanian, S.", "Vertesi, J."],
+        "year": 2019,
+        "title": "Fairness and abstraction in sociotechnical systems",
+        "venue": "Proceedings of the Conference on Fairness, Accountability, and Transparency",
+        "url": "https://doi.org/10.1145/3287560.3287598"
+      },
+      {
+        "id": "Whittlestone2021",
+        "authors": ["Whittlestone, J.", "Nyrup, R.", "Alexandrova, A.", "Cave, S."],
+        "year": 2021,
+        "title": "The role and limits of principles in AI ethics: Towards a focus on tensions",
+        "venue": "Proceedings of the 2021 AAAI/ACM Conference on AI, Ethics, and Society",
+        "url": "https://doi.org/10.1145/3461702.3462606"
+      },
+      {
+        "id": "Rahwan2018",
+        "authors": ["Rahwan, I."],
+        "year": 2018,
+        "title": "Society-in-the-loop: Programming the algorithmic social contract",
+        "venue": "Ethics and Information Technology",
+        "url": "https://doi.org/10.1007/s10676-017-9430-8"
+      }
+    ],
+    
+    "literature_connections": [
+      {
+        "reference_id": "Hendrycks2021",
+        "technique": "evaluation-frameworks.alignment-criteria.performance-assessment.benchmarking-protocol.implementation.standardized-testing",
+        "relevant_aspects": "Provides methodological framework for comprehensive evaluation of language model capabilities that can be adapted for alignment assessment"
+      },
+      {
+        "reference_id": "Mitchell2019",
+        "technique": "evaluation-frameworks.assessment-methodologies.findings-reporting.reporting-framework.implementation.structured-reporting",
+        "relevant_aspects": "Introduces standardized reporting frameworks for model characteristics that inform evaluation report design"
+      },
+      {
+        "reference_id": "Doshi-Velez2017",
+        "technique": "evaluation-frameworks.criteria-application.criteria-development.criteria-specification.implementation.operationalization",
+        "relevant_aspects": "Provides rigorous framework for operationalizing abstract concepts like interpretability that can be applied to alignment criteria"
+      },
+      {
+        "reference_id": "Amodei2016",
+        "technique": "evaluation-frameworks.boundary-testing.robustness-evaluation.robustness-framework.implementation.adversarial-testing",
+        "relevant_aspects": "Identifies concrete safety problems that inform adversarial testing approaches for alignment assessment"
+      },
+      {
+        "reference_id": "Raji2020",
+        "technique": "evaluation-frameworks.assessment-methodologies.assessment-execution.execution-protocols.implementation.structured-assessment",
+        "relevant_aspects": "Provides end-to-end framework for algorithmic auditing that informs structured assessment approaches"
+      },
+      {
+        "reference_id": "Selbst2019",
+        "technique": "evaluation-frameworks.contextual-assessment.impact-assessment.impact-framework.implementation.stakeholder-analysis",
+        "relevant_aspects": "Highlights sociotechnical gaps in abstracted technical evaluations that inform contextual assessment approaches"
+      },
+      {
+        "reference_id": "Whittlestone2021",
+        "technique": "evaluation-frameworks.alignment-criteria.criteria-development.criteria-definition.implementation.measurement-design",
+        "relevant_aspects": "Examines tensions in operationalizing ethical principles that inform alignment criteria development"
+      },
+      {
+        "reference_id": "Rahwan2018",
+        "technique": "evaluation-frameworks.contextual-assessment.scenario-testing.contextual-scenarios.implementation.context-simulation",
+        "relevant_aspects": "Proposes society-in-the-loop approaches that inform contextual scenario design for alignment evaluation"
+      }
+    ]
+  }
+}

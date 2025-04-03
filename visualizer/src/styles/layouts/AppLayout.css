@@ -1,0 +1,202 @@
+/*
+ * AppLayout.css - Layout-specific styles for the application layout
+ * Provides different layout variations and responsive adjustments
+ */
+
+/* Default layout */
+.layout-default {
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 60px;
+  --header-height: 60px;
+  --footer-height: 50px;
+  --content-padding: 20px;
+}
+
+/* Wide layout with increased spacing */
+.layout-wide {
+  --sidebar-width: 320px;
+  --sidebar-collapsed-width: 80px;
+  --header-height: 70px;
+  --footer-height: 60px;
+  --content-padding: 30px;
+}
+
+/* Compact layout with decreased spacing */
+.layout-compact {
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 50px;
+  --header-height: 50px;
+  --footer-height: 40px;
+  --content-padding: 15px;
+}
+
+/* Minimal layout for maximum content space */
+.layout-minimal {
+  --sidebar-width: 220px;
+  --sidebar-collapsed-width: 45px;
+  --header-height: 45px;
+  --footer-height: 35px;
+  --content-padding: 10px;
+}
+
+/* Focus layout for concentrated work */
+.layout-focus {
+  --sidebar-width: 0px;
+  --sidebar-collapsed-width: 0px;
+  --header-height: 45px;
+  --footer-height: 0px;
+  --content-padding: 20px;
+}
+
+/* Multi-panel layout for complex interfaces */
+.layout-multi-panel {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr var(--details-panel-width, 300px);
+  grid-template-rows: var(--header-height) 1fr var(--footer-height);
+  grid-template-areas:
+    "header header header"
+    "sidebar content details"
+    "footer footer footer";
+}
+
+.layout-multi-panel .app-header {
+  grid-area: header;
+}
+
+.layout-multi-panel .app-sidebar {
+  grid-area: sidebar;
+}
+
+.layout-multi-panel .app-content {
+  grid-area: content;
+}
+
+.layout-multi-panel .app-details {
+  grid-area: details;
+  border-left: 1px solid var(--border-color);
+  overflow-y: auto;
+}
+
+.layout-multi-panel .app-footer {
+  grid-area: footer;
+}
+
+/* Split view layout */
+.layout-split-view {
+  display: grid;
+  grid-template-columns: var(--split-ratio, 50%) 1fr;
+  grid-template-rows: var(--header-height) 1fr var(--footer-height);
+  grid-template-areas:
+    "header header"
+    "primary secondary"
+    "footer footer";
+}
+
+.layout-split-view .app-header {
+  grid-area: header;
+}
+
+.layout-split-view .primary-panel {
+  grid-area: primary;
+  overflow: auto;
+  border-right: 1px solid var(--border-color);
+}
+
+.layout-split-view .secondary-panel {
+  grid-area: secondary;
+  overflow: auto;
+}
+
+.layout-split-view .app-footer {
+  grid-area: footer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .layout-multi-panel {
+    grid-template-columns: var(--sidebar-width) 1fr;
+    grid-template-areas:
+      "header header"
+      "sidebar content"
+      "footer footer";
+  }
+  
+  .layout-multi-panel .app-details {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout-multi-panel,
+  .layout-split-view {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .layout-multi-panel .app-details,
+  .layout-split-view .secondary-panel {
+    border-left: none;
+    border-top: 1px solid var(--border-color);
+  }
+  
+  /* Adjust all layouts for mobile */
+  .layout-default,
+  .layout-wide,
+  .layout-compact,
+  .layout-minimal,
+  .layout-focus {
+    --sidebar-width: 280px; /* Consistent for all mobile layouts */
+    --header-height: 50px;
+    --footer-height: 50px;
+    --content-padding: 15px;
+  }
+}
+
+/* Tablet-specific adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .layout-default,
+  .layout-wide,
+  .layout-compact {
+    --sidebar-width: 260px;
+    --sidebar-collapsed-width: 55px;
+  }
+  
+  .layout-multi-panel {
+    --details-panel-width: 250px;
+  }
+}
+
+/* Height-based adjustments */
+@media (max-height: 600px) {
+  .layout-default,
+  .layout-wide,
+  .layout-compact,
+  .layout-minimal,
+  .layout-focus {
+    --header-height: 45px;
+    --footer-height: 35px;
+  }
+}
+
+/* Animation and transition styles */
+.layout-transitions-enabled .app-layout,
+.layout-transitions-enabled .app-sidebar,
+.layout-transitions-enabled .app-content,
+.layout-transitions-enabled .app-header,
+.layout-transitions-enabled .app-footer {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Printable layout */
+@media print {
+  .layout-printable {
+    --header-height: auto;
+    --footer-height: auto;
+    --sidebar-width: 0;
+    --content-padding: 0;
+  }
+  
+  .layout-printable * {
+    overflow: visible !important;
+  }
+} 

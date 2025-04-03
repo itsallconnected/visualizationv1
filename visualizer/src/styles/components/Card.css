@@ -1,0 +1,494 @@
+/* Card and Panel Component Styles
+ * Contains styles for cards, panels, info boxes, and data displays
+ */
+
+:root {
+  /* Card Color Variables */
+  --card-bg: #FFFFFF;
+  --card-border: #DADCE0;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --card-shadow-hover: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --card-text: #202124;
+  --card-text-secondary: #5F6368;
+  
+  /* Card Status Colors */
+  --card-info-bg: rgba(66, 133, 244, 0.05);
+  --card-info-border: #4285F4;
+  --card-success-bg: rgba(52, 168, 83, 0.05);
+  --card-success-border: #34A853;
+  --card-warning-bg: rgba(251, 188, 5, 0.05);
+  --card-warning-border: #FBBC05;
+  --card-danger-bg: rgba(234, 67, 53, 0.05);
+  --card-danger-border: #EA4335;
+  
+  /* Card Sizing */
+  --card-border-radius: 8px;
+  --card-padding: 16px;
+  --card-header-padding: 16px;
+  --card-footer-padding: 16px;
+  --card-hover-transform: translateY(-2px);
+  
+  /* Card Animation */
+  --card-transition-speed: 0.2s;
+}
+
+/* ===== Base Card ===== */
+.card {
+  background-color: var(--card-bg);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--card-shadow);
+  transition: transform var(--card-transition-speed) ease,
+              box-shadow var(--card-transition-speed) ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-hoverable:hover {
+  transform: var(--card-hover-transform);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.card-outlined {
+  border: 1px solid var(--card-border);
+  box-shadow: none;
+}
+
+.card-flat {
+  box-shadow: none;
+}
+
+/* ===== Card Header ===== */
+.card-header {
+  padding: var(--card-header-padding);
+  border-bottom: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--card-text);
+}
+
+.card-subtitle {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--card-text-secondary);
+}
+
+.card-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ===== Card Body ===== */
+.card-body {
+  padding: var(--card-padding);
+}
+
+.card-body:not(:last-child) {
+  padding-bottom: 8px;
+}
+
+/* ===== Card Footer ===== */
+.card-footer {
+  padding: var(--card-footer-padding);
+  border-top: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ===== Card Media ===== */
+.card-media {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-media img {
+  width: 100%;
+  display: block;
+}
+
+.card-media-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--card-padding);
+}
+
+.card-media-overlay .card-title,
+.card-media-overlay .card-subtitle {
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== Card Grid ===== */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* ===== Card Status Variants ===== */
+.card-info {
+  background-color: var(--card-info-bg);
+  border-left: 4px solid var(--card-info-border);
+}
+
+.card-success {
+  background-color: var(--card-success-bg);
+  border-left: 4px solid var(--card-success-border);
+}
+
+.card-warning {
+  background-color: var(--card-warning-bg);
+  border-left: 4px solid var(--card-warning-border);
+}
+
+.card-danger {
+  background-color: var(--card-danger-bg);
+  border-left: 4px solid var(--card-danger-border);
+}
+
+/* ===== Interactive Cards ===== */
+.card-clickable {
+  cursor: pointer;
+  transition: transform var(--card-transition-speed) ease, 
+              box-shadow var(--card-transition-speed) ease,
+              border-color var(--card-transition-speed) ease;
+}
+
+.card-clickable:hover {
+  transform: var(--card-hover-transform);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.card-clickable:active {
+  transform: translateY(0);
+}
+
+.card-selectable {
+  border: 2px solid transparent;
+  transition: border-color var(--card-transition-speed) ease,
+              box-shadow var(--card-transition-speed) ease;
+}
+
+.card-selectable.selected {
+  border-color: var(--card-info-border);
+  box-shadow: 0 0 0 1px var(--card-info-border);
+}
+
+/* ===== Card Content Layout ===== */
+.card-horizontal {
+  display: flex;
+}
+
+.card-horizontal .card-media {
+  width: 33%;
+  flex-shrink: 0;
+}
+
+.card-horizontal .card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Card Group ===== */
+.card-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.card-group .card {
+  border-radius: 0;
+  box-shadow: none;
+  border: 1px solid var(--card-border);
+  border-bottom: none;
+}
+
+.card-group .card:first-child {
+  border-top-left-radius: var(--card-border-radius);
+  border-top-right-radius: var(--card-border-radius);
+}
+
+.card-group .card:last-child {
+  border-bottom-left-radius: var(--card-border-radius);
+  border-bottom-right-radius: var(--card-border-radius);
+  border-bottom: 1px solid var(--card-border);
+}
+
+/* ===== Panel ===== */
+.panel {
+  background-color: var(--card-bg);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--card-shadow);
+  margin-bottom: 24px;
+}
+
+.panel-header {
+  padding: var(--card-header-padding);
+  background-color: #F8F9FA;
+  border-bottom: 1px solid var(--card-border);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top-left-radius: var(--card-border-radius);
+  border-top-right-radius: var(--card-border-radius);
+}
+
+.panel-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.panel-body {
+  padding: var(--card-padding);
+}
+
+.panel-footer {
+  padding: var(--card-footer-padding);
+  background-color: #F8F9FA;
+  border-top: 1px solid var(--card-border);
+  border-bottom-left-radius: var(--card-border-radius);
+  border-bottom-right-radius: var(--card-border-radius);
+}
+
+/* ===== Collapsible Panel ===== */
+.panel-collapsible .panel-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.panel-collapsible .panel-header::after {
+  content: '';
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid currentColor;
+  margin-left: 8px;
+  transition: transform var(--card-transition-speed) ease;
+}
+
+.panel-collapsible.collapsed .panel-header::after {
+  transform: rotate(-90deg);
+}
+
+.panel-collapsible .panel-body {
+  transition: max-height var(--card-transition-speed) ease,
+              padding var(--card-transition-speed) ease,
+              opacity var(--card-transition-speed) ease;
+  max-height: 2000px;
+  opacity: 1;
+  overflow: hidden;
+}
+
+.panel-collapsible.collapsed .panel-body {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+}
+
+/* ===== Info Box ===== */
+.info-box {
+  padding: 16px;
+  border-radius: var(--card-border-radius);
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.info-box-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 16px;
+  top: 16px;
+}
+
+.info-box-content {
+  margin-left: 40px;
+}
+
+.info-box-title {
+  margin: 0 0 8px 0;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.info-box-text {
+  margin: 0;
+  font-size: 14px;
+}
+
+.info-box.info-box-info {
+  background-color: var(--card-info-bg);
+  color: #174EA6;
+}
+
+.info-box.info-box-success {
+  background-color: var(--card-success-bg);
+  color: #0D652D;
+}
+
+.info-box.info-box-warning {
+  background-color: var(--card-warning-bg);
+  color: #B06000;
+}
+
+.info-box.info-box-danger {
+  background-color: var(--card-danger-bg);
+  color: #B31412;
+}
+
+/* ===== Data Card ===== */
+.data-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.data-card-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.data-card-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--card-text-secondary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.data-card-value {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 16px 0;
+  padding: 0 16px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.data-card-footer {
+  font-size: 12px;
+  color: var(--card-text-secondary);
+  padding: 8px 16px;
+  border-top: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.data-card-trend {
+  display: flex;
+  align-items: center;
+}
+
+.data-card-trend.positive {
+  color: var(--card-success-border);
+}
+
+.data-card-trend.negative {
+  color: var(--card-danger-border);
+}
+
+/* ===== Card Loading State ===== */
+.card-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-loading::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 768px) {
+  .card-horizontal {
+    flex-direction: column;
+  }
+  
+  .card-horizontal .card-media {
+    width: 100%;
+    height: 180px;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Accessibility ===== */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card-clickable,
+  .card-selectable,
+  .panel-collapsible .panel-body,
+  .panel-collapsible .panel-header::after,
+  .card-loading::after {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (forced-colors: active) {
+  .card,
+  .panel,
+  .info-box {
+    border: 1px solid ButtonText;
+    box-shadow: none;
+  }
+  
+  .card-selectable.selected {
+    border-color: Highlight;
+    box-shadow: 0 0 0 1px Highlight;
+  }
+  
+  .info-box.info-box-info,
+  .info-box.info-box-success,
+  .info-box.info-box-warning,
+  .info-box.info-box-danger {
+    border: 1px solid ButtonText;
+  }
+} 

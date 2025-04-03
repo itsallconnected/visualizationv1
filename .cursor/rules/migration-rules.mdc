@@ -1,0 +1,805 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# AI Alignment Visualization - GitHub + AWS Amplify Modularization Plan
+
+## Overview
+
+Most important rule: never create placeholder code!!! Everything needs to be production-ready implementation.
+
+This document outlines a comprehensive plan to refactor the current codebase into a modular structure optimized for GitHub + AWS Amplify deployment. The goal is to create a maintainable, feature-rich visualization platform that will be hosted directly from GitHub to AWS Amplify, enabling simple deployment while supporting advanced features including user authentication, content encryption, version control, and multi-sphere visualization.
+
+## Current Structure Analysis
+
+The current codebase is primarily organized around:
+- A Flask backend (`app.py`) that handles routing, data loading, and API endpoints
+- A helper module (`node_details_helper.py`) for node detail processing
+- A frontend with HTML template (`index.html`), CSS (`styles.css`), and JS (`node_details_renderer.js`)
+- Data stored in JSON files in the `components` and `subcomponents` directories
+
+The main issues with the current structure:
+- Large monolithic files (app.py is ~900 lines)
+- Mixed responsibilities within files
+- Limited separation of concerns
+- Not optimized for AWS Amplify deployment
+- No support for authentication, encryption, version control, or user management
+- No structure for multi-sphere visualization
+
+## Future Features to Support
+
+1. **User Authentication and Authorization**
+   - User account management
+   - Role-based permissions
+   - Session management
+
+2. **Content Encryption**
+   - SHA-512 encryption for node content
+   - Password-based decryption
+   - Per-node encryption configuration
+
+3. **Version Control**
+   - Content history tracking
+   - Reversion capabilities
+   - Change tracking and auditing
+
+4. **Multi-Sphere Visualization**
+   - Support for 100+ visualization spheres
+   - Inter-sphere node connections
+   - Navigation between spheres
+
+5. **Moderation Dashboard**
+   - User management
+   - Permission assignment
+   - Content approval workflows
+
+6. **Node Connection Management**
+   - Interactive node connection UI
+   - Relationship type definition
+   - Cross-sphere connections
+
+## Amplify-Optimized Architecture
+
+Instead of the previous Flask-based approach, we'll create a modern architecture that's optimized for AWS Amplify deployment from GitHub:
+
+1. **Single Page Application (SPA)** - React-based frontend for rich interactivity
+2. **AWS Amplify Backend** - Managed services for auth, storage, and APIs
+3. **GitHub Integration** - Direct deployment from repository
+
+This approach offers several advantages:
+- Simplified deployment (push to GitHub → automatic deployment)
+- Built-in authentication and authorization
+- Scalable serverless architecture
+- Reduced DevOps complexity
+
+## Proposed Modular Structure
+
+### Core Configuration
+
+1. **`amplify.yml`**
+   - Amplify build configuration
+   - Environment setup
+   - Build commands
+
+2. **`src/config/amplify-config.js`**
+   - Amplify library configuration
+   - Service initialization
+   - Environment variables
+
+3. **`src/config/app-settings.js`**
+   - Application settings
+   - Feature flags
+   - Global constants
+
+### Authentication System
+
+4. **`src/auth/AuthContext.js`**
+   - React authentication context
+   - User state management
+   - Login/logout functionality
+
+5. **`src/auth/AuthService.js`**
+   - Authentication API integration
+   - Token management
+   - Session handling
+
+6. **`src/auth/ProtectedRoute.js`**
+   - Route protection component
+   - Authentication checking
+   - Redirect handling
+
+7. **`src/auth/PermissionManager.js`**
+   - Permission verification
+   - Role-based access control
+   - Feature access management
+
+8. **`src/auth/components/Login.js`**
+   - Login form UI
+   - Authentication workflow
+   - Error handling
+
+9. **`src/auth/components/Register.js`**
+   - Registration form UI
+   - Account creation
+   - Validation
+
+10. **`src/auth/components/ForgotPassword.js`**
+    - Password reset workflow
+    - Security verification
+    - Notification handling
+
+### Encryption System
+
+11. **`src/encryption/EncryptionService.js`**
+    - Encryption/decryption implementation
+    - SHA-512 handling
+    - Key management
+
+12. **`src/encryption/ProtectedContent.js`**
+    - Protected content wrapper component
+    - Password decryption UI
+    - Access state management
+
+13. **`src/encryption/NodeProtectionManager.js`**
+    - Node-specific protection rules
+    - Access control for encrypted content
+    - Encryption policy enforcement
+
+14. **`src/encryption/components/DecryptionDialog.js`**
+    - Password entry dialog
+    - Decryption workflow
+    - User feedback
+
+15. **`src/encryption/utils/CryptoHelpers.js`**
+    - Cryptographic utilities
+    - Hash generation
+    - Secure random generators
+
+### Data Management
+
+16. **`src/data/models/Node.js`**
+    - Base node class
+    - Common properties
+    - Shared methods
+
+17. **`src/data/models/ComponentNode.js`**
+    - Component node implementation
+    - Component-specific logic
+    - Relationship handling
+
+18. **`src/data/models/SubcomponentNode.js`**
+    - Subcomponent node implementation
+    - Parent-child relationships
+    - Capability management
+
+19. **`src/data/models/CapabilityNode.js`**
+    - Capability node implementation
+    - Function relationships
+    - Implementation tracking
+
+20. **`src/data/models/FunctionNode.js`**
+    - Function node implementation
+    - Specification relationships
+    - Validation logic
+
+21. **`src/data/models/SpecificationNode.js`**
+    - Specification node implementation
+    - Integration relationships
+    - Detail management
+
+22. **`src/data/models/DeepHierarchyNodes.js`**
+    - Integration node implementation
+    - Technique node implementation
+    - Application node implementation
+
+23. **`src/data/models/IONode.js`**
+    - Input node implementation
+    - Output node implementation
+    - Connection management
+
+24. **`src/data/models/Relationship.js`**
+    - Relationship definitions
+    - Connection validation
+    - Link visualization properties
+
+25. **`src/data/DataService.js`**
+    - Centralized data access
+    - API integration
+    - Cache management
+
+26. **`src/data/NodeRepository.js`**
+    - Node CRUD operations
+    - Query capabilities
+    - Relationship management
+
+27. **`src/data/DataSynchronizer.js`**
+    - Updates synchronization
+    - Conflict resolution
+    - Change tracking
+
+28. **`src/data/GraphDataGenerator.js`**
+    - Graph structure generation
+    - Node and link processing
+    - Hierarchy management
+
+29. **`src/data/NodeRegistryFactory.js`**
+    - Node type registration
+    - Factory for creating nodes
+    - Type-specific instantiation
+
+### Version Control
+
+30. **`src/versioning/VersionManager.js`**
+    - Version creation and tracking
+    - History management
+    - Rollback functionality
+
+31. **`src/versioning/DiffService.js`**
+    - Content difference calculation
+    - Change visualization
+    - Conflict resolution
+
+32. **`src/versioning/components/VersionHistory.js`**
+    - Version history UI
+    - Timeline visualization
+    - Version selection
+
+33. **`src/versioning/components/DiffViewer.js`**
+    - Content difference display
+    - Side-by-side comparison
+    - Change highlighting
+
+### Visualization Core
+
+34. **`src/visualization/VisualizationManager.js`**
+    - Visualization initialization
+    - Global state management
+    - Component coordination
+
+35. **`src/visualization/SceneManager.js`**
+    - THREE.js scene setup
+    - Rendering pipeline
+    - Animation loop
+
+36. **`src/visualization/SphereManager.js`**
+    - Multi-sphere management
+    - Sphere switching
+    - Inter-sphere navigation
+
+37. **`src/visualization/NodeRenderer.js`**
+    - Node mesh creation
+    - Visual styling
+    - Type-specific rendering
+
+38. **`src/visualization/LinkRenderer.js`**
+    - Link object creation
+    - Relationship visualization
+    - Line styling and animation
+
+39. **`src/visualization/LayoutEngine.js`**
+    - Node positioning algorithms
+    - Layout calculation
+    - Hierarchical arrangement
+
+40. **`src/visualization/CameraController.js`**
+    - Camera movement
+    - Zoom handling
+    - View transitions
+
+41. **`src/visualization/InteractionManager.js`**
+    - Mouse/touch handling
+    - Selection management
+    - Drag behavior
+
+42. **`src/visualization/AnimationController.js`**
+    - Animation sequencing
+    - Transition effects
+    - TWEEN integration
+
+43. **`src/visualization/NodeConnectionManager.js`**
+    - Interactive node connection UI
+    - Connection creation workflow
+    - Connection visualization
+
+44. **`src/visualization/ColorManager.js`**
+    - Node color schemes
+    - Type-based coloring
+    - Visual theme management
+
+### UI Components
+
+45. **`src/components/AppLayout.js`**
+    - Main application layout
+    - Responsive container
+    - Core structure
+
+46. **`src/components/Sidebar.js`**
+    - Application sidebar
+    - Navigation menu
+    - Collapsible sections
+
+47. **`src/components/VisualizationContainer.js`**
+    - Visualization wrapper
+    - Canvas management
+    - Resize handling
+
+48. **`src/components/DetailsPanel.js`**
+    - Node details display
+    - Content sections
+    - Dynamic content loading
+
+49. **`src/components/DetailsPanelEditor.js`**
+    - Content editing interface
+    - Form validation
+    - Save/cancel workflow
+
+50. **`src/components/NodeDetailsRenderer.js`**
+    - Type-specific content rendering
+    - Metadata display
+    - Literature references
+
+51. **`src/components/BreadcrumbTrail.js`**
+    - Hierarchy path display
+    - Navigation links
+    - Path truncation
+
+52. **`src/components/ControlsToolbar.js`**
+    - Visualization controls
+    - Action buttons
+    - Tool selection
+
+53. **`src/components/SearchPanel.js`**
+    - Search interface
+    - Results display
+    - Filtering options
+
+54. **`src/components/NodeConnectionTool.js`**
+    - Connection creation UI
+    - Node selection
+    - Relationship type selection
+
+55. **`src/components/EncryptionStatusIndicator.js`**
+    - Encryption state display
+    - Lock/unlock indicators
+    - Permission feedback
+
+56. **`src/components/NotificationCenter.js`**
+    - User notifications
+    - Toast messages
+    - Status updates
+
+57. **`src/components/ModalManager.js`**
+    - Modal dialog system
+    - Dialog rendering
+    - Backdrop management
+
+### Administration Features
+
+58. **`src/admin/AdminPanel.js`**
+    - Admin dashboard
+    - Navigation
+    - Overview metrics
+
+59. **`src/admin/UserManagement.js`**
+    - User listing
+    - Account management
+    - Role assignment
+
+60. **`src/admin/PermissionEditor.js`**
+    - Permission configuration
+    - Access level management
+    - Role definition
+
+61. **`src/admin/ContentModeration.js`**
+    - Content approval interface
+    - Moderation queue
+    - Review workflow
+
+62. **`src/admin/ActivityMonitor.js`**
+    - User activity tracking
+    - Audit logging
+    - Security events
+
+63. **`src/admin/SystemConfiguration.js`**
+    - Application settings
+    - Feature toggles
+    - Global parameters
+
+### API Integration
+
+64. **`src/api/ApiClient.js`**
+    - Centralized API access
+    - Request handling
+    - Error management
+
+65. **`src/api/NodeApi.js`**
+    - Node CRUD operations
+    - Query handling
+    - Data transformation
+
+66. **`src/api/AuthApi.js`**
+    - Authentication endpoints
+    - User management
+    - Session handling
+
+67. **`src/api/AdminApi.js`**
+    - Administration endpoints
+    - System management
+    - Bulk operations
+
+68. **`src/api/VersionApi.js`**
+    - Version management endpoints
+    - History retrieval
+    - Rollback operations
+
+### Utility Services
+
+69. **`src/utils/EventBus.js`**
+    - Application-wide events
+    - Pub/sub implementation
+    - Component communication
+
+70. **`src/utils/StorageManager.js`**
+    - Local storage handling
+    - Session management
+    - Cache operations
+
+71. **`src/utils/ErrorHandler.js`**
+    - Error capturing
+    - Logging
+    - User feedback
+
+72. **`src/utils/ValidationHelpers.js`**
+    - Input validation
+    - Form validation
+    - Data integrity checking
+
+73. **`src/utils/StringUtils.js`**
+    - Text formatting
+    - String manipulation
+    - Template processing
+
+74. **`src/utils/DateTimeUtils.js`**
+    - Date formatting
+    - Time calculations
+    - Duration handling
+
+### Styling System
+
+75. **`src/styles/theme.js`**
+    - Theme configuration
+    - Color palettes
+    - Typography
+
+76. **`src/styles/GlobalStyles.js`**
+    - App-wide styling
+    - CSS reset
+    - Base elements
+
+77. **`src/styles/animations.js`**
+    - CSS animations
+    - Transitions
+    - Motion effects
+
+78. **`src/styles/components/`**
+    - Component-specific styling
+    - Organized by component type
+    - Modular CSS/styled-components
+
+79. **`src/styles/layouts/`**
+    - Layout-specific styling
+    - Page templates
+    - Responsive patterns
+
+### Testing Infrastructure
+
+80. **`src/tests/setup/`**
+    - Test environment configuration
+    - Mock services
+    - Test utilities
+
+81. **`src/tests/unit/`**
+    - Component unit tests
+    - Service unit tests
+    - Utility function tests
+
+82. **`src/tests/integration/`**
+    - Component integration tests
+    - Service interaction tests
+    - API interaction tests
+
+83. **`src/tests/e2e/`**
+    - End-to-end tests
+    - User workflow tests
+    - Critical path verification
+
+### Amplify Configuration
+
+84. **`amplify/backend/api/`**
+    - GraphQL/REST API definitions
+    - Schema models
+    - Resolver configurations
+
+85. **`amplify/backend/auth/`**
+    - Authentication configuration
+    - User pools
+    - Identity providers
+
+86. **`amplify/backend/storage/`**
+    - Storage configuration
+    - S3 buckets
+    - Access patterns
+
+87. **`amplify/backend/function/`**
+    - Lambda function code
+    - Custom business logic
+    - API handlers
+
+### GitHub Integration
+
+88. **`.github/workflows/main.yml`**
+    - GitHub Actions workflow
+    - CI/CD pipeline
+    - Test and build automation
+
+89. **`.github/workflows/preview.yml`**
+    - PR preview deployment
+    - Branch-specific builds
+    - Testing automation
+
+### Documentation
+
+90. **`docs/architecture.md`**
+    - System architecture documentation
+    - Component relationships
+    - Design decisions
+
+91. **`docs/user-guide.md`**
+    - End-user documentation
+    - Feature usage
+    - Workflows
+
+92. **`docs/admin-guide.md`**
+    - Administrator documentation
+    - System management
+    - Configuration
+
+93. **`docs/developer-guide.md`**
+    - Developer onboarding
+    - Code standards
+    - Build process
+
+94. **`src/ModuleRegistry.js`**
+    - Module tracking
+    - Dependency documentation
+    - System overview
+
+## Hierarchical Connection Rules
+
+After analyzing the existing codebase and JSON structure, the following rules govern how nodes connect in the visualization hierarchy:
+
+### Node Type Hierarchy
+
+1. **Component Group** (Level 0)
+   - Top-level category (e.g., AI Alignment)
+   - Has no parent
+   - Always visible in visualization
+   - `type: "component_group"`
+
+2. **Component** (Level 1)
+   - Major category (e.g., Technical Safeguards)
+   - Parent is a Component Group
+   - `type: "component"`
+   - Becomes visible when parent is expanded
+
+3. **Subcomponent** (Level 2)
+   - Specific approach (e.g., Interpretability Tools)
+   - Parent is a Component
+   - `type: "subcomponent"`
+   - Becomes visible when parent is expanded
+
+4. **Capability** (Level 3)
+   - Functional area within a Subcomponent
+   - Parent is a Subcomponent
+   - `type: "capability"`
+   - Becomes visible when parent is expanded
+
+5. **Function** (Level 4)
+   - Specific function within a Capability
+   - Parent is a Capability
+   - `type: "function"`
+   - Becomes visible when parent is expanded
+
+6. **Specification** (Level 5)
+   - Detailed implementation of a Function
+   - Parent is a Function
+   - `type: "specification"`
+   - Becomes visible when parent is expanded
+
+7. **Integration** (Level 6)
+   - System integration approach
+   - Parent is a Specification
+   - `type: "integration"`
+   - Becomes visible when parent is expanded
+
+8. **Technique** (Level 7)
+   - Specific technique for an Integration
+   - Parent is an Integration
+   - `type: "technique"`
+   - Becomes visible when parent is expanded
+
+9. **Application** (Level 8)
+   - Practical application of a Technique
+   - Parent is a Technique
+   - `type: "application"`
+   - Becomes visible when parent is expanded
+
+10. **Input/Output** (Level 9)
+    - Data flows for an Application
+    - Parent is an Application
+    - `type: "input"` or `type: "output"`
+    - Becomes visible when parent is expanded
+    - Both, Input and Output are two different node types/children of its parent Application and are expanded at the same time
+
+### Connection Types
+
+1. **Hierarchical (Parent-Child) Connections**
+   - Primary organization principle
+   - Defined by the `parent` property on child nodes
+   - Visualized when parent node is expanded
+   - Represented with `"type": "contains"` links
+
+2. **Cross-Component Connections**
+   - Connect components at the same level
+   - Defined in component's `"relationships"` array
+   - Typically represented with `"type": "relationship_type"` links
+   - `relationship_type` can be various types like "implements", "depends_on", etc.
+
+3. **Implementation Connections**
+   - Connect capabilities to their implementing subcomponents
+   - Defined in `"implemented_by_subcomponents"` array
+   - Represented with `"type": "implements"` links
+
+4. **Integration Point Connections**
+   - Connect functions across components
+   - Defined in `"integration_points"` array within relationships
+   - Represented with `"type": "integration_point"` links
+
+5. **Cross-Connections**
+   - Connect any nodes across the hierarchy
+   - Defined in `"cross_connections"` array
+   - Represented with the type specified in the connection object
+
+### Visibility Rules
+
+1. Root nodes (with no parent) are always visible
+2. Child nodes are visible only when their parent is expanded
+3. Links are visible only when both source and target nodes are visible
+4. When a parent is collapsed, all its descendants and connection lines become invisible
+
+### Visual Properties
+
+1. Node color is determined by its type
+2. Node size decreases as level increases (deeper in hierarchy = smaller)
+3. Node opacity is 1.0 if visible, 0.3 if faded
+4. Encrypted nodes display a lock icon when not decrypted, but display the name of the node when mouse hover is triggered
+
+### Multi-Sphere Rules
+
+1. Each sphere contains its own hierarchy/network model inside of a sphere representation. The ai-alignment folder is an example of 1 such sphere, of which many could exist (laid out in a circle, so they dont overlay, the ai-alignmentv2 would be a second such folder)
+2. Nodes can be connected across spheres through cross-sphere connections
+3. Only one sphere is active/visible at a time, but users can select or deselect spheres to display based on a menu in a sidepanel
+4. Sphere switching maintains the expansion state of nodes
+5. Cross-sphere connections are shown with special visual treatment when visible
+
+This hierarchical structure and connection system will be preserved in the new implementation, with extensions to support the additional features like encryption, versioning, and multi-sphere visualization.
+
+## Implementation Approach
+
+### Phase 1: Project Setup and Core Infrastructure
+
+1. Initialize React application
+2. Set up AWS Amplify integration
+3. Configure GitHub repository with workflows
+4. Implement basic layout and routing
+
+### Phase 2: Authentication System
+
+1. Configure Amplify Auth
+2. Implement authentication context
+3. Create login/registration components
+4. Set up protected routes
+
+### Phase 3: Data Model and Storage
+
+1. Define GraphQL schema for nodes and relationships
+2. Set up Amplify storage for assets
+3. Implement data models
+4. Create data access services
+
+### Phase 4: Visualization Core
+
+1. Implement THREE.js visualization core
+2. Create scene and camera management
+3. Develop node and link renderers
+4. Implement layout engine
+
+### Phase 5: User Interface
+
+1. Build details panel and node renderer
+2. Implement control toolbar
+3. Create breadcrumb navigation
+4. Set up search functionality
+
+### Phase 6: Encryption System
+
+1. Implement content encryption
+2. Create password-based decryption
+3. Build encrypted content UI
+4. Integrate with node details
+
+### Phase 7: Content Editing
+
+1. Create node editing interface
+2. Implement save/load functionality
+3. Set up version control
+4. Build diff visualization
+
+### Phase 8: Multi-Sphere Visualization
+
+1. Implement sphere management
+2. Create sphere navigation
+3. Enable cross-sphere connections
+4. Build sphere selector UI
+
+### Phase 9: Administration Features
+
+1. Create admin dashboard
+2. Implement user management
+3. Build permission editor
+4. Create moderation workflow
+
+### Phase 10: Testing and Optimization
+
+1. Write comprehensive tests
+2. Optimize performance
+3. Implement error handling
+4. Enhance accessibility
+
+### Phase 11: Documentation and Deployment
+
+1. Complete user documentation
+2. Write admin guide
+3. Update developer documentation
+4. Configure production deployment
+
+## GitHub to Amplify Workflow
+
+1. Developer makes changes and pushes to GitHub
+2. GitHub Actions runs tests and builds the application
+3. On successful build, Amplify automatically deploys:
+   - Main branch → Production environment
+   - Feature branches → Preview environments
+4. QA can review changes in preview environments
+5. Approved changes are merged to main and deployed to production
+
+## AWS Amplify Services Used
+
+- **Amplify Hosting** - Web application hosting with CI/CD
+- **Amplify Auth** - User authentication and authorization
+- **Amplify Storage** - File and asset storage
+- **Amplify API** - GraphQL/REST API for data access
+- **Amplify Functions** - Custom business logic (Lambda)
+- **Amplify DataStore** - Offline-capable data management
+
+## Benefits of this Architecture
+
+1. **Simplified Deployment** - Direct deployment from GitHub
+2. **Managed Services** - Reduced operational overhead
+3. **Scalability** - Serverless architecture scales automatically
+4. **Cost Efficiency** - Pay only for resources used
+5. **Modern Development** - React-based frontend with modular components
+6. **Full Feature Support** - All planned features (auth, encryption, versioning) implemented using appropriate tools
+
+This approach significantly simplifies the deployment process while maintaining all the advanced features required for the application. By leveraging AWS Amplify's managed services, we reduce the need for custom infrastructure code while enabling a robust, scalable application architecture. 
